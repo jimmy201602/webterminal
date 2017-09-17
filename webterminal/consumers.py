@@ -32,7 +32,7 @@ class webterminal(WebsocketConsumer):
             message.reply_channel.send({"accept":False})
             return
         
-        chan = self.ssh.invoke_shell(width=120, height=40,)
+        chan = self.ssh.invoke_shell(width=90, height=40,)
         multiple_chan[message.reply_channel.name] = chan
         interactive_shell(chan,message.reply_channel.name)
         

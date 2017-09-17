@@ -132,6 +132,11 @@ CHANNEL_LAYERS = {
        "BACKEND": "asgi_redis.RedisChannelLayer",  # use redis backend
        "CONFIG": {
            "hosts": [("localhost", 6379)],  # set redis address
+           "channel_capacity": {
+                                   "http.request": 1000,
+                                   "websocket.send*": 10000,
+                                },
+           "capacity": 10000,           
            },
        "ROUTING": "webterminal.routing.channel_routing",  # load routing from our routing.py file
        },
