@@ -1,12 +1,10 @@
-<!doctype html>
+{% extends 'base.html'%}
 {% load staticfiles %}
   <html>
     <head>
-      <link rel="stylesheet" href="{% static 'xterm.css' %}" />
-      <script src="{% static 'xterm.js' %}"></script>
-      <script src="{% static 'addons/fit/fit.js' %}"></script>
-      <script src="{% static 'addons/terminado/terminado.js' %}"></script>
-      <script src="{% static 'addons/fullscreen/fullscreen.js' %}"></script>
+    {% block css %}
+      <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}" />
+    {% endblock %}
       <style>
       body {
         font-family: helvetica, sans-serif, arial;
@@ -32,52 +30,59 @@
       }
     </style>
     </head>
-    <body>
+{% block content %}
       <div id="terminal-container" ></div>
-      <script>   
-        function make_terminal(element, size, ws_url) {
-            var term = new Terminal({
-              cols: size.cols,
-              rows: size.rows,
-              screenKeys: true,
-              useStyle: true,
-              cursorBlink: true,  // Blink the terminal's cursor
-            });
-            term.open(element,false);
-            var ws = new WebSocket(ws_url);
-            ws.onopen = function(event) {
-                ws.send(JSON.stringify(["set_size", size.rows, size.cols,
-                                            window.innerHeight, window.innerWidth]));
-                term.on('data', function(data) {
-                    ws.send(JSON.stringify(['stdin', data]));
-                });
-                
-                term.on('title', function(title) {
-                    document.title = title;
-                });
-                
-                
-                <!--term.fit();-->
-                term.toggleFullscreen(true);
-                ws.onmessage = function(event) {
-                    json_msg = JSON.parse(event.data);
-                    switch(json_msg[0]) {
-                        case "stdout":
-                            term.write(json_msg[1]);
-                            break;
-                        case "disconnect":
-                            term.write("\r\n\r\n[Finished...]\r\n");
-                            break;
-                    }
-                };
-            };
-            return {socket: ws, term: term};
-        }
-        
-        var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-        var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+{% endblock %}
 
-        make_terminal(document.getElementById('terminal-container'),{rows: 40, cols: 90},ws_path); 
-      </script>
-    </body>
-  </html>
+{% block js %}
+  <script src="{% static 'plugins/xterm/xterm.js' %}"></script>
+  <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
+  <script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
+  <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
+
+  <script>   
+    function make_terminal(element, size, ws_url) {
+        var term = new Terminal({
+          cols: size.cols,
+          rows: size.rows,
+          screenKeys: true,
+          useStyle: true,
+          cursorBlink: true,  // Blink the terminal's cursor
+        });
+        term.open(element,false);
+        var ws = new WebSocket(ws_url);
+        ws.onopen = function(event) {
+            ws.send(JSON.stringify(["set_size", size.rows, size.cols,
+                                        window.innerHeight, window.innerWidth]));
+            term.on('data', function(data) {
+                ws.send(JSON.stringify(['stdin', data]));
+            });
+            
+            term.on('title', function(title) {
+                document.title = title;
+            });
+            
+            
+            <!--term.fit();-->
+            term.toggleFullscreen(true);
+            ws.onmessage = function(event) {
+                json_msg = JSON.parse(event.data);
+                switch(json_msg[0]) {
+                    case "stdout":
+                        term.write(json_msg[1]);
+                        break;
+                    case "disconnect":
+                        term.write("\r\n\r\n[Finished...]\r\n");
+                        break;
+                }
+            };
+        };
+        return {socket: ws, term: term};
+    }
+    
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+  
+    make_terminal(document.getElementById('terminal-container'),{rows: 40, cols: 90},ws_path); 
+  </script>
+{% endblock %}
