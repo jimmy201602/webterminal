@@ -1,74 +1,198 @@
 {% extends 'base.html'%}
 {% block title %}webterminal{% endblock %}
 {% load staticfiles %}
-  <html>
-    <head>
+<html>
+<head>
     {% block css %}
-      <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}" />
+    <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
+    <link rel="stylesheet" href="{% static 'plugins/jstree/themes/proton/style.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'plugins/font-awesome/css/font-awesome.min.css' %}"/>
     {% endblock %}
-      <style>
-      body {
-        font-family: helvetica, sans-serif, arial;
-        font-size: 1em;
-        color: #111;
-      }
-      h1 {
-        text-align: center;
-      }
-      #terminal-container {
-        width: 960px;
-        height: 600px;
-        margin: 0 auto;
-        padding: 2px;
-      }
-      #terminal-container .terminal {
-        background-color: #111;
-        color: #fafafa;
-        padding: 2px;
-      }
-      #terminal-container .terminal:focus .terminal-cursor {
-        background-color: #fafafa;
-      }
+    <style>
+        body {
+            font-family: helvetica, sans-serif, arial;
+            font-size: 1em;
+            color: #111;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #terminal-container {
+            width: 960px;
+            height: 600px;
+            margin: 0 auto;
+            padding: 2px;
+        }
+
+        #terminal-container .terminal {
+            background-color: #111;
+            color: #fafafa;
+            padding: 2px;
+        }
+
+        #terminal-container .terminal:focus .terminal-cursor {
+            background-color: #fafafa;
+        }
     </style>
-    </head>
+</head>
 {% block content %}
-      <div id="terminal-container" ></div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="portlet yellow-lemon box">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-cogs"></i>Server Group
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                    <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="tree_3" class="tree-demo" role="tree"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+
+        <div class="span2 leftMenu">
+            <ul class="nav nav-tabs marginBottom" id="myTab">
+                <li class="active ">
+                    <a href="#terminal-container1" class="backgroundRed">terminal-container1 </a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content span4">
+            <div class="tab-pane active" id="terminal-container1"></div>
+        </div>
+
+    </div>
+</div>
 {% endblock %}
 
 {% block js %}
-  <script src="{% static 'plugins/xterm/xterm.js' %}"></script>
-  <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
-  <script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
-  <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
+<script src="{% static 'plugins/xterm/xterm.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
+<script src="{% static 'plugins/jstree/jstree.js' %}"></script>
 
-  <script>   
+<script type="application/javascript">
+
+
+    var currentTab;
+    var composeCount = 0;
+    //initilize tabs
+    $(function () {
+
+        //when ever any tab is clicked this method will be call
+        $("#myTab").on("click", "a", function (e) {
+            e.preventDefault();
+
+            $(this).tab('show');
+            $currentTab = $(this);
+        });
+
+
+        //registerComposeButtonEvent();
+        registerCloseEvent();
+    });
+
+    //this method will demonstrate how to add tab dynamically
+    function registerComposeButtonEvent() {
+        /* just for this demo */
+        $('#composeButton').click(function (e) {
+            e.preventDefault();
+
+            var tabId = "compose" + composeCount; //this is id on tab content div where the
+            composeCount = composeCount + 1; //increment compose count
+
+            $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+            $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
+
+            craeteNewTabAndLoadUrl("", "./SamplePage.html", "#" + tabId);
+
+            $(this).tab('show');
+            showTab(tabId);
+            registerCloseEvent();
+        });
+
+    }
+
+    //this method will register event on close icon on the tab..
+    function registerCloseEvent() {
+
+        $(".closeTab").click(function () {
+
+            //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+            var tabContentId = $(this).parent().attr("href");
+            $(this).parent().parent().remove(); //remove li of tab
+            $('#myTab a:last').tab('show'); // Select first tab
+            $(tabContentId).remove(); //remove respective tab content
+
+        });
+    }
+
+    //shows the tab with passed content div id..paramter tabid indicates the div where the content resides
+    function showTab(tabId) {
+        $('#myTab a[href="#' + tabId + '"]').tab('show');
+    }
+    //return current active tab
+    function getCurrentTab() {
+        return currentTab;
+    }
+
+
+    //this will return element from current tab
+    //example : if there are two tabs having  textarea with same id or same class name then when $("#someId") whill return both the text area from both tabs
+    //to take care this situation we need get the element from current tab.
+    function getElement(selector) {
+        var tabContentId = $currentTab.attr("href");
+        return $("" + tabContentId).find("" + selector);
+
+    }
+
+
+    function removeCurrentTab() {
+        var tabContentId = $currentTab.attr("href");
+        $currentTab.parent().remove(); //remove li of tab
+        $('#myTab a:last').tab('show'); // Select first tab
+        $(tabContentId).remove(); //remove respective tab content
+    }
+
+</script>
+<script type="application/javascript">
     function make_terminal(element, size, ws_url) {
         var term = new Terminal({
-          cols: size.cols,
-          rows: size.rows,
-          screenKeys: true,
-          useStyle: true,
-          cursorBlink: true,  // Blink the terminal's cursor
+            cols: size.cols,
+            rows: size.rows,
+            screenKeys: true,
+            useStyle: true,
+            cursorBlink: true,  // Blink the terminal's cursor
         });
-        term.open(element,false);
+        term.open(element, false);
         var ws = new WebSocket(ws_url);
-        ws.onopen = function(event) {
+        ws.onopen = function (event) {
             ws.send(JSON.stringify(["set_size", size.rows, size.cols,
-                                        window.innerHeight, window.innerWidth]));
-            term.on('data', function(data) {
+                window.innerHeight, window.innerWidth]));
+            term.on('data', function (data) {
                 ws.send(JSON.stringify(['stdin', data]));
             });
-            
-            term.on('title', function(title) {
+
+            term.on('title', function (title) {
                 document.title = title;
             });
-            
-            
+
+
             <!--term.fit();-->
             term.toggleFullscreen(true);
-            ws.onmessage = function(event) {
+            ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
-                switch(json_msg[0]) {
+                switch (json_msg[0]) {
                     case "stdout":
                         term.write(json_msg[1]);
                         break;
@@ -80,10 +204,109 @@
         };
         return {socket: ws, term: term};
     }
-    
+
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-  
-    make_terminal(document.getElementById('terminal-container'),{rows: 40, cols: 90},ws_path); 
-  </script>
+
+    //make_terminal(document.getElementById('terminal-container1'), {rows: 40, cols: 90}, ws_path);
+    var term = new Terminal({
+        cols: 90,
+        rows: 40,
+        screenKeys: true,
+        useStyle: true,
+        cursorBlink: true,  // Blink the terminal's cursor
+    });
+    term.open(document.getElementById('terminal-container1'), false);
+    term.write('\033[1;3;31mThis is the webterminal console Please select a server to connect!\033[0m')
+</script>
+<script type="application/javascript">
+    $("#tree_3").jstree({
+        core: {
+            'themes': {
+                'name': 'proton',
+                'responsive': true
+            },
+            check_callback: !0,
+            data: [
+                {
+                    text: "Group1",
+                    children: [
+                        {text: "server1", state: {selected: !0}},
+                        {text: "server2", icon: "fa fa-warning icon-state-danger"}
+                    ]
+                }
+            ]
+        },
+        types: {
+            "default": {icon: "fa fa-folder icon-state-warning icon-lg"},
+            file: {icon: "fa fa-file icon-state-warning icon-lg"}
+        },
+        state: {key: "demo2"},
+        plugins: ["contextmenu", "state", "types"],
+        contextmenu: {
+            "items": function ($node) {
+                var tree = $("#tree_3").jstree(true);
+                return {
+                    "connect": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": "connect",
+                        "action": function (obj) {
+                            //console.log($node);
+//                                var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+//                                var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+//                                make_terminal(document.getElementById('terminal-container'), {rows: 40, cols: 90}, ws_path);
+
+                            var tabId = $node.text; //this is id on tab content div where the
+                            if ($("#"+tabId).length <= 0){
+                                $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
+                                showTab(tabId);
+                                registerCloseEvent();
+                                var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+                                make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path);
+                            }else {
+                                showTab(tabId);
+                            }
+                        }
+                    },
+                    "disconnect": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": "disconnect",
+                        "action": function (obj) {
+                            console.log($node);
+                        }
+                    },
+                    "Rename": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": "rename",
+                        "action": function (obj) {
+                            tree.edit($node);
+                        }
+                    },
+                    "Create": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": "Create",
+                        "action": function (obj) {
+                            $node = tree.create_node($node);
+                            tree.edit($node);
+                        }
+                    },
+//                        "Remove": {
+//                            "separator_before": false,
+//                            "separator_after": false,
+//                            "label": "delete",
+//                            "action": function (obj) {
+//                                tree.delete_node($node);
+//                            }
+//                        },
+                };
+            }
+        }
+    })
+</script>
 {% endblock %}
