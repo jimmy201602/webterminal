@@ -40,7 +40,7 @@
 {% block content %}
 <div class="row">
     <div class="col-md-3">
-        <div class="portlet yellow-lemon box">
+        <div class="portlet box box-success">
             <div class="portlet-title">
                 <div class="caption">
                     <a class="text-danger">Server List</a>
@@ -166,7 +166,7 @@
 
 </script>
 <script type="application/javascript">
-    function make_terminal(element, size, ws_url) {
+    function make_terminal(element, size, ws_url,ip) {
         var term = new Terminal({
             cols: size.cols,
             rows: size.rows,
@@ -177,8 +177,10 @@
         term.open(element, false);
         var ws = new WebSocket(ws_url);
         ws.onopen = function (event) {
-            ws.send(JSON.stringify(["set_size", size.rows, size.cols,
-                window.innerHeight, window.innerWidth]));
+            ws.send(JSON.stringify(["ip", ip]));
+            //set terminal width and height
+            <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
+                <!--window.innerHeight, window.innerWidth]));-->
             term.on('data', function (data) {
                 ws.send(JSON.stringify(['stdin', data]));
             });
@@ -228,13 +230,16 @@
             },
             check_callback: !0,
             data: [
+            {% for server_group in server_groups%}
                 {
-                    text: "Group1",
+                    text: "{{ server_group.name }}",
                     children: [
-                        {text: "server1", state: {selected: !0}},
-                        {text: "server2", icon: "fa fa-warning icon-state-danger"}
+                        {% for server in server_group.servers.all %}
+                        {text: "{{ server.name }}", icon: "fa fa-server", ip: "{{ server.ip }}"},
+                        {% endfor %}
                     ]
-                }
+                },
+            {% endfor %}
             ]
         },
         types: {
@@ -252,12 +257,10 @@
                         "separator_after": false,
                         "label": "connect",
                         "action": function (obj) {
-                            //console.log($node);
-//                                var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-//                                var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-//                                make_terminal(document.getElementById('terminal-container'), {rows: 40, cols: 90}, ws_path);
 
                             var tabId = $node.text; //this is id on tab content div where the
+                            //get server ip
+                            var ip = $node.original.ip;
                             if ($("#"+tabId).length <= 0){
                                 $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
                                 $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
@@ -265,7 +268,7 @@
                                 registerCloseEvent();
                                 var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                 var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path);
+                                make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
                             }else {
                                 showTab(tabId);
                             }
