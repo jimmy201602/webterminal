@@ -53,6 +53,10 @@
                 </div>
             </div>
             <div class="portlet-body">
+                <form id="search">
+                    <input type="search" id="q" />
+                    <button type="submit">Search</button>
+                </form>
                 <div id="server_list" class="tree-demo" role="tree"></div>
             </div>
         </div>
@@ -227,7 +231,7 @@
             file: {icon: "fa fa-file icon-state-warning icon-lg"}
         },
         state: {key: "demo2"},
-        plugins: ["contextmenu", "state", "types"],
+        plugins: ["contextmenu", "state", "types", "search"],
         contextmenu: {
             "items": function ($node) {
                 var tree = $("#server_list").jstree(true);
@@ -290,6 +294,10 @@
                 };
             }
         }
-    })
+    });
+    $("#search").submit(function(e) {
+        e.preventDefault();
+        $("#server_list").jstree(true).search($("#q").val());
+    });
 </script>
 {% endblock %}
