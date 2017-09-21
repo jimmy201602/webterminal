@@ -53,7 +53,7 @@
                 </div>
             </div>
             <div class="portlet-body">
-                <div id="tree_3" class="tree-demo" role="tree"></div>
+                <div id="server_list" class="tree-demo" role="tree"></div>
             </div>
         </div>
     </div>
@@ -62,12 +62,12 @@
         <div class="span2 leftMenu">
             <ul class="nav nav-tabs marginBottom" id="myTab">
                 <li class="active ">
-                    <a href="#terminal-container1" class="backgroundRed">terminal-container1 </a>
+                    <a href="#terminal-container" class="backgroundRed">terminal-container1 </a>
                 </li>
             </ul>
         </div>
         <div class="tab-content span4">
-            <div class="tab-pane active" id="terminal-container1"></div>
+            <div class="tab-pane active" id="terminal-container1">help info</div>
         </div>
 
     </div>
@@ -102,26 +102,6 @@
         registerCloseEvent();
     });
 
-    //this method will demonstrate how to add tab dynamically
-    function registerComposeButtonEvent() {
-        /* just for this demo */
-        $('#composeButton').click(function (e) {
-            e.preventDefault();
-
-            var tabId = "compose" + composeCount; //this is id on tab content div where the
-            composeCount = composeCount + 1; //increment compose count
-
-            $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
-            $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
-
-            craeteNewTabAndLoadUrl("", "./SamplePage.html", "#" + tabId);
-
-            $(this).tab('show');
-            showTab(tabId);
-            registerCloseEvent();
-        });
-
-    }
 
     //this method will register event on close icon on the tab..
     function registerCloseEvent() {
@@ -211,18 +191,18 @@
     var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
 
     //make_terminal(document.getElementById('terminal-container1'), {rows: 40, cols: 90}, ws_path);
-    var term = new Terminal({
-        cols: 90,
-        rows: 40,
-        screenKeys: true,
-        useStyle: true,
-        cursorBlink: true,  // Blink the terminal's cursor
-    });
-    term.open(document.getElementById('terminal-container1'), false);
-    term.write('\033[1;3;31mThis is the webterminal console Please select a server to connect!\033[0m')
+//    var term = new Terminal({
+//        cols: 90,
+//        rows: 40,
+//        screenKeys: true,
+//        useStyle: true,
+//        cursorBlink: true,  // Blink the terminal's cursor
+//    });
+//    term.open(document.getElementById('terminal-container1'), false);
+//    term.write('\033[1;3;31mThis is the webterminal console Please select a server to connect!\033[0m')
 </script>
 <script type="application/javascript">
-    $("#tree_3").jstree({
+    $("#server_list").jstree({
         core: {
             'themes': {
                 'name': 'proton',
@@ -250,7 +230,7 @@
         plugins: ["contextmenu", "state", "types"],
         contextmenu: {
             "items": function ($node) {
-                var tree = $("#tree_3").jstree(true);
+                var tree = $("#server_list").jstree(true);
                 return {
                     "connect": {
                         "separator_before": false,

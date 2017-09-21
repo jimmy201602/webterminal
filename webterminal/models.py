@@ -37,7 +37,6 @@ class Credential(models.Model):
         return self.name    
     
     def clean(self):
-        print 'key',self.key,len(self.key)
         if self.method == 'password' and len(self.password) == 0:
             raise ValidationError('If you choose password auth method,You must set password!')
         if self.method == 'password' and len(self.key) >0:
