@@ -235,7 +235,7 @@
                     text: "{{ server_group.name }}",
                     children: [
                         {% for server in server_group.servers.all %}
-                        {text: "{{ server.name }}", icon: "fa fa-server", ip: "{{ server.ip }}"},
+                        {text: "{{ server.hostname }}", icon: "fa fa-server", ip: "{{ server.ip }}", state: {selected: !0},},
                         {% endfor %}
                     ]
                 },

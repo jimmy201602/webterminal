@@ -3,7 +3,7 @@ from django.db import models
 class ServerInfor(models.Model):
     name = models.CharField(max_length=40,verbose_name='Server name',blank=False)
     hostname = models.CharField(max_length=40,verbose_name='Host name',blank=True)
-    ip = models.GenericIPAddressField(protocol='ipv4',blank=False)
+    ip = models.GenericIPAddressField(protocol='ipv4',blank=False,unique=True)
     onlinedatetime = models.DateTimeField(auto_created=True,auto_now=True)
     updatedatetime = models.DateTimeField(auto_created=True,auto_now_add=True)
     credential = models.ForeignKey('Credential')
