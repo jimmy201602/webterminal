@@ -1,8 +1,6 @@
 {% extends 'base.html'%}
 {% block title %}webterminal{% endblock %}
 {% load staticfiles %}
-<html>
-<head>
     {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
     <link rel="stylesheet" href="{% static 'plugins/jstree/themes/proton/style.min.css' %}"/>
@@ -36,7 +34,6 @@
             background-color: #fafafa;
         }
     </style>
-</head>
 {% block content %}
 <div class="row">
     <div class="col-md-3">

@@ -1,30 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="json-forms_files/bootstrap.css">
-    <link rel="stylesheet" href="json-forms_files/codemirror.css">
-    <link rel="stylesheet" href="json-forms_files/bootstrap-select.css">
-    <link rel="stylesheet" href="json-forms_files/octicons.css">
-    <link rel="stylesheet" href="json-forms_files/brutusin-json-forms.css">
-    <script src="json-forms_files/jquery-1.js"></script>
-    <script src="json-forms_files/bootstrap.js"></script>
-    <script src="json-forms_files/codemirror.js"></script>
-    <script src="json-forms_files/codemirror-javascript.js"></script>
-    <script src="json-forms_files/markdown.js"></script>
-    <script src="json-forms_files/bootstrap-select.js"></script>
-    <script src="json-forms_files/defaults-en_US.js"></script>
-    <!--
-    <script src="//rawgit.com/brutusin/json-forms/master/dist/js/brutusin-json-forms.min.js"></script>
-     -->
-    <script src="json-forms_files/brutusin-json-forms.js"></script>
-    <script src="json-forms_files/brutusin-json-forms-bootstrap.js"></script>
-</head>
-<body>
-<div id="test1"></div>
-    <script lang="javascript">
-
+{% extends 'base.html'%}
+{% block title %}webterminal{% endblock %}
+{% load staticfiles %}
+{% block css%}
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+    <link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
+{%endblock%}
+{% block content %}
+        <div id='container1' class="table" ></div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'plugins/markdown/markdown.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
+    <script type="application/javascript">
+        var BrutusinForms = brutusin["json-forms"];
+        BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", function (element) {
+            alert("user callback on element " + element)
+        });
+        BrutusinForms.bootstrap.addFormatDecorator("color", "color");
+        BrutusinForms.bootstrap.addFormatDecorator("date", "date");
 var schema =     {
     "type": "object",
     "properties": {
@@ -34,7 +30,7 @@ var schema =     {
             "minItems": 2,
             "uniqueItems": true,
             "items": {
-                "description": "输入要执行的命令",
+                "description": "Input the command you need to execute",
                 "type": "string",
             }
         },
@@ -42,8 +38,7 @@ var schema =     {
 };
 var BrutusinForms = brutusin["json-forms"];
 var bf = BrutusinForms.create(schema);
-var container = document.getElementById('test1');
+var container = document.getElementById('container1');
 bf.render(container, null);
     </script>
-</body>
-</html>
+{% endblock %}
