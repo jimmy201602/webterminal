@@ -21,11 +21,11 @@ class ShellHandler(object):
         print('command executed: {}'.format(cmd))
         print('STDOUT:')
         for line in out_buf:
-            print(line, end="")
+            print line, "end="
         print('end of STDOUT')
         print('STDERR:')
         for line in err_buf:
-            print(line, end="")
+            print line, "end="
         print('end of STDERR')
         print('finished with exit status: {}'.format(exit_status))
         print('------------------------------------')
@@ -56,7 +56,7 @@ class ShellHandler(object):
                 shout = []
             elif str(line).startswith(finish):
                 # our finish command ends with the exit status
-                exit_status = int(str(line).rsplit(maxsplit=1)[1])
+                exit_status = int(str(line).rsplit()[-1])
                 if exit_status:
                     # stderr is combined with stdout.
                     # thus, swap sherr with shout in a case of failure.
