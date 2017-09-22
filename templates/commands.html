@@ -6,7 +6,28 @@
     <link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
 {%endblock%}
 {% block content %}
-        <div id='container1' class="table" ></div>
+<div class="wrapper-content">
+    <div class="row">
+
+
+        <div class="col-lg-10">
+            <div class="content float-e-margins">
+                <div class="content">
+                    <form action="" class="form-horizontal nice-validator n-yellow form" id="table" method="post" novalidate="novalidate">
+
+                        <div id='container1' class="table" ></div>
+
+
+                        <div class="col-sm-4 col-sm-offset-5">
+                            <button  onclick="alert(JSON.stringify(bf.getData(), null, 4))" class="btn btn-primary pull-center"> submit </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block js %}
 <script src="{% static 'plugins/markdown/markdown.js' %} "></script>
@@ -27,7 +48,7 @@ var schema =     {
         "commands": {
             "type": "array",
             "title": "commands",
-            "minItems": 2,
+            "minItems": 1,
             "uniqueItems": true,
             "items": {
                 "description": "Input the command you need to execute",
