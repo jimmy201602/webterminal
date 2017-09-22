@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="json-forms_files/bootstrap.css">
+    <link rel="stylesheet" href="json-forms_files/codemirror.css">
+    <link rel="stylesheet" href="json-forms_files/bootstrap-select.css">
+    <link rel="stylesheet" href="json-forms_files/octicons.css">
+    <link rel="stylesheet" href="json-forms_files/brutusin-json-forms.css">
+    <script src="json-forms_files/jquery-1.js"></script>
+    <script src="json-forms_files/bootstrap.js"></script>
+    <script src="json-forms_files/codemirror.js"></script>
+    <script src="json-forms_files/codemirror-javascript.js"></script>
+    <script src="json-forms_files/markdown.js"></script>
+    <script src="json-forms_files/bootstrap-select.js"></script>
+    <script src="json-forms_files/defaults-en_US.js"></script>
+    <!--
+    <script src="//rawgit.com/brutusin/json-forms/master/dist/js/brutusin-json-forms.min.js"></script>
+     -->
+    <script src="json-forms_files/brutusin-json-forms.js"></script>
+    <script src="json-forms_files/brutusin-json-forms-bootstrap.js"></script>
+</head>
+<body>
+<div id="test1"></div>
+    <script lang="javascript">
+
+var schema =     {
+    "type": "object",
+    "properties": {
+        "commands": {
+            "type": "array",
+            "title": "commands",
+            "minItems": 2,
+            "uniqueItems": true,
+            "items": {
+                "description": "输入要执行的命令",
+                "type": "string",
+            }
+        },
+    }
+};
+var BrutusinForms = brutusin["json-forms"];
+var bf = BrutusinForms.create(schema);
+var container = document.getElementById('test1');
+bf.render(container, null);
+    </script>
+</body>
+</html>
