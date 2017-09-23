@@ -20,6 +20,6 @@ from webterminal.views import Index,Commands,CommandExecute
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',Index.as_view(),name='index'),
-    url(r'^commands/$',Commands.as_view(),name='commands'),
+    url(r'^commands/add/$',Commands.as_view(),name='commands'),
     url(r'^commandexecute/$',CommandExecute.as_view(),name='commandexecute'),
 ]
