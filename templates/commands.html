@@ -57,13 +57,13 @@
                 "description": "Server group you want to execute",
                 "items": {
                     "type": "string",
-                    "required": true,
                     "enum": [
                         {% for group in server_groups %}
                             "{{group.name}}",
                         {% endfor %}
                     ]
-                }
+                },
+                "required": true,
             },
             "commands": {
                 "type": "array",
