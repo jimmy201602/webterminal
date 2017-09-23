@@ -17,6 +17,7 @@ class Index(View):
 
 class Commands(View):
     def get(self,request):
+        server_groups=ServerGroup.objects.all()
         return render_to_response('commands.html',locals())
     
     def post(self,request):

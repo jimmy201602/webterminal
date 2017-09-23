@@ -1,6 +1,10 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-
+try:
+    import simplejson as json
+except ImportError:
+    import json
+    
 class ServerInfor(models.Model):
     name = models.CharField(max_length=40,verbose_name='Server name',blank=False)
     hostname = models.CharField(max_length=40,verbose_name='Host name',blank=True)
@@ -48,3 +52,17 @@ class Credential(models.Model):
         if self.proxy:
             if self.proxyserverip is None or self.proxyport is None:
                 raise ValidationError('If you choose auth proxy,You must fill in proxyserverip and proxyport field !')
+
+class CommandsSequence(models.Model):
+    name = models.CharField(max_length=40,verbose_name='Task name',blank=False,unique=True)
+    commands = models.TextField(verbose_name='Task commands',blank=False)
+    group = models.ManyToManyField(ServerGroup,verbose_name='Server group you want to execute')
+    
+    def __unicode__(self):
+        return self.name
+    
+    def clean_commands(self):
+        try:
+            return json.dumps(self.commands)
+        except Exception:
+            raise ValidationError('Commands sequence is not valid json type')

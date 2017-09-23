@@ -49,6 +49,22 @@
                 "minLength": 1,
                 "maxLength": 50,
             },
+            "groups": {
+                "type": "array",
+                "title": "server groups",
+                "minItems": 1,
+                "uniqueItems": true,
+                "description": "Server group you want to execute",
+                "items": {
+                    "type": "string",
+                    "required": true,
+                    "enum": [
+                        {% for group in server_groups %}
+                            "{{group.name}}",
+                        {% endfor %}
+                    ]
+                }
+            },
             "commands": {
                 "type": "array",
                 "title": "commands",
