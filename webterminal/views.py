@@ -43,3 +43,8 @@ class Commands(View):
                 return JsonResponse({'status':False,'message':'Some error happend! Please report it to the adminstrator! Error info:%s' %(str(e)) })
         else:
             pass
+
+class CommandExecute(View):
+    def get(self,request):
+        commands=CommandsSequence.objects.all()
+        return render_to_response('commandexecute.html',locals())        
