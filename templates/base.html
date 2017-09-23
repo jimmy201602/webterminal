@@ -19,6 +19,8 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="{% static "css/skins/_all-skins.min.css" %}">
+  <!--toastr css-->
+  <link rel="stylesheet" href="{% static "plugins/toastr/toastr.css" %}">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -189,7 +191,8 @@
             </span>
           </a>
           <ul class="treeview-menu">          	
-          	<li class="active"><a href=""><i class="fa fa-building"></i> {%trans 'webterminal' %}</a></li>
+          	<li class="active"><a href="{% url 'index' %}"><i class="fa fa-building"></i> {%trans 'webterminal' %}</a></li>
+			<li class="active"><a href="{% url 'commands' %}"><i class="fa fa-building"></i> {%trans 'commands' %}</a></li>
           </ul>
         </li>
       </ul>
@@ -235,6 +238,59 @@
 <script src="{% static "plugins/bootstrap/js/bootstrap.min.js" %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static "js/app.min.js" %}"></script>
+<!-- toastr js-->
+
+<script src="{% static "plugins/toastr/toastr.min.js" %}"></script>
+
+<script>
+
+function getCookie(name) {
+	var cookieValue = null;
+	if (document.cookie && document.cookie !== '') {
+		var cookies = document.cookie.split(';');
+		for (var i = 0; i < cookies.length; i++) {
+			var cookie = jQuery.trim(cookies[i]);
+			// Does this cookie string begin with the name we want?
+			if (cookie.substring(0, name.length + 1) === (name + '=')) {
+				cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+				break;
+			}
+		}
+	}
+	return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+function csrfSafeMethod(method) {
+	// these HTTP methods do not require CSRF protection
+	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+	beforeSend: function(xhr, settings) {
+		if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+			xhr.setRequestHeader("X-CSRFToken", csrftoken);
+		}
+	}
+});
+
+
+toastr.options = {
+    "closeButton": false,
+    "debug": false,
+    "newestOnTop": false,
+    "progressBar": false,
+    "positionClass": "toast-top-center",
+    "preventDuplicates": false,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "linear",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+</script>
 {%block js%}{%endblock%}
 <script>
 </script>

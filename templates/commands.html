@@ -2,24 +2,26 @@
 {% block title %}webterminal{% endblock %}
 {% load staticfiles %}
 {% block css%}
-    <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
-    <link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
 {%endblock%}
 {% block content %}
 <div class="wrapper-content">
+
     <div class="row">
 
 
         <div class="col-lg-10">
             <div class="content float-e-margins">
                 <div class="content">
-                    <form action="" class="form-horizontal nice-validator n-yellow form" id="table" method="post" novalidate="novalidate">
-
-                        <div id='container1' class="table" ></div>
+                    <form action="{% url 'commands' %}" class="form-horizontal nice-validator n-yellow form" id="table"
+                          method="post" novalidate="novalidate">
+                        {% csrf_token %}
+                        <div id='container1' class="table"></div>
 
 
                         <div class="col-sm-4 col-sm-offset-5">
-                            <button  onclick="alert(JSON.stringify(bf.getData(), null, 4))" class="btn btn-primary pull-center"> submit </button>
+                            <button type="submit" id="submit" class="btn btn-primary pull-center"> submit</button>
                         </div>
 
                     </form>
@@ -35,31 +37,62 @@
 <script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
 <script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
 <script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
-    <script type="application/javascript">
-        var BrutusinForms = brutusin["json-forms"];
-        BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", function (element) {
-            alert("user callback on element " + element)
-        });
-        BrutusinForms.bootstrap.addFormatDecorator("color", "color");
-        BrutusinForms.bootstrap.addFormatDecorator("date", "date");
-var schema =     {
-    "type": "object",
-    "properties": {
-        "commands": {
-            "type": "array",
-            "title": "commands",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": {
-                "description": "Input the command you need to execute",
+<script type="application/javascript">
+    var schema = {
+        "type": "object",
+        "properties": {
+            "name": {
                 "type": "string",
-            }
-        },
-    }
-};
-var BrutusinForms = brutusin["json-forms"];
-var bf = BrutusinForms.create(schema);
-var container = document.getElementById('container1');
-bf.render(container, null);
-    </script>
+                'title': "task name",
+                "description": "task name",
+                "required": true,
+                "minLength": 1,
+                "maxLength": 50,
+            },
+            "commands": {
+                "type": "array",
+                "title": "commands",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                    "description": "Input the command you need to execute",
+                    "type": "string",
+                }
+            },
+        }
+    };
+    var BrutusinForms = brutusin["json-forms"];
+    BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", function (element) {
+        alert("user callback on element " + element)
+    });
+    BrutusinForms.bootstrap.addFormatDecorator("color", "color");
+    BrutusinForms.bootstrap.addFormatDecorator("date", "date");
+    var bf = BrutusinForms.create(schema);
+    var container = document.getElementById('container1');
+    bf.render(container, null);
+    $("#submit").on('click', function (e) {
+        e.preventDefault();
+        if (bf.validate()) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'commands' %}",
+                data: JSON.stringify(bf.getData(), null, 4),
+                dataType: "json",
+                success: function (data) {
+                    if(data.status){
+                        toastr["success"](data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        },2000);
+                    } else {
+                        toastr["warning"](data.message);
+                    }
+                },
+                failure: function (errMsg) {
+                    toastr["error"](errMsg);
+                }
+            });
+        }
+    });
+</script>
 {% endblock %}

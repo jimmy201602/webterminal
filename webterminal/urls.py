@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from webterminal.views import Index
+from webterminal.views import Index,Commands
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',Index.as_view(),name='index'),
+    url(r'^commands/$',Commands.as_view(),name='commands'),
 ]
