@@ -61,8 +61,12 @@ class CommandsSequence(models.Model):
     def __unicode__(self):
         return self.name
     
-    def clean_commands(self):
+    def clean(self):
         try:
-            return json.dumps(self.commands)
+            json.dumps(self.commands)
         except Exception:
             raise ValidationError('Commands sequence is not valid json type')
+        
+    def save(self, *args, **kwargs):
+        self.commands = json.dumps(self.commands)
+        super(CommandsSequence,self).save(*args, **kwargs)
