@@ -280,16 +280,20 @@
                             tree.edit($node);
                         }
                     },
-//                        "Remove": {
-//                            "separator_before": false,
-//                            "separator_after": false,
-//                            "label": "delete",
-//                            "action": function (obj) {
-//                                tree.delete_node($node);
-//                            }
-//                        },
+                        "Remove": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "delete",
+                            "action": function (obj) {
+                                tree.delete_node($node);
+                            }
+                        },
                 };
             }
+        }
+    }).on('show_contextmenu.jstree', function(e, reference, element) {
+        if ( reference.node.parents.length < 2 ) {
+            $('.vakata-context').remove();
         }
     });
     $("#search").submit(function(e) {
