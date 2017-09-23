@@ -21,7 +21,10 @@ class Commands(View):
     
     def post(self,request):
         if request.is_ajax():
-            data = json.loads(request.body)
-            return JsonResponse({'status':True,'message':'%s create success!' %(str(data.get('name',None)))})
+            try:
+                data = json.loads(request.body)
+                return JsonResponse({'status':True,'message':'%s create success!' %(str(data.get('name',None)))})
+            except Exception,e:
+                return JsonResponse({'status':False,'message':'Some error happend! Please report it to the adminstrator! Error info:%s' %(str(e)) })
         else:
             pass
