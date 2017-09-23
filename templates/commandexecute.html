@@ -237,10 +237,10 @@
             "items": function ($node) {
                 var tree = $("#server_list").jstree(true);
                 return {
-                    "connect": {
+                    "execute": {
                         "separator_before": false,
                         "separator_after": false,
-                        "label": "connect",
+                        "label": "execute task",
                         "action": function (obj) {
 
                             var tabId = $node.text; //this is id on tab content div where the
@@ -259,14 +259,14 @@
                             }
                         }
                     },
-                    "disconnect": {
-                        "separator_before": false,
-                        "separator_after": false,
-                        "label": "disconnect",
-                        "action": function (obj) {
-                            console.log($node);
-                        }
-                    },
+                    <!--"disconnect": {-->
+                        <!--"separator_before": false,-->
+                        <!--"separator_after": false,-->
+                        <!--"label": "disconnect",-->
+                        <!--"action": function (obj) {-->
+                            <!--console.log($node);-->
+                        <!--}-->
+                    <!--},-->
                     <!--"Rename": {-->
                         <!--"separator_before": false,-->
                         <!--"separator_after": false,-->
