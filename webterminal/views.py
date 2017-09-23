@@ -16,6 +16,7 @@ class Index(View):
     def get(self,request):
         server_groups=ServerGroup.objects.all()
         return render_to_response('index.html',locals())
+from django.utils.encoding import smart_str
 
 class Commands(View):
     def get(self,request):
@@ -30,7 +31,7 @@ class Commands(View):
                 for group in data['group']:
                     obj.group.add(ServerGroup.objects.get(name=group))
                 obj.save()
-                return JsonResponse({'status':True,'message':'%s create success!' %(str(data.get('name',None)))})
+                return JsonResponse({'status':True,'message':'%s create success!' %(smart_str(data.get('name',None)))})
             except ObjectDoesNotExist:
                 return JsonResponse({'status':False,'message':'Please input a valid group name!' })
             except IntegrityError:
@@ -40,7 +41,7 @@ class Commands(View):
             except Exception,e:
                 import traceback
                 print traceback.print_exc()
-                return JsonResponse({'status':False,'message':'Some error happend! Please report it to the adminstrator! Error info:%s' %(str(e)) })
+                return JsonResponse({'status':False,'message':'Some error happend! Please report it to the adminstrator! Error info:%s' %(smart_str(e)) })
         else:
             pass
 
