@@ -49,7 +49,7 @@
                 "minLength": 1,
                 "maxLength": 50,
             },
-            "groups": {
+            "group": {
                 "type": "array",
                 "title": "server groups",
                 "minItems": 1,
@@ -100,7 +100,7 @@
                             location.reload();
                         },2000);
                     } else {
-                        toastr["warning"](data.message);
+                        toastr["error"](data.message);
                     }
                 },
                 failure: function (errMsg) {
