@@ -209,7 +209,7 @@
                                 {
                                 text: "{{ group.name }}", 
                                 icon: "fa fa-server", 
-                                ip: "{{ group.name }}",
+                                groupname: "{{ group.name }}",
                                 state: {selected: !0},
                                 children:[
                                     {% for server in group.servers.all %}
@@ -245,6 +245,7 @@
 
                             var tabId = $node.text; //this is id on tab content div where the
                             //get server ip
+                            console.log($node.original);
                             var ip = $node.original.ip;
                             if ($("#"+tabId).length <= 0){
                                 $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
