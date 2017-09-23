@@ -4,10 +4,15 @@ import re
 
 class ShellHandler(object):
 
-    def __init__(self, host, user, psw):
+    def __init__(self, ip, username, port, method, credential,timeout=3):
+        if method not in ['key','password']:
+            raise Exception('Authication must be key or password')
         self.ssh = paramiko.SSHClient()
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        self.ssh.connect(host, username=user, password=psw, port=22)
+        if method == 'password':
+            self.ssh.connect(ip, port=port, username=username, password=credential, timeout=timeout)
+        else:
+            self.ssh.connect(ip, port=port, username=username, key_filename=credential, timeout=timeout)
 
         channel = self.ssh.invoke_shell()
         self.stdin = channel.makefile('wb')
