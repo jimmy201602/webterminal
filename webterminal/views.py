@@ -48,4 +48,4 @@ class Commands(View):
 class CommandExecute(View):
     def get(self,request):
         commands=CommandsSequence.objects.all()
-        return render_to_response('commandexecute.html',locals())        
+        return render_to_response('commandexecute.html',locals())
