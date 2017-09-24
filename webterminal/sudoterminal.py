@@ -1,10 +1,14 @@
 import paramiko
 import re
-
+try:
+    import simplejson as json
+except ImportError:
+    import json
+from django.utils.encoding import smart_unicode
 
 class ShellHandler(object):
 
-    def __init__(self, ip, username, port, method, credential,timeout=3):
+    def __init__(self, ip, username, port, method, credential, timeout = 3, channel_name = None):
         if method not in ['key','password']:
             raise Exception('Authication must be key or password')
         self.ssh = paramiko.SSHClient()
@@ -17,24 +21,35 @@ class ShellHandler(object):
         channel = self.ssh.invoke_shell()
         self.stdin = channel.makefile('wb')
         self.stdout = channel.makefile('r')
+        self.channel_name = channel_name
+        
 
     def __del__(self):
         self.ssh.close()
 
     @staticmethod
-    def _print_exec_out(cmd, out_buf, err_buf, exit_status):
+    def _print_exec_out(cmd, out_buf, err_buf, exit_status, channel_name=None ):
+        from webterminal.asgi import channel_layer
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('command executed: {}'.format(cmd))])})
         print('command executed: {}'.format(cmd))
         print('STDOUT:')
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDOUT:')])})
         for line in out_buf:
             print line, "end="
+            channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line, "end=")])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDOUT')])})
         print('end of STDOUT')
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDERR:')])})
         print('STDERR:')
         for line in err_buf:
             print line, "end="
+            channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line, "end=")])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDERR')])})
         print('end of STDERR')
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('finished with exit status: {}'.format(exit_status))])})
         print('finished with exit status: {}'.format(exit_status))
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('------------------------------------')])})
         print('------------------------------------')
-        pass
 
     def execute(self, cmd):
         """
@@ -83,5 +98,5 @@ class ShellHandler(object):
         if sherr and cmd in sherr[0]:
             sherr.pop(0)
 
-        self._print_exec_out(cmd=cmd, out_buf=shout, err_buf=sherr, exit_status=exit_status)
+        self._print_exec_out(cmd=cmd, out_buf=shout, err_buf=sherr, exit_status=exit_status,channel_name=self.channel_name)
         return shin, shout, sherr
