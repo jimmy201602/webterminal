@@ -81,3 +81,23 @@ class webterminal(WebsocketConsumer):
         except Exception,e:
             import traceback
             print traceback.print_exc()
+
+
+class CommandExecute(WebsocketConsumer):
+    def connect(self, message):
+        message.reply_channel.send({"accept": True})     
+        #permission auth
+
+    def disconnect(self, message):
+        self.message.reply_channel.send({"accept":False})
+        self.close()
+    
+    def receive(self,text=None, bytes=None, **kwargs):
+        try:
+            if text:
+                data = json.loads(text)
+            if bytes:
+                data = json.loads(bytes)
+        except Exception,e:
+            import traceback
+            print traceback.print_exc()            
