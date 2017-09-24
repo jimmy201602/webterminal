@@ -5,7 +5,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from interactive import interactive_shell
+from webterminal.interactive import interactive_shell
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
