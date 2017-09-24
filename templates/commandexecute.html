@@ -236,71 +236,130 @@
         contextmenu: {
             "items": function ($node) {
                 var tree = $("#server_list").jstree(true);
-                return {
-                    "execute": {
-                        "separator_before": false,
-                        "separator_after": false,
-                        "label": "execute task",
-                        "action": function (obj) {
+                console.log($node.parents.length);
+                if ($node.parents.length == 1){
+                    return {
+                        "execute": {
+                            "separator_before": false,
+                                "separator_after": false,
+                                "label": "execute",
+                                "action": function (obj) {
 
-                            var tabId = $node.text; //this is id on tab content div where the
-                            //get server ip
-                            console.log($node.original);
-                            var ip = $node.original.ip;
-                            if ($("#"+tabId).length <= 0){
-                                $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
-                                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
-                                showTab(tabId);
-                                registerCloseEvent();
-                                var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
-                            }else {
-                                showTab(tabId);
+                                var tabId = $node.text; //this is id on tab content div where the
+                                //get server ip
+                                console.log($node.original);
+                                var ip = $node.original.ip;
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                }else {
+                                    showTab(tabId);
+                                }
                             }
-                        }
-                    },
-                    <!--"disconnect": {-->
-                        <!--"separator_before": false,-->
-                        <!--"separator_after": false,-->
-                        <!--"label": "disconnect",-->
-                        <!--"action": function (obj) {-->
-                            <!--console.log($node);-->
-                        <!--}-->
-                    <!--},-->
-                    <!--"Rename": {-->
-                        <!--"separator_before": false,-->
-                        <!--"separator_after": false,-->
-                        <!--"label": "rename",-->
-                        <!--"action": function (obj) {-->
-                            <!--tree.edit($node);-->
-                        <!--}-->
-                    <!--},-->
-                    <!--"Create": {-->
-                        <!--"separator_before": false,-->
-                        <!--"separator_after": false,-->
-                        <!--"label": "Create",-->
-                        <!--"action": function (obj) {-->
-                            <!--$node = tree.create_node($node);-->
-                            <!--tree.edit($node);-->
-                        <!--}-->
-                    <!--},-->
-                        <!--"Remove": {-->
-                            <!--"separator_before": false,-->
-                            <!--"separator_after": false,-->
-                            <!--"label": "delete",-->
-                            <!--"action": function (obj) {-->
-                                <!--tree.delete_node($node);-->
-                            <!--}-->
-                        <!--},-->
+                        },
+                    }
+                } else  if ( $node.parents.length == 2){
+                    return {
+                        "execute": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "execute",
+                            "action": function (obj) {
+
+                                var tabId = $node.text; //this is id on tab content div where the
+                                //get server ip
+                                console.log($node.original);
+                                var ip = $node.original.ip;
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                }else {
+                                    showTab(tabId);
+                                }
+                            }
+                        },
+                    }
+                } else {
+                    return {
+                        "execute": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "execute",
+                            "action": function (obj) {
+
+                                var tabId = $node.text; //this is id on tab content div where the
+                                //get server ip
+                                console.log($node.original);
+                                var ip = $node.original.ip;
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                }else {
+                                    showTab(tabId);
+                                }
+                            }
+                        },
+                    }
                 }
+
+//                return {
+//                    "disconnect": {
+//                        "separator_before": false,
+//                        "separator_after": false,
+//                        "label": "disconnect",
+//                        "action": function (obj) {
+//                            console.log($node);
+//                        }
+//                    },
+//                    "Rename": {
+//                        "separator_before": false,
+//                        "separator_after": false,
+//                        "label": "rename",
+//                        "action": function (obj) {
+//                            tree.edit($node);
+//                        }
+//                    },
+//                    "Create": {
+//                        "separator_before": false,
+//                        "separator_after": false,
+//                        "label": "Create",
+//                        "action": function (obj) {
+//                            $node = tree.create_node($node);
+//                            tree.edit($node);
+//                        }
+//                    },
+//                        "Remove": {
+//                            "separator_before": false,
+//                            "separator_after": false,
+//                            "label": "delete",
+//                            "action": function (obj) {
+//                                tree.delete_node($node);
+//                            }
+//                        },
+//                }
             }
         },
-    }).on('show_contextmenu.jstree', function(e, reference, element) {
-        if ( reference.node.parents.length < 2 ) {
-            $('.vakata-context').remove();
-        }
     });
+//    .on('show_contextmenu.jstree', function(e, reference, element) {
+//        if ( reference.node.parents.length < 2 ) {
+//            $('.vakata-context').remove();
+//        }
+//    });
     
     $("#search").submit(function(e) {
         e.preventDefault();
