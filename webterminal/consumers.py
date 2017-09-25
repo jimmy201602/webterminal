@@ -12,6 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from webterminal.models import ServerInfor,ServerGroup,CommandsSequence
 from webterminal.sudoterminal import ShellHandler
 import ast 
+import time
 
 global multiple_chan
 multiple_chan = dict()
@@ -47,7 +48,7 @@ class webterminal(WebsocketConsumer):
                         else:
                             key = data.credential.key
                     except ObjectDoesNotExist:
-                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])})
+                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])},immediately=True)
                         self.message.reply_channel.send({"accept":False})                        
                     try:
                         if method == 'password':
@@ -55,11 +56,11 @@ class webterminal(WebsocketConsumer):
                         else:
                             self.ssh.connect(ip, port=port, username=username, key_filename=key, timeout=3)
                     except socket.timeout:
-                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])})
+                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
                         return
                     except Exception:
-                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server\033[0m'])})
+                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server\033[0m'])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
                         return
                     
@@ -71,9 +72,9 @@ class webterminal(WebsocketConsumer):
                     if multiple_chan.has_key(self.message.reply_channel.name):
                         multiple_chan[self.message.reply_channel.name].send(json.loads(text)[1])
                     else:
-                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSsh session is terminate or closed!\033[0m'])})
+                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSsh session is terminate or closed!\033[0m'])},immediately=True)
                 else:
-                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mUnknow command found!\033[0m'])})
+                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mUnknow command found!\033[0m'])},immediately=True)
             elif bytes:
                 if multiple_chan.has_key(self.message.reply_channel.name):
                     multiple_chan[self.message.reply_channel.name].send(json.loads(bytes)[1])
@@ -115,6 +116,9 @@ class CommandExecute(WebsocketConsumer):
                         commands = ast.literal_eval(commands)
                     #Run commands 
                     for server_ip in server_list:
+                        
+                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mExecute task on server:%s \033[0m' %(smart_unicode(server_ip)) ] )},immediately=True)
+                        
                         #get server credential info
                         serverdata = ServerInfor.objects.get(ip=server_ip)
                         port = serverdata.credential.port
@@ -125,6 +129,7 @@ class CommandExecute(WebsocketConsumer):
                         else:
                             credential = serverdata.credential.key     
                         
+                        
                         #do actual job    
                         ssh = ShellHandler(server_ip,username,port,method,credential,channel_name=self.message.reply_channel.name)
                         for command in commands:
@@ -133,11 +138,11 @@ class CommandExecute(WebsocketConsumer):
                         
                 else:
                     #illegal
-                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mIllegal parameter passed to the server!\033[0m'])})
+                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mIllegal parameter passed to the server!\033[0m'])},immediately=True)
                     self.close()
             if bytes:
                 data = json.loads(bytes)
         except Exception,e:
             import traceback
             print traceback.print_exc()
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )})
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
