@@ -17,6 +17,7 @@ class Index(View):
         server_groups=ServerGroup.objects.all()
         return render_to_response('index.html',locals())
 from django.utils.encoding import smart_str
+from django.views.generic.list import ListView
 
 class Commands(View):
     def get(self,request):
@@ -49,3 +50,7 @@ class CommandExecute(View):
     def get(self,request):
         commands=CommandsSequence.objects.all()
         return render_to_response('commandexecute.html',locals())
+
+class CommandExecuteList(ListView):
+    model = CommandsSequence
+    template_name = 'commandslist.html'
