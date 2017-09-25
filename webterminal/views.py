@@ -18,6 +18,8 @@ class Index(View):
         return render_to_response('index.html',locals())
 from django.utils.encoding import smart_str
 from django.views.generic.list import ListView
+from django.views.generic.edit import DeleteView,CreateView
+from django.views.generic.detail import DetailView
 
 class Commands(View):
     def get(self,request):
