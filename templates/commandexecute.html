@@ -147,7 +147,7 @@
 
 </script>
 <script type="application/javascript">
-    function make_terminal(element, size, ws_url,ip) {
+    function make_terminal(element, size, ws_url,paramter) {
         var term = new Terminal({
             cols: size.cols,
             rows: size.rows,
@@ -157,8 +157,9 @@
         });
         term.open(element, false);
         var ws = new WebSocket(ws_url);
+        //console.log('paramter',paramter);
         ws.onopen = function (event) {
-            ws.send(JSON.stringify(["ip", ip]));
+            ws.send(JSON.stringify({"parameter":paramter}));
             //set terminal width and height
             <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
                 <!--window.innerHeight, window.innerWidth]));-->
@@ -175,9 +176,10 @@
             term.toggleFullscreen(true);
             ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
+                console.log(json_msg);
                 switch (json_msg[0]) {
                     case "stdout":
-                        term.write(json_msg[1]);
+                        term.writeln(json_msg[1]);
                         break;
                     case "disconnect":
                         term.write("\r\n\r\n[Finished...]\r\n");
@@ -204,12 +206,14 @@
                 {% for command in commands %}
                     {
                         text: "{{ command.name }}",
+                        taskname:"{{ command.name }}",
                         children: [
                             {% for group in command.group.all %}
                                 {
                                 text: "{{ group.name }}", 
                                 icon: "fa fa-server", 
                                 groupname: "{{ group.name }}",
+                                taskname: "{{ command.name }}",
                                 state: {selected: !0},
                                 children:[
                                     {% for server in group.servers.all %}
@@ -217,6 +221,8 @@
                                         text: "{{ server.name }}",
                                         icon: "fa fa-server",
                                         ip: "{{ server.ip }}",
+                                        groupname: "{{ group.name }}",
+                                        taskname: "{{ command.name }}",
                                         state: {selected: !0}
                                         },
                                     {% endfor %}
@@ -236,7 +242,7 @@
         contextmenu: {
             "items": function ($node) {
                 var tree = $("#server_list").jstree(true);
-                console.log($node.parents.length);
+                //console.log($node.parents.length);
                 if ($node.parents.length == 1){
                     return {
                         "execute": {
@@ -247,16 +253,16 @@
 
                                 var tabId = $node.text; //this is id on tab content div where the
                                 //get server ip
-                                console.log($node.original);
-                                var ip = $node.original.ip;
+                                //console.log($node.original);
+                                var taskname = $node.original.taskname;
                                 if ($("#"+tabId).length <= 0){
                                     $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
                                     $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
                                     showTab(tabId);
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname});
                                 }else {
                                     showTab(tabId);
                                 }
@@ -273,16 +279,17 @@
 
                                 var tabId = $node.text; //this is id on tab content div where the
                                 //get server ip
-                                console.log($node.original);
-                                var ip = $node.original.ip;
+                                //console.log($node.original);
+                                var taskname = $node.original.taskname;
+                                var groupname = $node.original.groupname;
                                 if ($("#"+tabId).length <= 0){
                                     $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
                                     $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
                                     showTab(tabId);
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname});
                                 }else {
                                     showTab(tabId);
                                 }
@@ -299,7 +306,9 @@
 
                                 var tabId = $node.text; //this is id on tab content div where the
                                 //get server ip
-                                console.log($node.original);
+                                //console.log($node.original);
+                                var taskname = $node.original.taskname;
+                                var groupname = $node.original.groupname;
                                 var ip = $node.original.ip;
                                 if ($("#"+tabId).length <= 0){
                                     $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
@@ -307,8 +316,8 @@
                                     showTab(tabId);
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname,'ip':ip});
                                 }else {
                                     showTab(tabId);
                                 }

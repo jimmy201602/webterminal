@@ -9,7 +9,9 @@ from webterminal.interactive import interactive_shell
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
-from webterminal.models import ServerInfor
+from webterminal.models import ServerInfor,ServerGroup,CommandsSequence
+from webterminal.sudoterminal import ShellHandler
+import ast 
 
 global multiple_chan
 multiple_chan = dict()
@@ -19,7 +21,7 @@ class webterminal(WebsocketConsumer):
     ssh = paramiko.SSHClient() 
     
     def connect(self, message):
-        message.reply_channel.send({"accept": True})     
+        self.message.reply_channel.send({"accept": True})     
         #permission auth
 
     def disconnect(self, message):
@@ -85,7 +87,7 @@ class webterminal(WebsocketConsumer):
 
 class CommandExecute(WebsocketConsumer):
     def connect(self, message):
-        message.reply_channel.send({"accept": True})     
+        self.message.reply_channel.send({"accept": True})     
         #permission auth
 
     def disconnect(self, message):
@@ -96,8 +98,46 @@ class CommandExecute(WebsocketConsumer):
         try:
             if text:
                 data = json.loads(text)
+                if data.has_key('parameter'):
+                    parameter = data['parameter']
+                    taskname = parameter.get('taskname',None)
+                    groupname = parameter.get('groupname',None)
+                    ip = parameter.get('ip',None)
+                    if taskname and ip and groupname:
+                        server_list = [ ip ]
+                    elif taskname and not ip and not groupname:
+                        server_list = []
+                        [server_list.extend([ server.ip for server in ServerGroup.objects.get(name=group.name).servers.all() ]) for group in CommandsSequence.objects.get(name = taskname).group.all() ]
+                    elif taskname and groupname and not ip:
+                        server_list = [ server.ip for server in ServerGroup.objects.get(name=groupname).servers.all() ]
+                    commands = json.loads(CommandsSequence.objects.get(name = taskname).commands)
+                    if isinstance(commands,(basestring,str,unicode)):
+                        commands = ast.literal_eval(commands)
+                    #Run commands 
+                    for server_ip in server_list:
+                        #get server credential info
+                        serverdata = ServerInfor.objects.get(ip=server_ip)
+                        port = serverdata.credential.port
+                        method = serverdata.credential.method
+                        username = serverdata.credential.username
+                        if method == 'password':
+                            credential = serverdata.credential.password
+                        else:
+                            credential = serverdata.credential.key     
+                        
+                        #do actual job    
+                        ssh = ShellHandler(server_ip,username,port,method,credential,channel_name=self.message.reply_channel.name)
+                        for command in commands:
+                            ssh.execute(command)
+                        del ssh
+                        
+                else:
+                    #illegal
+                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mIllegal parameter passed to the server!\033[0m'])})
+                    self.close()
             if bytes:
                 data = json.loads(bytes)
         except Exception,e:
             import traceback
-            print traceback.print_exc()            
+            print traceback.print_exc()
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )})
