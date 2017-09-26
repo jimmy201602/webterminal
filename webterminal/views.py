@@ -110,20 +110,21 @@ class CredentialCreate(LoginRequiredMixin,View):
             try:
                 data = json.loads(request.body)
                 id = data.get('id',None)
+                action = data.get('action',None)                
                 fields = [field.name for field in Credential._meta.get_fields()]
                 [ data.pop(field) for field in data.keys() if field not in fields]
-                if data.get('action',None) == 'create':
+                if action == 'create':
                     obj = Credential.objects.create(**data)
                     obj.save()
                     return JsonResponse({'status':True,'message':'Credential %s was created!' %(obj.name)})
-                elif data.get('action',None) == 'update':
+                elif action == 'update':
                     try:
                         obj = Credential.objects.get(id=id)
                         obj.update(**data)
                         return JsonResponse({'status':True,'message':'Credential %s update success!' %(smart_str(data.get('name',None)))})
                     except ObjectDoesNotExist:
                         return JsonResponse({'status':False,'message':'Request object not exist!'})
-                elif data.get('action',None) == 'delete':
+                elif action == 'delete':
                     try:
                         obj = Credential.objects.get(id=id)
                         obj.delete()
