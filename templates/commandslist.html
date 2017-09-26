@@ -33,7 +33,7 @@
             <td data-editable="false" class="text-center pull-left">
                 <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
                 <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
-                <a class="btn btn-xs btn-danger" href="">{%trans 'delete' %}</a>
+                <a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>
             </td>
         </tr>
         {% endfor %}
@@ -253,6 +253,45 @@
                     toastr['error'](data);
                 }
             });
+        });
+    };
+    function del(id,name) {
+        var dialog = bootbox.confirm({
+            title: "<a class='text-danger'>"+'delete task ' + name +"</a>",
+            message: 'Are you sure to delete task ' + name +' ?',
+            buttons: {
+                confirm: {
+                    label: 'delete',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: 'cancel',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'commands' %}",
+                            data: JSON.stringify({"id":id,"action":'delete',"name":name}),
+                            dataType: "json",
+                            success: function (data) {
+                                if(data.status){
+                                    toastr["success"](data.message);
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },2000);
+                                } else {
+                                    toastr["error"](data.message);
+                                }
+                            },
+                            failure: function (errMsg) {
+                                toastr["error"](errMsg);
+                            }
+                        });
+                }
+            }
         });
     }
 </script>

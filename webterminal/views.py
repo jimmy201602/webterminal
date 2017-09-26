@@ -48,6 +48,14 @@ class Commands(LoginRequiredMixin,View):
                         return JsonResponse({'status':True,'message':'%s update success!' %(smart_str(data.get('name',None)))})                        
                     except ObjectDoesNotExist:
                         return JsonResponse({'status':False,'message':'Request object not exist!'})
+                elif data['action'] == 'delete':
+                    try:
+                        obj = CommandsSequence.objects.get(id=data.get('id',None))
+                        taskname = obj.name 
+                        obj.delete()
+                        return JsonResponse({'status':True,'message':'Delete task %s success!' %(taskname)})
+                    except ObjectDoesNotExist:
+                        return JsonResponse({'status':False,'message':'Request object not exist!'})
                 else:
                     return JsonResponse({'status':False,'message':'Illegal action.'}) 
             except ObjectDoesNotExist:
