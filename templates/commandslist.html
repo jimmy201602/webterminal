@@ -3,6 +3,8 @@
 {%load i18n%}
 {%block title%}{%trans 'commands list' %}{%endblock%}
 {% block css %}
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
 <!-- DataTables css -->
 <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
 <link rel="stylesheet" href="{% static "plugins/json-view/jquery.jsonview.min.css" %}">
@@ -27,10 +29,10 @@
                 <a>{{ group.name }}</a>
                 {% endfor %}
             </td>
-            <td class="json">{{ element.commands|truncatechars:50 }}</td>
+            <td class="json"><a id="{{ element.id}}" onclick="get_detail({{element.id}})">{{ element.commands|truncatechars:50 }}</td>
             <td data-editable="false" class="text-center pull-left">
-                <a class="btn btn-xs btn-primary" href="">{%trans 'detail' %}</a>
-                <a class="btn btn-xs btn-info" href="">{%trans 'edit' %}</a>
+                <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
+                <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
                 <a class="btn btn-xs btn-danger" href="">{%trans 'delete' %}</a>
             </td>
         </tr>
@@ -40,10 +42,16 @@
 </div>
 {% endblock %}
 {% block js %}
+<script src="{% static 'plugins/markdown/markdown.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
 <!-- DataTables -->
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
 <script src="{% static "plugins/json-view/jquery.jsonview.min.js" %}"></script>
+<script src="{% static "plugins/bootbox/bootbox.js" %}"></script>
 <script type="application/javascript">
     $(function () {
         $('#commands_list').DataTable({
@@ -56,5 +64,196 @@
             "autoWidth": false,
         });
     });
+</script>
+<script type="application/javascript">
+    function get_detail(id) {
+        var dialog = bootbox.dialog({
+            title: 'commands detail',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+        });
+        dialog.init(function(){
+            $.ajax({
+                url: '{% url 'commandsapi' %}',
+                type: 'POST',
+                data: {'id':id},
+                success: function(data, textStatus, jqXHR) {
+                    if(data.status){
+                        dialog.find('.bootbox-body').html( JSON.stringify(data.commands));
+                        dialog.find('.bootbox-body').JSONView(data.commands, { collapsed: true });
+                    } else {
+                       toastr['error'](data.message);
+                    }
+                },
+                error: function(data, textStatus, jqXHR) {
+                    toastr['error'](data);
+                }
+            });
+        });
+    }
+    function detail(id) {
+        var dialog = bootbox.dialog({
+            title: 'commands detail',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+        });
+        dialog.init(function(){
+            $.ajax({
+                url: '{% url 'commandsapi' %}',
+                type: 'POST',
+                data: {'id':id},
+                success: function(data, textStatus, jqXHR) {
+                    var schema = {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                'title': "task name",
+                                "description": "task name",
+                                "required": true,
+                                "minLength": 1,
+                                "maxLength": 50,
+                                "readOnly": true
+                            },
+                            "group": {
+                                "type": "array",
+                                "title": "server groups",
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "description": "Server group you want to execute",
+                                "readOnly": true,
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                    {% for group in server_groups %}
+                                "{{group.name}}",
+                    {% endfor %}
+                    ]
+                },
+                    "required": true,
+                },
+                    "commands": {
+                        "type": "array",
+                            "title": "commands",
+                            "minItems": 1,
+                            "readOnly": true,
+                            "items": {
+                            "description": "Input the command you need to execute",
+                                "type": "string",
+                        }
+                    },
+                }
+                };
+                    dialog.find('.bootbox-body').html("<div id='container'></div>");
+                    //console.log(data.data);
+                    var BrutusinForms = brutusin["json-forms"];
+                    var bf = BrutusinForms.create(schema);
+                    var container = document.getElementById('container');
+                    bf.render(container, data.data);
+                },
+                error: function(data, textStatus, jqXHR) {
+                    toastr['error'](data);
+                }
+            });
+        });
+    }
+    function edit(id) {
+        var dialog = bootbox.confirm({
+            title: 'commands detail',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+            buttons: {
+                confirm: {
+                    label: 'submit',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: 'cancel',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    if ($.gbf.validate()) {
+                        var jsondata = $.gbf.getData();
+                        jsondata["action"] = "update";
+                        jsondata["id"] = id;
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'commands' %}",
+                            data: JSON.stringify(jsondata, null, 4),
+                            dataType: "json",
+                            success: function (data) {
+                                if(data.status){
+                                    toastr["success"](data.message);
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },2000);
+                                } else {
+                                    toastr["error"](data.message);
+                                }
+                            },
+                            failure: function (errMsg) {
+                                toastr["error"](errMsg);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        dialog.init(function(){
+            $.ajax({
+                url: '{% url 'commandsapi' %}',
+                type: 'POST',
+                data: {'id':id},
+                success: function(data, textStatus, jqXHR) {
+                    var schema = {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                'title': "task name",
+                                "description": "task name",
+                                "required": true,
+                                "minLength": 1,
+                                "maxLength": 50,
+                            },
+                            "group": {
+                                "type": "array",
+                                "title": "server groups",
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "description": "Server group you want to execute",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                    {% for group in server_groups %}
+                                "{{group.name}}",
+                    {% endfor %}
+                    ]
+                },
+                    "required": true,
+                },
+                    "commands": {
+                        "type": "array",
+                            "title": "commands",
+                            "minItems": 1,
+                            "items": {
+                            "description": "Input the command you need to execute",
+                                "type": "string",
+                        }
+                    },
+                }
+                };
+                    dialog.find('.bootbox-body').html("<div id='container'></div>");
+                    var BrutusinForms = brutusin["json-forms"];
+                    var bf = BrutusinForms.create(schema);
+                    var container = document.getElementById('container');
+                    bf.render(container, data.data);
+                    $.gbf = bf;
+                },
+                error: function(data, textStatus, jqXHR) {
+                    toastr['error'](data);
+                }
+            });
+        });
+    }
 </script>
 {% endblock %}

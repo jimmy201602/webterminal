@@ -31,11 +31,25 @@ class Commands(LoginRequiredMixin,View):
         if request.is_ajax():
             try:
                 data = json.loads(request.body)
-                obj = CommandsSequence.objects.create(name=data['name'],commands=data['commands'])
-                for group in data['group']:
-                    obj.group.add(ServerGroup.objects.get(name=group))
-                obj.save()
-                return JsonResponse({'status':True,'message':'%s create success!' %(smart_str(data.get('name',None)))})
+                if data['action'] == 'create':
+                    obj = CommandsSequence.objects.create(name=data['name'],commands=data['commands'])
+                    for group in data['group']:
+                        obj.group.add(ServerGroup.objects.get(name=group))
+                    obj.save()
+                    return JsonResponse({'status':True,'message':'%s create success!' %(smart_str(data.get('name',None)))})
+                elif data['action'] == 'update':
+                    try:
+                        obj = CommandsSequence.objects.get(id=data.get('id',None))
+                        obj.commands = data['commands']
+                        [obj.group.remove(group) for group in obj.group.all()]
+                        for group in data['group']:
+                            obj.group.add(ServerGroup.objects.get(name=group))                        
+                        obj.save()
+                        return JsonResponse({'status':True,'message':'%s update success!' %(smart_str(data.get('name',None)))})                        
+                    except ObjectDoesNotExist:
+                        return JsonResponse({'status':False,'message':'Request object not exist!'})
+                else:
+                    return JsonResponse({'status':False,'message':'Illegal action.'}) 
             except ObjectDoesNotExist:
                 return JsonResponse({'status':False,'message':'Please input a valid group name!' })
             except IntegrityError:
@@ -57,3 +71,21 @@ class CommandExecute(LoginRequiredMixin,View):
 class CommandExecuteList(LoginRequiredMixin,ListView):
     model = CommandsSequence
     template_name = 'commandslist.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(CommandExecuteList, self).get_context_data(**kwargs)
+        context['server_groups'] = ServerGroup.objects.all()
+        return context
+        
+
+class CommandExecuteDetailApi(LoginRequiredMixin,View):
+    def post(self,request):
+        if request.is_ajax():
+            id = request.POST.get('id',None)
+            try:
+                data = CommandsSequence.objects.get(id=id)
+                return JsonResponse({'status':True,'name':data.name,'commands':json.loads(data.commands),'data':{'name':data.name,'commands':json.loads(data.commands),'group':[ group.name for group in data.group.all() ]}})
+            except ObjectDoesNotExist:
+                return JsonResponse({'status':False,'message':'Request object not exist!'})
+        else:
+            return JsonResponse({'status':False,'message':'Method not allowed!'})
