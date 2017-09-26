@@ -1,7 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render_to_response,HttpResponse
 from django.http import JsonResponse
-from webterminal.models import ServerGroup,CommandsSequence
+from webterminal.models import ServerGroup,CommandsSequence,Credential
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 try:
@@ -87,6 +87,7 @@ class CommandExecuteList(LoginRequiredMixin,ListView):
         
 
 class CommandExecuteDetailApi(LoginRequiredMixin,View):
+    
     def post(self,request):
         if request.is_ajax():
             id = request.POST.get('id',None)
@@ -96,4 +97,14 @@ class CommandExecuteDetailApi(LoginRequiredMixin,View):
             except ObjectDoesNotExist:
                 return JsonResponse({'status':False,'message':'Request object not exist!'})
         else:
+            return JsonResponse({'status':False,'message':'Method not allowed!'})
+
+class CredentialCreate(LoginRequiredMixin,View):
+    
+    def get(self,request):
+        return render_to_response('credentialcreate.html',locals())
+    
+    def post(self,request):
+        if request.is_ajax():
+            print request.body
             return JsonResponse({'status':False,'message':'Method not allowed!'})

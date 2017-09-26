@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from webterminal.views import Index,Commands,CommandExecute,CommandExecuteList,CommandExecuteDetailApi
+from webterminal.views import Index,Commands,CommandExecute,CommandExecuteList,CommandExecuteDetailApi,CredentialCreate
 from django.contrib.auth.views import LoginView,LogoutView
 
 urlpatterns = [
@@ -27,4 +27,5 @@ urlpatterns = [
     url(r'^commandsapi/$',CommandExecuteDetailApi.as_view(),name='commandsapi'),
     url(r'^accounts/login/$', LoginView.as_view(template_name='admin/login.html'),name='login'),
     url(r'^accounts/logout/$',LogoutView.as_view(template_name='registration/logged_out.html'),name='logout'),     
+    url(r'^credentialcreate/$',CredentialCreate.as_view(),name='credentialcreate'),
 ]
