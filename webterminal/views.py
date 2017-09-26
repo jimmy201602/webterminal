@@ -16,6 +16,7 @@ from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView,CreateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.serializers import serialize
 
 class Index(LoginRequiredMixin,View):
     def get(self,request):
@@ -143,7 +144,14 @@ class CredentialList(LoginRequiredMixin,ListView):
     model = Credential
     template_name = 'credentiallist.html'
     
-    def get_context_data(self, **kwargs):
-        context = super(CredentialList, self).get_context_data(**kwargs)
-        context['server_groups'] = ServerGroup.objects.all()
-        return context
+class CredentialDetailApi(LoginRequiredMixin,View):
+    
+    def post(self,request):
+        if request.is_ajax():
+            id = request.POST.get('id',None)
+            data = Credential.objects.filter(id=id)
+            if data.count() == 0:
+                return JsonResponse({'status':False,'message':'Request object not exist!'})
+            return JsonResponse({'status':True,'message':json.loads(serialize('json',data))[0]['fields']})
+        else:
+            return JsonResponse({'status':False,'message':'Method not allowed!'})
