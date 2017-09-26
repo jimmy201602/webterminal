@@ -68,5 +68,6 @@ class CommandsSequence(models.Model):
             raise ValidationError('Commands sequence is not valid json type')
         
     def save(self, *args, **kwargs):
-        self.commands = json.dumps(self.commands)
+        if isinstance(self.commands,(list)):
+            self.commands = json.dumps(self.commands)
         super(CommandsSequence,self).save(*args, **kwargs)
