@@ -106,5 +106,13 @@ class CredentialCreate(LoginRequiredMixin,View):
     
     def post(self,request):
         if request.is_ajax():
-            print request.body
-            return JsonResponse({'status':False,'message':'Method not allowed!'})
+            try:
+                obj = Credential.objects.create(**json.loads(request.body))
+                obj.save()
+                return JsonResponse({'status':True,'message':'Credential %s was created!' %(obj.name)})    
+            except IntegrityError:
+                return JsonResponse({'status':False,'message':'Credential %s already exist! Please use another name instead!' %(smart_str(json.loads(request.body).get('name',None)))})
+            except Exception,e:
+                import traceback
+                print traceback.print_exc()
+                return JsonResponse({'status':False,'message':'Error happend! Please report it to adminstrator! Error:%s' %(smart_str(e))})
