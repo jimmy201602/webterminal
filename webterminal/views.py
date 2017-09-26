@@ -108,6 +108,7 @@ class CredentialCreate(LoginRequiredMixin,View):
         if request.is_ajax():
             try:
                 data = json.loads(request.body)
+                id = data.get('id',None)
                 fields = [field.name for field in Credential._meta.get_fields()]
                 [ data.pop(field) for field in data.keys() if field not in fields]
                 if data.get('action',None) == 'create':
@@ -115,9 +116,19 @@ class CredentialCreate(LoginRequiredMixin,View):
                     obj.save()
                     return JsonResponse({'status':True,'message':'Credential %s was created!' %(obj.name)})
                 elif data.get('action',None) == 'update':
-                    pass
+                    try:
+                        obj = Credential.objects.get(id=id)
+                        obj.update(**data)
+                        return JsonResponse({'status':True,'message':'Credential %s update success!' %(smart_str(data.get('name',None)))})
+                    except ObjectDoesNotExist:
+                        return JsonResponse({'status':False,'message':'Request object not exist!'})
                 elif data.get('action',None) == 'delete':
-                    pass
+                    try:
+                        obj = Credential.objects.get(id=id)
+                        obj.delete()
+                        return JsonResponse({'status':True,'message':'Delete credential %s success!' %(smart_str(data.get('name',None)))})
+                    except ObjectDoesNotExist:
+                        return JsonResponse({'status':False,'message':'Request object not exist!'})
                 else:
                     return JsonResponse({'status':False,'message':'Illegal action.'}) 
             except IntegrityError:
