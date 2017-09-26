@@ -11,17 +11,18 @@ except ImportError:
 from django.contrib import messages as message
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-
-class Index(View):
-    def get(self,request):
-        server_groups=ServerGroup.objects.all()
-        return render_to_response('index.html',locals())
 from django.utils.encoding import smart_str
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView,CreateView
 from django.views.generic.detail import DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class Commands(View):
+class Index(LoginRequiredMixin,View):
+    def get(self,request):
+        server_groups=ServerGroup.objects.all()
+        return render_to_response('index.html',locals())
+
+class Commands(LoginRequiredMixin,View):
     def get(self,request):
         server_groups=ServerGroup.objects.all()
         return render_to_response('commands.html',locals())
@@ -48,11 +49,11 @@ class Commands(View):
         else:
             pass
 
-class CommandExecute(View):
+class CommandExecute(LoginRequiredMixin,View):
     def get(self,request):
         commands=CommandsSequence.objects.all()
         return render_to_response('commandexecute.html',locals())
 
-class CommandExecuteList(ListView):
+class CommandExecuteList(LoginRequiredMixin,ListView):
     model = CommandsSequence
     template_name = 'commandslist.html'
