@@ -107,12 +107,32 @@ class CredentialCreate(LoginRequiredMixin,View):
     def post(self,request):
         if request.is_ajax():
             try:
-                obj = Credential.objects.create(**json.loads(request.body))
-                obj.save()
-                return JsonResponse({'status':True,'message':'Credential %s was created!' %(obj.name)})    
+                data = json.loads(request.body)
+                fields = [field.name for field in Credential._meta.get_fields()]
+                [ data.pop(field) for field in data.keys() if field not in fields]
+                if data.get('action',None) == 'create':
+                    obj = Credential.objects.create(**data)
+                    obj.save()
+                    return JsonResponse({'status':True,'message':'Credential %s was created!' %(obj.name)})
+                elif data.get('action',None) == 'update':
+                    pass
+                elif data.get('action',None) == 'delete':
+                    pass
+                else:
+                    return JsonResponse({'status':False,'message':'Illegal action.'}) 
             except IntegrityError:
                 return JsonResponse({'status':False,'message':'Credential %s already exist! Please use another name instead!' %(smart_str(json.loads(request.body).get('name',None)))})
             except Exception,e:
                 import traceback
                 print traceback.print_exc()
                 return JsonResponse({'status':False,'message':'Error happend! Please report it to adminstrator! Error:%s' %(smart_str(e))})
+            
+class CredentialList(LoginRequiredMixin,ListView):
+    
+    model = Credential
+    template_name = 'credentiallist.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(CredentialList, self).get_context_data(**kwargs)
+        context['server_groups'] = ServerGroup.objects.all()
+        return context
