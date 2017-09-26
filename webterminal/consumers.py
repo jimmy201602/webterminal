@@ -20,6 +20,10 @@ multiple_chan = dict()
 class webterminal(WebsocketConsumer):
     
     ssh = paramiko.SSHClient() 
+    http_user = True
+    http_user_and_session = True
+    channel_session = True
+    channel_session_user = True   
     
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})     
@@ -87,6 +91,11 @@ class webterminal(WebsocketConsumer):
 
 
 class CommandExecute(WebsocketConsumer):
+    http_user = True
+    http_user_and_session = True
+    channel_session = True
+    channel_session_user = True   
+    
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})     
         #permission auth
