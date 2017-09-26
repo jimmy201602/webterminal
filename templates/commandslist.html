@@ -5,6 +5,7 @@
 {% block css %}
 <!-- DataTables css -->
 <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
+<link rel="stylesheet" href="{% static "plugins/json-view/jquery.jsonview.min.css" %}">
 {% endblock %}
 {% block content %}
 <div class="box-body">
@@ -26,7 +27,7 @@
                 <a>{{ group.name }}</a>
                 {% endfor %}
             </td>
-            <td>{{ element.commands }}</td>
+            <td class="json">{{ element.commands|truncatechars:50 }}</td>
             <td data-editable="false" class="text-center pull-left">
                 <a class="btn btn-xs btn-primary" href="">{%trans 'detail' %}</a>
                 <a class="btn btn-xs btn-info" href="">{%trans 'edit' %}</a>
@@ -42,6 +43,7 @@
 <!-- DataTables -->
 <script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
 <script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+<script src="{% static "plugins/json-view/jquery.jsonview.min.js" %}"></script>
 <script type="application/javascript">
     $(function () {
         $('#commands_list').DataTable({
@@ -51,7 +53,7 @@
             "ordering": true,
             "info": true,
             "iDisplayLength": 50,
-            "autoWidth": false
+            "autoWidth": false,
         });
     });
 </script>
