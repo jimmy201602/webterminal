@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^commands/add/$',Commands.as_view(),name='commands'),
     url(r'^commandexecute/$',CommandExecute.as_view(),name='commandexecute'),
     url(r'^commandslist/$',CommandExecuteList.as_view(),name='commandslist'),
-    url(r'^accounts/login/$', LoginView.as_view(template_name='admin/login.html'),),
-    url(r'^accounts/logout/$',LogoutView.as_view(template_name='registration/logged_out.html'),),     
+    url(r'^accounts/login/$', LoginView.as_view(template_name='admin/login.html'),name='login'),
+    url(r'^accounts/logout/$',LogoutView.as_view(template_name='registration/logged_out.html'),name='logout'),     
 ]
