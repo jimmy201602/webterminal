@@ -84,17 +84,24 @@
     $("#submit").on('click', function (e) {
         e.preventDefault();
         var jsondata = bf.getData();
-
-        //console.log(jsondata);
-        //replace credential hyperlink
-        var url = "{% url 'credential-list' %}";
-        jsondata['credential'] = 'http://'+window.location.host + url + credentialproperity[jsondata['credential']] + '/';
-        //console.log(jsondata);
-
+        
         if (bf.validate()) {
+            //Replace servers
+            var serverreplace = [];
+            var servers = {
+                {% for server in servers %}
+                    "{{ server.name }}":{{ server.id }},
+                {% endfor %}
+            };
+            $.each(jsondata['servers'],function (index,value) {
+                serverreplace.push("http://"+window.location.host + '{% url 'serverinfor-list' %}' + servers[jsondata['servers'][index]] + '/')
+            });
+
+            jsondata['servers'] = serverreplace;
+
             $.ajax({
                 type: "POST",
-                url: "{% url 'serverinfor-list' %}",
+                url: "{% url 'servergroup-list' %}",
                 data: JSON.stringify(jsondata, null, 4),
                 dataType: "json",
                 headers: {
@@ -102,7 +109,7 @@
                     'Content-Type': 'application/json'
                 },
                 success: function (data) {
-                    toastr["success"]("Credential "+data.name+" create success!");
+                    toastr["success"]("Group "+data.name+" create success!");
                     setTimeout(function () {
                         location.reload();
                     },2000);
