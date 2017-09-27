@@ -108,6 +108,8 @@ class CommandExecute(WebsocketConsumer):
         try:
             if text:
                 data = json.loads(text)
+                if isinstance(data,list):
+                    return
                 if data.has_key('parameter'):
                     parameter = data['parameter']
                     taskname = parameter.get('taskname',None)
