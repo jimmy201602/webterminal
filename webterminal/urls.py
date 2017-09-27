@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from webterminal.views import Index,Commands,CommandExecute,CommandExecuteList,CommandExecuteDetailApi,CredentialCreate,CredentialList,CredentialDetailApi
+from webterminal.views import Index,Commands,CommandExecute,CommandExecuteList,CommandExecuteDetailApi,CredentialCreate,CredentialList,CredentialDetailApi,ServerCreate,ServerlList
 from django.contrib.auth.views import LoginView,LogoutView
 
 #Webterminal api
@@ -41,5 +41,7 @@ urlpatterns = [
     url(r'^credentialcreate/$',CredentialCreate.as_view(),name='credentialcreate'),
     url(r'^credentiallist/$',CredentialList.as_view(),name='credentiallist'),
     url(r'^credentialdetailapi/$',CredentialDetailApi.as_view(),name='credentialdetailapi'),
+    url(r'^servercreate/$',ServerCreate.as_view(),name='servercreate'),
+    url(r'^serverlist/$',ServerlList.as_view(),name='serverlist'),
     url(r'^api/',include(router.urls)),
 ]

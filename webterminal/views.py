@@ -1,7 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render_to_response,HttpResponse
 from django.http import JsonResponse
-from webterminal.models import ServerGroup,CommandsSequence,Credential
+from webterminal.models import ServerGroup,CommandsSequence,Credential,ServerInfor
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 try:
@@ -157,3 +157,19 @@ class CredentialDetailApi(LoginRequiredMixin,View):
             return JsonResponse({'status':True,'message':json.loads(serialize('json',data))[0]['fields']})
         else:
             return JsonResponse({'status':False,'message':'Method not allowed!'})
+
+
+class ServerCreate(LoginRequiredMixin,View):
+    def get(self,request):
+        credentials = Credential.objects.all()
+        return render_to_response('servercreate.html',locals())
+
+class ServerlList(LoginRequiredMixin,ListView):
+    
+    model = ServerInfor
+    template_name = 'serverlist.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ServerlList, self).get_context_data(**kwargs)
+        context['credentials'] = Credential.objects.all()
+        return context    
