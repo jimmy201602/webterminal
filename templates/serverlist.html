@@ -64,7 +64,7 @@
 <script type="application/javascript">
     function detail(id) {
         var dialog = bootbox.dialog({
-            title: 'commands detail',
+            title: 'Server information detail',
             message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
         });
         dialog.init(function(){
@@ -111,7 +111,8 @@
                                     "{{ credential.name }}",
                                 {% endfor %}
                                  ],
-                                  "readOnly": true,
+                                "readOnly": true,
+                                "required": true,
                             },
                         }
                      };
@@ -119,26 +120,35 @@
                     var BrutusinForms = brutusin["json-forms"];
                     var bf = BrutusinForms.create(schema);
                     var container = document.getElementById('container');
+                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
                     $.ajax({url: data['credential'], success: function(result){
                         data['credential'] = result['name'];
-                    }});
+                        delete data['onlinedatetime'];
+                        delete data['url'];
+                        delete data['updatedatetime'];
+                    }}).done(function () {
+                        setTimeout(function () {
+                            $("#container").empty();
+                            bf.render(container, data);
+                        },2000);
+                    });
 
-                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
-                    setTimeout(function () {
-                        $("#container").empty();
-                        bf.render(container, data);
-                    },2000);
+
 
                 },
-                error: function(data, textStatus, jqXHR) {
-                    toastr['error'](data);
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                        $.each(value, function(index, value) {
+                            toastr["error"]("Please check field "+key + " error: "+ value);
+                        });
+                    });
                 }
             });
         });
     }
     function edit(id) {
         var dialog = bootbox.confirm({
-            title: 'commands detail',
+            title: 'Server information edit',
             message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
             buttons: {
                 confirm: {
@@ -179,6 +189,13 @@
                             },
                             failure: function (errMsg) {
                                 toastr["error"](errMsg);
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                                    $.each(value, function(index, value) {
+                                        toastr["error"]("Please check field "+key + " error: "+ value);
+                                    });
+                                });
                             }
                         });
                     }
@@ -248,14 +265,21 @@
                 },
                 error: function(data, textStatus, jqXHR) {
                     toastr['error'](data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                        $.each(value, function(index, value) {
+                            toastr["error"]("Please check field "+key + " error: "+ value);
+                        });
+                    });
                 }
             });
         });
     };
     function del(id,name) {
         var dialog = bootbox.confirm({
-            title: "<a class='text-danger'>"+'delete task ' + name +"</a>",
-            message: 'Are you sure to delete task ' + name +' ?',
+            title: "<a class='text-danger'>"+'delete server ' + name +"</a>",
+            message: 'Are you sure to delete server ' + name +' ?',
             buttons: {
                 confirm: {
                     label: 'delete',
@@ -269,22 +293,25 @@
             callback: function (result) {
                 if (result){
                     $.ajax({
-                        type: "POST",
-                        url: "{% url 'commands' %}",
-                        data: JSON.stringify({"id":id,"action":'delete',"name":name}),
+                        type: "DELETE",
+                        url: '{% url 'serverinfor-list' %}' + id + '/',
                         dataType: "json",
                         success: function (data) {
-                            if(data.status){
-                                toastr["success"](data.message);
+                                toastr["success"]("Delete server " +name +" success!");
                                 setTimeout(function () {
                                     location.reload();
                                 },2000);
-                            } else {
-                                toastr["error"](data.message);
-                            }
+
                         },
                         failure: function (errMsg) {
                             toastr["error"](errMsg);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                                $.each(value, function(index, value) {
+                                    toastr["error"]("Please check field "+key + " error: "+ value);
+                                });
+                            });
                         }
                     });
                 }

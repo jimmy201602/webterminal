@@ -124,12 +124,6 @@
                     toastr["error"](errMsg);
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    //alert("some error " + String(errorThrown) + String(textStatus) + String(XMLHttpRequest.responseText));
-                    //toastr["error"](String(XMLHttpRequest));
-                    //console.log(XMLHttpRequest);
-                   // console.log(textStatus);
-                    //console.log(XMLHttpRequest.responseText);
-                    //console.log(errorThrown);
                     $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
                         $.each(value, function(index, value) {
                             toastr["error"]("Please check field "+key + " error: "+ value);
