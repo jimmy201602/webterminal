@@ -26,7 +26,7 @@ class Index(LoginRequiredMixin,View):
 class Commands(LoginRequiredMixin,View):
     def get(self,request):
         server_groups=ServerGroup.objects.all()
-        return render_to_response('commands.html',locals())
+        return render_to_response('commandcreate.html',locals())
     
     def post(self,request):
         if request.is_ajax():
@@ -172,4 +172,18 @@ class ServerlList(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(ServerlList, self).get_context_data(**kwargs)
         context['credentials'] = Credential.objects.all()
+        return context
+
+class GroupList(LoginRequiredMixin,ListView):
+    model = ServerGroup
+    template_name = 'grouplist.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(GroupList, self).get_context_data(**kwargs)
+        context['servers'] = ServerInfor.objects.all()
         return context    
+
+class GroupCreate(LoginRequiredMixin,View):
+    def get(self,request):
+        servers = ServerInfor.objects.all()
+        return render_to_response('groupcreate.html',locals())

@@ -1,5 +1,5 @@
 {% extends 'base.html'%}
-{% block title %}webterminal{% endblock %}
+{% block title %}Group create{% endblock %}
 {% load staticfiles %}
 {% block css%}
 <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
@@ -43,70 +43,79 @@
         "properties": {
             "name": {
                 "type": "string",
-                'title': "task name",
-                "description": "task name",
+                'title': "Group name",
+                "description": "Group name",
                 "required": true,
                 "minLength": 1,
-                "maxLength": 50,
+                "maxLength": 40,
             },
-            "group": {
+            "servers": {
                 "type": "array",
-                "title": "server groups",
+                "title": "servers",
                 "minItems": 1,
-                "uniqueItems": true,
-                "description": "Server group you want to execute",
+                "description": "Servers",
                 "items": {
                     "type": "string",
-                    "enum": [
-                        {% for group in server_groups %}
-                            "{{group.name}}",
-                        {% endfor %}
-                    ]
+                    "enum":[
+                    {% for server in servers %}
+                         "{{ server.name }}",
+                    {% endfor %}
+                    ],
+                    "required": true,
                 },
                 "required": true,
-            },
-            "commands": {
-                "type": "array",
-                "title": "commands",
-                "minItems": 1,
-                "items": {
-                    "description": "Input the command you need to execute",
-                    "type": "string",
-                }
-            },
-        }
-    };
+                },
+
+            }
+        };
+
+
     var BrutusinForms = brutusin["json-forms"];
     BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", function (element) {
         alert("user callback on element " + element)
     });
-    BrutusinForms.bootstrap.addFormatDecorator("color", "color");
     BrutusinForms.bootstrap.addFormatDecorator("date", "date");
+    BrutusinForms.bootstrap.addFormatDecorator("password", "password");
+    BrutusinForms.bootstrap.addFormatDecorator("ipv4", "ipv4");
     var bf = BrutusinForms.create(schema);
     var container = document.getElementById('container1');
     bf.render(container, null);
+
     $("#submit").on('click', function (e) {
         e.preventDefault();
         var jsondata = bf.getData();
-        jsondata["action"] = "create";
+
+        //console.log(jsondata);
+        //replace credential hyperlink
+        var url = "{% url 'credential-list' %}";
+        jsondata['credential'] = 'http://'+window.location.host + url + credentialproperity[jsondata['credential']] + '/';
+        //console.log(jsondata);
+
         if (bf.validate()) {
             $.ajax({
                 type: "POST",
-                url: "{% url 'commands' %}",
+                url: "{% url 'serverinfor-list' %}",
                 data: JSON.stringify(jsondata, null, 4),
                 dataType: "json",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
                 success: function (data) {
-                    if(data.status){
-                        toastr["success"](data.message);
-                        setTimeout(function () {
-                            location.reload();
-                        },2000);
-                    } else {
-                        toastr["error"](data.message);
-                    }
+                    toastr["success"]("Credential "+data.name+" create success!");
+                    setTimeout(function () {
+                        location.reload();
+                    },2000);
                 },
                 failure: function (errMsg) {
                     toastr["error"](errMsg);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                        $.each(value, function(index, value) {
+                            toastr["error"]("Please check field "+key + " error: "+ value);
+                        });
+                    });
                 }
             });
         }

@@ -1,5 +1,5 @@
 {% extends 'base.html'%}
-{% block title %}Server create{% endblock %}
+{% block title %}Create commands{% endblock %}
 {% load staticfiles %}
 {% block css%}
 <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
@@ -43,92 +43,70 @@
         "properties": {
             "name": {
                 "type": "string",
-                'title': "credential name",
-                "description": "credential name",
+                'title': "task name",
+                "description": "task name",
                 "required": true,
                 "minLength": 1,
-                "maxLength": 40,
+                "maxLength": 50,
             },
-            "hostname": {
-                "type": "string",
-                'title': "hostname",
-                "description": "server hostname",
+            "group": {
+                "type": "array",
+                "title": "server groups",
+                "minItems": 1,
+                "uniqueItems": true,
+                "description": "Server group you want to execute",
+                "items": {
+                    "type": "string",
+                    "enum": [
+                        {% for group in server_groups %}
+                            "{{group.name}}",
+                        {% endfor %}
+                    ]
+                },
                 "required": true,
-                "minLength": 1,
-                "maxLength": 40,
             },
-            "ip": {
-                "type": "string",
-                'title': "ip",
-                "description": "ip",
-                "required": true,
-                "format": "ipv4",
-            },
-            "credential": {
-                "type": "string",
-                'title': "credential",
-                "description": "credential",
-                "required": true,
-                "enum":[
-                    {% for credential in credentials %}
-                        "{{ credential.name }}",
-                    {% endfor %}
-                ]
+            "commands": {
+                "type": "array",
+                "title": "commands",
+                "minItems": 1,
+                "items": {
+                    "description": "Input the command you need to execute",
+                    "type": "string",
+                }
             },
         }
-    };
-
-    var credentialproperity = {
-        {% for credential in credentials %}
-            "{{ credential.name }}":{{credential.id}},
-         {% endfor %}
     };
     var BrutusinForms = brutusin["json-forms"];
     BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", function (element) {
         alert("user callback on element " + element)
     });
+    BrutusinForms.bootstrap.addFormatDecorator("color", "color");
     BrutusinForms.bootstrap.addFormatDecorator("date", "date");
-    BrutusinForms.bootstrap.addFormatDecorator("password", "password");
-    BrutusinForms.bootstrap.addFormatDecorator("ipv4", "ipv4");
     var bf = BrutusinForms.create(schema);
     var container = document.getElementById('container1');
     bf.render(container, null);
-
     $("#submit").on('click', function (e) {
         e.preventDefault();
         var jsondata = bf.getData();
-
-        //console.log(jsondata);
-        //replace credential hyperlink
-        var url = "{% url 'credential-list' %}";
-        jsondata['credential'] = 'http://'+window.location.host + url + credentialproperity[jsondata['credential']] + '/';
-        //console.log(jsondata);
-
+        jsondata["action"] = "create";
         if (bf.validate()) {
             $.ajax({
                 type: "POST",
-                url: "{% url 'serverinfor-list' %}",
+                url: "{% url 'commands' %}",
                 data: JSON.stringify(jsondata, null, 4),
                 dataType: "json",
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
                 success: function (data) {
-                        toastr["success"]("Credential "+data.name+" create success!");
+                    if(data.status){
+                        toastr["success"](data.message);
                         setTimeout(function () {
                             location.reload();
                         },2000);
+                    } else {
+                        toastr["error"](data.message);
+                    }
                 },
                 failure: function (errMsg) {
                     toastr["error"](errMsg);
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
-                        $.each(value, function(index, value) {
-                            toastr["error"]("Please check field "+key + " error: "+ value);
-                        });
-                    });
                 }
             });
         }

@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
 {%load i18n%}
-{%block title%}{%trans 'Server list' %}{%endblock%}
+{%block title%}{%trans 'Group list' %}{%endblock%}
 {% block css %}
 <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
 <link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
@@ -14,9 +14,8 @@
     <table id="commands_list" class="table table-hover table-striped">
         <thead>
         <tr>
-            <th>{%trans 'server name' %}</th>
-            <th>{%trans 'host name' %}</th>
-            <th>{%trans 'ip' %}</th>
+            <th>{%trans 'group name' %}</th>
+            <th>{%trans 'servers' %}</th>
             <th>{%trans 'action' %}</th>
         </tr>
         </thead>
@@ -24,8 +23,11 @@
         {% for element in object_list %}
         <tr>
             <td>{{ element.name }}</td>
-            <td>{{ element.hostname }}</td>
-            <td>{{ element.ip }}</td>
+            <td>
+                {% for server in element.servers.all %}
+                <a>{{ server.name }}</a>
+                {% endfor %}
+            </td>
             <td data-editable="false" class="text-center pull-left">
                 <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
                 <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
@@ -64,11 +66,11 @@
 <script type="application/javascript">
     function detail(id) {
         var dialog = bootbox.dialog({
-            title: 'Server information detail',
+            title: 'Group information detail',
             message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
         });
         dialog.init(function(){
-            var url = '{% url 'serverinfor-list' %}';
+            var url = '{% url 'servergroup-list' %}';
             $.ajax({
                 url: url + id +'/',
                 type: 'GET',
@@ -78,62 +80,50 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                'title': "credential name",
-                                "description": "credential name",
+                                'title': "Group name",
+                                "description": "Group name",
                                 "required": true,
                                 "minLength": 1,
                                 "maxLength": 40,
                                 "readOnly": true,
                             },
-                            "hostname": {
-                                "type": "string",
-                                'title': "hostname",
-                                "description": "server hostname",
-                                "required": true,
-                                "minLength": 1,
-                                "maxLength": 40,
+                            "servers": {
+                                "type": "array",
+                                "title": "servers",
+                                "minItems": 1,
                                 "readOnly": true,
-                            },
-                            "ip": {
-                                "type": "string",
-                                'title': "ip",
-                                "description": "ip",
-                                "required": true,
-                                "format": "ipv4",
-                                "readOnly": true,
-                            },
-                            "credential": {
-                                "type": "string",
-                                'title': "credential",
-                                "description": "credential",
-                                "enum":[
-                                {% for credential in credentials %}
-                                    "{{ credential.name }}",
-                                {% endfor %}
-                                 ],
-                                "readOnly": true,
+                                "description": "Servers",
+                                "items": {
+                                    "type": "string",
+                                    "enum":[
+                                        {% for server in servers %}
+                                            "{{ server.name }}",
+                                        {% endfor %}
+                                    ],
+                                    "readOnly": true,
+                                    "required": true,
+                                },
                                 "required": true,
                             },
-                        }
-                     };
+
+                }
+                };
                     dialog.find('.bootbox-body').html("<div id='container'></div>");
                     var BrutusinForms = brutusin["json-forms"];
                     var bf = BrutusinForms.create(schema);
                     var container = document.getElementById('container');
                     $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
-                    $.ajax({url: data['credential'], success: function(result){
-                        data['credential'] = result['name'];
-                        delete data['onlinedatetime'];
-                        delete data['url'];
-                        delete data['updatedatetime'];
-                    }}).done(function () {
-                        setTimeout(function () {
-                            $("#container").empty();
-                            bf.render(container, data);
-                        },2000);
+                    var servers = [];
+                    $.each(data['servers'],function (key,value) {
+                        $.ajax({url: data['servers'][key], success: function(result){
+                            servers.push(result['name']);
+                        }})
                     });
-
-
+                    setTimeout(function () {
+                        data['servers'] = servers;
+                        $("#container").empty();
+                        bf.render(container, data);
+                    },2000);
 
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -148,7 +138,7 @@
     }
     function edit(id) {
         var dialog = bootbox.confirm({
-            title: 'Server information edit',
+            title: 'Group information edit',
             message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
             buttons: {
                 confirm: {
@@ -165,24 +155,26 @@
                     if ($.gbf.validate()) {
                         var jsondata = $.gbf.getData();
 
-                        //Replace credential to url
-                        var credentialproperity = {
-                            {% for credential in credentials %}
-                                 "{{ credential.name }}":{{credential.id}},
+                        //Replace servers
+                        var serverreplace = [];
+                        var servers = {
+                            {% for server in servers %}
+                                "{{ server.name }}":{{ server.id }},
                             {% endfor %}
                         };
-                        var url = "{% url 'credential-list' %}";
-                        jsondata['credential'] = "http://"+window.location.host + url + credentialproperity[jsondata['credential']] + "/";
+                        $.each(jsondata['servers'],function (index,value) {
+                            serverreplace.push("http://"+window.location.host + '{% url 'serverinfor-list' %}' + servers[jsondata['servers'][index]] + '/')
+                        });
 
-                        //console.log(jsondata);
+                        jsondata['servers'] = serverreplace;
                         $.ajax({
                             type: "PUT",
-                            url: '{% url 'serverinfor-list' %}' + id + '/',
+                            url: '{% url 'servergroup-list' %}' + id + '/',
                             data: JSON.stringify(jsondata, null, 4),
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
-                                toastr["success"]("Update server info " +data.name + " success!");
+                                toastr["success"]("Update group info " +data.name + " success!");
                                 setTimeout(function () {
                                     location.reload();
                                 },2000);
@@ -205,7 +197,7 @@
         dialog.init(function(){
 
             $.ajax({
-                url: '{% url 'serverinfor-list' %}' + id + '/',
+                url: '{% url 'servergroup-list' %}' + id + '/',
                 type: 'GET',
                 success: function(data, textStatus, jqXHR) {
                     var schema = {
@@ -213,39 +205,30 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                'title': "credential name",
-                                "description": "credential name",
+                                'title': "Group name",
+                                "description": "Group name",
                                 "required": true,
                                 "minLength": 1,
                                 "maxLength": 40,
                             },
-                            "hostname": {
-                                "type": "string",
-                                'title': "hostname",
-                                "description": "server hostname",
+                            "servers": {
+                                "type": "array",
+                                "title": "servers",
+                                "minItems": 1,
+                                "description": "Servers",
+                                "items": {
+                                    "type": "string",
+                                    "enum":[
+                                    {% for server in servers %}
+                                         "{{ server.name }}",
+                                    {% endfor %}
+                                    ],
                                 "required": true,
-                                "minLength": 1,
-                                "maxLength": 40,
+                                },
+                                "required": true,
                             },
-                            "ip": {
-                                "type": "string",
-                                'title': "ip",
-                                "description": "ip",
-                                "required": true,
-                                "format": "ipv4",
-                            },
-                            "credential": {
-                                "type": "string",
-                                'title': "credential",
-                                "description": "credential",
-                                "required": true,
-                                "enum":[
-                                {% for credential in credentials %}
-                                    "{{ credential.name }}",
-                                {% endfor %}
-                                ]
-                        },
-                    }
+
+                            }
                     };
                     $.ajax({url: data['credential'], success: function(result){
                         data['credential'] = result['name'];
@@ -256,11 +239,17 @@
                     var container = document.getElementById('container');
 
                     $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
+                    var servers = [];
+                    $.each(data['servers'],function (key,value) {
+                        $.ajax({url: data['servers'][key], success: function(result){
+                            servers.push(result['name']);
+                        }})
+                    });
                     setTimeout(function () {
+                        data['servers'] = servers;
                         $("#container").empty();
                         bf.render(container, data);
                     },2000);
-
                     $.gbf = bf;
                 },
                 error: function(data, textStatus, jqXHR) {
@@ -278,8 +267,8 @@
     };
     function del(id,name) {
         var dialog = bootbox.confirm({
-            title: "<a class='text-danger'>"+'delete server ' + name +"</a>",
-            message: 'Are you sure to delete server ' + name +' ?',
+            title: "<a class='text-danger'>"+'delete group ' + name +"</a>",
+            message: 'Are you sure to delete group ' + name +' ?',
             buttons: {
                 confirm: {
                     label: 'delete',
@@ -294,13 +283,13 @@
                 if (result){
                     $.ajax({
                         type: "DELETE",
-                        url: '{% url 'serverinfor-list' %}' + id + '/',
+                        url: '{% url 'servergroup-list' %}' + id + '/',
                         dataType: "json",
                         success: function (data) {
-                                toastr["success"]("Delete server " +name +" success!");
-                                setTimeout(function () {
-                                    location.reload();
-                                },2000);
+                            toastr["success"]("Delete group " +name +" success!");
+                            setTimeout(function () {
+                                location.reload();
+                            },2000);
 
                         },
                         failure: function (errMsg) {
