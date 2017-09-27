@@ -6,9 +6,9 @@ except ImportError:
     import json
     
 class ServerInfor(models.Model):
-    name = models.CharField(max_length=40,verbose_name='Server name',blank=False)
+    name = models.CharField(max_length=40,verbose_name='Server name',blank=False,unique=True)
     hostname = models.CharField(max_length=40,verbose_name='Host name',blank=True)
-    ip = models.GenericIPAddressField(protocol='ipv4',blank=False,unique=True)
+    ip = models.GenericIPAddressField(protocol='ipv4',blank=False)
     onlinedatetime = models.DateTimeField(auto_created=True,auto_now=True)
     updatedatetime = models.DateTimeField(auto_created=True,auto_now_add=True)
     credential = models.ForeignKey('Credential')
@@ -17,7 +17,7 @@ class ServerInfor(models.Model):
         return self.name
 
 class ServerGroup(models.Model):
-    name = models.CharField(max_length=40,verbose_name='Server group name',blank=False)
+    name = models.CharField(max_length=40,verbose_name='Server group name',blank=False,unique=True)
     servers = models.ManyToManyField(ServerInfor,related_name='servers')
     createdatetime = models.DateTimeField(auto_created=True,auto_now=True)
     updatedatetime = models.DateTimeField(auto_created=True,auto_now_add=True)
