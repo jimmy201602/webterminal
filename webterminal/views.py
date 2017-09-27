@@ -120,7 +120,8 @@ class CredentialCreate(LoginRequiredMixin,View):
                 elif action == 'update':
                     try:
                         obj = Credential.objects.get(id=id)
-                        obj.update(**data)
+                        obj.__dict__.update(**data)
+                        obj.save()
                         return JsonResponse({'status':True,'message':'Credential %s update success!' %(smart_str(data.get('name',None)))})
                     except ObjectDoesNotExist:
                         return JsonResponse({'status':False,'message':'Request object not exist!'})
