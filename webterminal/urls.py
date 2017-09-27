@@ -18,6 +18,17 @@ from django.contrib import admin
 from webterminal.views import Index,Commands,CommandExecute,CommandExecuteList,CommandExecuteDetailApi,CredentialCreate,CredentialList,CredentialDetailApi
 from django.contrib.auth.views import LoginView,LogoutView
 
+#Webterminal api
+from rest_framework import routers
+from webterminal.api import ServerGroupViewSet,ServerInforViewSet,CommandsSequenceViewSet,CredentialViewSet
+
+#Register webterminal api
+router = routers.DefaultRouter()
+router.register('servergroup', ServerGroupViewSet)
+router.register('serverinfo', ServerInforViewSet)
+router.register('commandssequence', CommandsSequenceViewSet)
+router.register('credential', CredentialViewSet)
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$',Index.as_view(),name='index'),
@@ -30,4 +41,5 @@ urlpatterns = [
     url(r'^credentialcreate/$',CredentialCreate.as_view(),name='credentialcreate'),
     url(r'^credentiallist/$',CredentialList.as_view(),name='credentiallist'),
     url(r'^credentialdetailapi/$',CredentialDetailApi.as_view(),name='credentialdetailapi'),
+    url(r'^api/',include(router.urls)),
 ]
