@@ -116,7 +116,6 @@
                         }
                      };
                     dialog.find('.bootbox-body').html("<div id='container'></div>");
-                    //console.log(data.data);
                     var BrutusinForms = brutusin["json-forms"];
                     var bf = BrutusinForms.create(schema);
                     var container = document.getElementById('container');
@@ -124,18 +123,12 @@
                         data['credential'] = result['name'];
                     }});
 
+                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
+                    setTimeout(function () {
+                        $("#container").empty();
+                        bf.render(container, data);
+                    },2000);
 
-                    console.log(1,data);
-
-                    delete data['onlinedatetime'];
-                    delete data['updatedatetime'];
-                    delete data['url'];
-
-                    console.log(2,data);
-
-                    bf.render(container, data);
-
-                    console.log(data);
                 },
                 error: function(data, textStatus, jqXHR) {
                     toastr['error'](data);
@@ -180,9 +173,9 @@
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
                                 toastr["success"]("Update server info " +data.name + " success!");
-//                                setTimeout(function () {
-//                                    location.reload();
-//                                },2000);
+                                setTimeout(function () {
+                                    location.reload();
+                                },2000);
                             },
                             failure: function (errMsg) {
                                 toastr["error"](errMsg);
@@ -244,7 +237,13 @@
                     var BrutusinForms = brutusin["json-forms"];
                     var bf = BrutusinForms.create(schema);
                     var container = document.getElementById('container');
-                    bf.render(container, data);
+
+                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
+                    setTimeout(function () {
+                        $("#container").empty();
+                        bf.render(container, data);
+                    },2000);
+
                     $.gbf = bf;
                 },
                 error: function(data, textStatus, jqXHR) {
