@@ -142,3 +142,14 @@ CHANNEL_LAYERS = {
        "ROUTING": "webterminal.routing.channel_routing",  # load routing from our routing.py file
        },
 }
+
+#Rest framework api auth config
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )    
+}
