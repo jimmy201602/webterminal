@@ -9,3 +9,5 @@ ssh web terminal implemented by django
 ![screenshots](./screenshots/screenshots2.png  "screenshots")
 # Author
 zhengge2012@gmail.com
+# QQ group number
+531612760
