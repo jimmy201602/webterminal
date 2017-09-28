@@ -4,6 +4,7 @@ For ubuntu, you can follow these steps
 apt-get update
 apt-get install -y python python-dev redis-server python-pip supervisor nginx git
 cd /opt
+git clone https://github.com/jimmy201602/webterminal.git
 cd webterminal
 pip install -r requirements.txt
 python manage.py makemigrations
