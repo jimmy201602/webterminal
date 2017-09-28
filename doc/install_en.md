@@ -1,4 +1,4 @@
-#How to install in ubutu
+# How to install in ubutu
 For ubuntu, you can follow these steps
 ``` sh
 apt-get update
@@ -14,7 +14,7 @@ You can run server locally like this.
 ```sh
 python manage.py runserver
 ```
-#Use docker
+# Use docker
 * build docker
 ```sh
 docker build --no-cache -t webterminal:latest .

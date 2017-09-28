@@ -14,7 +14,7 @@
 # Task usage
 ![task](./img/runtask1.png  "task")
 ![task](./img/runtask2.png  "task")
-#How to update info
+# How to update info
  	On the left panel you can click the credential list ... Then you can update your info when you click the edit button. If you update all your infomation then click submit button.
 
 ![update](./img/update.png  "update")
