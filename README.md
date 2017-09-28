@@ -7,3 +7,5 @@ ssh web terminal implemented by django
 # screenshots
 ![screenshots](./screenshots/screenshots1.png  "screenshots")
 ![screenshots](./screenshots/screenshots2.png  "screenshots")
+# Author
+zhengge2012@gmail.com
