@@ -1,4 +1,3 @@
-[TOC]
 # webterminal
 ssh web terminal implemented by django
 # useage
