@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "width": 101,
+  "height": 29,
+  "duration": 5.075725,
+  "command": "/bin/zsh",
+  "title": "\"asciinema\" theme",
+  "env": {
+    "TERM": "xterm-256color",
+    "SHELL": "/bin/zsh"
+  },
+  "stdout": [
+    [
+      0.304777,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                    \r \r"
+    ],
+    [
+      0.000013,
+      "\u001b]0;~/code/asciinema/asciinema-player\u0007"
+    ],
+    [
+      0.000010,
+      "\u0007"
+    ],
+    [
+      0.006326,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[34masciinema/asciinema-player\u001b[39m \u001b[33m(\u001b[32mmaster\u001b[39m M\u001b[33m)\u001b[39m %\u001b[39m \u001b[K"
+    ],
+    [
+      1.420877,
+      "g"
+    ],
+    [
+      0.094115,
+      "\u0008g "
+    ],
+    [
+      0.080089,
+      "l"
+    ],
+    [
+      0.088102,
+      "g"
+    ],
+    [
+      0.223519,
+      "\r\r\n"
+    ],
+    [
+      0.000939,
+      "\u001b]0;~/code/asciinema/asciinema-player: g lg\u0007"
+    ],
+    [
+      0.095482,
+      "\u001b[?1h\u001b=\r"
+    ],
+    [
+      0.002938,
+      "* \u001b[31m6696dd7\u001b[m -\u001b[33m (HEAD -\u003e master, origin/master, colors)\u001b[m Make \"asciinema\" theme a default one \u001b[32m(22 hours ag\u001b[m \u0008\u001b[31m\u001b[m\u001b[33m\u001b[m\u001b[32mo) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000014,
+      "* \u001b[31m9d0ceab\u001b[m -\u001b[33m\u001b[m Add devcards showcasing the color schemes \u001b[32m(22 hours ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000048,
+      "* \u001b[31m39337c2\u001b[m -\u001b[33m\u001b[m First version of asciinema color scheme \u001b[32m(22 hours ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000028,
+      "* \u001b[31m6f4565f\u001b[m -\u001b[33m\u001b[m Setup devcards \u001b[32m(3 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000058,
+      "* \u001b[31m985130f\u001b[m -\u001b[33m\u001b[m Configure lein to clean js output too \u001b[32m(3 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000068,
+      "* \u001b[31m8036ebd\u001b[m -\u001b[33m (upgrade-fw)\u001b[m Define :main for dev build \u001b[32m(3 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000037,
+      "* \u001b[31mf878cc2\u001b[m -\u001b[33m\u001b[m Upgrade cljs compiler and figwheel \u001b[32m(3 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000054,
+      "* \u001b[31m803ac5e\u001b[m -\u001b[33m\u001b[m Add monokai theme from base16 collection \u001b[32m(4 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000021,
+      "* \u001b[31mc2b0c27\u001b[m -\u001b[33m\u001b[m Add startAt option \u001b[32m(6 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000041,
+      "* \u001b[31mcee0631\u001b[m -\u001b[33m\u001b[m Rename play-from to start-at \u001b[32m(6 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000056,
+      "* \u001b[31m77c7d3b\u001b[m -\u001b[33m\u001b[m Separate player map and ratom building \u001b[32m(6 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000019,
+      "* \u001b[31m4246535\u001b[m -\u001b[33m\u001b[m No need for go block where put! can do \u001b[32m(6 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000084,
+      "* \u001b[31mb7d457e\u001b[m -\u001b[33m\u001b[m Compose full title text from title and author \u001b[32m(11 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000053,
+      "* \u001b[31mbd1754b\u001b[m -\u001b[33m\u001b[m Display author image in title bar when in fullscreen mode \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000034,
+      "* \u001b[31ma42ad26\u001b[m -\u001b[33m\u001b[m Always URL, not Url \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000054,
+      "* \u001b[31mfc7cd29\u001b[m -\u001b[33m\u001b[m Remove debug statement \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000039,
+      "* \u001b[31m2897fe2\u001b[m -\u001b[33m\u001b[m Show (and auto-hide) title in fullscreen mode \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000011,
+      "* \u001b[31m4172656\u001b[m -\u001b[33m\u001b[m Auto-hide control bar in fullscreen mode \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000038,
+      "* \u001b[31m161c3ff\u001b[m -\u001b[33m\u001b[m Add ability to show stuff in HUD when user moves the mouse \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000049,
+      "* \u001b[31m0b0657b\u001b[m -\u001b[33m\u001b[m Make options argument optional \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000034,
+      "* \u001b[31m6cdb933\u001b[m -\u001b[33m\u001b[m More useful (readable) watch for state atom \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000024,
+      "* \u001b[31meb135ff\u001b[m -\u001b[33m\u001b[m More dev goodies \u001b[32m(12 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000062,
+      "* \u001b[31mdb189b0\u001b[m -\u001b[33m\u001b[m Fix indentation \u001b[32m(13 days ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n* \u001b[31m59835ef\u001b[m -\u001b[33m (back-on-old-tests)\u001b[m Fix infinite loop when cursor position lays after last char in line \u001b[32m(\u001b[m \u0008"
+    ],
+    [
+      0.000017,
+      "\u001b[31m\u001b[m\u001b[33m\u001b[m\u001b[32m2 weeks ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000018,
+      "* \u001b[31m0f2d9ca\u001b[m -\u001b[33m\u001b[m Revert \"Use doo for running tests\" \u001b[32m(2 weeks ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n"
+    ],
+    [
+      0.000088,
+      "* \u001b[31mbd820c8\u001b[m -\u001b[33m\u001b[m Fix test \u001b[32m(2 weeks ago) \u001b[34m\u003cMarcin Kulik\u003e\u001b[m\u001b[m\r\n:\u001b[K"
+    ],
+    [
+      2.000000,
+      "\r\u001b[K\u001b[?1l\u001b\u003e"
+    ],
+    [
+      0.000847,
+      "\u001b[1m\u001b[7m%\u001b[27m\u001b[1m\u001b[0m                                                                                                    \r \r"
+    ],
+    [
+      0.000032,
+      "\u001b]0;~/code/asciinema/asciinema-player\u0007"
+    ],
+    [
+      0.000006,
+      "\u0007"
+    ],
+    [
+      0.011984,
+      "\r\u001b[0m\u001b[27m\u001b[24m\u001b[J\u001b[34masciinema/asciinema-player\u001b[39m \u001b[33m(\u001b[32mmaster\u001b[39m M\u001b[33m)\u001b[39m %\u001b[39m \u001b[K"
+    ],
+    [
+      0.716233,
+      "\r\r\n"
+    ]
+  ]
+}
