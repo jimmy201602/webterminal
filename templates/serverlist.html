@@ -10,32 +10,70 @@
 <link rel="stylesheet" href="{% static "plugins/json-view/jquery.jsonview.min.css" %}">
 {% endblock %}
 {% block content %}
-<div class="box-body">
-    <table id="commands_list" class="table table-hover table-striped">
-        <thead>
-        <tr>
-            <th>{%trans 'server name' %}</th>
-            <th>{%trans 'host name' %}</th>
-            <th>{%trans 'ip' %}</th>
-            <th>{%trans 'action' %}</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for element in object_list %}
-        <tr>
-            <td>{{ element.name }}</td>
-            <td>{{ element.hostname }}</td>
-            <td>{{ element.ip }}</td>
-            <td data-editable="false" class="text-center pull-left">
-                <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
-                <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
-                <a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'servercreate' %}'">
+                            Add New
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="commands_list" class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{%trans 'server name' %}</th>
+                            <th>{%trans 'host name' %}</th>
+                            <th>{%trans 'ip' %}</th>
+                            <th>{%trans 'action' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for element in object_list %}
+                        <tr>
+                            <td>{{ element.name }}</td>
+                            <td>{{ element.hostname }}</td>
+                            <td>{{ element.ip }}</td>
+                            <td data-editable="false" class="text-center pull-left">
+                                <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail'%}</a>
+                                <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
+                                <a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
 {% endblock %}
 {% block js %}
 <script src="{% static 'plugins/markdown/markdown.js' %} "></script>

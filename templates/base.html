@@ -193,13 +193,9 @@
           <ul class="treeview-menu">          	
           	<li class="active"><a href="{% url 'index' %}"><i class="fa fa-laptop"></i> {%trans 'webterminal' %}</a></li>
 			<li class="active"><a href="{% url 'commandexecute' %}"><i class="fa fa-play"></i> {%trans 'command execute' %}</a></li>
-			<li class="active"><a href="{% url 'credentialcreate' %}"><i class="fa  fa-user-secret"></i> {%trans 'create credential' %}</a></li>
 			<li class="active"><a href="{% url 'credentiallist' %}"><i class="fa fa-list-ol"></i> {%trans 'credential list' %}</a></li>
-			<li class="active"><a href="{% url 'servercreate' %}"><i class="fa fa-calculator"></i> {%trans 'server create' %}</a></li>
             <li class="active"><a href="{% url 'serverlist' %}"><i class="fa fa-certificate"></i> {%trans 'server list' %}</a></li>
-            <li class="active"><a href="{% url 'groupcreate' %}"><i class="fa fa-commenting"></i> {%trans 'Group create' %}</a></li>
             <li class="active"><a href="{% url 'grouplist' %}"><i class="fa  fa-crop"></i> {%trans 'Group list' %}</a></li>
-            <li class="active"><a href="{% url 'commands' %}"><i class="fa fa-plus"></i> {%trans 'add commands' %}</a></li>
             <li class="active"><a href="{% url 'commandslist' %}"><i class="fa fa-list"></i> {%trans 'commands list' %}</a></li>
           </ul>
         </li>
@@ -207,19 +203,30 @@
     </section>
     <!-- /.sidebar -->
   </aside>
-
-  <!-- Content Wrapper. Contains page content -->
+ 
+    <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-    </section>
-    <section class="content container-fluid">
-      {% block content%}
-      {% endblock %}
-    </section>
 
+    {% block head_ext %}
+    <!--&lt;!&ndash; Content Header (Page header) &ndash;&gt;-->
+    <!--<section class="content-header">-->
+      <!--<h1>-->
+	<!--Dashboard-->
+	<!--<small>Control panel</small>-->
+      <!--</h1>-->
+      <!--<ol class="breadcrumb">-->
+	<!--<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>-->
+	<!--<li class="active">Dashboard</li>-->
+      <!--</ol>-->
+    <!--</section>-->
+    {% endblock %}
+
+    {% block content %}
+    <!-- Main content -->
+    <!-- /.content -->
+    {% endblock %}
   </div>
-  <!-- /.content-wrapper -->
+  
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
       <b>{%trans 'Version' %}</b> 0.1

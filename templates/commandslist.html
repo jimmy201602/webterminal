@@ -6,40 +6,77 @@
 <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
 <link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
 <!-- DataTables css -->
-<link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
-<link rel="stylesheet" href="{% static "plugins/json-view/jquery.jsonview.min.css" %}">
+<link rel="stylesheet" href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/json-view/jquery.jsonview.min.css' %}">
 {% endblock %}
 {% block content %}
-<div class="box-body">
-    <table id="commands_list" class="table table-hover table-striped">
-        <thead>
-        <tr>
-            <th>{%trans 'name' %}</th>
-            <th>{%trans 'groups' %}</th>
-            <th>{%trans 'commands' %}</th>
-            <th>{%trans 'action' %}</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for element in object_list %}
-        <tr>
-            <td>{{ element.name }}</td>
-            <td>
-                {% for group in element.group.all %}
-                <a>{{ group.name }}</a>
-                {% endfor %}
-            </td>
-            <td class="json"><a id="{{ element.id}}" onclick="get_detail({{element.id}})">{{ element.commands|truncatechars:50 }}</td>
-            <td data-editable="false" class="text-center pull-left">
-                <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
-                <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
-                <a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>
-            </td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'commandscreate' %}'"> Add New
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="commands_list" class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{%trans 'name' %}</th>
+                            <th>{%trans 'groups' %}</th>
+                            <th>{%trans 'commands' %}</th>
+                            <th>{%trans 'action' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for element in object_list %}
+                        <tr>
+                            <td>{{ element.name }}</td>
+                            <td>
+                                {% for group in element.group.all %}
+                                <a>{{ group.name }}</a>
+                                {% endfor %}
+                            </td>
+                            <td class="json"><a id="{{ element.id}}" onclick="get_detail({{element.id}})">{{element.commands|truncatechars:50 }}</td>
+                            <td data-editable="false" class="text-center pull-left">
+                                <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
+                                <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
+                                <a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
 {% endblock %}
 {% block js %}
 <script src="{% static 'plugins/markdown/markdown.js' %} "></script>
@@ -48,10 +85,10 @@
 <script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
 <script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
 <!-- DataTables -->
-<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-<script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
-<script src="{% static "plugins/json-view/jquery.jsonview.min.js" %}"></script>
-<script src="{% static "plugins/bootbox/bootbox.js" %}"></script>
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/json-view/jquery.jsonview.min.js' %}"></script>
+<script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
 <script type="application/javascript">
     $(function () {
         $('#commands_list').DataTable({
@@ -177,7 +214,7 @@
                         jsondata["id"] = id;
                         $.ajax({
                             type: "POST",
-                            url: "{% url 'commands' %}",
+                            url: "{% url 'commandscreate' %}",
                             data: JSON.stringify(jsondata, null, 4),
                             dataType: "json",
                             success: function (data) {
@@ -273,7 +310,7 @@
                 if (result){
                         $.ajax({
                             type: "POST",
-                            url: "{% url 'commands' %}",
+                            url: "{% url 'commandscreate' %}",
                             data: JSON.stringify({"id":id,"action":'delete',"name":name}),
                             dataType: "json",
                             success: function (data) {
