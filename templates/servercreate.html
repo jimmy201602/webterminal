@@ -6,30 +6,70 @@
 <link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
 {%endblock%}
 {% block content %}
-<div class="wrapper-content">
-
+<section class="content">
     <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-success" onclick="window.location.href = '{% url 'serverlist' %}'">
+                            Return Server List
+                        </button>
+                    </div>
 
-
-        <div class="col-lg-10">
-            <div class="content float-e-margins">
-                <div class="content">
-                    <form action="{% url 'commands' %}" class="form-horizontal nice-validator n-yellow form" id="table"
-                          method="post" novalidate="novalidate">
-                        {% csrf_token %}
-                        <div id='container1' class="table"></div>
-
-
-                        <div class="col-sm-4 col-sm-offset-5">
-                            <button type="submit" id="submit" class="btn btn-primary pull-center"> submit</button>
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
                         </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
 
-                    </form>
+                    <div class="row">
+
+
+                        <div class="col-lg-10">
+                            <div class="content float-e-margins">
+                                <div class="content">
+                                    <form action="{% url 'servercreate' %}"
+                                          class="form-horizontal nice-validator n-yellow form" id="table"
+                                          method="post" novalidate="novalidate">
+                                        {% csrf_token %}
+                                        <div id='container1' class="table"></div>
+
+
+                                        <div class="col-sm-4 col-sm-offset-5">
+                                            <button type="submit" id="submit" class="btn btn-primary pull-center">
+                                                submit
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
         </div>
+
     </div>
-</div>
+</section>
 {% endblock %}
 {% block js %}
 <script src="{% static 'plugins/markdown/markdown.js' %} "></script>
