@@ -77,6 +77,9 @@ class webterminal(WebsocketConsumer):
                         multiple_chan[self.message.reply_channel.name].send(json.loads(text)[1])
                     else:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSsh session is terminate or closed!\033[0m'])},immediately=True)
+                elif data[0] == u'set_size':
+                    if multiple_chan.has_key(self.message.reply_channel.name):
+                        multiple_chan[self.message.reply_channel.name].resize_pty(width=data[3], height=data[4])
                 else:
                     self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mUnknow command found!\033[0m'])},immediately=True)
             elif bytes:

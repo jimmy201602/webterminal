@@ -162,6 +162,8 @@
             //set terminal width and height
             <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
                 <!--window.innerHeight, window.innerWidth]));-->
+            <!--term.resize(90,window.innerHeight);-->
+            term.fit();
             term.on('data', function (data) {
                 ws.send(JSON.stringify(['stdin', data]));
             });
@@ -170,8 +172,6 @@
                 document.title = title;
             });
 
-
-            <!--term.fit();-->
             term.toggleFullscreen(true);
             ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
@@ -244,7 +244,7 @@
                             var ip = $node.original.ip;
                             if ($("#"+tabId).length <= 0){
                                 $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
-                                $('.tab-content').append('<div class="tab-pane" id="' + tabId + '"></div>');
+                                $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
                                 showTab(tabId);
                                 registerCloseEvent();
                                 var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
