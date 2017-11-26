@@ -16,7 +16,7 @@ import time
 
 global multiple_chan
 multiple_chan = dict()
-
+    
 class webterminal(WebsocketConsumer):
     
     ssh = paramiko.SSHClient() 
@@ -39,6 +39,7 @@ class webterminal(WebsocketConsumer):
         try:
             if text:
                 data = json.loads(text)
+                begin_time = time.time()
                 if data[0] == 'ip':
                     ip = data[1]
                     self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -74,7 +75,7 @@ class webterminal(WebsocketConsumer):
                     
                 elif data[0] in ['stdin','stdout']:
                     if multiple_chan.has_key(self.message.reply_channel.name):
-                        multiple_chan[self.message.reply_channel.name].send(json.loads(text)[1])
+                        multiple_chan[self.message.reply_channel.name].send(json.loads(text)[1])                    
                     else:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSsh session is terminate or closed!\033[0m'])},immediately=True)
                 elif data[0] == u'set_size':
