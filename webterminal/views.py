@@ -1,7 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render_to_response,HttpResponse
 from django.http import JsonResponse
-from webterminal.models import ServerGroup,CommandsSequence,Credential,ServerInfor
+from webterminal.models import ServerGroup,CommandsSequence,Credential,ServerInfor,SshLog
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 try:
@@ -187,3 +187,8 @@ class GroupCreate(LoginRequiredMixin,View):
     def get(self,request):
         servers = ServerInfor.objects.all()
         return render_to_response('groupcreate.html',locals())
+
+
+class SshLogList(LoginRequiredMixin,ListView):
+    model = SshLog
+    template_name = 'sshlogslist.html'
