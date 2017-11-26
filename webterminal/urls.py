@@ -15,7 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
-from webterminal.views import Index,Commands,CommandExecute,CommandExecuteList,CommandExecuteDetailApi,CredentialCreate,CredentialList,CredentialDetailApi,ServerCreate,ServerlList,GroupList,GroupCreate
+from webterminal.views import (Index,Commands,CommandExecute,
+                               CommandExecuteList,CommandExecuteDetailApi,
+                               CredentialCreate,CredentialList,CredentialDetailApi,
+                               ServerCreate,ServerlList,GroupList,GroupCreate,
+                               SshLogList)
 from django.contrib.auth.views import LoginView,LogoutView
 
 #Webterminal api
@@ -45,5 +49,6 @@ urlpatterns = [
     url(r'^serverlist/$',ServerlList.as_view(),name='serverlist'),
     url(r'^groupcreate/$',GroupCreate.as_view(),name='groupcreate'),
     url(r'^grouplist/$',GroupList.as_view(),name='grouplist'),
+    url(r'^sshlogslist/$',SshLogList.as_view(),name='sshlogslist'),
     url(r'^api/',include(router.urls)),
 ]
