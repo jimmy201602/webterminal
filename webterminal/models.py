@@ -4,13 +4,15 @@ try:
     import simplejson as json
 except ImportError:
     import json
-    
+from django.contrib.auth.models import User 
+import uuid
+
 class ServerInfor(models.Model):
     name = models.CharField(max_length=40,verbose_name='Server name',blank=False,unique=True)
     hostname = models.CharField(max_length=40,verbose_name='Host name',blank=True)
     ip = models.GenericIPAddressField(protocol='ipv4',blank=False)
-    onlinedatetime = models.DateTimeField(auto_created=True,auto_now=True)
-    updatedatetime = models.DateTimeField(auto_created=True,auto_now_add=True)
+    createdatetime = models.DateTimeField(auto_now_add=True)
+    updatedatetime = models.DateTimeField(auto_created=True,auto_now=True)
     credential = models.ForeignKey('Credential')
     
     def __unicode__(self):
@@ -19,8 +21,8 @@ class ServerInfor(models.Model):
 class ServerGroup(models.Model):
     name = models.CharField(max_length=40,verbose_name='Server group name',blank=False,unique=True)
     servers = models.ManyToManyField(ServerInfor,related_name='servers')
-    createdatetime = models.DateTimeField(auto_created=True,auto_now=True)
-    updatedatetime = models.DateTimeField(auto_created=True,auto_now_add=True)
+    createdatetime = models.DateTimeField(auto_now_add=True)
+    updatedatetime = models.DateTimeField(auto_created=True,auto_now=True)
     
     def __unicode__(self):
         return self.name
@@ -71,3 +73,15 @@ class CommandsSequence(models.Model):
         if isinstance(self.commands,(list)):
             self.commands = json.dumps(self.commands)
         super(CommandsSequence,self).save(*args, **kwargs)
+
+class SshLog(models.Model):
+    server = models.ForeignKey(ServerInfor)
+    channel = models.CharField(max_length=100,verbose_name='Channel name',blank=False,unique=True,editable=False)
+    log = models.UUIDField(max_length=100,default=uuid.uuid4,verbose_name='Log name',blank=False,unique=True,editable=False)
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(auto_created=True,auto_now=True)
+    is_finished = models.BooleanField(default=False)
+    user = models.ForeignKey(User)
+    
+    def __unicode__(self):
+        return self.server.name    
