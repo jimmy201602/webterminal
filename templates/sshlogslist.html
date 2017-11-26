@@ -44,7 +44,6 @@
                             <th>{%trans 'server name' %}</th>
                             <th>{%trans 'server ip' %}</th>
                             <th>{%trans 'start time' %}</th>
-                            <th>{%trans 'last activity time' %}</th>
                             <th>{%trans 'is finished' %}</th>
                             <th>{%trans 'action' %}</th>
                         </tr>
@@ -56,7 +55,6 @@
                             <td>{{ element.server.name }}</td>
                             <td>{{ element.server.ip }}</td>
                             <td>{{ element.start_time }}</td>
-                            <td>{{ element.end_time }}</td>
                             <td>{{ element.is_finished }}</td>
                             <td data-editable="false" class="text-center pull-left">
                                 <a class="btn btn-xs btn-primary">{%trans 'detail' %}</a>
