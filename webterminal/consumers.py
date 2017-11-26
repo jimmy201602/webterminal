@@ -9,10 +9,12 @@ from webterminal.interactive import interactive_shell
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
-from webterminal.models import ServerInfor,ServerGroup,CommandsSequence
+from webterminal.models import ServerInfor,ServerGroup,CommandsSequence,SshLog
 from webterminal.sudoterminal import ShellHandler
 import ast 
 import time
+from django.contrib.auth.models import User 
+from django.utils.timezone import now
 
 global multiple_chan
 multiple_chan = dict()
@@ -33,7 +35,11 @@ class webterminal(WebsocketConsumer):
         self.message.reply_channel.send({"accept":False})
         if multiple_chan.has_key(self.message.reply_channel.name):
             multiple_chan[self.message.reply_channel.name].close()
-        self.close()
+        audit_log=SshLog.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
+        audit_log.is_finished = True
+        audit_log.end_time = now()
+        audit_log.save()
+        self.close()        
     
     def receive(self,text=None, bytes=None, **kwargs):   
         try:
@@ -48,6 +54,8 @@ class webterminal(WebsocketConsumer):
                         port = data.credential.port
                         method = data.credential.method
                         username = data.credential.username
+                        audit_log = SshLog.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name)
+                        audit_log.save()
                         if method == 'password':
                             password = data.credential.password
                         else:
@@ -71,7 +79,7 @@ class webterminal(WebsocketConsumer):
                     
                     chan = self.ssh.invoke_shell(width=90, height=40,)
                     multiple_chan[self.message.reply_channel.name] = chan
-                    interactive_shell(chan,self.message.reply_channel.name)
+                    interactive_shell(chan,self.message.reply_channel.name,log_name=audit_log.log)
                     
                 elif data[0] in ['stdin','stdout']:
                     if multiple_chan.has_key(self.message.reply_channel.name):
@@ -89,6 +97,10 @@ class webterminal(WebsocketConsumer):
         except socket.error:
             if multiple_chan.has_key(self.message.reply_channel.name):
                 multiple_chan[self.message.reply_channel.name].close()
+                audit_log=SshLog.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
+                audit_log.is_finished = True
+                audit_log.end_time = now()
+                audit_log.save()                
         except Exception,e:
             import traceback
             print traceback.print_exc()

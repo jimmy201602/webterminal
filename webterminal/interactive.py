@@ -21,10 +21,13 @@ import codecs
 import io
 import re
 import subprocess
+from django.contrib.auth.models import User 
+from django.utils import timezone
+from webterminal.models import SshLog
 
-def interactive_shell(chan,channel):
+def interactive_shell(chan,channel,log_name=None):
     if has_termios:
-        posix_shell(chan,channel)
+        posix_shell(chan,channel,log_name=log_name)
     else:
         sys.exit(1)
        
@@ -34,7 +37,7 @@ class CustomeFloatEncoder(json.JSONEncoder):
             return format(obj, '.6f')
         return json.JSONEncoder.encode(self, obj)
 
-def posix_shell(chan,channel):
+def posix_shell(chan,channel,log_name=None):
     from webterminal.asgi import channel_layer
     stdout = list()
     begin_time = time.time()
@@ -74,6 +77,10 @@ def posix_shell(chan,channel):
                 },
             'stdout':list(map(lambda frame: [round(frame[0], 6), frame[1]], stdout))
             }
-        with open('/tmp/{0}.json'.format(channel.rsplit('.')[2]), "a") as f:
+        with open('/tmp/{0}.json'.format(log_name), "a") as f:
             f.write(json.dumps(attrs, ensure_ascii=False,cls=CustomeFloatEncoder,indent=2))
-        pass
+        
+        audit_log=SshLog.objects.get(channel=channel,log=log_name)
+        audit_log.is_finished = True
+        #audit_log.end_time = timezone.now()
+        audit_log.save()
