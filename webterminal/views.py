@@ -17,6 +17,7 @@ from django.views.generic.edit import DeleteView,CreateView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers import serialize
+from webterminal.settings import MEDIA_URL
 
 class Index(LoginRequiredMixin,View):
     def get(self,request):
@@ -192,3 +193,13 @@ class GroupCreate(LoginRequiredMixin,View):
 class SshLogList(LoginRequiredMixin,ListView):
     model = SshLog
     template_name = 'sshlogslist.html'
+
+class SshLogPlay(LoginRequiredMixin,DetailView):
+    model = SshLog
+    template_name = 'sshlogplay.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(SshLogPlay, self).get_context_data(**kwargs)
+        objects = kwargs['object']
+        context['logpath'] = '{0}{1}-{2}-{3}/{4}.json'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
+        return context     
