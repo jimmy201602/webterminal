@@ -26,6 +26,10 @@ from django.contrib.auth.views import LoginView,LogoutView
 from rest_framework import routers
 from webterminal.api import ServerGroupViewSet,ServerInforViewSet,CommandsSequenceViewSet,CredentialViewSet
 
+from django.views.static import serve
+from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
 #Register webterminal api
 router = routers.DefaultRouter()
 router.register('servergroup', ServerGroupViewSet)
@@ -52,3 +56,10 @@ urlpatterns = [
     url(r'^sshlogslist/$',SshLogList.as_view(),name='sshlogslist'),
     url(r'^api/',include(router.urls)),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += [
+        url(r'^media/(?P<path>.*)$', serve, { 'document_root': settings.MEDIA_ROOT, }),
+    ]

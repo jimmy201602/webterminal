@@ -15,6 +15,7 @@ import ast
 import time
 from django.contrib.auth.models import User 
 from django.utils.timezone import now
+import os
 
 global multiple_chan
 multiple_chan = dict()
@@ -79,7 +80,9 @@ class webterminal(WebsocketConsumer):
                     
                     chan = self.ssh.invoke_shell(width=90, height=40,)
                     multiple_chan[self.message.reply_channel.name] = chan
-                    interactive_shell(chan,self.message.reply_channel.name,log_name=audit_log.log)
+                    directory_date_time = now()
+                    log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}.json'.format(audit_log.log))
+                    interactive_shell(chan,self.message.reply_channel.name,log_name=log_name)
                     
                 elif data[0] in ['stdin','stdout']:
                     if multiple_chan.has_key(self.message.reply_channel.name):
