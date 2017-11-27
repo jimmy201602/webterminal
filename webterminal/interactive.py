@@ -20,11 +20,31 @@ import time
 import codecs
 import io
 import re
+import errno
 import subprocess
 from django.contrib.auth.models import User 
 from django.utils import timezone
 from webterminal.models import SshLog
+from webterminal.settings import MEDIA_ROOT
 
+def mkdir_p(path):
+    """
+    Pythonic version of "mkdir -p".  Example equivalents::
+
+        >>> mkdir_p('/tmp/test/testing') # Does the same thing as...
+        >>> from subprocess import call
+        >>> call('mkdir -p /tmp/test/testing')
+
+    .. note:: This doesn't actually call any external commands.
+    """
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST:
+            pass
+        else:
+            raise # The original exception
+        
 def interactive_shell(chan,channel,log_name=None):
     if has_termios:
         posix_shell(chan,channel,log_name=log_name)
@@ -77,10 +97,11 @@ def posix_shell(chan,channel,log_name=None):
                 },
             'stdout':list(map(lambda frame: [round(frame[0], 6), frame[1]], stdout))
             }
-        with open('/tmp/{0}.json'.format(log_name), "a") as f:
+        mkdir_p('/'.join(os.path.join(MEDIA_ROOT,log_name).rsplit('/')[0:-1]))
+        with open(os.path.join(MEDIA_ROOT,log_name), "a") as f:
             f.write(json.dumps(attrs, ensure_ascii=False,cls=CustomeFloatEncoder,indent=2))
         
-        audit_log=SshLog.objects.get(channel=channel,log=log_name)
+        audit_log=SshLog.objects.get(channel=channel,log=log_name.rsplit('/')[-1].rsplit('.json')[0])
         audit_log.is_finished = True
-        #audit_log.end_time = timezone.now()
+        audit_log.end_time = timezone.now()
         audit_log.save()
