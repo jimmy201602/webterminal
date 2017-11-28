@@ -7,6 +7,8 @@ from exceptions import ElfinderErrorMessages
 from elfinder.connector import ElfinderConnector
 from elfinder.conf import settings as ls
 from django.shortcuts import render_to_response
+from django.shortcuts import get_object_or_404
+from webterminal.models import ServerInfor
 
 class ElfinderConnectorView(View):
     """
@@ -103,10 +105,25 @@ class ElfinderConnectorView(View):
     def get(self, request, *args, **kwargs):
         """
         used in get method calls
-        """
+        """       
         if kwargs['optionset'] == 'sftp':
+            server_object = get_object_or_404(ServerInfor,name=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
-            optinon_sets['roots'][0]['storageKwArgs'] = {'host':'127.0.0.1','params':{'port':22,'username':'test','password':'password','timeout':30},'root_path':'/','interactive':False}
+            optinon_sets['roots'][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
+            if server_object.credential.method == 'password':
+                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                                                             'params':{'port':server_object.credential.port,
+                                                            'username':server_object.credential.username,
+                                                            'password':server_object.credential.password,
+                                                            'timeout':30},
+                                                             'root_path':'/','interactive':False}
+            else:
+                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                                                                         'params':{'port':server_object.credential.port,
+                                                                                   'username':server_object.credential.username,
+                                                                        'key_filename':server_object.credential.key,
+                                                                        'timeout':30},
+                                                                         'root_path':'/','interactive':False}                
             self.elfinder = ElfinderConnector(optinon_sets, request.session)
         else:
             self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), request.session)
@@ -118,8 +135,23 @@ class ElfinderConnectorView(View):
         It only allows for the 'upload' command
         """
         if kwargs['optionset'] == 'sftp':
+            server_object = get_object_or_404(ServerInfor,name=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
-            optinon_sets['roots'][0]['storageKwArgs'] = {'host':'127.0.0.1','params':{'port':22,'username':'test','password':'password','timeout':30},'root_path':'/','interactive':False}
+            optinon_sets['roots'][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
+            if server_object.credential.method == 'password':
+                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                                                             'params':{'port':server_object.credential.port,
+                                                            'username':server_object.credential.username,
+                                                            'password':server_object.credential.password,
+                                                            'timeout':30},
+                                                             'root_path':'/','interactive':False}
+            else:
+                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                                                                         'params':{'port':server_object.credential.port,
+                                                                                   'username':server_object.credential.username,
+                                                                        'key_filename':server_object.credential.key,
+                                                                        'timeout':30},
+                                                                         'root_path':'/','interactive':False}  
             self.elfinder = ElfinderConnector(optinon_sets, request.session)
         else:
             self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), request.session)        
