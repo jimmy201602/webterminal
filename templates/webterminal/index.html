@@ -34,6 +34,9 @@
             background-color: #fafafa;
         }
     </style>
+<link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css">
+<!-- elFinder CSS (REQUIRED) -->
+<link rel="stylesheet" type="text/css" href="{% static "elfinder/css/elfinder.min.css"%}">
 {% block content %}
 <div class="row ">
     <div class="col-md-3">
@@ -81,6 +84,9 @@
 <script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
 <script src="{% static 'plugins/jstree/jstree.js' %}"></script>
+<script src="{% static "plugins/jquery-ui/jquery-ui.js"%}"></script>
+<!-- elFinder JS (REQUIRED) -->
+<script src="{% static "elfinder/js/elfinder.min.js"%}"></script>
 
 <script type="application/javascript">
 
@@ -263,14 +269,25 @@
                             console.log($node);
                         }
                     },
-//                    "Rename": {
-//                        "separator_before": false,
-//                        "separator_after": false,
-//                        "label": "rename",
-//                        "action": function (obj) {
-//                            tree.edit($node);
-//                        }
-//                    },
+                    "file_manager": {
+                        "separator_before": false,
+                        "separator_after": false,
+                        "label": "file manager",
+                        "action": function (obj) {
+                            var tabId = $node.text; //this is id on tab content div where the
+                            //get server ip
+                            var ip = $node.original.ip;
+                            if ($("#"+tabId).length <= 0){
+                                $('.nav-tabs').append('<li><a href="#' + tabId + "_file_manager" + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
+                                showTab(tabId);
+                                registerCloseEvent();
+                                file_manager(tabId);
+                            }else {
+                                showTab(tabId);
+                            }
+                        }
+                    },
 //                    "Create": {
 //                        "separator_before": false,
 //                        "separator_after": false,
@@ -300,5 +317,36 @@
         e.preventDefault();
         $("#server_list").jstree(true).search($("#q").val());
     });
+    function file_manager(name) {
+        var i18nPath = 'js/i18n',
+            start = function(lng) {
+                // disable HTML quicklook plugin
+                elFinder.prototype.commands.quicklook.plugins[1] = null;
+
+
+                    var elfinderInstance = $('#'+name+'_file_manager').elfinder({
+                        resizable: false,
+                        height: '100%',
+                        url : '/elfinder/yawd-connector/sftp/'+name+'/', // connector URL (REQUIRED)
+                        lang: lng                    // language (OPTIONAL)
+                    }).elfinder('instance');
+
+            },
+            loct = window.location.search,
+            full_lng, locm, lng;
+
+        // detect language
+        if (loct && (locm = loct.match(/lang=([a-zA-Z_-]+)/))) {
+            full_lng = locm[1];
+        } else {
+            full_lng = (navigator.browserLanguage || navigator.language || navigator.userLanguage);
+        }
+        lng = full_lng.substr(0,2);
+        if (lng == 'ja') lng = 'jp';
+        else if (lng == 'pt') lng = 'pt_BR';
+        else if (lng == 'zh') lng = (full_lng.substr(0,5) == 'zh-tw')? 'zh_TW' : 'zh_CN';
+
+        start(lng);
+    }
 </script>
 {% endblock %}
