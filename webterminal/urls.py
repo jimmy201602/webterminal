@@ -55,6 +55,7 @@ urlpatterns = [
     url(r'^grouplist/$',GroupList.as_view(),name='grouplist'),
     url(r'^sshlogslist/$',SshLogList.as_view(),name='sshlogslist'),
     url(r'^sshlogplay/(?P<pk>[0-9]+)/',SshLogPlay.as_view(),name='sshlogplay'),
+    url(r'^elfinder/',include('elfinder.urls')),
     url(r'^api/',include(router.urls)),
 ]
 
