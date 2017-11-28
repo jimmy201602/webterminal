@@ -22,12 +22,12 @@ from webterminal.settings import MEDIA_URL
 class Index(LoginRequiredMixin,View):
     def get(self,request):
         server_groups=ServerGroup.objects.all()
-        return render_to_response('index.html',locals())
+        return render_to_response('webterminal/index.html',locals())
 
 class Commands(LoginRequiredMixin,View):
     def get(self,request):
         server_groups=ServerGroup.objects.all()
-        return render_to_response('commandcreate.html',locals())
+        return render_to_response('webterminal/commandcreate.html',locals())
     
     def post(self,request):
         if request.is_ajax():
@@ -76,11 +76,11 @@ class Commands(LoginRequiredMixin,View):
 class CommandExecute(LoginRequiredMixin,View):
     def get(self,request):
         commands=CommandsSequence.objects.all()
-        return render_to_response('commandexecute.html',locals())
+        return render_to_response('webterminal/commandexecute.html',locals())
 
 class CommandExecuteList(LoginRequiredMixin,ListView):
     model = CommandsSequence
-    template_name = 'commandslist.html'
+    template_name = 'webterminal/commandslist.html'
     
     def get_context_data(self, **kwargs):
         context = super(CommandExecuteList, self).get_context_data(**kwargs)
@@ -104,7 +104,7 @@ class CommandExecuteDetailApi(LoginRequiredMixin,View):
 class CredentialCreate(LoginRequiredMixin,View):
     
     def get(self,request):
-        return render_to_response('credentialcreate.html',locals())
+        return render_to_response('webterminal/credentialcreate.html',locals())
     
     def post(self,request):
         if request.is_ajax():
@@ -145,7 +145,7 @@ class CredentialCreate(LoginRequiredMixin,View):
 class CredentialList(LoginRequiredMixin,ListView):
     
     model = Credential
-    template_name = 'credentiallist.html'
+    template_name = 'webterminal/credentiallist.html'
     
 class CredentialDetailApi(LoginRequiredMixin,View):
     
@@ -163,12 +163,12 @@ class CredentialDetailApi(LoginRequiredMixin,View):
 class ServerCreate(LoginRequiredMixin,View):
     def get(self,request):
         credentials = Credential.objects.all()
-        return render_to_response('servercreate.html',locals())
+        return render_to_response('webterminal/servercreate.html',locals())
 
 class ServerlList(LoginRequiredMixin,ListView):
     
     model = ServerInfor
-    template_name = 'serverlist.html'
+    template_name = 'webterminal/serverlist.html'
     
     def get_context_data(self, **kwargs):
         context = super(ServerlList, self).get_context_data(**kwargs)
@@ -177,7 +177,7 @@ class ServerlList(LoginRequiredMixin,ListView):
 
 class GroupList(LoginRequiredMixin,ListView):
     model = ServerGroup
-    template_name = 'grouplist.html'
+    template_name = 'webterminal/grouplist.html'
     
     def get_context_data(self, **kwargs):
         context = super(GroupList, self).get_context_data(**kwargs)
@@ -187,16 +187,16 @@ class GroupList(LoginRequiredMixin,ListView):
 class GroupCreate(LoginRequiredMixin,View):
     def get(self,request):
         servers = ServerInfor.objects.all()
-        return render_to_response('groupcreate.html',locals())
+        return render_to_response('webterminal/groupcreate.html',locals())
 
 
 class SshLogList(LoginRequiredMixin,ListView):
     model = SshLog
-    template_name = 'sshlogslist.html'
+    template_name = 'webterminal/sshlogslist.html'
 
 class SshLogPlay(LoginRequiredMixin,DetailView):
     model = SshLog
-    template_name = 'sshlogplay.html'
+    template_name = 'webterminal/sshlogplay.html'
     
     def get_context_data(self, **kwargs):
         context = super(SshLogPlay, self).get_context_data(**kwargs)
