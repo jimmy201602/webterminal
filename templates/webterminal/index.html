@@ -277,7 +277,7 @@
                             var tabId = $node.text; //this is id on tab content div where the
                             //get server ip
                             var ip = $node.original.ip;
-                            if ($("#"+tabId).length <= 0){
+                            if ($("#"+tabId + "_file_manager").length <= 0){
                                 $('.nav-tabs').append('<li><a href="#' + tabId + "_file_manager" + '"><button class="close closeTab" type="button" >×</button>' + tabId + ' file manager' + '</a></li>');
                                 $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '_file_manager' + '"></div>');
                                 showTab(tabId+'_file_manager');
