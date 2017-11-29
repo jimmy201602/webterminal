@@ -6,8 +6,9 @@ ssh web terminal implemented by django
 [installiation-en](./doc/install_en.md)  
 [中文安装文档](./doc/install_zh.md)  
 # screenshots
-![screenshots](./screenshots/screenshots1.png  "screenshots")
-![screenshots](./screenshots/screenshots2.png  "screenshots")
+![screenshots](./screenshots/screenshots1.jpg  "screenshots")
+![screenshots](./screenshots/screenshots2.jpg  "screenshots")
+![screenshots](./screenshots/screenshots3.jpg  "screenshots")
 # Author
 zhengge2012@gmail.com
 # QQ group number
