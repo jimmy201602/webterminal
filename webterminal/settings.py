@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webterminal',
     'channels',
-    'rest_framework'
+    'rest_framework',
+    'elfinder',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -164,3 +166,5 @@ MEDIA_URL = '/media/'
 from django.conf.locale.en import formats as en_formats
 en_formats.DATETIME_FORMAT = 'Y-m-d H:i:s'
 en_formats.DATETIME_INPUT_FORMATS = 'Y-m-d H:i:s'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.sftpstorage.SFTPStorage'
