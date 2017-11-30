@@ -164,12 +164,12 @@
         term.open(element, false);
         var ws = new WebSocket(ws_url);
         ws.onopen = function (event) {
-            ws.send(JSON.stringify(["ip", ip]));
             //set terminal width and height
-            <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
-                <!--window.innerHeight, window.innerWidth]));-->
-            <!--term.resize(90,window.innerHeight);-->
             term.fit();
+            <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
+                <!--term.cols, term.rows]));-->
+            term.resize(term.cols, term.rows);
+            ws.send(JSON.stringify(["ip", ip,term.cols, term.rows]));
             term.on('data', function (data) {
                 ws.send(JSON.stringify(['stdin', data]));
             });

@@ -49,6 +49,8 @@ class webterminal(WebsocketConsumer):
                 begin_time = time.time()
                 if data[0] == 'ip':
                     ip = data[1]
+                    width = data[2]
+                    height = data[3]
                     self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                     try:
                         data = ServerInfor.objects.get(ip=ip)
@@ -78,11 +80,11 @@ class webterminal(WebsocketConsumer):
                         self.message.reply_channel.send({"accept":False})
                         return
                     
-                    chan = self.ssh.invoke_shell(width=90, height=40,)
+                    chan = self.ssh.invoke_shell(width=width, height=height,)
                     multiple_chan[self.message.reply_channel.name] = chan
                     directory_date_time = now()
                     log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}.json'.format(audit_log.log))
-                    interactive_shell(chan,self.message.reply_channel.name,log_name=log_name)
+                    interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
                     
                 elif data[0] in ['stdin','stdout']:
                     if multiple_chan.has_key(self.message.reply_channel.name):
@@ -90,6 +92,7 @@ class webterminal(WebsocketConsumer):
                     else:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSsh session is terminate or closed!\033[0m'])},immediately=True)
                 elif data[0] == u'set_size':
+                    print data
                     if multiple_chan.has_key(self.message.reply_channel.name):
                         multiple_chan[self.message.reply_channel.name].resize_pty(width=data[3], height=data[4])
                 else:

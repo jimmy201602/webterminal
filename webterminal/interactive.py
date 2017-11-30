@@ -45,9 +45,9 @@ def mkdir_p(path):
         else:
             raise # The original exception
         
-def interactive_shell(chan,channel,log_name=None):
+def interactive_shell(chan,channel,log_name=None,width=90,height=40):
     if has_termios:
-        posix_shell(chan,channel,log_name=log_name)
+        posix_shell(chan,channel,log_name=log_name,width=width,height=height)
     else:
         sys.exit(1)
        
@@ -57,7 +57,7 @@ class CustomeFloatEncoder(json.JSONEncoder):
             return format(obj, '.6f')
         return json.JSONEncoder.encode(self, obj)
 
-def posix_shell(chan,channel,log_name=None):
+def posix_shell(chan,channel,log_name=None,width=90,height=40):
     from webterminal.asgi import channel_layer
     stdout = list()
     begin_time = time.time()
@@ -86,8 +86,8 @@ def posix_shell(chan,channel,log_name=None):
     finally:
         attrs = {
             "version": 1,
-            "width": 90,#int(subprocess.check_output(['tput', 'cols'])),
-            "height": 40,#int(subprocess.check_output(['tput', 'lines'])),
+            "width": width,#int(subprocess.check_output(['tput', 'cols'])),
+            "height": height,#int(subprocess.check_output(['tput', 'lines'])),
             "duration": round(time.time()- begin_time,6),
             "command": os.environ.get('SHELL',None),
             'title':None,
