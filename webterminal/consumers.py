@@ -29,7 +29,7 @@ class webterminal(WebsocketConsumer):
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})     
         #permission auth
-        
+        self.message.reply_channel.send({"text":json.dumps(['channel_name',self.message.reply_channel.name])},immediately=True)
         
     def disconnect(self, message):
         #close threading
