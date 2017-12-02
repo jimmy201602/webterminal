@@ -5,7 +5,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from webterminal.interactive import interactive_shell
+from webterminal.interactive import interactive_shell,get_redis_instance,SshTerminalThread
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
@@ -16,10 +16,7 @@ import time
 from django.contrib.auth.models import User 
 from django.utils.timezone import now
 import os
-
-global multiple_chan
-multiple_chan = dict()
-    
+                
 class webterminal(WebsocketConsumer):
     
     ssh = paramiko.SSHClient() 
@@ -27,21 +24,34 @@ class webterminal(WebsocketConsumer):
     http_user_and_session = True
     channel_session = True
     channel_session_user = True   
+
     
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})     
         #permission auth
-
+        
+        
     def disconnect(self, message):
+        #close threading
+        self.closessh()
+        
         self.message.reply_channel.send({"accept":False})
-        if multiple_chan.has_key(self.message.reply_channel.name):
-            multiple_chan[self.message.reply_channel.name].close()
+        
         audit_log=SshLog.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
         audit_log.is_finished = True
         audit_log.end_time = now()
         audit_log.save()
-        self.close()        
+        self.close()
     
+    def queue(self):
+        queue = get_redis_instance()
+        channel = queue.pubsub()
+        return queue
+    
+    def closessh(self):
+        #close threading
+        self.queue().publish(self.message.reply_channel.name, json.dumps(['close']))
+        
     def receive(self,text=None, bytes=None, **kwargs):   
         try:
             if text:
@@ -81,34 +91,36 @@ class webterminal(WebsocketConsumer):
                         return
                     
                     chan = self.ssh.invoke_shell(width=width, height=height,)
-                    multiple_chan[self.message.reply_channel.name] = chan
+                    
+                    #open a new threading to handle ssh to avoid global variable bug
+                    t1=SshTerminalThread(self.message,chan)
+                    t1.setDaemon = True
+                    t1.start()     
+                    
                     directory_date_time = now()
                     log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}.json'.format(audit_log.log))
                     interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
                     
                 elif data[0] in ['stdin','stdout']:
-                    if multiple_chan.has_key(self.message.reply_channel.name):
-                        multiple_chan[self.message.reply_channel.name].send(json.loads(text)[1])                    
-                    else:
-                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSsh session is terminate or closed!\033[0m'])},immediately=True)
+                    self.queue().publish(self.message.reply_channel.name, json.loads(text)[1])
                 elif data[0] == u'set_size':
-                    if multiple_chan.has_key(self.message.reply_channel.name):
-                        multiple_chan[self.message.reply_channel.name].resize_pty(width=data[3], height=data[4])
+                    self.queue().publish(self.message.reply_channel.name, text)
                 else:
                     self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mUnknow command found!\033[0m'])},immediately=True)
             elif bytes:
-                if multiple_chan.has_key(self.message.reply_channel.name):
-                    multiple_chan[self.message.reply_channel.name].send(json.loads(bytes)[1])
+                self.queue().publish(self.message.reply_channel.name, json.loads(bytes)[1])
         except socket.error:
-            if multiple_chan.has_key(self.message.reply_channel.name):
-                multiple_chan[self.message.reply_channel.name].close()
-                audit_log=SshLog.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
-                audit_log.is_finished = True
-                audit_log.end_time = now()
-                audit_log.save()                
+            audit_log=SshLog.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
+            audit_log.is_finished = True
+            audit_log.end_time = now()
+            audit_log.save()
+            self.closessh()
+            self.close()
         except Exception,e:
             import traceback
             print traceback.print_exc()
+            self.closessh()
+            self.close()
 
 
 class CommandExecute(WebsocketConsumer):
