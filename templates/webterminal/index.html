@@ -189,6 +189,12 @@
                     case "disconnect":
                         term.write("\r\n\r\n[Finished...]\r\n");
                         break;
+                    case "channel_name":
+                        <!--console.log(json_msg[1]);-->
+                        var channel_name_attribute = document.createAttribute('channel_name')
+                        channel_name_attribute.value = json_msg[1];
+                        element.setAttributeNode(channel_name_attribute)
+                        break;
                 }
             };
         };
