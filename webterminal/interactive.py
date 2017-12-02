@@ -110,6 +110,10 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
         audit_log.is_finished = True
         audit_log.end_time = timezone.now()
         audit_log.save()
+        #hand ssh terminal exit
+        queue = get_redis_instance()
+        redis_channel = queue.pubsub()
+        queue.publish(channel, json.dumps(['close']))
 
 class SshTerminalThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
