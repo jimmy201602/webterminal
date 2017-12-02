@@ -29,6 +29,11 @@ from webterminal.settings import MEDIA_ROOT
 import redis
 import threading
 
+def get_redis_instance():
+    from webterminal.asgi import channel_layer
+    host,port = channel_layer.hosts[0].rsplit('redis://')[1].rsplit(':')
+    return redis.StrictRedis(**{'host':host,'port':int(port.rsplit('/')[0]),'db':int(port.rsplit('/')[1])})
+
 def mkdir_p(path):
     """
     Pythonic version of "mkdir -p".  Example equivalents::
@@ -108,11 +113,6 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
         audit_log.end_time = timezone.now()
         audit_log.save()
 
-def get_redis_instance():
-    from webterminal.asgi import channel_layer
-    host,port = channel_layer.hosts[0].rsplit('redis://')[1].rsplit(':')
-    return redis.StrictRedis(**{'host':host,'port':int(port.rsplit('/')[0]),'db':int(port.rsplit('/')[1])})
-
 class SshTerminalThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
     regularly for the stopped() condition."""
@@ -137,9 +137,13 @@ class SshTerminalThread(threading.Thread):
         return redis_sub
             
     def run(self):
+        #fix the first login 1 bug
+        first_flag = True
         while (not self._stop_event.is_set()):
             text = self.queue.get_message()
             if text:
+                #deserialize data
+                
                 if isinstance(text['data'],(str,basestring,unicode)):
                     try:
                         data = ast.literal_eval(text['data'])
@@ -147,6 +151,7 @@ class SshTerminalThread(threading.Thread):
                         data = text['data']
                 else:
                     data = text['data']
+                    
                 if isinstance(data,(list,tuple)):
                     if data[0] == 'close':
                         print 'close threading'
@@ -155,8 +160,15 @@ class SshTerminalThread(threading.Thread):
                     elif data[0] == 'set_size':
                         self.chan.resize_pty(width=data[3], height=data[4])
                         break
-                try:
-                    self.chan.send(str(data))
-                except socket.error:
-                    print 'close threading error'
-                    self.stop()
+                    elif data[0] in ['stdin','stdout']:
+                        self.chan.send(data[1])
+                        
+                elif isinstance(data,(int,long)):
+                    if data == 1 and first_flag:
+                        first_flag = False
+                else:
+                    try:
+                        self.chan.send(str(data))
+                    except socket.error:
+                        print 'close threading error'
+                        self.stop()
