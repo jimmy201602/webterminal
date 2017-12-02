@@ -26,13 +26,11 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from webterminal.models import SshLog
 from webterminal.settings import MEDIA_ROOT
-import redis
 import threading
 
 def get_redis_instance():
-    from webterminal.asgi import channel_layer
-    host,port = channel_layer.hosts[0].rsplit('redis://')[1].rsplit(':')
-    return redis.StrictRedis(**{'host':host,'port':int(port.rsplit('/')[0]),'db':int(port.rsplit('/')[1])})
+    from webterminal.asgi import channel_layer    
+    return channel_layer._connection_list[0]
 
 def mkdir_p(path):
     """
