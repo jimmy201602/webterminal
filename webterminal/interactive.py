@@ -26,6 +26,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from webterminal.models import SshLog
 from webterminal.settings import MEDIA_ROOT
+import redis
+import threading
 
 def mkdir_p(path):
     """
@@ -74,7 +76,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 delay = now - last_write_time['last_activity_time']
                 last_write_time['last_activity_time'] = now                
                 if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
-                    pass
+                    chan.close()
                 else:
                     stdout.append([delay,codecs.getincrementaldecoder('UTF-8')('replace').decode(x)]) 
                 channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
@@ -105,3 +107,56 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
         audit_log.is_finished = True
         audit_log.end_time = timezone.now()
         audit_log.save()
+
+def get_redis_instance():
+    from webterminal.asgi import channel_layer
+    host,port = channel_layer.hosts[0].rsplit('redis://')[1].rsplit(':')
+    return redis.StrictRedis(**{'host':host,'port':int(port.rsplit('/')[0]),'db':int(port.rsplit('/')[1])})
+
+class SshTerminalThread(threading.Thread):
+    """Thread class with a stop() method. The thread itself has to check
+    regularly for the stopped() condition."""
+    
+    def __init__(self,message,chan):
+        super(SshTerminalThread, self).__init__()
+        self._stop_event = threading.Event()
+        self.message = message
+        self.queue = self.redis_queue()
+        self.chan = chan
+        
+    def stop(self):
+        self._stop_event.set()
+
+    def stopped(self):
+        return self._stop_event.is_set()
+    
+    def redis_queue(self):
+        redis_instance = get_redis_instance()
+        redis_sub = redis_instance.pubsub()
+        redis_sub.subscribe(self.message.reply_channel.name)
+        return redis_sub
+            
+    def run(self):
+        while (not self._stop_event.is_set()):
+            text = self.queue.get_message()
+            if text:
+                if isinstance(text['data'],(str,basestring,unicode)):
+                    try:
+                        data = ast.literal_eval(text['data'])
+                    except Exception:
+                        data = text['data']
+                else:
+                    data = text['data']
+                if isinstance(data,(list,tuple)):
+                    if data[0] == 'close':
+                        print 'close threading'
+                        self.chan.close()
+                        self.stop()
+                    elif data[0] == 'set_size':
+                        self.chan.resize_pty(width=data[3], height=data[4])
+                        break
+                try:
+                    self.chan.send(str(data))
+                except socket.error:
+                    print 'close threading error'
+                    self.stop()
