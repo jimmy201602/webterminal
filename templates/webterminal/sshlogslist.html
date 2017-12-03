@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
 <link rel="stylesheet" href="{% static "plugins/json-view/jquery.jsonview.min.css" %}">
 <link rel="stylesheet" href="{% static "plugins/bootstrap-dialog/css/bootstrap-dialog.css" %}">
+
 {% endblock %}
 {% block content %}
 <section class="content">
@@ -62,6 +63,7 @@
                                     <a class="btn btn-xs btn-primary play" onclick="play('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{{element.start_time}}','{% url 'sshlogplay' element.id %}');">{%trans 'replay' %}</a>
                                 {% else %}
                                     <a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>
+                                    <a class="btn btn-xs btn-danger" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{%trans 'monitor' %}</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -88,6 +90,8 @@
 <script src="{% static "plugins/json-view/jquery.jsonview.min.js" %}"></script>
 <script src="{% static "plugins/bootstrap-dialog/js/bootstrap-dialog.js" %}"></script>
 <script src="{% static "plugins/bootbox/bootbox.js" %}"></script>
+
+
 <script type="application/javascript">
     $(function () {
         $('#sshlogslist').DataTable({
@@ -155,6 +159,19 @@
         }
     });
 }
-    
+
+
+function monitor(user,ip,start_time,url){
+        var div_username = ' user: '+'<span class="text-info">'+user+'' + '</span>';
+        var div_ip = ' server: '+'<span class="text-info">' + ip + '</span>';
+        var div_time = ' start time: ' + '<span class="text-info">'+start_time +'</span>';
+        var title = div_username + div_ip + div_time;
+        BootstrapDialog.show({
+            title: title,
+            type: BootstrapDialog.TYPE_DEFAULT,
+            message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url)
+        });
+        return false;
+    }
 </script>
 {% endblock %}
