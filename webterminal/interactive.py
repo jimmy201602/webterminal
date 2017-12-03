@@ -27,6 +27,7 @@ from django.utils import timezone
 from webterminal.models import SshLog
 from webterminal.settings import MEDIA_ROOT
 import threading
+import ast
 
 def get_redis_instance():
     from webterminal.asgi import channel_layer    
@@ -145,15 +146,14 @@ class SshTerminalThread(threading.Thread):
             text = self.queue.get_message()
             if text:
                 #deserialize data
-                
                 if isinstance(text['data'],(str,basestring,unicode)):
                     try:
                         data = ast.literal_eval(text['data'])
-                    except Exception:
+                    except Exception,e:
                         data = text['data']
                 else:
                     data = text['data']
-                    
+                
                 if isinstance(data,(list,tuple)):
                     if data[0] == 'close':
                         print 'close threading'
