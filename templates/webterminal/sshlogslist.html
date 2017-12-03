@@ -170,7 +170,8 @@ function monitor(user,ip,start_time,url){
             size: BootstrapDialog.SIZE_WIDE,
             title: title,
             type: BootstrapDialog.TYPE_DEFAULT,
-            message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url)
+            message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url),
+            draggable: true
         });
         return false;
     }
