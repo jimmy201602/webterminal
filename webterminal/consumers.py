@@ -68,7 +68,7 @@ class webterminal(WebsocketConsumer):
                         port = data.credential.port
                         method = data.credential.method
                         username = data.credential.username
-                        audit_log = SshLog.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name)
+                        audit_log = SshLog.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=width,height=height)
                         audit_log.save()
                         if method == 'password':
                             password = data.credential.password
