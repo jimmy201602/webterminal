@@ -20,7 +20,7 @@
     $(document).ready(function () {
         var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
         var ws_path = ws_scheme + '://' + window.location.host + '/monitor/' + 'monitor-' + '{{object.log}}';
-        make_terminal(document.getElementById('terminal_monitor'), {rows: 40, cols: 142}, ws_path);
+        make_terminal(document.getElementById('terminal_monitor'), {rows: 40, cols: 90}, ws_path);
     })
     function make_terminal(element, size, ws_url) {
         var term = new Terminal({
