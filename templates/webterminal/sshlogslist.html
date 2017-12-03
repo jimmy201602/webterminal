@@ -61,7 +61,7 @@
                                 {% if element.is_finished %}
                                     <a class="btn btn-xs btn-primary play" onclick="play('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{{element.start_time}}','{% url 'sshlogplay' element.id %}');">{%trans 'replay' %}</a>
                                 {% else %}
-                                    <a class="btn btn-xs btn-danger">{%trans 'kill' %}</a>
+                                    <a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>
                                 {% endif %}
                             </td>
                         </tr>
@@ -113,5 +113,48 @@
         });
         return false;
     }
+        
+    function kill(channel_name,user_name) {
+    var dialog = bootbox.confirm({
+        title: "<a class='text-danger'>"+'kick user ' + user_name +" out </a>",
+        message: 'Are you sure to kick user ' + user_name +' out ?',
+        buttons: {
+            confirm: {
+                label: 'kill',
+                className: 'btn-danger'
+            },
+            cancel: {
+                label: 'cancel',
+                className: 'btn-success'
+            }
+        },
+        callback: function (result) {
+            if (result){
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'sshterminalkill' %}',
+                    dataType: "json",
+                    data: {'channel_name':channel_name},
+                    success: function (data) {
+                    
+                        if (data['status']){
+                            toastr["success"](data['message']);
+                            setTimeout(function () {
+                                location.reload();
+                            },2000);
+                        }else{
+                            toastr["error"](data['message']);
+                        }
+                        
+                    },
+                    failure: function (errMsg) {
+                        toastr["error"](errMsg);
+                    },
+                });
+            }
+        }
+    });
+}
+    
 </script>
 {% endblock %}
