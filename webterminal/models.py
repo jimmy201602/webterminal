@@ -82,6 +82,7 @@ class SshLog(models.Model):
     end_time = models.DateTimeField(auto_created=True,auto_now=True)
     is_finished = models.BooleanField(default=False)
     user = models.ForeignKey(User)
-    
+    width = models.PositiveIntegerField(default=90)
+    height = models.PositiveIntegerField(default=40)
     def __unicode__(self):
         return self.server.name    
