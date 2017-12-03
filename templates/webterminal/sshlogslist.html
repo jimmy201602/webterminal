@@ -167,6 +167,7 @@ function monitor(user,ip,start_time,url){
         var div_time = ' start time: ' + '<span class="text-info">'+start_time +'</span>';
         var title = div_username + div_ip + div_time;
         BootstrapDialog.show({
+            size: BootstrapDialog.SIZE_WIDE,
             title: title,
             type: BootstrapDialog.TYPE_DEFAULT,
             message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url)
