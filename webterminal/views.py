@@ -206,6 +206,10 @@ class SshLogPlay(LoginRequiredMixin,DetailView):
         context['logpath'] = '{0}{1}-{2}-{3}/{4}.json'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
         return context
 
+class SshTerminalMonitor(LoginRequiredMixin,DetailView):
+    model = SshLog
+    template_name = 'webterminal/sshlogmonitor.html'
+        
 class SshTerminalKill(LoginRequiredMixin,View):
     
     def post(self,request):

@@ -16,7 +16,8 @@ import time
 from django.contrib.auth.models import User 
 from django.utils.timezone import now
 import os
-                
+from channels import Group
+
 class webterminal(WebsocketConsumer):
     
     ssh = paramiko.SSHClient() 
@@ -52,7 +53,7 @@ class webterminal(WebsocketConsumer):
         #close threading
         self.queue().publish(self.message.reply_channel.name, json.dumps(['close']))
         
-    def receive(self,text=None, bytes=None, **kwargs):   
+    def receive(self,text=None, bytes=None, **kwargs):
         try:
             if text:
                 data = json.loads(text)
@@ -190,3 +191,24 @@ class CommandExecute(WebsocketConsumer):
             import traceback
             print traceback.print_exc()
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
+            
+class SshTerminalMonitor(WebsocketConsumer):
+    
+    http_user = True
+    http_user_and_session = True
+    channel_session = True
+    channel_session_user = True  
+    
+    
+    def connect(self, message,channel):
+        self.message.reply_channel.send({"accept": True})     
+        #permission auth
+        Group(channel).add(self.message.reply_channel.name)
+
+    def disconnect(self, message,channel):
+        Group(channel).discard(self.message.reply_channel.name)
+        self.message.reply_channel.send({"accept":False})
+        self.close()
+    
+    def receive(self,text=None, bytes=None, **kwargs):
+        pass

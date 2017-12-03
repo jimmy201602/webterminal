@@ -75,7 +75,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 x = u(chan.recv(1024))
                 if len(x) == 0:
                     channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n')]) })
-                    break
+                    break             
                 now = time.time()
                 delay = now - last_write_time['last_activity_time']
                 last_write_time['last_activity_time'] = now                
