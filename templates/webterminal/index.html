@@ -128,8 +128,6 @@
 
                     if (data['status']){
                         toastr["success"](data['message']);
-                    }else{
-                        toastr["error"](data['message']);
                     }
                 },
                 failure: function (errMsg) {
@@ -300,8 +298,6 @@
 
                                         if (data['status']){
                                             toastr["success"](data['message']);
-                                        }else{
-                                            toastr["error"](data['message']);
                                         }
                                     },
                                     failure: function (errMsg) {
