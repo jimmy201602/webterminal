@@ -119,8 +119,24 @@
             var tabContentId = $(this).parent().attr("href");
             $(this).parent().parent().remove(); //remove li of tab
             $('#myTab a:last').tab('show'); // Select first tab
-            $(tabContentId).remove(); //remove respective tab content
+            $.ajax({
+                type: "POST",
+                url: '{% url 'sshterminalkill' %}',
+                dataType: "json",
+                data: {'channel_name':$(tabContentId).attr('channel_name')},
+                success: function (data) {
 
+                    if (data['status']){
+                        toastr["success"](data['message']);
+                    }else{
+                        toastr["error"](data['message']);
+                    }
+                },
+                failure: function (errMsg) {
+                    toastr["error"](errMsg);
+                },
+            });
+            $(tabContentId).remove(); //remove respective tab content
         });
     }
 
@@ -273,7 +289,26 @@
                         "separator_after": false,
                         "label": "disconnect",
                         "action": function (obj) {
-                            console.log($node);
+//                            console.log($node);
+                            if ($("#"+$node.text).length >0){
+                                $.ajax({
+                                    type: "POST",
+                                    url: '{% url 'sshterminalkill' %}',
+                                    dataType: "json",
+                                    data: {'channel_name':$("#"+$node.text).attr('channel_name')},
+                                    success: function (data) {
+
+                                        if (data['status']){
+                                            toastr["success"](data['message']);
+                                        }else{
+                                            toastr["error"](data['message']);
+                                        }
+                                    },
+                                    failure: function (errMsg) {
+                                        toastr["error"](errMsg);
+                                    },
+                                });
+                            }
                         }
                     },
                     "file_manager": {
