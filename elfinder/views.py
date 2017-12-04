@@ -107,7 +107,7 @@ class ElfinderConnectorView(View):
         used in get method calls
         """       
         if kwargs['optionset'] == 'sftp':
-            server_object = get_object_or_404(ServerInfor,name=kwargs['start_path'])
+            server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
             if server_object.credential.method == 'password':
@@ -135,7 +135,7 @@ class ElfinderConnectorView(View):
         It only allows for the 'upload' command
         """
         if kwargs['optionset'] == 'sftp':
-            server_object = get_object_or_404(ServerInfor,name=kwargs['start_path'])
+            server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
             if server_object.credential.method == 'password':
