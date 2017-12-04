@@ -171,6 +171,8 @@ class SshTerminalThread(threading.Thread):
                 elif isinstance(data,(int,long)):
                     if data == 1 and first_flag:
                         first_flag = False
+                    else:
+                        self.chan.send(str(data))
                 else:
                     try:
                         self.chan.send(str(data))
