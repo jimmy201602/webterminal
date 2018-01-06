@@ -6,6 +6,7 @@ except ImportError:
     import json
 from django.contrib.auth.models import User 
 import uuid
+from django.utils.text import slugify
 
 class ServerInfor(models.Model):
     name = models.CharField(max_length=40,verbose_name='Server name',blank=False,unique=True)
@@ -17,6 +18,8 @@ class ServerInfor(models.Model):
     
     def __unicode__(self):
         return self.name
+    def gethostname(self):
+        return slugify(self.hostname)
 
 class ServerGroup(models.Model):
     name = models.CharField(max_length=40,verbose_name='Server group name',blank=False,unique=True)
