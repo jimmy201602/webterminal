@@ -243,7 +243,7 @@
                     text: "{{ server_group.name }}",
                     children: [
                         {% for server in server_group.servers.all %}
-                        {text: "{{ server.gethostname }}", icon: "fa fa-server", ip: "{{ server.ip }}", state: {selected: !0},},
+                        {text: "{{ server.gethostname }}", icon: "fa fa-server", ip: "{{ server.ip }}", state: {selected: !0},hostname:"{{ server.hostname }}"},
                         {% endfor %}
                     ]
                 },
@@ -320,7 +320,7 @@
                                 $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '_file_manager' + '"></div>');
                                 showTab(tabId+'_file_manager');
                                 registerCloseEvent();
-                                file_manager(tabId);
+                                file_manager(tabId,$node.original.hostname);
                             }else {
                                 showTab(tabId+'_file_manager');
 
@@ -356,11 +356,11 @@
         e.preventDefault();
         $("#server_list").jstree(true).search($("#q").val());
     });
-    function file_manager(name) {
-                $('#'+name+'_file_manager').elfinder({
+    function file_manager(tabId,hostname) {
+                $('#'+tabId+'_file_manager').elfinder({
                         resizable: false,
                         height: '100%',
-                        url : '/elfinder/yawd-connector/sftp/'+name+'/', // connector URL (REQUIRED)
+                        url : '/elfinder/yawd-connector/sftp/'+hostname+'/', // connector URL (REQUIRED)
                         lang: 'en'                    // language (OPTIONAL)
                     });
 
