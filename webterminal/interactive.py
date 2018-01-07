@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import socket
 import sys
 from paramiko.py3compat import u
@@ -28,6 +29,7 @@ from webterminal.models import SshLog
 from webterminal.settings import MEDIA_ROOT
 import threading
 import ast
+import traceback
 
 def get_redis_instance():
     from webterminal.asgi import channel_layer    
@@ -82,14 +84,21 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
                     chan.close()
                 else:
-                    stdout.append([delay,codecs.getincrementaldecoder('UTF-8')('replace').decode(x)]) 
-                channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
+                    if isinstance(x,unicode):
+                        stdout.append([delay,x])
+                    else:
+                        stdout.append([delay,codecs.getincrementaldecoder('UTF-8')('replace').decode(x)])
+                if isinstance(x,unicode):
+                    channel_layer.send(channel, {'text': json.dumps(['stdout',x]) })
+                else:
+                    channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
                 #send message to monitor group
                 if log_name:
                     channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1].rsplit('.json')[0]), {'text': json.dumps(['stdout',smart_unicode(x)]) })
             except socket.timeout:
                 pass
             except Exception,e:
+                print traceback.print_exc()
                 channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e)]) })
 
     finally:
@@ -108,7 +117,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
             }
         mkdir_p('/'.join(os.path.join(MEDIA_ROOT,log_name).rsplit('/')[0:-1]))
         with open(os.path.join(MEDIA_ROOT,log_name), "a") as f:
-            f.write(json.dumps(attrs, ensure_ascii=False,cls=CustomeFloatEncoder,indent=2))
+            f.write(json.dumps(attrs, ensure_ascii=True,cls=CustomeFloatEncoder,indent=2))
         
         audit_log=SshLog.objects.get(channel=channel,log=log_name.rsplit('/')[-1].rsplit('.json')[0])
         audit_log.is_finished = True
