@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import paramiko
 import socket
 from channels.generic.websockets import WebsocketConsumer
