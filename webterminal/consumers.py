@@ -6,12 +6,12 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from webterminal.interactive import interactive_shell,get_redis_instance,SshTerminalThread
+from webterminal.interactive import interactive_shell,get_redis_instance,SshTerminalThread,InterActiveShellThread
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
 from webterminal.models import ServerInfor,ServerGroup,CommandsSequence,SshLog
-from webterminal.sudoterminal import ShellHandler
+from webterminal.sudoterminal import ShellHandlerThread
 import ast 
 import time
 from django.contrib.auth.models import User 
@@ -95,13 +95,17 @@ class webterminal(WebsocketConsumer):
                     chan = self.ssh.invoke_shell(width=width, height=height,)
                     
                     #open a new threading to handle ssh to avoid global variable bug
-                    t1=SshTerminalThread(self.message,chan)
-                    t1.setDaemon = True
-                    t1.start()     
+                    sshterminal=SshTerminalThread(self.message,chan)
+                    sshterminal.setDaemon = True
+                    sshterminal.start()     
                     
                     directory_date_time = now()
                     log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}.json'.format(audit_log.log))
-                    interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
+                    
+                    #interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
+                    interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
+                    interactivessh.setDaemon = True
+                    interactivessh.start()
                     
                 elif data[0] in ['stdin','stdout']:
                     self.queue().publish(self.message.reply_channel.name, json.loads(text)[1])
@@ -160,27 +164,11 @@ class CommandExecute(WebsocketConsumer):
                     commands = json.loads(CommandsSequence.objects.get(name = taskname).commands)
                     if isinstance(commands,(basestring,str,unicode)):
                         commands = ast.literal_eval(commands)
+                    
                     #Run commands 
-                    for server_ip in server_list:
-                        
-                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mExecute task on server:%s \033[0m' %(smart_unicode(server_ip)) ] )},immediately=True)
-                        
-                        #get server credential info
-                        serverdata = ServerInfor.objects.get(ip=server_ip)
-                        port = serverdata.credential.port
-                        method = serverdata.credential.method
-                        username = serverdata.credential.username
-                        if method == 'password':
-                            credential = serverdata.credential.password
-                        else:
-                            credential = serverdata.credential.key     
-                        
-                        
-                        #do actual job    
-                        ssh = ShellHandler(server_ip,username,port,method,credential,channel_name=self.message.reply_channel.name)
-                        for command in commands:
-                            ssh.execute(command)
-                        del ssh
+                    commandshell = ShellHandlerThread(message=self.message,commands=commands,server_list=server_list)
+                    commandshell.setDaemon = True
+                    commandshell.start()
                         
                 else:
                     #illegal
