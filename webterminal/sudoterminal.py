@@ -5,6 +5,8 @@ try:
 except ImportError:
     import json
 from django.utils.encoding import smart_unicode
+import threading
+from webterminal.models import ServerInfor
 
 class ShellHandler(object):
 
@@ -100,3 +102,32 @@ class ShellHandler(object):
 
         self._print_exec_out(cmd=cmd, out_buf=shout, err_buf=sherr, exit_status=exit_status,channel_name=self.channel_name)
         return shin, shout, sherr
+
+class ShellHandlerThread(threading.Thread):
+    
+    def __init__(self,message=None,commands=None,server_list=None):
+        super(ShellHandlerThread, self).__init__()
+        self.commands = commands
+        self.server_list = server_list
+        self.message = message
+    
+    def run(self):
+        for server_ip in self.server_list:
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mExecute task on server:%s \033[0m' %(smart_unicode(server_ip)) ] )},immediately=True)
+            
+            #get server credential info
+            serverdata = ServerInfor.objects.get(ip=server_ip)
+            port = serverdata.credential.port
+            method = serverdata.credential.method
+            username = serverdata.credential.username
+            if method == 'password':
+                credential = serverdata.credential.password
+            else:
+                credential = serverdata.credential.key     
+            
+            
+            #do actual job    
+            ssh = ShellHandler(server_ip,username,port,method,credential,channel_name=self.message.reply_channel.name)
+            for command in self.commands:
+                ssh.execute(command)
+            del ssh

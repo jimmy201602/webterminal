@@ -188,3 +188,17 @@ class SshTerminalThread(threading.Thread):
                     except socket.error:
                         print 'close threading error'
                         self.stop()
+
+class InterActiveShellThread(threading.Thread):
+    
+    def __init__(self,chan,channel,log_name=None,width=90,height=40):
+        super(InterActiveShellThread, self).__init__()
+        self.chan = chan
+        self.channel = channel
+        self.log_name = log_name
+        self.width = width
+        self.height = height
+    
+    def run(self):
+        interactive_shell(self.chan, self.channel,log_name=self.log_name,width=self.width,height=self.height)
+        
