@@ -5,29 +5,6 @@
     <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
     <link rel="stylesheet" href="{% static 'plugins/jstree/themes/proton/style.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'plugins/font-awesome/css/font-awesome.min.css' %}"/>
-<style>
-    .leftMenu{
-    width: 100%;
-    height: 35px;
-    overflow-x: initial;
-    overflow-y: hidden;
-    }
-    .leftMenu ul{
-    display:inline;
-    white-space: nowrap;
-    }
-    .leftMenu ul li{
-    display: inline-block;
-    white-space:nowrap;
-    }
-    .leftMenu ul li a{
-	display: block;
-	padding: 2px 5px!important;
-    }
-
-    .closeTab{line-height:0.5!important}
-
-</style>
 <!--<style>-->
     <!--body {-->
         <!--font-family: helvetica, sans-serif, arial;-->
@@ -87,7 +64,7 @@
     <div class="col-md-9">
 
         <div class="span2 leftMenu">
-            <ul class="nav marginBottom" id="myTab">
+            <ul class="nav nav-tabs marginBottom" id="myTab">
                 <li class="active ">
                     <a href="#help" class="backgroundRed">help info<button class="close closeTab" type="button" >×</button></a>
                 </li>
