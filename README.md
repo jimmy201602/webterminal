@@ -13,3 +13,5 @@ ssh web terminal implemented by django
 zhengge2012@gmail.com
 # QQ group number
 531612760
+# 感谢[遥遥云](http://idc.yygzs.org/) 赞助一台demo演示主机
+在线演示地址
