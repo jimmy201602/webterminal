@@ -13,5 +13,7 @@ ssh web terminal implemented by django
 zhengge2012@gmail.com
 # QQ group number
 531612760
-# 感谢[遥遥云](http://idc.yygzs.cn/) 赞助一台demo演示主机
-在线演示地址
+# Many thanks for [遥遥云](http://idc.yygzs.cn/) donate us a demo server
+[在线演示地址](http://ssh.yygzs.cn/) : http://ssh.yygzs.cn/
+username: demo
+password: demo12345678
