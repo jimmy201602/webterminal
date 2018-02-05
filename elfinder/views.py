@@ -1,4 +1,8 @@
 import json
+
+import copy
+import uuid
+
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
@@ -94,7 +98,9 @@ class ElfinderConnectorView(View):
         if kwargs['start_path'] != 'default':
             for root in set_['roots']:
                 root['startPath'] = kwargs['start_path']
-        return set_
+        temp_dict = copy.deepcopy(set_)
+        u_id_dict = {'debug': temp_dict['debug'], 'roots': {kwargs['u_id']: temp_dict['roots']}}
+        return u_id_dict
     
     @method_decorator(csrf_exempt)
     def dispatch(self, *args, **kwargs):
@@ -105,28 +111,33 @@ class ElfinderConnectorView(View):
     def get(self, request, *args, **kwargs):
         """
         used in get method calls
-        """       
+        """
+        u_id = str(uuid.uuid4())
         if kwargs['optionset'] == 'sftp':
+            kwargs['u_id'] = u_id
             server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
-            optinon_sets['roots'][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
+            optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
+            key_label = "%s::%s" % (server_object.ip, server_object.credential.username)
             if server_object.credential.method == 'password':
-                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host':server_object.ip,
                                                              'params':{'port':server_object.credential.port,
                                                             'username':server_object.credential.username,
                                                             'password':server_object.credential.password,
                                                             'timeout':30},
-                                                             'root_path':'/','interactive':False}
+                                                             'root_path':'/','interactive':False,
+                                                                   'key_label': key_label}
             else:
-                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host':server_object.ip,
                                                                          'params':{'port':server_object.credential.port,
                                                                                    'username':server_object.credential.username,
                                                                         'key_filename':server_object.credential.key,
                                                                         'timeout':30},
-                                                                         'root_path':'/','interactive':False}                
-            self.elfinder = ElfinderConnector(optinon_sets, request.session)
+                                                                         'root_path':'/','interactive':False,
+                                                                   'key_label': key_label}
+            self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         else:
-            self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), request.session)
+            self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), u_id, request.session)
         return self.output(self.get_command(request.GET), request.GET)
 
     def post(self, request, *args, **kwargs):
@@ -134,27 +145,32 @@ class ElfinderConnectorView(View):
         called in post method calls.
         It only allows for the 'upload' command
         """
+        u_id = str(uuid.uuid4())
         if kwargs['optionset'] == 'sftp':
+            kwargs['u_id'] = u_id
             server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
-            optinon_sets['roots'][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
+            optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
+            key_label = "%s::%s" % (server_object.ip, server_object.credential.username)
             if server_object.credential.method == 'password':
-                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host':server_object.ip,
                                                              'params':{'port':server_object.credential.port,
                                                             'username':server_object.credential.username,
                                                             'password':server_object.credential.password,
                                                             'timeout':30},
-                                                             'root_path':'/','interactive':False}
+                                                             'root_path':'/','interactive':False,
+                                                            'key_label': key_label}
             else:
-                optinon_sets['roots'][0]['storageKwArgs'] = {'host':server_object.ip,
+                optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host':server_object.ip,
                                                                          'params':{'port':server_object.credential.port,
                                                                                    'username':server_object.credential.username,
                                                                         'key_filename':server_object.credential.key,
                                                                         'timeout':30},
-                                                                         'root_path':'/','interactive':False}  
-            self.elfinder = ElfinderConnector(optinon_sets, request.session)
+                                                                         'root_path':'/','interactive':False,
+                                                                   'key_label': key_label}
+            self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         else:
-            self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), request.session)        
+            self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), u_id, request.session)
         cmd = self.get_command(request.POST)
         
         if not cmd in ['upload']:
