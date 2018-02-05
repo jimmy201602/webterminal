@@ -134,7 +134,7 @@ CHANNEL_LAYERS = {
     "default": {
        "BACKEND": "asgi_redis.RedisChannelLayer",  # use redis backend
        "CONFIG": {
-           "hosts": ["redis://:123456@127.0.0.1:6379/0"],  # set redis address
+           "hosts": [("localhost", 6379)],  # set redis address
            "channel_capacity": {
                                    "http.request": 1000,
                                    "websocket.send*": 10000,
