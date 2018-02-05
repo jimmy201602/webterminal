@@ -25,7 +25,7 @@ SECRET_KEY = '$@naaul9f4zi*3s%bze)5cq)q5ufwi!gj5do=area84pimi9p*'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -134,7 +134,7 @@ CHANNEL_LAYERS = {
     "default": {
        "BACKEND": "asgi_redis.RedisChannelLayer",  # use redis backend
        "CONFIG": {
-           "hosts": [("localhost", 6379)],  # set redis address
+           "hosts": ["redis://:123456@127.0.0.1:6379/0"],  # set redis address
            "channel_capacity": {
                                    "http.request": 1000,
                                    "websocket.send*": 10000,
