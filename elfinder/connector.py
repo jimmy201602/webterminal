@@ -39,7 +39,7 @@ class ElfinderConnector:
         'netmount'  : { 'protocol' : True, 'host' : True, 'path' : False, 'port' : False, 'user' : True, 'pass' : True, 'alias' : False, 'options' : False}
     }
 
-    def __init__(self, opts, session = None):
+    def __init__(self, opts, u_id, session = None):
 
         if not 'roots' in opts:
             opts['roots'] = []
@@ -52,14 +52,13 @@ class ElfinderConnector:
         self._debug = 'debug' in opts and opts['debug'] 
         self._uploadDebug = ''
         self._mountErrors = []
+        self.u_id = u_id
         
         #TODO: Use signals instead of the original connector's binding mechanism
 
         #for root in self.getNetVolumes():
         #    opts['roots'].append(root)
-
-        for o in opts['roots']:
-
+        for o in opts['roots'][self.u_id]:
             try:
                 volume = instantiate_driver(o)
             except Exception as e:
@@ -68,6 +67,7 @@ class ElfinderConnector:
 
             id_ = volume.id()
             self._volumes[id_] = volume
+
             if not self._default and volume.is_readable():
                 self._default = self._volumes[id_]
 
