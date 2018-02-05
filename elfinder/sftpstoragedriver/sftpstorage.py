@@ -18,7 +18,7 @@ from django.utils.deconstruct import deconstructible
 from django.utils.six import BytesIO
 from django.utils.six.moves.urllib import parse as urlparse
 
-from storages.utils import setting
+from elfinder.sftpstoragedriver.utils import setting
 
 
 @deconstructible
