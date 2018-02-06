@@ -124,6 +124,8 @@ class ElfinderVolumeDriver(object):
             'acceptedName' : r'^[^\.].*', #<-- DONT touch this! Use constructor options to overwrite it!
             #callable to control file permissions
             'accessControl' : None,
+            #  allow  rmDir
+            'rmDir' : None,
             #default permissions. Do not set hidden/locked here - take no effect
             'defaults' : {
                 'read' : True,

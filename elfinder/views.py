@@ -63,8 +63,8 @@ class ElfinderConnectorView(View):
         Collect command arguments, operate and return self.render_to_response()
         """
         args = {}
-
-        for name in self.elfinder.commandArgsList(cmd):
+        cmd_args = self.elfinder.commandArgsList(cmd)
+        for name in cmd_args:
             if name == 'request':
                 args['request'] = self.request
             elif name == 'FILES':
@@ -80,8 +80,11 @@ class ElfinderConnectorView(View):
                         args[arg] = src.get(name).strip()
                     except:
                         args[arg] = src.get(name)
+        if cmd == 'mkdir':
+            args['name'] = src.getlist('dirs[]') if 'dirs[]' in src else src.getlist('name')
+        elif cmd == "upload":
+            args['upload_path'] = src.getlist('upload_path[]') if 'upload_path[]' in src else False
         args['debug'] = src['debug'] if 'debug' in src else False
-
         return self.render_to_response(self.elfinder.execute(cmd, **args))
     
     def get_command(self, src):
@@ -175,5 +178,4 @@ class ElfinderConnectorView(View):
         
         if not cmd in ['upload']:
             self.render_to_response({'error' : self.elfinder.error(ElfinderErrorMessages.ERROR_UPLOAD, ElfinderErrorMessages.ERROR_UPLOAD_TOTAL_SIZE)})
-
         return self.output(cmd, request.POST)
