@@ -26,7 +26,7 @@ class ElfinderConnector:
         'rename' : { 'target' : True, 'name' : True, 'mimes' : False },
         'duplicate' : { 'targets' : True },
         'paste' : { 'dst' : True, 'targets' : True, 'cut' : False, 'mimes' : False },
-        'upload' : { 'target' : True, 'FILES' : True, 'mimes' : False, 'html' : False },
+        'upload' : { 'target' : True, 'FILES' : True, 'mimes' : False, 'html' : False, 'upload_path': False },
         'get' : { 'target' : True },
         'put' : { 'target' : True, 'content' : '', 'mimes' : False },
         'archive' : { 'targets' : True, 'type_' : True, 'mimes' : False },
@@ -127,7 +127,7 @@ class ElfinderConnector:
     def execute(self, cmd, **kwargs):
         """
         Exec command and return result
-        """        
+        """
         if not self._loaded:
             return { 'error' : self.error(ElfinderErrorMessages.ERROR_CONF, ElfinderErrorMessages.ERROR_CONF_NO_VOL)}
         
@@ -149,7 +149,6 @@ class ElfinderConnector:
         #remove debug kewyord argument  
         if 'debug' in kwargs:
             kwargs.pop('debug')
-
         result = getattr(self, '_%s' % cmd)(**kwargs)
         
         #checked for removed items as these are not directly returned
@@ -171,7 +170,6 @@ class ElfinderConnector:
                 'volumes' : [v.debug() for v in self._volumes.values()],
                 'mountErrors' : self._mountErrors
             }
-
         return result
 
     def _open(self, target='', init=False, tree=False):
@@ -414,9 +412,15 @@ class ElfinderConnector:
             volume = self._volume(target)
         except VolumeNotFoundError:
             return { 'error' : self.error(ElfinderErrorMessages.ERROR_MKDIR, name, ElfinderErrorMessages.ERROR_TRGDIR_NOT_FOUND, '#%s' % target)}
-
         try:
-            return { 'added' : [volume.mkdir(target, name)] }
+            result = {'added': []}
+            for dirs in name:
+                try:
+                    dir_ = volume.mkdir(target, dirs)
+                    result['added'].append(dir_)
+                except Exception, e:
+                    result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, dirs, e)
+            return result
         except NamedError as e:
             return { 'error' : self.error(e, e.name, ElfinderErrorMessages.ERROR_MKDIR) }
         except Exception as e:
@@ -510,13 +514,12 @@ class ElfinderConnector:
 
         return result
     
-    def _upload(self, target, FILES, html=False):
+    def _upload(self, target, FILES, html=False, upload_path=False):
         """
         **Command**: Save uploaded files. This method should not be invoked 
         directly, the :meth:`elfinder.connector.ElfinderConnector.execute`
         method must be used.
         """
-        
         if isinstance(html, basestring):
             html = int(html)
         
@@ -535,15 +538,39 @@ class ElfinderConnector:
             volume = self._volume(target)
         except VolumeNotFoundError:
             return { 'error' : self.error(ElfinderErrorMessages.ERROR_UPLOAD, ElfinderErrorMessages.ERROR_TRGDIR_NOT_FOUND, '#%s' % target), 'header' : header }
-        
-        for uploaded_file in files:
+        if not upload_path:  # not is directory
+            for uploaded_file in files:
+                try:
+                    file_ = volume.upload(uploaded_file, target)
+                    result['added'].append(file_)
+                except Exception, e:
+                    result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
+                    self._uploadDebug = 'Upload error: Django handler error'
+        else:  # directory
             try:
-                file_ = volume.upload(uploaded_file, target)
-                result['added'].append(file_)
-            except Exception, e:
-                result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
-                self._uploadDebug = 'Upload error: Django handler error'
+                from collections import defaultdict
+                all_ = defaultdict(list)
+                for key, value in [(v, i) for i, v in enumerate(upload_path)]:  # upload directory list
+                    all_[key].append(value)
+            except Exception as e:
+                return {'error': 'get directory error, %s' % e, 'header': header}
 
+            for item in all_.keys():
+                real_path = "%s/%s" % (volume.decode(target), item)  # get real path
+                new_target = volume.encode(real_path)  # get new target
+                try:
+                    volume = self._volume(new_target)  # get volume object
+                except VolumeNotFoundError:
+                    return {'error': self.error(ElfinderErrorMessages.ERROR_UPLOAD,
+                                                ElfinderErrorMessages.ERROR_TRGDIR_NOT_FOUND, '#%s' % new_target),
+                            'header': header}
+                for file_index in all_[item]:
+                    try:
+                        file_ = volume.upload(files[file_index], new_target)
+                        result['added'].append(file_)
+                    except Exception, e:
+                        result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
+                        self._uploadDebug = 'Upload error: Django handler error'
         return result
 
     def _paste(self, targets, dst, cut=False):

@@ -37,6 +37,15 @@
 		elfinder : {
 			url : '',
 			height: '550px',
+			sortType : 'date',
+			sortOrder : 'desc',
+			sortStickFolders : false,
+			ui : ['toolbar', 'places', 'tree', 'path', 'stat'],
+			commandsOptions : {
+				quicklook : {
+					googleDocsMimes : ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.openxmlformats-officedocument.presentationml.presentation']
+				}
+			},
 		}
 	};
 
