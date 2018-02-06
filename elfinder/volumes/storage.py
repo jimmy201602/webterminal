@@ -140,8 +140,9 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         if not 'rmDir' in self._options or not callable(self._options['rmDir']):
             if isinstance(self._options['storage'], FileSystemStorage):
                 self._options['rmDir'] = self._rmdir_callable
-            elif not 'rmdir' in self._options['disabled']:
-                self._options['disabled'].append('rmdir')
+            elif not 'rmdir' in self._options['disabled']:  # cancel delete disable directory
+                pass
+                # self._options['disabled'].append('rmdir')
 
     #*********************************************************************#
     #*                  API TO BE IMPLEMENTED IN SUB-CLASSES             *#
@@ -419,8 +420,8 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         :ref:`setting-rmDir` callable driver option, if it is available.
         If not, it raises an ``os.error``.
         """
-        if 'rmDir' in self._options and callable(self._options['rmDir']):
-            return self._options['rmDir'](path, self._options['storage'])
+        if 'rmDir' in self._options:
+            return self._options['storage'].delete_dir(path)
         raise os.error
             
     def _rmdir_callable(self, path, storage):

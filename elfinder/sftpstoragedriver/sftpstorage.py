@@ -152,6 +152,10 @@ class SFTPStorage(Storage):
         remote_path = self._remote_path(name)
         self.sftp.remove(remote_path)
 
+    def delete_dir(self, name):
+        remote_path = self._remote_path(name)
+        self.sftp.rmdir(remote_path)
+
     def exists(self, name):
         # Try to retrieve file info.  Return true on success, false on failure.
         remote_path = self._remote_path(name)
