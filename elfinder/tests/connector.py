@@ -48,7 +48,7 @@ class ConnectorInitTestCase(unittest.TestCase):
 class ConnectorEVLFOpen(unittest.TestCase):
     """
     Test that open command is implemented and behaves as expected. It also checks the response's conformance with
-    the `elfinder 2.0 Server API specification <https://github.com/Studio-42/elFinder/wiki/Client-Server-API-2.0>`_
+    the `elfinder 2.1 Server API specification <https://github.com/Studio-42/elFinder/wiki/Client-Server-API-2.1>`_
     """
     
     def setUp(self):
@@ -112,7 +112,7 @@ class ConnectorEVLFOpen(unittest.TestCase):
         self.assertNotIn('error', ret)
         self.assertIn('netDrivers', ret)
         self.assertEqual(ret['uplMaxSize'], 128 * 1048576)
-        self.assertEqual(ret['api'], '2.0')
+        self.assertEqual(ret['api'], '2.1')
         self.assertEqual(ret['options']['pathUrl'], settings.MEDIA_URL)
         self.assertEqual(ret['options']['tmbUrl'], '%s.tmb/' % settings.MEDIA_URL)
         self.assertIn('create', ret['options']['archivers'])
@@ -175,7 +175,7 @@ class ConnectorEVLFOpen(unittest.TestCase):
         self.assertNotIn('error', ret)
         self.assertIn('netDrivers', ret)
         self.assertEqual(ret['uplMaxSize'], 128 * 1048576)
-        self.assertEqual(ret['api'], '2.0')
+        self.assertEqual(ret['api'], '2.1')
         self.assertEqual(ret['options']['pathUrl'], '%sfiles' % settings.MEDIA_URL)
         self.assertEqual(ret['options']['tmbUrl'], '%s.tmb/' % settings.MEDIA_URL)
         self.assertIn('create', ret['options']['archivers'])
@@ -222,7 +222,7 @@ class ConnectorEVLFOpen(unittest.TestCase):
         self.assertNotIn('error', ret)
         self.assertIn('netDrivers', ret)
         self.assertEqual(ret['uplMaxSize'], 128 * 1048576)
-        self.assertEqual(ret['api'], '2.0')
+        self.assertEqual(ret['api'], '2.1')
         self.assertEqual(ret['options']['pathUrl'], '%sfiles/directory' % settings.MEDIA_URL)
         self.assertEqual(ret['options']['tmbUrl'], '%s.tmb/' % settings.MEDIA_URL)
         self.assertIn('create', ret['options']['archivers'])
