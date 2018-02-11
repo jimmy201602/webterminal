@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import CharField
 from django.utils.translation import ugettext as _
-from elfinder.utils.volumes import get_path_driver
+from utils.volumes import get_path_driver
 
 try: #attempt to explain south how to handle the ElfinderField
     from south.modelsinspector import add_introspection_rules
