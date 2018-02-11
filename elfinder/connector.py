@@ -5,6 +5,7 @@ from utils.volumes import instantiate_driver
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
+from collections import defaultdict
 
 class ElfinderConnector:
     """
@@ -525,6 +526,7 @@ class ElfinderConnector:
         directly, the :meth:`elfinder.connector.ElfinderConnector.execute`
         method must be used.
         """
+
         if isinstance(html, basestring):
             html = int(html)
         
@@ -553,7 +555,6 @@ class ElfinderConnector:
                     self._uploadDebug = 'Upload error: Django handler error'
         else:  # directory
             try:
-                from collections import defaultdict
                 all_ = defaultdict(list)
                 for key, value in [(v, i) for i, v in enumerate(upload_path)]:  # upload directory list
                     if key.startswith('/'):
