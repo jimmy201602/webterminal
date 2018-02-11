@@ -2,6 +2,9 @@ import os, re, time, urllib
 from django.utils.translation import ugettext as _
 from exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
 from utils.volumes import instantiate_driver
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 class ElfinderConnector:
     """
@@ -9,7 +12,7 @@ class ElfinderConnector:
     `elfinder connector api v2.0  <https://github.com/Studio-42/elFinder/wiki/Client-Server-API-2.0>`_. At the moment, it supports all elfinder commands except from ``netDrivers``.
     """
 
-    _version = '2.0'
+    _version = '2.1'
     _commit = 'b0144a0'
     _netDrivers = {}
     _commands = {
@@ -416,6 +419,8 @@ class ElfinderConnector:
             result = {'added': []}
             for dirs in name:
                 try:
+                    if str(dirs).startswith('/'):
+                        dirs = dirs[1:]
                     dir_ = volume.mkdir(target, dirs)
                     result['added'].append(dir_)
                 except Exception, e:
@@ -551,6 +556,8 @@ class ElfinderConnector:
                 from collections import defaultdict
                 all_ = defaultdict(list)
                 for key, value in [(v, i) for i, v in enumerate(upload_path)]:  # upload directory list
+                    if key.startswith('/'):
+                        key = (os.path.split(key[1:]))[0]  # get path
                     all_[key].append(value)
             except Exception as e:
                 return {'error': 'get directory error, %s' % e, 'header': header}
