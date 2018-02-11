@@ -9,7 +9,7 @@ import getpass
 import os
 import posixpath
 import stat
-from datetime import datetime, time
+from datetime import datetime
 
 import paramiko
 from django.core.files.base import File
@@ -23,6 +23,7 @@ from elfinder.sftpstoragedriver.utils import setting
 
 @deconstructible
 class SFTPStorage(Storage):
+
     def __init__(self, host=None, params=None, interactive=None, file_mode=None,
                  dir_mode=None, uid=None, gid=None, known_host_file=None,
                  root_path=None, base_url=None):
@@ -80,8 +81,7 @@ class SFTPStorage(Storage):
 
         if not hasattr(self, '_sftp'):
             self._sftp = self._ssh.open_sftp()
-
-            # self._sftp = self._ssh.open_sftp()
+        # self._sftp = self._ssh.open_sftp()
 
     @property
     def sftp(self):
@@ -176,12 +176,7 @@ class SFTPStorage(Storage):
     def listdir(self, path):
         remote_path = self._remote_path(path)
         dirs, files, files_type = [], [], {}
-        # for item in self.sftp.listdir_attr(remote_path):
-        # if "/data/web/history" in remote_path or "/data/web/voice" in remote_path \
-        #         or "/data/web/playback" in remote_path:
-        #     return [], [], []
-
-        for item in self.sftp.listdir_attr_top(remote_path):
+        for item in self.sftp.listdir_attr(remote_path):
             if self._isdir_attr(item):
                 dirs.append(item.filename)
             else:
