@@ -2,6 +2,9 @@ import os, re, time, urllib
 from django.utils.translation import ugettext as _
 from exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
 from utils.volumes import instantiate_driver
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 class ElfinderConnector:
     """
@@ -416,6 +419,8 @@ class ElfinderConnector:
             result = {'added': []}
             for dirs in name:
                 try:
+                    if str(dirs).startswith('/'):
+                        dirs = dirs[1:]
                     dir_ = volume.mkdir(target, dirs)
                     result['added'].append(dir_)
                 except Exception, e:
@@ -551,6 +556,8 @@ class ElfinderConnector:
                 from collections import defaultdict
                 all_ = defaultdict(list)
                 for key, value in [(v, i) for i, v in enumerate(upload_path)]:  # upload directory list
+                    if key.startswith('/'):
+                        key = (os.path.split(key[1:]))[0]  # get path
                     all_[key].append(value)
             except Exception as e:
                 return {'error': 'get directory error, %s' % e, 'header': header}
