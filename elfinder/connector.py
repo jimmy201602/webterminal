@@ -6,10 +6,10 @@ from utils.volumes import instantiate_driver
 class ElfinderConnector:
     """
     A python implementation of the 
-    `elfinder connector api v2.0  <https://github.com/Studio-42/elFinder/wiki/Client-Server-API-2.0>`_. At the moment, it supports all elfinder commands except from ``netDrivers``.
+    `elfinder connector api v2.1  <https://github.com/Studio-42/elFinder/wiki/Client-Server-API-2.1>`_. At the moment, it supports all elfinder commands except from ``netDrivers``.
     """
 
-    _version = '2.0'
+    _version = '2.1'
     _commit = 'b0144a0'
     _netDrivers = {}
     _commands = {
