@@ -577,7 +577,7 @@ class ElfinderConnector:
                         file_ = volume.upload(files[file_index], new_target)
                         result['added'].append(file_)
                     except Exception, e:
-                        result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, files[0].name, e)
+                        result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, files[file_index].name, e)
                         self._uploadDebug = 'Upload error: Django handler error'
         return result
 
