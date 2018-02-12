@@ -576,7 +576,7 @@ class ElfinderConnector:
                     try:
                         #if upload files number exceed 1 it will cause a weird bug,the connector can't find the target directory.
                         #This function will caused another bug,if the upload directory file name contains dot will cause the file upload to the wrong directory. 
-                        if len(all_[item]) >1:
+                        if len(all_[item]) >=1:
                             file_ = volume.upload(files[file_index], new_target)
                         else:
                             file_ = volume.upload(files[file_index], target)#This is a weird bug
