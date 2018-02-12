@@ -574,8 +574,11 @@ class ElfinderConnector:
                             'header': header}
                 for file_index in all_[item]:
                     try:
-                        file_ = volume.upload(files[file_index], new_target)
-                        #file_ = volume.upload(files[file_index], new_target)#This is weird bug
+                        #if upload files number exceed 1 it will cause a weird bug,the connector can't find the target directory.
+                        if len(all_[item]) >1:
+                            file_ = volume.upload(files[file_index], new_target)
+                        else:
+                            file_ = volume.upload(files[file_index], target)#This is a weird bug
                         result['added'].append(file_)
                     except Exception, e:
                         result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, files[file_index].name, e)
