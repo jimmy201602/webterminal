@@ -748,7 +748,7 @@ class ElfinderVolumeDriver(object):
 
         return self.stat(self.copy(path, dir_, name))
     
-    def upload(self, uploaded_file, hash_dst):
+    def upload(self, uploaded_file, hash_dst, chunk=False, first_chunk=False):
         """
         Save uploaded file. 
         On success return a list of file stat information.
@@ -808,7 +808,8 @@ class ElfinderVolumeDriver(object):
                     raise PermissionDeniedError
                 elif file_['mime'] == 'directory':
                     raise NamedError(ElfinderErrorMessages.ERROR_NOT_REPLACE, uploaded_file.name)
-                self.remove(test)
+                if chunk is False:
+                    self.remove(test)
             else:
                 name = self._unique_name(dst, uploaded_file.name, '-', False)
         except os.error: #file does not exist
@@ -823,6 +824,8 @@ class ElfinderVolumeDriver(object):
 
         self._clear_cached_dir(dst)
         
+        kwargs['first_chunk'] = first_chunk
+        kwargs['chunk'] = chunk
         try:
             uploaded_path = self._save_uploaded(uploaded_file, dst, name, **kwargs)
         except:
