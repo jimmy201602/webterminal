@@ -828,7 +828,9 @@ class ElfinderVolumeDriver(object):
         kwargs['chunk'] = chunk
         try:
             uploaded_path = self._save_uploaded(uploaded_file, dst, name, **kwargs)
-        except:
+        except Exception,e:
+            import traceback
+            print traceback.print_exc()
             raise Exception(ElfinderErrorMessages.ERROR_UPLOAD_FILE_SIZE)
         
         return self.stat(uploaded_path)
