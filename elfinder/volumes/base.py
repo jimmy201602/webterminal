@@ -748,7 +748,7 @@ class ElfinderVolumeDriver(object):
 
         return self.stat(self.copy(path, dir_, name))
     
-    def upload(self, uploaded_file, hash_dst):
+    def upload(self, uploaded_file, hash_dst, chunk_name, is_first_chunk):
         """
         Save uploaded file. 
         On success return a list of file stat information.
@@ -757,7 +757,10 @@ class ElfinderVolumeDriver(object):
         :func:`elfinder.volumes.base.ElfinderVolumeDriver.remove`
         method.
         """
-
+        if chunk_name:
+            file_name = chunk_name
+        else:
+            file_name = uploaded_file.name
         if self.command_disabled('upload'):
             raise PermissionDeniedError
         
@@ -771,7 +774,7 @@ class ElfinderVolumeDriver(object):
         if not dir_['write']:
             raise PermissionDeniedError
         
-        if not self._name_accepted(uploaded_file.name):
+        if not self._name_accepted(file_name):
             raise Exception(ElfinderErrorMessages.ERROR_INVALID_NAME)
         
         mime = uploaded_file.content_type 
@@ -797,9 +800,7 @@ class ElfinderVolumeDriver(object):
             raise Exception(ElfinderErrorMessages.ERROR_UPLOAD_FILE_SIZE)
 
         dst = self.decode(hash_dst)
-        name = uploaded_file.name
-        test = self._join_path(dst, name)
-
+        test = self._join_path(dst, file_name)
         try:
             file_ = self.stat(test)
             #file exists
@@ -807,10 +808,13 @@ class ElfinderVolumeDriver(object):
                 if not file_['write']:
                     raise PermissionDeniedError
                 elif file_['mime'] == 'directory':
-                    raise NamedError(ElfinderErrorMessages.ERROR_NOT_REPLACE, uploaded_file.name)
-                self.remove(test)
+                    raise NamedError(ElfinderErrorMessages.ERROR_NOT_REPLACE, file_name)
+                if chunk_name and is_first_chunk:
+                    self.remove(test)
+                if not chunk_name:
+                    self.remove(test)
             else:
-                name = self._unique_name(dst, uploaded_file.name, '-', False)
+                file_name = self._unique_name(dst, file_name, '-', False)
         except os.error: #file does not exist
             pass
         
@@ -824,7 +828,7 @@ class ElfinderVolumeDriver(object):
         self._clear_cached_dir(dst)
         
         try:
-            uploaded_path = self._save_uploaded(uploaded_file, dst, name, **kwargs)
+            uploaded_path = self._save_uploaded(uploaded_file, dst, file_name, chunk_name, is_first_chunk, **kwargs)
         except:
             raise Exception(ElfinderErrorMessages.ERROR_UPLOAD_FILE_SIZE)
         
@@ -2086,7 +2090,7 @@ class ElfinderVolumeDriver(object):
         """
         raise NotImplementedError
     
-    def _save_uploaded(self, uploaded_file, dir_, name, **kwargs):
+    def _save_uploaded(self, uploaded_file, dir_, name, chunk_name, is_first_chunk, **kwargs):
         """
         Save the Django 
         `UploadedFile <https://docs.djangoproject.com/en/dev/topics/http/file-uploads/#django.core.files.uploadedfile.UploadedFile>`_

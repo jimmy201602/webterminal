@@ -451,18 +451,22 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         
         return path
         
-    def _save_uploaded(self, uploaded_file, dir_, name, **kwargs):
+    def _save_uploaded(self, uploaded_file, dir_, name, chunk_name, is_first_chunk, **kwargs):
         """
         Save the Django
         `UploadedFile <https://docs.djangoproject.com/en/dev/topics/http/file-uploads/#django.core.files.uploadedfile.UploadedFile>`_
         object and return its new path.
         """
         path = self._join_path(dir_, name)
-        target = self._fopen(path, 'w+')        
+        if chunk_name and is_first_chunk:
+            target = self._fopen(path, 'w+')
+        elif chunk_name:
+            target = self._fopen(path, 'a+')
+        else:
+            target = self._fopen(path, 'w+')
         for chunk in uploaded_file.chunks():
             target.write(chunk)
         target.close()
-        
         return path
     
     def _get_contents(self, path):

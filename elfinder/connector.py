@@ -30,7 +30,8 @@ class ElfinderConnector:
         'rename' : { 'target' : True, 'name' : True, 'mimes' : False },
         'duplicate' : { 'targets' : True },
         'paste' : { 'dst' : True, 'targets' : True, 'cut' : False, 'mimes' : False },
-        'upload' : { 'target' : True, 'FILES' : True, 'mimes' : False, 'html' : False, 'upload_path': False },
+        'upload' : { 'target' : True, 'FILES' : True, 'mimes' : False, 'html' : False, 'upload_path': False,
+                     'chunk_name': False, 'is_first_chunk': False},
         'get' : { 'target' : True },
         'put' : { 'target' : True, 'content' : '', 'mimes' : False },
         'archive' : { 'targets' : True, 'type_' : True, 'mimes' : False },
@@ -520,7 +521,7 @@ class ElfinderConnector:
 
         return result
     
-    def _upload(self, target, FILES, html=False, upload_path=False):
+    def _upload(self, target, FILES, html=False, upload_path=False, chunk_name=False, is_first_chunk=False):
         """
         **Command**: Save uploaded files. This method should not be invoked 
         directly, the :meth:`elfinder.connector.ElfinderConnector.execute`
@@ -531,12 +532,10 @@ class ElfinderConnector:
         
         header = { 'Content-Type' : 'text/html; charset=utf-8' } if html else {}
         result = { 'added' : [], 'header' : header }
-
         try:
             files = FILES.getlist('upload[]')
         except KeyError:
             files = []
-
         if not isinstance(files, list) or not files:
             return { 'error' : self.error(ElfinderErrorMessages.ERROR_UPLOAD, ElfinderErrorMessages.ERROR_UPLOAD_NO_FILES), 'header' : header }
 
@@ -547,7 +546,7 @@ class ElfinderConnector:
         if not upload_path:  # not is directory
             for uploaded_file in files:
                 try:
-                    file_ = volume.upload(uploaded_file, target)
+                    file_ = volume.upload(uploaded_file, target, chunk_name, is_first_chunk)
                     result['added'].append(file_)
                 except Exception, e:
                     result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
@@ -562,7 +561,6 @@ class ElfinderConnector:
                     all_[key].append(value)
             except Exception as e:
                 return {'error': 'get directory error, %s' % e, 'header': header}
-
             for item in all_.keys():
                 real_path = "%s/%s" % (volume.decode(target), item)  # get real path
                 new_target = volume.encode(real_path)  # get new target
@@ -574,7 +572,7 @@ class ElfinderConnector:
                             'header': header}
                 for file_index in all_[item]:
                     try:
-                        file_ = volume.upload(files[file_index], new_target)
+                        file_ = volume.upload(files[file_index], new_target, chunk_name, is_first_chunk)
                         result['added'].append(file_)
                     except Exception, e:
                         result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)

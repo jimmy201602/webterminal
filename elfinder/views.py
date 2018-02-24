@@ -3,6 +3,7 @@ import json
 import copy
 import uuid
 
+import re
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
@@ -57,6 +58,22 @@ class ElfinderConnectorView(View):
             response[key] = value
 
         return response
+
+    @staticmethod
+    def handler_chunk(src, args):
+        """
+        handler chunk parameter
+        """
+        if "chunk" in src:
+            args['chunk_name'] = re.findall(r'(.*?).\d+_\d+.part$', src['chunk'])[0]
+            first_chunk_flag = re.findall(r'.*?.(\d+)_\d+.part$', src['chunk'])[0]
+            if int(first_chunk_flag) == 0:
+                args['is_first_chunk'] = True
+            else:
+                args['is_first_chunk'] = False
+        else:
+            args['chunk_name'] = False
+            args['is_first_chunk'] = False
     
     def output(self, cmd, src):
         """
@@ -87,10 +104,13 @@ class ElfinderConnectorView(View):
                 dir_path = src.getlist('upload_path[]')
                 if len(list(set(dir_path))) == 1 and dir_path[0] == args['target']:
                     args['upload_path'] = False
+                    self.handler_chunk(src, args)
                 else:
                     args['upload_path'] = dir_path
+                    self.handler_chunk(src, args)
             else:
                 args['upload_path'] = False
+                self.handler_chunk(src, args)
         args['debug'] = src['debug'] if 'debug' in src else False
         return self.render_to_response(self.elfinder.execute(cmd, **args))
     
