@@ -137,7 +137,7 @@ class SFTPStorage(Storage):
         if not self.exists(dirname):
             self._mkdir(dirname)
         if 'mode' in kwargs and 'a' in kwargs['mode']:
-            f = self.sftp.open(path, 'ab+')
+            f = self.sftp.open(path, 'ab')
         else:
             f = self.sftp.open(path, 'wb')
         f.write(content.file.read())
