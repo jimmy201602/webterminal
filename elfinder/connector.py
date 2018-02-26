@@ -529,6 +529,7 @@ class ElfinderConnector:
         chunk_flag = False
         if isinstance(range,(unicode,basestring)):
             chunk_range = range.rsplit(',')
+            chunk_file_size = chunk_range[2]
             if chunk_range[0] == '0' or chunk_range[0] == 0:
                 chunk_flag = True
         if isinstance(html, basestring):
@@ -557,6 +558,7 @@ class ElfinderConnector:
                         uploaded_file.name = chunked_file_name
                     if chunk is True:
                         file_ = volume.upload(uploaded_file, target, chunk=True, first_chunk=chunk_flag)
+                        file_.update({'size':chunk_file_size})
                         result['added'].append(file_)
                     else:
                         file_ = volume.upload(uploaded_file, target)
@@ -593,11 +595,13 @@ class ElfinderConnector:
                         if len(all_[item]) >=1 and isinstance(upload_path,list) and target not in upload_path:
                             if chunk:
                                 file_ = volume.upload(files[file_index], new_target, chunk=True, first_chunk=chunk_flag)
+                                file_.update({'size':chunk_file_size})
                             else:
                                 file_ = volume.upload(files[file_index], new_target)
                         else:
                             if chunk:
                                 file_ = volume.upload(files[file_index], target, chunk=True, first_chunk=chunk_flag)#This is a weird bug
+                                file_.update({'size':chunk_file_size})
                             else:
                                 file_ = volume.upload(files[file_index], target)
                         result['added'].append(file_)
