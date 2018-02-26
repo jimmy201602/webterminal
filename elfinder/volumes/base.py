@@ -757,7 +757,6 @@ class ElfinderVolumeDriver(object):
         :func:`elfinder.volumes.base.ElfinderVolumeDriver.remove`
         method.
         """
-
         if self.command_disabled('upload'):
             raise PermissionDeniedError
         
