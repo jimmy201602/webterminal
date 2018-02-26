@@ -129,15 +129,17 @@ class SFTPStorage(Storage):
         if self._uid or self._gid:
             self._chown(path, uid=self._uid, gid=self._gid)
 
-    def _save(self, name, content):
+    def _save(self, name, content, **kwargs):
         """Save file via SFTP."""
         content.open()
         path = self._remote_path(name)
         dirname = self._pathmod.dirname(path)
         if not self.exists(dirname):
             self._mkdir(dirname)
-
-        f = self.sftp.open(path, 'wb')
+        if 'mode' in kwargs and 'a' in kwargs['mode']:
+            f = self.sftp.open(path, 'ab+')
+        else:
+            f = self.sftp.open(path, 'wb')
         f.write(content.file.read())
         f.close()
 
@@ -231,7 +233,7 @@ class SFTPStorageFile(File):
         return self.file.read(num_bytes)
 
     def write(self, content):
-        if 'w' not in self._mode:
+        if 'w' not in self._mode and 'a' not in self._mode:
             raise AttributeError("File was opened for read-only access.")
         self.file = BytesIO(content)
         self._is_dirty = True
@@ -239,5 +241,5 @@ class SFTPStorageFile(File):
 
     def close(self):
         if self._is_dirty:
-            self._storage._save(self._name, self)
+            self._storage._save(self._name, self, mode=self._mode)
         self.file.close()
