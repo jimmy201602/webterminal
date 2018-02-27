@@ -111,6 +111,8 @@ class ElfinderConnectorView(View):
             else:
                 args['upload_path'] = False
                 self.handler_chunk(src, args)
+        elif cmd == "size":
+            args['targets'] = src.getlist('targets[0]')
         args['debug'] = src['debug'] if 'debug' in src else False
         return self.render_to_response(self.elfinder.execute(cmd, **args))
     
