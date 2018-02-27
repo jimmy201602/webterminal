@@ -461,12 +461,12 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         first_chunk = kwargs.get('first_chunk',False)
         chunk = kwargs.get('chunk',False)
         if chunk is False:
-            target = self._fopen(path, 'wb+')
+            target = self._fopen(path, 'wb')
         else:
             if first_chunk is True:
-                target = self._fopen(path, 'wb+')
+                target = self._fopen(path, 'wb')
             else:
-                target = self._fopen(path, 'ab+')
+                target = self._fopen(path, 'ab')
         for chunk in uploaded_file.chunks():
             target.write(chunk)
         target.close()
