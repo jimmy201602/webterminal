@@ -73,6 +73,7 @@ ELFINDER_CONNECTOR_OPTION_SETS = {
                 #order to proccess uploadAllow and uploadDeny options
                 'uploadOrder' : ['deny', 'allow'],
                 #maximum upload file size. NOTE - this is size for every uploaded files
+                #The maximum upload file size. Set as number (bytes) or string ending with the size unit (e.g. "10M", "500K", "1G")
                 'uploadMaxSize' : '128m',
                 #if True - every folder will be check for children folders, otherwise all folders will be marked as having subfolders
                 #'checkSubfolders' : True,
@@ -238,7 +239,7 @@ ELFINDER_CONNECTOR_OPTION_SETS = {
                 'storageClass': 'elfinder.sftpstoragedriver.sftpstorage.SFTPStorage',
                 'keepAlive' : True,
                 'cache' : 300,
-                'uploadMaxSize' : '1024m',
+                #'uploadMaxSize' : '1024m',
             } 
         ]  
     },    
