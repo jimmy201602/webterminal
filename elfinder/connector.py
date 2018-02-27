@@ -571,7 +571,7 @@ class ElfinderConnector:
                 all_ = defaultdict(list)
                 for key, value in [(v, i) for i, v in enumerate(upload_path)]:  # upload directory list
                     if key.startswith('/'):
-                        key = (os.path.split(key[1:]))[0]  # get path                    
+                        key = (os.path.split(key[1:]))[0]  # get path
                     all_[key].append(value)
             except Exception as e:
                 return {'error': 'get directory error, %s' % e, 'header': header}
