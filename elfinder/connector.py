@@ -421,7 +421,7 @@ class ElfinderConnector:
             for dirs in name:
                 try:
                     if str(dirs).startswith('/'):
-                        dirs = dirs[1:]                    
+                        dirs = dirs[1:]
                     dir_ = volume.mkdir(target, dirs)
                     result['added'].append(dir_)
                 except Exception, e:

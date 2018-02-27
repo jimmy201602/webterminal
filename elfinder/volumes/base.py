@@ -809,6 +809,8 @@ class ElfinderVolumeDriver(object):
                     raise NamedError(ElfinderErrorMessages.ERROR_NOT_REPLACE, uploaded_file.name)
                 if chunk is False:
                     self.remove(test)
+                if chunk is True and first_chunk is True:
+                    self.remove(test)
             else:
                 name = self._unique_name(dst, uploaded_file.name, '-', False)
         except os.error: #file does not exist
