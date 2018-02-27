@@ -238,7 +238,7 @@ ELFINDER_CONNECTOR_OPTION_SETS = {
                 'storageClass': 'elfinder.sftpstoragedriver.sftpstorage.SFTPStorage',
                 'keepAlive' : True,
                 'cache' : 300,
-                'uploadMaxSize' : 124445261824,
+                'uploadMaxSize' : '1024m',
             } 
         ]  
     },    
