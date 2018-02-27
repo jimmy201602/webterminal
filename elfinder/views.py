@@ -13,6 +13,7 @@ from elfinder.conf import settings as ls
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from webterminal.models import ServerInfor
+import re
 
 class ElfinderConnectorView(View):
     """
@@ -57,7 +58,23 @@ class ElfinderConnectorView(View):
             response[key] = value
 
         return response
-    
+
+    @staticmethod
+    def handler_chunk(src, args):
+        """
+        handler chunk parameter
+        """
+        if "chunk" in src:
+            args['chunk_name'] = re.findall(r'(.*?).\d+_\d+.part$', src['chunk'])[0]
+            first_chunk_flag = re.findall(r'.*?.(\d+)_\d+.part$', src['chunk'])[0]
+            if int(first_chunk_flag) == 0:
+                args['is_first_chunk'] = True
+            else:
+                args['is_first_chunk'] = False
+        else:
+            args['chunk_name'] = False
+            args['is_first_chunk'] = False
+
     def output(self, cmd, src):
         """
         Collect command arguments, operate and return self.render_to_response()
@@ -83,7 +100,17 @@ class ElfinderConnectorView(View):
         if cmd == 'mkdir':
             args['name'] = src.getlist('dirs[]') if 'dirs[]' in src else src.getlist('name')
         elif cmd == "upload":
-            args['upload_path'] = src.getlist('upload_path[]') if 'upload_path[]' in src else False
+            if 'upload_path[]' in src:
+                dir_path = src.getlist('upload_path[]')
+                if len(list(set(dir_path))) == 1 and dir_path[0] == args['target']:
+                    args['upload_path'] = False
+                    self.handler_chunk(src, args)
+                else:
+                    args['upload_path'] = dir_path
+                    self.handler_chunk(src, args)
+            else:
+                args['upload_path'] = False
+                self.handler_chunk(src, args)
         args['debug'] = src['debug'] if 'debug' in src else False
         return self.render_to_response(self.elfinder.execute(cmd, **args))
     

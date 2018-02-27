@@ -30,7 +30,8 @@ class ElfinderConnector:
         'rename' : { 'target' : True, 'name' : True, 'mimes' : False },
         'duplicate' : { 'targets' : True },
         'paste' : { 'dst' : True, 'targets' : True, 'cut' : False, 'mimes' : False },
-        'upload' : { 'target' : True, 'FILES' : True, 'mimes' : False, 'html' : False , 'upload_path': False, 'chunk' : False, 'range' : False, 'cid' : False },
+        'upload' : { 'target' : True, 'FILES' : True, 'mimes' : False, 'html' : False, 'upload_path': False,
+                     'chunk_name': False, 'is_first_chunk': False},
         'get' : { 'target' : True },
         'put' : { 'target' : True, 'content' : '', 'mimes' : False },
         'archive' : { 'targets' : True, 'type_' : True, 'mimes' : False },
@@ -520,29 +521,21 @@ class ElfinderConnector:
 
         return result
     
-    def _upload(self, target, FILES, html=False, upload_path=False, chunk=False, range=False, cid=False):
+    def _upload(self, target, FILES, html=False, upload_path=False, chunk_name=False, is_first_chunk=False):
         """
         **Command**: Save uploaded files. This method should not be invoked 
         directly, the :meth:`elfinder.connector.ElfinderConnector.execute`
         method must be used.
         """
-        chunk_flag = False
-        if isinstance(range,(unicode,basestring)):
-            chunk_range = range.rsplit(',')
-            chunk_file_size = chunk_range[2]
-            if chunk_range[0] == '0' or chunk_range[0] == 0:
-                chunk_flag = True
         if isinstance(html, basestring):
             html = int(html)
         
         header = { 'Content-Type' : 'text/html; charset=utf-8' } if html else {}
         result = { 'added' : [], 'header' : header }
-
         try:
             files = FILES.getlist('upload[]')
         except KeyError:
             files = []
-
         if not isinstance(files, list) or not files:
             return { 'error' : self.error(ElfinderErrorMessages.ERROR_UPLOAD, ElfinderErrorMessages.ERROR_UPLOAD_NO_FILES), 'header' : header }
 
@@ -553,16 +546,8 @@ class ElfinderConnector:
         if not upload_path:  # not is directory
             for uploaded_file in files:
                 try:
-                    if chunk:
-                        chunked_file_name = '.'.join(chunk.rsplit('.')[:-2])
-                        uploaded_file.name = chunked_file_name
-                    if chunk is True:
-                        file_ = volume.upload(uploaded_file, target, chunk=True, first_chunk=chunk_flag)
-                        file_.update({'size':chunk_file_size})
-                        result['added'].append(file_)
-                    else:
-                        file_ = volume.upload(uploaded_file, target)
-                        result['added'].append(file_)
+                    file_ = volume.upload(uploaded_file, target, chunk_name, is_first_chunk)
+                    result['added'].append(file_)
                 except Exception, e:
                     result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
                     self._uploadDebug = 'Upload error: Django handler error'
@@ -575,7 +560,6 @@ class ElfinderConnector:
                     all_[key].append(value)
             except Exception as e:
                 return {'error': 'get directory error, %s' % e, 'header': header}
-
             for item in all_.keys():
                 real_path = "%s/%s" % (volume.decode(target), item)  # get real path
                 new_target = volume.encode(real_path)  # get new target
@@ -587,28 +571,13 @@ class ElfinderConnector:
                             'header': header}
                 for file_index in all_[item]:
                     try:
-                        #if upload files number exceed 1 it will cause a weird bug,the connector can't find the target directory.
-                        #This function will caused another bug,if the upload directory file name contains dot will cause the file upload to the wrong directory. 
-                        if chunk:
-                            chunked_file_name = '.'.join(chunk.rsplit('.')[:-2])
-                            files[file_index].name = chunked_file_name
-                        if len(all_[item]) >=1 and isinstance(upload_path,list) and target not in upload_path:
-                            if chunk:
-                                file_ = volume.upload(files[file_index], new_target, chunk=True, first_chunk=chunk_flag)
-                                file_.update({'size':chunk_file_size})
-                            else:
-                                file_ = volume.upload(files[file_index], new_target)
-                        else:
-                            if chunk:
-                                file_ = volume.upload(files[file_index], target, chunk=True, first_chunk=chunk_flag)#This is a weird bug
-                                file_.update({'size':chunk_file_size})
-                            else:
-                                file_ = volume.upload(files[file_index], target)
+                        file_ = volume.upload(files[file_index], new_target, chunk_name, is_first_chunk)
                         result['added'].append(file_)
                     except Exception, e:
-                        result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, files[file_index].name, e)
+                        result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
                         self._uploadDebug = 'Upload error: Django handler error'
         return result
+
 
     def _paste(self, targets, dst, cut=False):
         """
