@@ -68,6 +68,7 @@ databaseinit() {
 	
 	if [ ! $dbtype ]; then
 		dbtype=1
+		sed -i "s/engine = mysql/mysql = $dbtype/g" webterminal.conf
 	fi
 	
 	if [ $dbtype = 2 ]; then
@@ -100,7 +101,11 @@ databaseinit() {
 					yum install -y mysql
 					mysql -h$db_ip -P$db_port -u$db_user -p$db_password -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 				fi
+
 				sed -i "s/host = 127.0.0.1/host = $db_ip/g" webterminal.conf
+				sed -i "s/user = root/user = $db_user/g" webterminal.conf
+				sed -i "s/port = 3306/port = $db_port/g" webterminal.conf
+				sed -i "s/password =/password = $db_password/g" webterminal.conf
 				;;
 			*) 
 				exit 1                    
