@@ -91,13 +91,13 @@ databaseinit() {
 			yes|y|Y|YES)  
 				echo "installing a new mariadb...."
 				
-				if [ $DISTRO = 'Ubuntu']; then
+				if [ $DISTRO = Ubuntu ]; then
 					apt-get install -y mysql-server
-				elif [ $DISTRO = 'CentOS' ]||[ $DISTRO = 'Fedora' ]; then
+				elif [ $DISTRO = CentOS ]||[ $DISTRO = Fedora ]; then
 					yum install -y mysql-server
 				fi
-				service mariadb start
-				chkconfig mariadb on
+				#service mariadb start
+				#chkconfig mariadb on
 				mysql -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 				;;
 			no|n|N|NO)
