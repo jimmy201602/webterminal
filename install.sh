@@ -100,7 +100,7 @@ databaseinit() {
 					yum install -y mysql
 					mysql -h$db_ip -P$db_port -u$db_user -p$db_password -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 				fi
-				sed -i "s/host = 127.0.0.1/host = $db_ip/g" test.conf
+				sed -i "s/host = 127.0.0.1/host = $db_ip/g" webterminal.conf
 				;;
 			*) 
 				exit 1                    
