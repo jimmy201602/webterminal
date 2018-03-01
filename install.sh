@@ -6,7 +6,7 @@ centosinstall() {
 				installhint
 				yum clean all
 				yum install centos-release-scl epel-release -y
-				yum install python27 gcc python27-python-pip python27-python-setuptools python27-python-devel -y
+				yum install python27 gcc python27-python-pip python27-python-setuptools python27-python-devel mysql-devel -y
 				trap "scl enable python27 bash" SIGHUP SIGINT SIGTERM
 				if [ $? -eq 0 ]; then
 					yum install redis nginx -y
@@ -17,7 +17,7 @@ centosinstall() {
 	elif [ $Version -eq 7 ]; then
 				installhint
 				yum clean all
-				yum install python-setuptools gcc python python-devel epel-release -y
+				yum install python-setuptools gcc python python-devel epel-release mysql-devel -y
 				yum install redis nginx -y
 				easy_install pip
 				pip install pip setuptools -U -i https://pypi.douban.com/simple/
@@ -36,7 +36,7 @@ ubuntuinstall() {
 	if [ $Version = 14.04 ]||[ $Version = 17.10 ]||[ $Version = 16.04 ]||[ $Version = 18.04 ]; then
 		installhint
 		apt-get update
-		apt-get install -y python python-dev redis-server python-pip supervisor nginx gcc
+		apt-get install -y python python-dev redis-server python-pip supervisor nginx gcc libmysqlclient-dev
 		pip install pip -U
 		pip install setuptools -U
 	else
@@ -49,7 +49,7 @@ fedorainstall() {
 	if [ $Version = 25 ]||[ $Version = 26 ]||[ $Version = 27 ]; then
 		installhint
 		yum clean all
-		yum install python-setuptools gcc python python-devel redis nginx redhat-rpm-config -y
+		yum install python-setuptools gcc python python-devel redis nginx redhat-rpm-config mysql-devel -y
 		pip install pip -U
 		pip install setuptools -U
 	else
@@ -67,8 +67,17 @@ databaseinit() {
 	read -p "If you just want to test this project recommend you use sqlite database[1/2]:" dbtype
 	
 	if [ ! $dbtype ]; then
-		dbtype=1
-		sed -i "s/engine = mysql/mysql = $dbtype/g" webterminal.conf
+		case $db1 in
+			1)
+				sed -i "s/engine = mysql/mysql = sqlite/g" webterminal.conf
+				;;
+			2)
+				sed -i "s/engine = mysql/mysql = mysql/g" webterminal.conf
+				;;
+			*)
+				exit 1                    
+				;;
+		esac
 	fi
 	
 	if [ $dbtype = 2 ]; then
@@ -81,7 +90,12 @@ databaseinit() {
 		case $db1 in
 			yes|y|Y|YES)  
 				echo "installing a new mariadb...."
-				yum install -y mariadb-server mariadb-devel
+				
+				if [ $DISTRO = 'Ubuntu']; then
+					apt-get install -y mysql-server
+				elif [ $DISTRO = 'CentOS' ]||[ $DISTRO = 'Fedora' ]; then
+					yum install -y mysql-server
+				fi
 				service mariadb start
 				chkconfig mariadb on
 				mysql -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
@@ -136,6 +150,8 @@ install() {
 	fi
 		
     if grep -Eqii "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
+		DISTRO='CentOS'
+		PM='yum'
 		centosinstall
     elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
         DISTRO='RHEL'
