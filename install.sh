@@ -61,6 +61,54 @@ commoninstall() {
     pip install -r requirements.txt -i https://pypi.douban.com/simple/
 }
 
+databaseinit() {
+	echo "####install database####"
+	echo -e "1:sqlite3\n2:mysql"
+	read -p "If you just want to test this project recommend you use sqlite database[1/2]:" dbtype
+	
+	if [ ! $dbtype ]; then
+		dbtype=1
+	fi
+	
+	if [ $dbtype = 2 ]; then
+		read -p "do you want to create a new mysql database?[yes/no]:" db1
+		if [ ! $db1 ]
+		then
+		db1=yes
+		fi
+		
+		case $db1 in
+			yes|y|Y|YES)  
+				echo "installing a new mariadb...."
+				yum install -y mariadb-server mariadb-devel
+				service mariadb start
+				chkconfig mariadb on
+				mysql -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+				;;
+			no|n|N|NO)
+				read -p "your database ip address:" db_ip
+				read -p "your database port:" db_port
+				read -p "your database user:" db_user
+				read -p "your database password:" db_password
+				[ ! $db_password ] && echo "your db_password is empty confirm please press Enter key"
+				[ -f /usr/bin/mysql ]
+				sleep 3
+				if [ $? -eq 0 ]
+				then
+					mysql -h$db_ip -P$db_port -u$db_user -p$db_password -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+				else
+					yum install -y mysql
+					mysql -h$db_ip -P$db_port -u$db_user -p$db_password -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
+				fi
+				sed -i "s/host = 127.0.0.1/host = $db_ip/g" test.conf
+				;;
+			*) 
+				exit 1                    
+				;;
+		esac
+	fi
+}
+
 notsupport() {
 	echo "Your os system is $DISTRO: $Version"
 	echo "Your os version is not supported!"
