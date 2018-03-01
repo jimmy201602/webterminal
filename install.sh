@@ -183,6 +183,7 @@ install() {
     fi
 	
     commoninstall
+	databaseinit
 }
 
 install
