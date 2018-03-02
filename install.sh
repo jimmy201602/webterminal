@@ -7,7 +7,16 @@ centosinstall() {
 				yum clean all
 				yum install centos-release-scl epel-release -y
 				yum install python27 gcc python27-python-pip python27-python-setuptools python27-python-devel mysql-devel -y
-				trap "scl enable python27 bash" SIGHUP SIGINT SIGTERM
+				if test -f /opt/rh/python27/enable ; then
+					source /opt/rh/python27/enable
+				else
+					echo "Python27 installed failed,Please retry."
+					exit 1
+				fi
+				if ! grep -Eqi "source /opt/rh/python27/enable" /etc/profile ; then
+					echo "source /opt/rh/python27/enable" >> /etc/profile
+					source /etc/profile
+				fi
 				if [ $? -eq 0 ]; then
 					yum install redis nginx -y
 					pip install pip setuptools -U -i https://pypi.douban.com/simple/
