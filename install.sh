@@ -78,10 +78,10 @@ databaseinit() {
 	if [ ! $dbtype ]; then
 		case $db1 in
 			1)
-				sed -i "s/engine = mysql/mysql = sqlite/g" webterminal.conf
+				sed -i "s/engine = mysql/engine = sqlite/g" webterminal.conf
 				;;
 			2)
-				sed -i "s/engine = mysql/mysql = mysql/g" webterminal.conf
+				sed -i "s/engine = mysql/engine = mysql/g" webterminal.conf
 				;;
 			*)
 				exit 1                    
