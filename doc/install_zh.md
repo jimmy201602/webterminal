@@ -1,7 +1,7 @@
 # centos6安装文档
 centos6下面安装步骤  (python版本是2.7  django版本是1.11.5)  
 一、yum update  
-二、yum install -y python python-dev redis-server python-pip supervisor nginx git  
+二、yum install -y python python-dev redis-server python-pip supervisor nginx git gcc python-devel
 三、cd /opt  
 四、git clone https://github.com/jimmy201602/webterminal.git  
 五、cd webterminal  
