@@ -165,7 +165,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat">{%trans 'Profile' %}</a>
                 </div>
                 <div class="pull-right">
                   <a href="{% url 'logout' %}" class="btn btn-default btn-flat">{%trans 'logout' %}</a>
@@ -195,7 +195,7 @@
 	    <li class="active"><a href="{% url 'commandexecute' %}"><i class="fa fa-play"></i> {%trans 'command execute' %}</a></li>
 	    <li class="active"><a href="{% url 'credentiallist' %}"><i class="fa fa-list-ol"></i> {%trans 'credential list' %}</a></li>
             <li class="active"><a href="{% url 'serverlist' %}"><i class="fa fa-certificate"></i> {%trans 'server list' %}</a></li>
-            <li class="active"><a href="{% url 'grouplist' %}"><i class="fa  fa-crop"></i> {%trans 'Group list' %}</a></li>
+            <li class="active"><a href="{% url 'grouplist' %}"><i class="fa  fa-crop"></i> {%trans 'group list' %}</a></li>
             <li class="active"><a href="{% url 'commandslist' %}"><i class="fa fa-list"></i> {%trans 'commands list' %}</a></li>
 	    <li class="active"><a href="{% url 'sshlogslist' %}"><i class="fa fa-tv"></i> {%trans 'ssh log list' %}</a></li>
           </ul>
@@ -232,7 +232,7 @@
     <div class="pull-right hidden-xs">
       <b>{%trans 'Version' %}</b> 0.1
     </div>
-    <strong>{%trans 'Copyright &copy; 2014-2016' %} <a href="https://github.com/jimmy201602/webterminal">{%trans 'webterminal' %}</a></strong> {%trans 'All rights reserved.' %}
+    <strong>{%trans 'Copyright &copy; 2014-2018' %} <a href="https://github.com/jimmy201602/webterminal">{%trans 'webterminal' %}</a></strong> {%trans 'All rights reserved.' %}
   </footer>
 
 
