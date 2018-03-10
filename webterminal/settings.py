@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for webterminal project.
 
@@ -162,6 +163,11 @@ REST_FRAMEWORK = {
 
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
+
+LOCALE_PATHS = [
+                os.path.join(BASE_DIR,'locale')
+        ]
+
 
 from django.conf.locale.en import formats as en_formats
 en_formats.DATETIME_FORMAT = 'Y-m-d H:i:s'

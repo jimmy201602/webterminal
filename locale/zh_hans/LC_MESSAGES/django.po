@@ -1,0 +1,632 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-10 13:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: templates/base.html:8
+msgid "AdminLTE 2 | Dashboard"
+msgstr "AdminLTE 2 | Dashboard"
+
+#: templates/base.html:39
+msgid "W"
+msgstr "W"
+
+#: templates/base.html:39
+msgid "T"
+msgstr "T"
+
+#: templates/base.html:41
+msgid "web"
+msgstr "web"
+
+#: templates/base.html:41
+msgid "terminal"
+msgstr "terminal"
+
+#: templates/base.html:168
+msgid "Profile"
+msgstr "概览"
+
+#: templates/base.html:171
+msgid "logout"
+msgstr "注销"
+
+#: templates/base.html:188
+msgid "Dashboard"
+msgstr "仪表盘"
+
+#: templates/base.html:194 templates/base.html:235
+#: templates/webterminal/commandexecute.html:3
+#: templates/webterminal/index.html:3
+msgid "webterminal"
+msgstr "webterminal"
+
+#: templates/base.html:195
+msgid "command execute"
+msgstr "命令执行"
+
+#: templates/base.html:196
+msgid "credential list"
+msgstr "凭证列表"
+
+#: templates/base.html:197
+msgid "server list"
+msgstr "服务器列表"
+
+#: templates/base.html:198
+msgid "group list"
+msgstr "组列表"
+
+#: templates/base.html:199 templates/webterminal/commandslist.html:4
+msgid "commands list"
+msgstr "命令列表"
+
+#: templates/base.html:200
+msgid "ssh log list"
+msgstr "ssh日志列表"
+
+#: templates/base.html:233
+msgid "Version"
+msgstr "版本"
+
+#: templates/base.html:235
+msgid "Copyright &copy; 2014-2018"
+msgstr "Copyright &copy; 2014-2018"
+
+#: templates/base.html:235
+msgid "All rights reserved."
+msgstr "保留所有权利"
+
+#: templates/webterminal/commandcreate.html:3
+msgid "Create commands"
+msgstr "创建命令"
+
+#: templates/webterminal/commandcreate.html:18
+msgid "Return Commands List"
+msgstr "返回命令列表"
+
+#: templates/webterminal/commandcreate.html:30
+#: templates/webterminal/commandslist.html:33
+#: templates/webterminal/credentialcreate.html:31
+#: templates/webterminal/credentiallist.html:34
+#: templates/webterminal/groupcreate.html:30
+#: templates/webterminal/grouplist.html:34
+#: templates/webterminal/servercreate.html:30
+#: templates/webterminal/serverlist.html:34
+#: templates/webterminal/sshlogslist.html:30
+msgid "Action"
+msgstr "操作"
+
+#: templates/webterminal/commandcreate.html:31
+#: templates/webterminal/commandslist.html:34
+#: templates/webterminal/credentialcreate.html:32
+#: templates/webterminal/credentiallist.html:35
+#: templates/webterminal/groupcreate.html:31
+#: templates/webterminal/grouplist.html:35
+#: templates/webterminal/servercreate.html:31
+#: templates/webterminal/serverlist.html:35
+#: templates/webterminal/sshlogslist.html:31
+msgid "Another action"
+msgstr "另一个操作"
+
+#: templates/webterminal/commandcreate.html:32
+#: templates/webterminal/commandslist.html:35
+#: templates/webterminal/credentialcreate.html:33
+#: templates/webterminal/credentiallist.html:36
+#: templates/webterminal/groupcreate.html:32
+#: templates/webterminal/grouplist.html:36
+#: templates/webterminal/servercreate.html:32
+#: templates/webterminal/serverlist.html:36
+#: templates/webterminal/sshlogslist.html:32
+msgid "Something else here"
+msgstr "其他"
+
+#: templates/webterminal/commandcreate.html:34
+#: templates/webterminal/commandslist.html:37
+#: templates/webterminal/credentialcreate.html:35
+#: templates/webterminal/credentiallist.html:38
+#: templates/webterminal/groupcreate.html:34
+#: templates/webterminal/grouplist.html:38
+#: templates/webterminal/servercreate.html:34
+#: templates/webterminal/serverlist.html:38
+#: templates/webterminal/sshlogslist.html:34
+msgid "Separated link"
+msgstr ""
+
+#: templates/webterminal/commandcreate.html:56
+#: templates/webterminal/commandslist.html:201
+#: templates/webterminal/credentialcreate.html:58
+#: templates/webterminal/credentiallist.html:129
+#: templates/webterminal/groupcreate.html:56
+#: templates/webterminal/grouplist.html:183
+#: templates/webterminal/servercreate.html:58
+#: templates/webterminal/serverlist.html:193
+msgid "submit"
+msgstr "提交"
+
+#: templates/webterminal/commandcreate.html:85
+#: templates/webterminal/commandcreate.html:86
+#: templates/webterminal/commandslist.html:146
+#: templates/webterminal/commandslist.html:147
+#: templates/webterminal/commandslist.html:249
+#: templates/webterminal/commandslist.html:250
+msgid "task name"
+msgstr "任务名称"
+
+#: templates/webterminal/commandcreate.html:93
+#: templates/webterminal/commandslist.html:155
+#: templates/webterminal/commandslist.html:257
+msgid "server groups"
+msgstr "服务器组"
+
+#: templates/webterminal/commandcreate.html:96
+#: templates/webterminal/commandslist.html:158
+#: templates/webterminal/commandslist.html:260
+msgid "Server group you want to execute"
+msgstr "所需执行的服务器组"
+
+#: templates/webterminal/commandcreate.html:109
+#: templates/webterminal/commandslist.html:50
+#: templates/webterminal/commandslist.html:172
+#: templates/webterminal/commandslist.html:273
+msgid "commands"
+msgstr "命令"
+
+#: templates/webterminal/commandcreate.html:112
+#: templates/webterminal/commandslist.html:176
+#: templates/webterminal/commandslist.html:276
+msgid "Input the command you need to execute"
+msgstr "输入你要执行的命令"
+
+#: templates/webterminal/commandexecute.html:44
+#: templates/webterminal/index.html:47
+msgid "Server List"
+msgstr "服务器列表"
+
+#: templates/webterminal/commandexecute.html:55
+#: templates/webterminal/index.html:58
+msgid "search"
+msgstr "搜索"
+
+#: templates/webterminal/commandexecute.html:69
+#: templates/webterminal/commandexecute.html:74
+#: templates/webterminal/index.html:70 templates/webterminal/index.html:75
+msgid "help info"
+msgstr "帮助信息"
+
+#: templates/webterminal/commandexecute.html:188
+#: templates/webterminal/index.html:205
+#: templates/webterminal/sshlogmonitor.html:57
+msgid "\\r\\n\\r\\n[Finished...]\\r\\n"
+msgstr "已结束"
+
+#: templates/webterminal/commandexecute.html:254
+#: templates/webterminal/commandexecute.html:280
+#: templates/webterminal/commandexecute.html:307
+msgid "execute"
+msgstr "执行"
+
+#: templates/webterminal/commandslist.html:48
+#: templates/webterminal/credentiallist.html:49
+#: templates/webterminal/servercreate.html:87
+#: templates/webterminal/servercreate.html:88
+msgid "name"
+msgstr "名称"
+
+#: templates/webterminal/commandslist.html:49
+msgid "groups"
+msgstr "组"
+
+#: templates/webterminal/commandslist.html:51
+#: templates/webterminal/credentiallist.html:52
+#: templates/webterminal/grouplist.html:51
+#: templates/webterminal/serverlist.html:52
+#: templates/webterminal/sshlogslist.html:50
+msgid "action"
+msgstr "操作"
+
+#: templates/webterminal/commandslist.html:65
+#: templates/webterminal/credentiallist.html:62
+#: templates/webterminal/grouplist.html:64
+#: templates/webterminal/serverlist.html:62
+msgid "detail"
+msgstr "详情"
+
+#: templates/webterminal/commandslist.html:66
+#: templates/webterminal/credentiallist.html:63
+#: templates/webterminal/grouplist.html:65
+#: templates/webterminal/serverlist.html:63
+msgid "edit"
+msgstr "编辑"
+
+#: templates/webterminal/commandslist.html:67
+#: templates/webterminal/credentiallist.html:64
+#: templates/webterminal/credentiallist.html:188
+#: templates/webterminal/grouplist.html:66
+#: templates/webterminal/grouplist.html:312
+#: templates/webterminal/serverlist.html:64
+#: templates/webterminal/serverlist.html:323
+msgid "delete"
+msgstr "删除"
+
+#: templates/webterminal/commandslist.html:108
+#: templates/webterminal/commandslist.html:132
+#: templates/webterminal/commandslist.html:197
+msgid "commands detail"
+msgstr "命令详情"
+
+#: templates/webterminal/commandslist.html:133
+#: templates/webterminal/commandslist.html:198
+#: templates/webterminal/credentiallist.html:106
+#: templates/webterminal/credentiallist.html:126
+#: templates/webterminal/grouplist.html:108
+#: templates/webterminal/grouplist.html:180
+#: templates/webterminal/grouplist.html:279
+#: templates/webterminal/serverlist.html:106
+#: templates/webterminal/serverlist.html:190
+#: templates/webterminal/serverlist.html:296
+msgid "Loading..."
+msgstr "加载中"
+
+#: templates/webterminal/commandslist.html:205
+#: templates/webterminal/credentiallist.html:133
+#: templates/webterminal/credentiallist.html:192
+#: templates/webterminal/grouplist.html:187
+#: templates/webterminal/grouplist.html:316
+#: templates/webterminal/serverlist.html:197
+#: templates/webterminal/serverlist.html:327
+#: templates/webterminal/sshlogslist.html:131
+msgid "cancel"
+msgstr "取消"
+
+#: templates/webterminal/commandslist.html:298
+msgid "Are you sure to delete task "
+msgstr "确定删除任务"
+
+#: templates/webterminal/commandslist.html:301
+msgid "delete "
+msgstr "删除"
+
+#: templates/webterminal/commandslist.html:305
+msgid "cancel "
+msgstr "取消"
+
+#: templates/webterminal/credentialcreate.html:19
+msgid "Return Credential List"
+msgstr "返回凭证列表"
+
+#: templates/webterminal/credentialcreate.html:86
+#: templates/webterminal/credentialcreate.html:87
+#: templates/webterminal/credentiallist.html:228
+#: templates/webterminal/credentiallist.html:229
+#: templates/webterminal/credentiallist.html:318
+#: templates/webterminal/credentiallist.html:319
+#: templates/webterminal/serverlist.html:119
+#: templates/webterminal/serverlist.html:120
+#: templates/webterminal/serverlist.html:254
+#: templates/webterminal/serverlist.html:255
+msgid "credential name"
+msgstr "凭证名称"
+
+#: templates/webterminal/credentialcreate.html:94
+#: templates/webterminal/credentiallist.html:50
+#: templates/webterminal/credentiallist.html:237
+#: templates/webterminal/credentiallist.html:326
+msgid "username"
+msgstr "用户名"
+
+#: templates/webterminal/credentialcreate.html:95
+#: templates/webterminal/credentiallist.html:238
+#: templates/webterminal/credentiallist.html:327
+msgid "username name"
+msgstr "用户名"
+
+#: templates/webterminal/credentialcreate.html:102
+#: templates/webterminal/credentiallist.html:51
+#: templates/webterminal/credentiallist.html:246
+#: templates/webterminal/credentiallist.html:334
+msgid "port"
+msgstr "端口"
+
+#: templates/webterminal/credentialcreate.html:103
+#: templates/webterminal/credentiallist.html:247
+#: templates/webterminal/credentiallist.html:335
+msgid "port number"
+msgstr "端口号"
+
+#: templates/webterminal/credentialcreate.html:109
+#: templates/webterminal/credentialcreate.html:110
+#: templates/webterminal/credentiallist.html:254
+#: templates/webterminal/credentiallist.html:255
+#: templates/webterminal/credentiallist.html:341
+#: templates/webterminal/credentiallist.html:342
+msgid "method"
+msgstr "方式"
+
+#: templates/webterminal/credentialcreate.html:130
+#: templates/webterminal/credentiallist.html:278
+#: templates/webterminal/credentiallist.html:362
+msgid "proxy"
+msgstr "代理"
+
+#: templates/webterminal/credentialcreate.html:131
+#: templates/webterminal/credentiallist.html:279
+#: templates/webterminal/credentiallist.html:363
+msgid "enable proxy"
+msgstr "开启代理"
+
+#: templates/webterminal/credentialcreate.html:136
+#: templates/webterminal/credentiallist.html:284
+#: templates/webterminal/credentiallist.html:368
+msgid "Enabled"
+msgstr "开启"
+
+#: templates/webterminal/credentiallist.html:4
+msgid "Credential list"
+msgstr "凭证列表"
+
+#: templates/webterminal/credentiallist.html:184
+msgid "delete credential name"
+msgstr "删除凭证"
+
+#: templates/webterminal/credentiallist.html:418
+msgid "proxy server ip"
+msgstr "代理服务器ip"
+
+#: templates/webterminal/credentiallist.html:423
+msgid "proxy port"
+msgstr "代理端口"
+
+#: templates/webterminal/credentiallist.html:427
+msgid "proxy password"
+msgstr "代理密码"
+
+#: templates/webterminal/groupcreate.html:18
+msgid "Return Group List"
+msgstr "返回服务器组列表"
+
+#: templates/webterminal/groupcreate.html:85
+#: templates/webterminal/groupcreate.html:86
+#: templates/webterminal/grouplist.html:121
+#: templates/webterminal/grouplist.html:122
+#: templates/webterminal/grouplist.html:246
+#: templates/webterminal/grouplist.html:247
+msgid "Group name"
+msgstr "组名称"
+
+#: templates/webterminal/groupcreate.html:93
+#: templates/webterminal/grouplist.html:50
+#: templates/webterminal/grouplist.html:130
+#: templates/webterminal/grouplist.html:254
+msgid "servers"
+msgstr "服务器"
+
+#: templates/webterminal/groupcreate.html:95
+#: templates/webterminal/grouplist.html:133
+#: templates/webterminal/grouplist.html:256
+msgid "Servers"
+msgstr "服务器"
+
+#: templates/webterminal/groupcreate.html:151
+msgid "Group"
+msgstr "组"
+
+#: templates/webterminal/groupcreate.html:151
+msgid "create success!"
+msgstr "创建成功"
+
+#: templates/webterminal/groupcreate.html:162
+#: templates/webterminal/grouplist.html:170
+#: templates/webterminal/grouplist.html:226
+#: templates/webterminal/grouplist.html:299
+#: templates/webterminal/servercreate.html:170
+#: templates/webterminal/serverlist.html:180
+#: templates/webterminal/serverlist.html:310
+#: templates/webterminal/serverlist.html:350
+msgid "Please check field"
+msgstr "请检查字段"
+
+#: templates/webterminal/groupcreate.html:162
+#: templates/webterminal/grouplist.html:170
+#: templates/webterminal/grouplist.html:226
+#: templates/webterminal/grouplist.html:299
+#: templates/webterminal/servercreate.html:170
+#: templates/webterminal/serverlist.html:180
+#: templates/webterminal/serverlist.html:310
+#: templates/webterminal/serverlist.html:350
+msgid "error"
+msgstr "错误"
+
+#: templates/webterminal/grouplist.html:4
+msgid "Group list"
+msgstr "服务器组列表"
+
+#: templates/webterminal/grouplist.html:21
+#: templates/webterminal/serverlist.html:21
+msgid "Add New"
+msgstr "新增"
+
+#: templates/webterminal/grouplist.html:49
+msgid "group name"
+msgstr "组名"
+
+#: templates/webterminal/grouplist.html:179
+msgid "Group information edit"
+msgstr "服务器信息编辑"
+
+#: templates/webterminal/grouplist.html:215
+msgid "Update group info"
+msgstr "服务器信息更新"
+
+#: templates/webterminal/grouplist.html:215
+#: templates/webterminal/serverlist.html:338
+msgid "success"
+msgstr "成功"
+
+#: templates/webterminal/grouplist.html:308
+msgid "delete group"
+msgstr "删除服务器组"
+
+#: templates/webterminal/grouplist.html:309
+msgid "Are you sure to delete group"
+msgstr "确认删除服务器组"
+
+#: templates/webterminal/index.html:267
+msgid "connect"
+msgstr "连接"
+
+#: templates/webterminal/index.html:289
+msgid "disconnect"
+msgstr "断开"
+
+#: templates/webterminal/index.html:314
+msgid "file manager"
+msgstr "文件管理"
+
+#: templates/webterminal/servercreate.html:3
+msgid "Server create"
+msgstr "服务器创建"
+
+#: templates/webterminal/servercreate.html:18
+msgid "Return Server List"
+msgstr "返回服务器列表"
+
+#: templates/webterminal/servercreate.html:95
+#: templates/webterminal/serverlist.html:128
+#: templates/webterminal/serverlist.html:262
+msgid "hostname"
+msgstr "主机名"
+
+#: templates/webterminal/servercreate.html:96
+#: templates/webterminal/serverlist.html:129
+#: templates/webterminal/serverlist.html:263
+msgid "server hostname"
+msgstr "服务器主机名"
+
+#: templates/webterminal/servercreate.html:103
+#: templates/webterminal/servercreate.html:104
+#: templates/webterminal/serverlist.html:51
+#: templates/webterminal/serverlist.html:137
+#: templates/webterminal/serverlist.html:138
+#: templates/webterminal/serverlist.html:270
+#: templates/webterminal/serverlist.html:271
+msgid "ip"
+msgstr "ip"
+
+#: templates/webterminal/servercreate.html:110
+#: templates/webterminal/servercreate.html:111
+#: templates/webterminal/serverlist.html:145
+#: templates/webterminal/serverlist.html:146
+#: templates/webterminal/serverlist.html:277
+#: templates/webterminal/serverlist.html:278
+msgid "credential"
+msgstr "凭证"
+
+#: templates/webterminal/servercreate.html:159
+msgid "Credential"
+msgstr "凭证"
+
+#: templates/webterminal/servercreate.html:159
+msgid "create success"
+msgstr "创建成功"
+
+#: templates/webterminal/serverlist.html:4
+msgid "Server list"
+msgstr "服务器列表"
+
+#: templates/webterminal/serverlist.html:49
+#: templates/webterminal/sshlogslist.html:46
+msgid "server name"
+msgstr "服务器名称 "
+
+#: templates/webterminal/serverlist.html:50
+msgid "host name"
+msgstr "主机名"
+
+#: templates/webterminal/serverlist.html:319
+msgid "delete server"
+msgstr "删除服务器"
+
+#: templates/webterminal/serverlist.html:320
+msgid "Are you sure to delete server"
+msgstr "确认删除服务器"
+
+#: templates/webterminal/serverlist.html:338
+msgid "Delete server"
+msgstr "删除服务器"
+
+#: templates/webterminal/sshlogslist.html:4
+msgid "Ssh log list"
+msgstr "ssh日志列表"
+
+#: templates/webterminal/sshlogslist.html:45
+msgid "user name"
+msgstr "用户名"
+
+#: templates/webterminal/sshlogslist.html:47
+msgid "server ip"
+msgstr "服务器ip"
+
+#: templates/webterminal/sshlogslist.html:48
+#: templates/webterminal/sshlogslist.html:111
+#: templates/webterminal/sshlogslist.html:167
+msgid "start time"
+msgstr "开始时间"
+
+#: templates/webterminal/sshlogslist.html:49
+msgid "is finished"
+msgstr "是否结束"
+
+#: templates/webterminal/sshlogslist.html:63
+msgid "replay"
+msgstr "重播"
+
+#: templates/webterminal/sshlogslist.html:65
+#: templates/webterminal/sshlogslist.html:127
+msgid "kill"
+msgstr "杀掉"
+
+#: templates/webterminal/sshlogslist.html:66
+msgid "monitor"
+msgstr "监控"
+
+#: templates/webterminal/sshlogslist.html:109
+#: templates/webterminal/sshlogslist.html:165
+msgid "user"
+msgstr "用户名"
+
+#: templates/webterminal/sshlogslist.html:110
+#: templates/webterminal/sshlogslist.html:166
+msgid "server"
+msgstr "服务器"
+
+#: templates/webterminal/sshlogslist.html:111
+msgid "end time"
+msgstr "结束时间"
+
+#: templates/webterminal/sshlogslist.html:123
+msgid "kick user"
+msgstr "踢用户"
+
+#: templates/webterminal/sshlogslist.html:123
+#: templates/webterminal/sshlogslist.html:124
+msgid "out"
+msgstr "下线"
+
+#: templates/webterminal/sshlogslist.html:124
+msgid "Are you sure to kick user"
+msgstr "确认踢掉用户"

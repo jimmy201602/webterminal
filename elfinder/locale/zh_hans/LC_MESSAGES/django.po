@@ -1,0 +1,78 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-10 13:14+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: elfinder/connector.py:339 elfinder/connector.py:347
+msgid "File not found"
+msgstr ""
+
+#: elfinder/connector.py:342
+msgid "Access denied"
+msgstr ""
+
+#: elfinder/exceptions.py:61
+msgid "Volume could not be found"
+msgstr ""
+
+#: elfinder/exceptions.py:87
+msgid "This is not a valid image file"
+msgstr ""
+
+#: elfinder/fields.py:50
+msgid "This file is no longer valid"
+msgstr ""
+
+#: elfinder/volumes/base.py:197
+msgid "No volume id found"
+msgstr ""
+
+#: elfinder/volumes/base.py:1205
+msgid "Unknown"
+msgstr ""
+
+#: elfinder/widgets.py:96
+msgid "Size"
+msgstr ""
+
+#: elfinder/widgets.py:97
+msgid "Path"
+msgstr ""
+
+#: elfinder/widgets.py:98
+msgid "Link"
+msgstr ""
+
+#: elfinder/widgets.py:99
+msgid "Modified"
+msgstr ""
+
+#: elfinder/widgets.py:100
+msgid "Dimensions"
+msgstr ""
+
+#: elfinder/widgets.py:101
+msgid "Update"
+msgstr ""
+
+#: elfinder/widgets.py:102
+msgid "Set"
+msgstr ""
+
+#: elfinder/widgets.py:103
+msgid "Clear"
+msgstr ""
