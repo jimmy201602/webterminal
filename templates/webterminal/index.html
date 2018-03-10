@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {%load i18n%}
-{% block title %}webterminal{% endblock %}
+{% block title %}{% trans 'webterminal' %}{% endblock %}
 {% load staticfiles %}
     {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
@@ -44,7 +44,7 @@
         <div class="portlet box box-success"  style="overflow:scroll;height: 800px;">
             <div class="portlet-title">
                 <div class="caption">
-                    <a class="text-danger">Server List</a>
+                    <a class="text-danger">{% trans 'Server List' %}</a>
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
@@ -55,7 +55,7 @@
             </div>
             <div class="portlet-body">
                 <form id="search">
-                    <input type="search" id="q" placeholder="search"/>
+                    <input type="search" id="q" placeholder="{% trans 'search' %}"/>
                     <button type="submit"><i class="fa fa-search"></i></button>
                 </form>
                 <div id="server_list" class="tree-demo" role="tree"></div>
@@ -67,12 +67,12 @@
         <div class="span2 leftMenu">
             <ul class="nav nav-tabs marginBottom" id="myTab">
                 <li class="active ">
-                    <a href="#help" class="backgroundRed">help info<button class="close closeTab" type="button" >×</button></a>
+                    <a href="#help" class="backgroundRed">{% trans 'help info' %}<button class="close closeTab" type="button" >×</button></a>
                 </li>
             </ul>
         </div>
         <div class="tab-content span4">
-            <div class="tab-pane active" id="help">help info</div>
+            <div class="tab-pane active" id="help">{% trans 'help info' %}</div>
         </div>
 
     </div>
@@ -202,7 +202,7 @@
                         term.write(json_msg[1]);
                         break;
                     case "disconnect":
-                        term.write("\r\n\r\n[Finished...]\r\n");
+                        term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
                         break;
                     case "channel_name":
                         <!--console.log(json_msg[1]);-->
@@ -264,7 +264,7 @@
                     "connect": {
                         "separator_before": false,
                         "separator_after": false,
-                        "label": "connect",
+                        "label": "{% trans 'connect' %}",
                         "action": function (obj) {
 
                             var tabId = $node.text; //this is id on tab content div where the
@@ -286,7 +286,7 @@
                     "disconnect": {
                         "separator_before": false,
                         "separator_after": false,
-                        "label": "disconnect",
+                        "label": "{% trans 'disconnect' %}",
                         "action": function (obj) {
 //                            console.log($node);
                             if ($("#"+$node.text).length >0){
@@ -311,7 +311,7 @@
                     "file_manager": {
                         "separator_before": false,
                         "separator_after": false,
-                        "label": "file manager",
+                        "label": "{% trans 'file manager' %}",
                         "action": function (obj) {
                             var tabId = $node.text; //this is id on tab content div where the
                             //get server ip
