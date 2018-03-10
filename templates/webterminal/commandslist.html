@@ -30,11 +30,11 @@
                             <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-wrench"></i></button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">{%trans 'Action' %}</a></li>
+                                <li><a href="#">{%trans 'Another action' %}</a></li>
+                                <li><a href="#">{%trans 'Something else here' %}</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">{%trans 'Separated link' %}</a></li>
                             </ul>
                         </div>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
@@ -105,7 +105,7 @@
 <script type="application/javascript">
     function get_detail(id) {
         var dialog = bootbox.dialog({
-            title: 'commands detail',
+            title: '{%trans 'commands detail' %}',
             message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
         });
         dialog.init(function(){
@@ -129,8 +129,8 @@
     }
     function detail(id) {
         var dialog = bootbox.dialog({
-            title: 'commands detail',
-            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+            title: '{%trans 'commands detail' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>'
         });
         dialog.init(function(){
             $.ajax({
@@ -143,8 +143,8 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                'title': "task name",
-                                "description": "task name",
+                                'title': "{%trans 'task name' %}",
+                                "description": "{%trans 'task name' %}",
                                 "required": true,
                                 "minLength": 1,
                                 "maxLength": 50,
@@ -152,10 +152,10 @@
                             },
                             "group": {
                                 "type": "array",
-                                "title": "server groups",
+                                "title": "{%trans 'server groups' %}",
                                 "minItems": 1,
                                 "uniqueItems": true,
-                                "description": "Server group you want to execute",
+                                "description": "{%trans 'Server group you want to execute' %}",
                                 "readOnly": true,
                                 "items": {
                                     "type": "string",
@@ -169,11 +169,11 @@
                 },
                     "commands": {
                         "type": "array",
-                            "title": "commands",
+                            "title": "{%trans 'commands' %}",
                             "minItems": 1,
                             "readOnly": true,
                             "items": {
-                            "description": "Input the command you need to execute",
+                            "description": "{%trans 'Input the command you need to execute' %}",
                                 "type": "string",
                         }
                     },
@@ -194,15 +194,15 @@
     }
     function edit(id) {
         var dialog = bootbox.confirm({
-            title: 'commands detail',
-            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+            title: '{%trans 'commands detail' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>',
             buttons: {
                 confirm: {
-                    label: 'submit',
+                    label: '{%trans 'submit' %}',
                     className: 'btn-danger'
                 },
                 cancel: {
-                    label: 'cancel',
+                    label: '{%trans 'cancel' %}',
                     className: 'btn-success'
                 }
             },
@@ -246,18 +246,18 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                'title': "task name",
-                                "description": "task name",
+                                'title': "{%trans 'task name' %}",
+                                "description": "{%trans 'task name' %}",
                                 "required": true,
                                 "minLength": 1,
                                 "maxLength": 50,
                             },
                             "group": {
                                 "type": "array",
-                                "title": "server groups",
+                                "title": "{%trans 'server groups' %}",
                                 "minItems": 1,
                                 "uniqueItems": true,
-                                "description": "Server group you want to execute",
+                                "description": "{%trans 'Server group you want to execute' %}",
                                 "items": {
                                     "type": "string",
                                     "enum": [
@@ -270,10 +270,10 @@
                 },
                     "commands": {
                         "type": "array",
-                            "title": "commands",
+                            "title": "{%trans 'commands' %}",
                             "minItems": 1,
                             "items": {
-                            "description": "Input the command you need to execute",
+                            "description": "{%trans 'Input the command you need to execute' %}",
                                 "type": "string",
                         }
                     },
@@ -295,14 +295,14 @@
     function del(id,name) {
         var dialog = bootbox.confirm({
             title: "<a class='text-danger'>"+'delete task ' + name +"</a>",
-            message: 'Are you sure to delete task ' + name +' ?',
+            message: '{%trans 'Are you sure to delete task ' %}' + name +' ?',
             buttons: {
                 confirm: {
-                    label: 'delete',
+                    label: '{%trans 'delete ' %}',
                     className: 'btn-danger'
                 },
                 cancel: {
-                    label: 'cancel',
+                    label: '{%trans 'cancel ' %}',
                     className: 'btn-success'
                 }
             },

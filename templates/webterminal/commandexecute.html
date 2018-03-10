@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {%load i18n%}
-{% block title %}webterminal{% endblock %}
+{% block title %}{%trans 'webterminal' %}{% endblock %}
 {% load staticfiles %}
     {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
@@ -41,7 +41,7 @@
         <div class="portlet box box-success" style="overflow:scroll;height: 800px;">
             <div class="portlet-title">
                 <div class="caption">
-                    <a class="text-danger">Server List</a>
+                    <a class="text-danger">{%trans 'Server List' %}</a>
                 </div>
                 <div class="tools">
                     <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
@@ -52,7 +52,7 @@
             </div>
             <div class="portlet-body">
                 <form id="search">
-                    <input type="search" id="q" placeholder="search"/>
+                    <input type="search" id="q" placeholder="{%trans 'search' %}"/>
                     <span>
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </span>
@@ -66,12 +66,12 @@
         <div class="span2 leftMenu">
             <ul class="nav nav-tabs marginBottom" id="myTab">
                 <li class="active ">
-                    <a href="#help" class="backgroundRed">help info<button class="close closeTab" type="button" >×</button></a>
+                    <a href="#help" class="backgroundRed">{%trans 'help info' %}<button class="close closeTab" type="button" >×</button></a>
                 </li>
             </ul>
         </div>
         <div class="tab-content span4">
-            <div class="tab-pane active responsive" id="help">help info</div>
+            <div class="tab-pane active responsive" id="help">{%trans 'help info' %}</div>
         </div>
 
     </div>
@@ -185,7 +185,7 @@
                         term.writeln(json_msg[1]);
                         break;
                     case "disconnect":
-                        term.write("\r\n\r\n[Finished...]\r\n");
+                        term.write("{%trans '\r\n\r\n[Finished...]\r\n' %}");
                         break;
                 }
             };
@@ -251,7 +251,7 @@
                         "execute": {
                             "separator_before": false,
                                 "separator_after": false,
-                                "label": "execute",
+                                "label": "{%trans 'execute' %}",
                                 "action": function (obj) {
 
                                 var tabId = $node.text; //this is id on tab content div where the
@@ -277,7 +277,7 @@
                         "execute": {
                             "separator_before": false,
                             "separator_after": false,
-                            "label": "execute",
+                            "label": "{%trans 'execute' %}",
                             "action": function (obj) {
 
                                 var tabId = $node.text; //this is id on tab content div where the
@@ -304,7 +304,7 @@
                         "execute": {
                             "separator_before": false,
                             "separator_after": false,
-                            "label": "execute",
+                            "label": "{%trans 'execute' %}",
                             "action": function (obj) {
 
                                 var tabId = $node.text; //this is id on tab content div where the
@@ -328,50 +328,9 @@
                         },
                     }
                 }
-
-//                return {
-//                    "disconnect": {
-//                        "separator_before": false,
-//                        "separator_after": false,
-//                        "label": "disconnect",
-//                        "action": function (obj) {
-//                            console.log($node);
-//                        }
-//                    },
-//                    "Rename": {
-//                        "separator_before": false,
-//                        "separator_after": false,
-//                        "label": "rename",
-//                        "action": function (obj) {
-//                            tree.edit($node);
-//                        }
-//                    },
-//                    "Create": {
-//                        "separator_before": false,
-//                        "separator_after": false,
-//                        "label": "Create",
-//                        "action": function (obj) {
-//                            $node = tree.create_node($node);
-//                            tree.edit($node);
-//                        }
-//                    },
-//                        "Remove": {
-//                            "separator_before": false,
-//                            "separator_after": false,
-//                            "label": "delete",
-//                            "action": function (obj) {
-//                                tree.delete_node($node);
-//                            }
-//                        },
-//                }
             }
         },
     });
-//    .on('show_contextmenu.jstree', function(e, reference, element) {
-//        if ( reference.node.parents.length < 2 ) {
-//            $('.vakata-context').remove();
-//        }
-//    });
     
     $("#search").submit(function(e) {
         e.preventDefault();

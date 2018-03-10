@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {%load i18n%}
-{% block title %}Create commands{% endblock %}
+{% block title %}{%trans 'Create commands' %}{% endblock %}
 {% load staticfiles %}
 {% block css%}
 <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
@@ -14,8 +14,8 @@
             <div class="box box-success">
                 <div class="box-header with-border">
                     <div class="caption">
-                        <button class="btn btn-success" onclick="window.location.href = '{% url 'commandslist' %}'">
-                            Return Commands List
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'commandslist' %}'">
+                            {%trans 'Return Commands List' %}
                         </button>
                     </div>
 
@@ -27,11 +27,11 @@
                             <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-wrench"></i></button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">{%trans 'Action' %}</a></li>
+                                <li><a href="#">{%trans 'Another action' %}</a></li>
+                                <li><a href="#">{%trans 'Something else here' %}</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">{%trans 'Separated link' %}</a></li>
                             </ul>
                         </div>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
@@ -53,7 +53,7 @@
 
                                         <div class="col-sm-4 col-sm-offset-5">
                                             <button type="submit" id="submit" class="btn btn-primary pull-center">
-                                                submit
+                                                {%trans 'submit' %}
                                             </button>
                                         </div>
 
@@ -82,18 +82,18 @@
         "properties": {
             "name": {
                 "type": "string",
-                'title': "task name",
-                "description": "task name",
+                'title': "{%trans 'task name' %}",
+                "description": "{%trans 'task name' %}",
                 "required": true,
                 "minLength": 1,
                 "maxLength": 50,
             },
             "group": {
                 "type": "array",
-                "title": "server groups",
+                "title": "{%trans 'server groups' %}",
                 "minItems": 1,
                 "uniqueItems": true,
-                "description": "Server group you want to execute",
+                "description": "{%trans 'Server group you want to execute' %}",
                 "items": {
                     "type": "string",
                     "enum": [
@@ -106,10 +106,10 @@
             },
             "commands": {
                 "type": "array",
-                "title": "commands",
+                "title": "{%trans 'commands' %}",
                 "minItems": 1,
                 "items": {
-                    "description": "Input the command you need to execute",
+                    "description": "{%trans 'Input the command you need to execute' %}",
                     "type": "string",
                 }
             },
