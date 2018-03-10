@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-10 13:14+0000\n"
+"POT-Creation-Date: 2018-03-10 14:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -212,13 +212,20 @@ msgstr "帮助信息"
 #: templates/webterminal/index.html:205
 #: templates/webterminal/sshlogmonitor.html:57
 msgid "\\r\\n\\r\\n[Finished...]\\r\\n"
-msgstr "已结束"
+msgstr "\\r\\n\\r\\n[已结束...]\\r\\n"
 
 #: templates/webterminal/commandexecute.html:254
 #: templates/webterminal/commandexecute.html:280
 #: templates/webterminal/commandexecute.html:307
 msgid "execute"
 msgstr "执行"
+
+#: templates/webterminal/commandslist.html:20
+#: templates/webterminal/credentiallist.html:21
+#: templates/webterminal/grouplist.html:21
+#: templates/webterminal/serverlist.html:21
+msgid "Add New"
+msgstr "新增"
 
 #: templates/webterminal/commandslist.html:48
 #: templates/webterminal/credentiallist.html:49
@@ -280,7 +287,7 @@ msgstr "命令详情"
 #: templates/webterminal/serverlist.html:190
 #: templates/webterminal/serverlist.html:296
 msgid "Loading..."
-msgstr "加载中"
+msgstr "加载中..."
 
 #: templates/webterminal/commandslist.html:205
 #: templates/webterminal/credentiallist.html:133
@@ -379,9 +386,25 @@ msgstr "开启"
 msgid "Credential list"
 msgstr "凭证列表"
 
+#: templates/webterminal/credentiallist.html:105
+msgid "Credential detail"
+msgstr "凭证详情"
+
+#: templates/webterminal/credentiallist.html:125
+msgid "Credential edit"
+msgstr "编辑凭证"
+
 #: templates/webterminal/credentiallist.html:184
 msgid "delete credential name"
 msgstr "删除凭证"
+
+#: templates/webterminal/credentiallist.html:185
+msgid "Are you sure to delete credential"
+msgstr "确定删除凭证"
+
+#: templates/webterminal/credentiallist.html:403
+msgid "password"
+msgstr "密码"
 
 #: templates/webterminal/credentiallist.html:418
 msgid "proxy server ip"
@@ -454,11 +477,6 @@ msgstr "错误"
 #: templates/webterminal/grouplist.html:4
 msgid "Group list"
 msgstr "服务器组列表"
-
-#: templates/webterminal/grouplist.html:21
-#: templates/webterminal/serverlist.html:21
-msgid "Add New"
-msgstr "新增"
 
 #: templates/webterminal/grouplist.html:49
 msgid "group name"
