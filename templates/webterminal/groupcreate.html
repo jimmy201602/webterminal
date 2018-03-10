@@ -14,8 +14,8 @@
             <div class="box box-success">
                 <div class="box-header with-border">
                     <div class="caption">
-                        <button class="btn btn-success" onclick="window.location.href = '{% url 'grouplist' %}'">
-                            Return Group List
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'grouplist' %}'">
+                            {% trans 'Return Group List' %}
                         </button>
                     </div>
 
@@ -27,11 +27,11 @@
                             <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-wrench"></i></button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">{% trans 'Action' %}</a></li>
+                                <li><a href="#">{% trans 'Another action' %}</a></li>
+                                <li><a href="#">{% trans 'Something else here' %}</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">{% trans 'Separated link' %}</a></li>
                             </ul>
                         </div>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
@@ -53,7 +53,7 @@
 
                                         <div class="col-sm-4 col-sm-offset-5">
                                             <button type="submit" id="submit" class="btn btn-primary pull-center">
-                                                submit
+                                                {% trans 'submit' %}
                                             </button>
                                         </div>
 
@@ -82,17 +82,17 @@
         "properties": {
             "name": {
                 "type": "string",
-                'title': "Group name",
-                "description": "Group name",
+                'title': "{% trans 'Group name' %}",
+                "description": "{% trans 'Group name' %}",
                 "required": true,
                 "minLength": 1,
                 "maxLength": 40,
             },
             "servers": {
                 "type": "array",
-                "title": "servers",
+                "title": "{% trans 'servers' %}",
                 "minItems": 1,
-                "description": "Servers",
+                "description": "{% trans 'Servers' %}",
                 "items": {
                     "type": "string",
                     "enum":[
@@ -148,7 +148,7 @@
                     'Content-Type': 'application/json'
                 },
                 success: function (data) {
-                    toastr["success"]("Group "+data.name+" create success!");
+                    toastr["success"]("{% trans 'Group' %} "+data.name+"{% trans 'create success!' %}");
                     setTimeout(function () {
                         location.reload();
                     },2000);
@@ -159,7 +159,7 @@
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
                         $.each(value, function(index, value) {
-                            toastr["error"]("Please check field "+key + " error: "+ value);
+                            toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
                         });
                     });
                 }

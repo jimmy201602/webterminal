@@ -18,7 +18,7 @@
                 <div class="box-header with-border">
                     <div class="caption">
                         <button class="btn btn-primary" onclick="window.location.href = '{% url 'groupcreate' %}'">
-                            Add New
+                            {% trans 'Add New' %}
                             <i class="fa fa-plus"></i>
                         </button>
                     </div>
@@ -31,11 +31,11 @@
                             <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-wrench"></i></button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">{% trans 'Action' %}</a></li>
+                                <li><a href="#">{% trans 'Another action' %}</a></li>
+                                <li><a href="#">{% trans 'Something else here' %}</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">{% trans 'Separated link' %}</a></li>
                             </ul>
                         </div>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
@@ -105,7 +105,7 @@
     function detail(id) {
         var dialog = bootbox.dialog({
             title: 'Group information detail',
-            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>'
         });
         dialog.init(function(){
             var url = '{% url 'servergroup-list' %}';
@@ -118,8 +118,8 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                'title': "Group name",
-                                "description": "Group name",
+                                'title': "{% trans 'Group name' %}",
+                                "description": "{% trans 'Group name' %}",
                                 "required": true,
                                 "minLength": 1,
                                 "maxLength": 40,
@@ -127,10 +127,10 @@
                             },
                             "servers": {
                                 "type": "array",
-                                "title": "servers",
+                                "title": "{% trans 'servers' %}",
                                 "minItems": 1,
                                 "readOnly": true,
-                                "description": "Servers",
+                                "description": "{% trans 'Servers' %}",
                                 "items": {
                                     "type": "string",
                                     "enum":[
@@ -167,7 +167,7 @@
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
                         $.each(value, function(index, value) {
-                            toastr["error"]("Please check field "+key + " error: "+ value);
+                            toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
                         });
                     });
                 }
@@ -176,15 +176,15 @@
     }
     function edit(id) {
         var dialog = bootbox.confirm({
-            title: 'Group information edit',
-            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+            title: '{% trans 'Group information edit' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>',
             buttons: {
                 confirm: {
-                    label: 'submit',
+                    label: '{% trans 'submit' %}',
                     className: 'btn-danger'
                 },
                 cancel: {
-                    label: 'cancel',
+                    label: '{% trans 'cancel' %}',
                     className: 'btn-success'
                 }
             },
@@ -212,7 +212,7 @@
                             dataType: "json",
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
-                                toastr["success"]("Update group info " +data.name + " success!");
+                                toastr["success"]("{% trans 'Update group info' %} " +data.name + " {% trans 'success' %}!");
                                 setTimeout(function () {
                                     location.reload();
                                 },2000);
@@ -223,7 +223,7 @@
                             error: function(XMLHttpRequest, textStatus, errorThrown) {
                                 $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
                                     $.each(value, function(index, value) {
-                                        toastr["error"]("Please check field "+key + " error: "+ value);
+                                        toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
                                     });
                                 });
                             }
@@ -243,17 +243,17 @@
                         "properties": {
                             "name": {
                                 "type": "string",
-                                'title': "Group name",
-                                "description": "Group name",
+                                'title': "{% trans 'Group name' %}",
+                                "description": "{% trans 'Group name' %}",
                                 "required": true,
                                 "minLength": 1,
                                 "maxLength": 40,
                             },
                             "servers": {
                                 "type": "array",
-                                "title": "servers",
+                                "title": "{% trans 'servers' %}",
                                 "minItems": 1,
-                                "description": "Servers",
+                                "description": "{% trans 'Servers' %}",
                                 "items": {
                                     "type": "string",
                                     "enum":[
@@ -276,7 +276,7 @@
                     var bf = BrutusinForms.create(schema);
                     var container = document.getElementById('container');
 
-                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
+                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>');
                     var servers = [];
                     $.each(data['servers'],function (key,value) {
                         $.ajax({url: data['servers'][key], success: function(result){
@@ -296,7 +296,7 @@
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
                         $.each(value, function(index, value) {
-                            toastr["error"]("Please check field "+key + " error: "+ value);
+                            toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
                         });
                     });
                 }
@@ -305,15 +305,15 @@
     };
     function del(id,name) {
         var dialog = bootbox.confirm({
-            title: "<a class='text-danger'>"+'delete group ' + name +"</a>",
-            message: 'Are you sure to delete group ' + name +' ?',
+            title: "<a class='text-danger'>"+'{% trans 'delete group' %} ' + name +"</a>",
+            message: '{% trans 'Are you sure to delete group' %} ' + name +' ?',
             buttons: {
                 confirm: {
-                    label: 'delete',
+                    label: '{% trans 'delete' %}',
                     className: 'btn-danger'
                 },
                 cancel: {
-                    label: 'cancel',
+                    label: '{% trans 'cancel' %}',
                     className: 'btn-success'
                 }
             },

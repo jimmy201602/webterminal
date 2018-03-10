@@ -27,11 +27,11 @@
                             <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-wrench"></i></button>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">{% trans 'Action' %}</a></li>
+                                <li><a href="#">{% trans 'Another action' %}</a></li>
+                                <li><a href="#">{% trans 'Something else here' %}</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="#">{% trans 'Separated link' %}</a></li>
                             </ul>
                         </div>
                         <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
@@ -106,9 +106,9 @@
     });
 
     function play(user,ip,start_time,end_time,url){
-        var div_username = ' user: '+'<span class="text-info">'+user+'' + '</span>';
-        var div_ip = ' server: '+'<span class="text-info">' + ip + '</span>';
-        var div_time = ' start time: ' + '<span class="text-info">'+start_time +'</span>' + ' end time: ' +'<span class="text-info">' + end_time + '</span>';
+        var div_username = ' {% trans 'user' %}: '+'<span class="text-info">'+user+'' + '</span>';
+        var div_ip = ' {% trans 'server' %}: '+'<span class="text-info">' + ip + '</span>';
+        var div_time = ' {% trans 'start time' %}: ' + '<span class="text-info">'+start_time +'</span>' + ' {% trans 'end time' %}: ' +'<span class="text-info">' + end_time + '</span>';
         var title = div_username + div_ip + div_time;
         BootstrapDialog.show({
             title: title,
@@ -120,15 +120,15 @@
         
     function kill(channel_name,user_name) {
     var dialog = bootbox.confirm({
-        title: "<a class='text-danger'>"+'kick user ' + user_name +" out </a>",
-        message: 'Are you sure to kick user ' + user_name +' out ?',
+        title: "<a class='text-danger'>"+'{% trans 'kick user' %} ' + user_name +" {% trans 'out' %} </a>",
+        message: '{% trans 'Are you sure to kick user' %} ' + user_name +' {% trans 'out' %} ?',
         buttons: {
             confirm: {
-                label: 'kill',
+                label: '{% trans 'kill' %}',
                 className: 'btn-danger'
             },
             cancel: {
-                label: 'cancel',
+                label: '{% trans 'cancel' %}',
                 className: 'btn-success'
             }
         },
@@ -162,9 +162,9 @@
 
 
 function monitor(user,ip,start_time,url){
-        var div_username = ' user: '+'<span class="text-info">'+user+'' + '</span>';
-        var div_ip = ' server: '+'<span class="text-info">' + ip + '</span>';
-        var div_time = ' start time: ' + '<span class="text-info">'+start_time +'</span>';
+        var div_username = ' {% trans 'user' %}: '+'<span class="text-info">'+user+'' + '</span>';
+        var div_ip = ' {% trans 'server' %}: '+'<span class="text-info">' + ip + '</span>';
+        var div_time = ' {% trans 'start time' %}: ' + '<span class="text-info">'+start_time +'</span>';
         var title = div_username + div_ip + div_time;
         BootstrapDialog.show({
             size: BootstrapDialog.SIZE_WIDE,
