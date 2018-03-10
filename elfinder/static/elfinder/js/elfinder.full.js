@@ -9139,7 +9139,7 @@ elFinder.prototype._options = {
 	 * @type String
 	 * @default ""
 	 */
-	baseUrl : '',
+	baseUrl : '/static/elfinder/',
 	
 	/**
 	 * Auto load required CSS
