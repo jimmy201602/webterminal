@@ -30,6 +30,13 @@ class ServerGroup(models.Model):
     def __unicode__(self):
         return self.name
 
+protocol_choices = (
+        ('ssh','ssh'),
+        ('vnc','vnc'),
+        ('rdp','rdp'),
+        ('telnet','telnet')
+    )
+
 class Credential(models.Model):
     name = models.CharField(max_length=40,verbose_name='Credential name',blank=False,unique=True)
     username = models.CharField(max_length=40,verbose_name='Auth user name',blank=False)
@@ -41,22 +48,24 @@ class Credential(models.Model):
     proxyserverip = models.GenericIPAddressField(protocol='ipv4',null=True, blank=True)
     proxyport = models.PositiveIntegerField(blank=True,null=True)
     proxypassword = models.CharField(max_length=40,verbose_name='Proxy password',blank=True)
-    
+    protocol = models.CharField(max_length=40,default='ssh', choices=protocol_choices)
+
     def __unicode__(self):
         return self.name    
     
     def clean(self):
-        if self.method == 'password' and len(self.password) == 0:
-            raise ValidationError('If you choose password auth method,You must set password!')
-        if self.method == 'password' and len(self.key) >0:
-            raise ValidationError('If you choose password auth method,You must make key field for blank!')
-        if self.method == 'key' and len(self.key) == 0:
-            raise ValidationError('If you choose key auth method,You must fill in key field!')
-        if self.method == 'key' and len(self.password) >0:
-            raise ValidationError('If you choose key auth method,You must make password field for blank!')  
-        if self.proxy:
-            if self.proxyserverip is None or self.proxyport is None:
-                raise ValidationError('If you choose auth proxy,You must fill in proxyserverip and proxyport field !')
+        if self.protocol == 'ssh':
+            if self.method == 'password' and len(self.password) == 0:
+                raise ValidationError('If you choose password auth method,You must set password!')
+            if self.method == 'password' and len(self.key) >0:
+                raise ValidationError('If you choose password auth method,You must make key field for blank!')
+            if self.method == 'key' and len(self.key) == 0:
+                raise ValidationError('If you choose key auth method,You must fill in key field!')
+            if self.method == 'key' and len(self.password) >0:
+                raise ValidationError('If you choose key auth method,You must make password field for blank!')  
+            if self.proxy:
+                if self.proxyserverip is None or self.proxyport is None:
+                    raise ValidationError('If you choose auth proxy,You must fill in proxyserverip and proxyport field !')
 
 class CommandsSequence(models.Model):
     name = models.CharField(max_length=40,verbose_name='Task name',blank=False,unique=True)
