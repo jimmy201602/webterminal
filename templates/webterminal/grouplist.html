@@ -104,7 +104,7 @@
 <script type="application/javascript">
     function detail(id) {
         var dialog = bootbox.dialog({
-            title: 'Group information detail',
+            title: '{% trans 'Group information detail' %}',
             message: '<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>'
         });
         dialog.init(function(){
@@ -150,7 +150,7 @@
                     var BrutusinForms = brutusin["json-forms"];
                     var bf = BrutusinForms.create(schema);
                     var container = document.getElementById('container');
-                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>');
+                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>');
                     var servers = [];
                     $.each(data['servers'],function (key,value) {
                         $.ajax({url: data['servers'][key], success: function(result){

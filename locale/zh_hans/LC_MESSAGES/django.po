@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-10 14:11+0000\n"
+"POT-Creation-Date: 2018-03-11 04:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,22 +272,28 @@ msgstr "删除"
 
 #: templates/webterminal/commandslist.html:108
 #: templates/webterminal/commandslist.html:132
-#: templates/webterminal/commandslist.html:197
 msgid "commands detail"
 msgstr "命令详情"
 
+#: templates/webterminal/commandslist.html:109
 #: templates/webterminal/commandslist.html:133
 #: templates/webterminal/commandslist.html:198
 #: templates/webterminal/credentiallist.html:106
 #: templates/webterminal/credentiallist.html:126
 #: templates/webterminal/grouplist.html:108
+#: templates/webterminal/grouplist.html:153
 #: templates/webterminal/grouplist.html:180
 #: templates/webterminal/grouplist.html:279
 #: templates/webterminal/serverlist.html:106
+#: templates/webterminal/serverlist.html:161
 #: templates/webterminal/serverlist.html:190
 #: templates/webterminal/serverlist.html:296
 msgid "Loading..."
 msgstr "加载中..."
+
+#: templates/webterminal/commandslist.html:197
+msgid "commands edit"
+msgstr "命令编辑"
 
 #: templates/webterminal/commandslist.html:205
 #: templates/webterminal/credentiallist.html:133
@@ -299,6 +305,10 @@ msgstr "加载中..."
 #: templates/webterminal/sshlogslist.html:131
 msgid "cancel"
 msgstr "取消"
+
+#: templates/webterminal/commandslist.html:297
+msgid "delete task"
+msgstr "删除任务"
 
 #: templates/webterminal/commandslist.html:298
 msgid "Are you sure to delete task "
@@ -382,6 +392,26 @@ msgstr "开启代理"
 msgid "Enabled"
 msgstr "开启"
 
+#: templates/webterminal/credentialcreate.html:169
+#: templates/webterminal/credentiallist.html:403
+msgid "password"
+msgstr "密码"
+
+#: templates/webterminal/credentialcreate.html:181
+#: templates/webterminal/credentiallist.html:418
+msgid "proxy server ip"
+msgstr "代理服务器ip"
+
+#: templates/webterminal/credentialcreate.html:186
+#: templates/webterminal/credentiallist.html:423
+msgid "proxy port"
+msgstr "代理端口"
+
+#: templates/webterminal/credentialcreate.html:190
+#: templates/webterminal/credentiallist.html:427
+msgid "proxy password"
+msgstr "代理密码"
+
 #: templates/webterminal/credentiallist.html:4
 msgid "Credential list"
 msgstr "凭证列表"
@@ -401,22 +431,6 @@ msgstr "删除凭证"
 #: templates/webterminal/credentiallist.html:185
 msgid "Are you sure to delete credential"
 msgstr "确定删除凭证"
-
-#: templates/webterminal/credentiallist.html:403
-msgid "password"
-msgstr "密码"
-
-#: templates/webterminal/credentiallist.html:418
-msgid "proxy server ip"
-msgstr "代理服务器ip"
-
-#: templates/webterminal/credentiallist.html:423
-msgid "proxy port"
-msgstr "代理端口"
-
-#: templates/webterminal/credentiallist.html:427
-msgid "proxy password"
-msgstr "代理密码"
 
 #: templates/webterminal/groupcreate.html:18
 msgid "Return Group List"
@@ -481,6 +495,10 @@ msgstr "服务器组列表"
 #: templates/webterminal/grouplist.html:49
 msgid "group name"
 msgstr "组名"
+
+#: templates/webterminal/grouplist.html:107
+msgid "Group information detail"
+msgstr "服务器信息详情"
 
 #: templates/webterminal/grouplist.html:179
 msgid "Group information edit"
@@ -574,6 +592,14 @@ msgstr "服务器名称 "
 #: templates/webterminal/serverlist.html:50
 msgid "host name"
 msgstr "主机名"
+
+#: templates/webterminal/serverlist.html:105
+msgid "Server information detail"
+msgstr "服务器信息详情"
+
+#: templates/webterminal/serverlist.html:189
+msgid "Server information edit"
+msgstr "服务器信息编辑"
 
 #: templates/webterminal/serverlist.html:319
 msgid "delete server"
