@@ -106,7 +106,7 @@
     function get_detail(id) {
         var dialog = bootbox.dialog({
             title: '{%trans 'commands detail' %}',
-            message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>'
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>'
         });
         dialog.init(function(){
             $.ajax({
@@ -194,7 +194,7 @@
     }
     function edit(id) {
         var dialog = bootbox.confirm({
-            title: '{%trans 'commands detail' %}',
+            title: '{%trans 'commands edit' %}',
             message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>',
             buttons: {
                 confirm: {
@@ -294,7 +294,7 @@
     };
     function del(id,name) {
         var dialog = bootbox.confirm({
-            title: "<a class='text-danger'>"+'delete task ' + name +"</a>",
+            title: "<a class='text-danger'>"+'{% trans 'delete task' %} ' + name +"</a>",
             message: '{%trans 'Are you sure to delete task ' %}' + name +' ?',
             buttons: {
                 confirm: {
