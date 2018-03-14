@@ -178,3 +178,5 @@ LANGUAGES = [
     ('zh_hans', '中文简体'),
     ('en', 'English'),
 ]
+
+CHANNELS_WS_PROTOCOLS = ["guacamole"]
