@@ -24,7 +24,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
     channel_session_user = True   
 
     
-    def connect(self, message):
+    def connect(self, message,serverip):
         self.message.reply_channel.send({"accept": True})
         client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
         client.handshake(protocol='rdp',
@@ -45,7 +45,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
         guacamolethreadwrite.setDaemon = True
         guacamolethreadwrite.start()
         
-    def disconnect(self, message):
+    def disconnect(self, message,serverip):
         #close threading
         print 'disconnect'
         self.message.reply_channel.send({"accept":False})
