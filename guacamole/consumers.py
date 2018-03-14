@@ -25,6 +25,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
 
     
     def connect(self, message,serverip):
+        print serverip
         self.message.reply_channel.send({"accept": True})
         client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
         client.handshake(protocol='rdp',
