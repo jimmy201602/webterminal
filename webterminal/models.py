@@ -49,7 +49,7 @@ class Credential(models.Model):
     proxyserverip = models.GenericIPAddressField(protocol='ipv4',null=True, blank=True)
     proxyport = models.PositiveIntegerField(blank=True,null=True)
     proxypassword = models.CharField(max_length=40,verbose_name='Proxy password',blank=True)
-    protocol = models.CharField(max_length=40,default='ssh', choices=protocol_choices)
+    protocol = models.CharField(max_length=40,default='ssh-password', choices=protocol_choices)
     width = models.PositiveIntegerField(verbose_name='width',default=1024)
     height = models.PositiveIntegerField(verbose_name='height',default=768)
     dpi = models.PositiveIntegerField(verbose_name='dpi',default=96)
