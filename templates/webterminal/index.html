@@ -244,7 +244,7 @@
                     text: "{{ server_group.name }}",
                     children: [
                         {% for server in server_group.servers.all %}
-                        {text: "{{ server.gethostname }}", icon: "fa fa-server", ip: "{{ server.ip }}", state: {selected: !0},hostname:"{{ server.hostname }}"},
+                        {text: "{{ server.gethostname }}", icon: "fa fa-server", ip: "{{ server.ip }}", state: {selected: !0},hostname:"{{ server.hostname }},protocol: "{{ server.protocol }}""},
                         {% endfor %}
                     ]
                 },
@@ -270,17 +270,33 @@
                             var tabId = $node.text; //this is id on tab content div where the
                             //get server ip
                             var ip = $node.original.ip;
-                            if ($("#"+tabId).length <= 0){
-                                $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
-                                $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
-                                showTab(tabId);
-                                registerCloseEvent();
-                                var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
-                            }else {
-                                showTab(tabId);
+                            var protocol = $node.original.protocol;
+                            if (protocol == "ssh-password" || protocol == "ssh-key"){
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                }else {
+                                    showTab(tabId);
+                                }
+                            }else{
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/'+ip+"/";
+                                    connect_guacamole(document.getElementById(tabId),ws_path);
+                                }else {
+                                    showTab(tabId);
+                                }
                             }
+
                         }
                     },
                     "disconnect": {
@@ -383,5 +399,55 @@
                     });
 
             }
+</script>
+<script type="application/javascript">
+    function connect_guacamole(element,ws_path){
+        // Get display div from document
+        var display = document.getElementById(id);
+    
+        // Instantiate client, using an HTTP tunnel for communications.
+        //http://guacamole.apache.org/doc/guacamole-common-js/Guacamole.WebSocketTunnel.html
+        var guac = new Guacamole.Client(
+           // new Guacamole.HTTPTunnel("tunnel")
+            new Guacamole.WebSocketTunnel(ws_path)
+        );
+    
+        // Add client to display div
+        display.appendChild(guac.getDisplay().getElement());
+    
+        // Error handler
+        guac.onerror = function(error) {
+            <!--alert(error);-->
+            console.log(error);
+        };
+    
+        // Connect
+        guac.connect();
+    
+        // Disconnect on close
+        window.onunload = function() {
+            guac.disconnect();
+        }
+    
+        // Mouse
+        var mouse = new Guacamole.Mouse(guac.getDisplay().getElement());
+    
+        mouse.onmousedown =
+        mouse.onmouseup   =
+        mouse.onmousemove = function(mouseState) {
+            guac.sendMouseState(mouseState);
+        };
+    
+        // Keyboard
+        var keyboard = new Guacamole.Keyboard(document);
+    
+        keyboard.onkeydown = function (keysym) {
+            guac.sendKeyEvent(1, keysym);
+        };
+    
+        keyboard.onkeyup = function (keysym) {
+            guac.sendKeyEvent(0, keysym);
+        };
+    }
 </script>
 {% endblock %}

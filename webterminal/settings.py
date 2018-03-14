@@ -180,3 +180,7 @@ LANGUAGES = [
 ]
 
 CHANNELS_WS_PROTOCOLS = ["guacamole"]
+
+# guacd daemon host address and port
+GUACD_HOST = ''
+GUACD_PORT = '4822'
