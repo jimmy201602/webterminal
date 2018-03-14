@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-11 04:36+0000\n"
+"POT-Creation-Date: 2018-03-14 14:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -262,7 +262,7 @@ msgstr "编辑"
 
 #: templates/webterminal/commandslist.html:67
 #: templates/webterminal/credentiallist.html:64
-#: templates/webterminal/credentiallist.html:188
+#: templates/webterminal/credentiallist.html:196
 #: templates/webterminal/grouplist.html:66
 #: templates/webterminal/grouplist.html:312
 #: templates/webterminal/serverlist.html:64
@@ -297,7 +297,7 @@ msgstr "命令编辑"
 
 #: templates/webterminal/commandslist.html:205
 #: templates/webterminal/credentiallist.html:133
-#: templates/webterminal/credentiallist.html:192
+#: templates/webterminal/credentiallist.html:200
 #: templates/webterminal/grouplist.html:187
 #: templates/webterminal/grouplist.html:316
 #: templates/webterminal/serverlist.html:197
@@ -328,10 +328,10 @@ msgstr "返回凭证列表"
 
 #: templates/webterminal/credentialcreate.html:86
 #: templates/webterminal/credentialcreate.html:87
-#: templates/webterminal/credentiallist.html:228
-#: templates/webterminal/credentiallist.html:229
-#: templates/webterminal/credentiallist.html:318
-#: templates/webterminal/credentiallist.html:319
+#: templates/webterminal/credentiallist.html:239
+#: templates/webterminal/credentiallist.html:240
+#: templates/webterminal/credentiallist.html:358
+#: templates/webterminal/credentiallist.html:359
 #: templates/webterminal/serverlist.html:119
 #: templates/webterminal/serverlist.html:120
 #: templates/webterminal/serverlist.html:254
@@ -340,75 +340,129 @@ msgid "credential name"
 msgstr "凭证名称"
 
 #: templates/webterminal/credentialcreate.html:94
-#: templates/webterminal/credentiallist.html:50
-#: templates/webterminal/credentiallist.html:237
-#: templates/webterminal/credentiallist.html:326
-msgid "username"
-msgstr "用户名"
-
 #: templates/webterminal/credentialcreate.html:95
-#: templates/webterminal/credentiallist.html:238
-#: templates/webterminal/credentiallist.html:327
-msgid "username name"
-msgstr "用户名"
+#: templates/webterminal/credentiallist.html:248
+#: templates/webterminal/credentiallist.html:249
+#: templates/webterminal/credentiallist.html:366
+#: templates/webterminal/credentiallist.html:367
+msgid "protocol"
+msgstr "协议"
 
-#: templates/webterminal/credentialcreate.html:102
+#: templates/webterminal/credentialcreate.html:108
 #: templates/webterminal/credentiallist.html:51
-#: templates/webterminal/credentiallist.html:246
-#: templates/webterminal/credentiallist.html:334
+#: templates/webterminal/credentiallist.html:271
+#: templates/webterminal/credentiallist.html:388
 msgid "port"
 msgstr "端口"
 
-#: templates/webterminal/credentialcreate.html:103
-#: templates/webterminal/credentiallist.html:247
-#: templates/webterminal/credentiallist.html:335
+#: templates/webterminal/credentialcreate.html:109
+#: templates/webterminal/credentiallist.html:272
+#: templates/webterminal/credentiallist.html:389
 msgid "port number"
 msgstr "端口号"
 
-#: templates/webterminal/credentialcreate.html:109
-#: templates/webterminal/credentialcreate.html:110
-#: templates/webterminal/credentiallist.html:254
-#: templates/webterminal/credentiallist.html:255
-#: templates/webterminal/credentiallist.html:341
-#: templates/webterminal/credentiallist.html:342
-msgid "method"
-msgstr "方式"
+#: templates/webterminal/credentialcreate.html:115
+#: templates/webterminal/credentiallist.html:50
+#: templates/webterminal/credentiallist.html:262
+#: templates/webterminal/credentiallist.html:380
+msgid "username"
+msgstr "用户名"
 
-#: templates/webterminal/credentialcreate.html:130
-#: templates/webterminal/credentiallist.html:278
-#: templates/webterminal/credentiallist.html:362
+#: templates/webterminal/credentialcreate.html:116
+#: templates/webterminal/credentiallist.html:263
+#: templates/webterminal/credentiallist.html:381
+msgid "username name"
+msgstr "用户名"
+
+#: templates/webterminal/credentialcreate.html:153
+#: templates/webterminal/credentiallist.html:303
+#: templates/webterminal/credentiallist.html:417
 msgid "proxy"
 msgstr "代理"
 
-#: templates/webterminal/credentialcreate.html:131
-#: templates/webterminal/credentiallist.html:279
-#: templates/webterminal/credentiallist.html:363
+#: templates/webterminal/credentialcreate.html:154
+#: templates/webterminal/credentiallist.html:304
+#: templates/webterminal/credentiallist.html:418
 msgid "enable proxy"
 msgstr "开启代理"
 
-#: templates/webterminal/credentialcreate.html:136
-#: templates/webterminal/credentiallist.html:284
-#: templates/webterminal/credentiallist.html:368
+#: templates/webterminal/credentialcreate.html:159
+#: templates/webterminal/credentiallist.html:309
+#: templates/webterminal/credentiallist.html:423
 msgid "Enabled"
 msgstr "开启"
 
-#: templates/webterminal/credentialcreate.html:169
-#: templates/webterminal/credentiallist.html:403
+#: templates/webterminal/credentialcreate.html:199
+#: templates/webterminal/credentialcreate.html:200
+#: templates/webterminal/credentialcreate.html:224
+#: templates/webterminal/credentialcreate.html:225
+#: templates/webterminal/credentialcreate.html:277
+#: templates/webterminal/credentialcreate.html:278
+#: templates/webterminal/credentialcreate.html:321
+#: templates/webterminal/credentialcreate.html:322
+#: templates/webterminal/credentialcreate.html:366
+#: templates/webterminal/credentialcreate.html:367
+#: templates/webterminal/credentiallist.html:279
+#: templates/webterminal/credentiallist.html:280
+#: templates/webterminal/credentiallist.html:395
+#: templates/webterminal/credentiallist.html:396
+msgid "method"
+msgstr "方式"
+
+#: templates/webterminal/credentialcreate.html:211
+#: templates/webterminal/credentialcreate.html:246
+#: templates/webterminal/credentialcreate.html:290
+#: templates/webterminal/credentialcreate.html:335
+#: templates/webterminal/credentiallist.html:485
+#: templates/webterminal/credentiallist.html:495
 msgid "password"
 msgstr "密码"
 
-#: templates/webterminal/credentialcreate.html:181
-#: templates/webterminal/credentiallist.html:418
+#: templates/webterminal/credentialcreate.html:253
+#: templates/webterminal/credentialcreate.html:254
+#: templates/webterminal/credentialcreate.html:297
+#: templates/webterminal/credentialcreate.html:298
+#: templates/webterminal/credentialcreate.html:342
+#: templates/webterminal/credentialcreate.html:343
+#: templates/webterminal/credentiallist.html:502
+#: templates/webterminal/credentiallist.html:503
+msgid "width"
+msgstr "宽度"
+
+#: templates/webterminal/credentialcreate.html:261
+#: templates/webterminal/credentialcreate.html:262
+#: templates/webterminal/credentialcreate.html:305
+#: templates/webterminal/credentialcreate.html:306
+#: templates/webterminal/credentialcreate.html:350
+#: templates/webterminal/credentialcreate.html:351
+#: templates/webterminal/credentiallist.html:511
+#: templates/webterminal/credentiallist.html:512
+msgid "height"
+msgstr "高度"
+
+#: templates/webterminal/credentialcreate.html:269
+#: templates/webterminal/credentialcreate.html:270
+#: templates/webterminal/credentialcreate.html:313
+#: templates/webterminal/credentialcreate.html:314
+#: templates/webterminal/credentialcreate.html:358
+#: templates/webterminal/credentialcreate.html:359
+#: templates/webterminal/credentiallist.html:520
+#: templates/webterminal/credentiallist.html:521
+msgid "dpi"
+msgstr "dpi"
+
+#: templates/webterminal/credentialcreate.html:382
+#: templates/webterminal/credentiallist.html:533
 msgid "proxy server ip"
 msgstr "代理服务器ip"
 
-#: templates/webterminal/credentialcreate.html:186
-#: templates/webterminal/credentiallist.html:423
+#: templates/webterminal/credentialcreate.html:387
+#: templates/webterminal/credentiallist.html:538
 msgid "proxy port"
 msgstr "代理端口"
 
-#: templates/webterminal/credentialcreate.html:190
-#: templates/webterminal/credentiallist.html:427
+#: templates/webterminal/credentialcreate.html:391
+#: templates/webterminal/credentiallist.html:542
 msgid "proxy password"
 msgstr "代理密码"
 
@@ -424,11 +478,11 @@ msgstr "凭证详情"
 msgid "Credential edit"
 msgstr "编辑凭证"
 
-#: templates/webterminal/credentiallist.html:184
+#: templates/webterminal/credentiallist.html:192
 msgid "delete credential name"
 msgstr "删除凭证"
 
-#: templates/webterminal/credentiallist.html:185
+#: templates/webterminal/credentiallist.html:193
 msgid "Are you sure to delete credential"
 msgstr "确定删除凭证"
 
