@@ -15,6 +15,8 @@ try:
     import simplejson as json
 except ImportError:
     import json
+from django.core.exceptions import ObjectDoesNotExist
+from webterminal.models import ServerInfor
 
 class GuacamoleWebsocket(WebsocketConsumer):
     
@@ -25,14 +27,22 @@ class GuacamoleWebsocket(WebsocketConsumer):
 
     
     def connect(self, message,serverip):
-        print serverip
         self.message.reply_channel.send({"accept": True})
         client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
-        client.handshake(protocol='rdp',
-                         hostname=settings.SSH_HOST,
-                         port=settings.SSH_PORT,
-                         username=settings.SSH_USER,
-                         password=settings.SSH_PASSWORD)
+        try:
+            data = ServerInfor.objects.get(ip=serverip)
+            if data.credential.protocol in ['vnc','rdp','telnet']:
+                pass
+            else:
+                self.message.reply_channel.send({"accept":False})
+        except ObjectDoesNotExist:
+            #server info not exist
+            self.message.reply_channel.send({"accept":False})
+        client.handshake(protocol=data.credential.protocol,
+                         hostname=data.ip,
+                         port=data.credential.port,
+                         username=data.credential.username,
+                         password=data.credential.password)
                          #security='any',)
         cache_key = str(uuid.uuid4())
         self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
