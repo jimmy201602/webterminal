@@ -31,7 +31,8 @@ class ServerGroup(models.Model):
         return self.name
 
 protocol_choices = (
-        ('ssh','ssh'),
+        ('ssh-password','ssh-password'),
+        ('ssh-key','ssh-key'),
         ('vnc','vnc'),
         ('rdp','rdp'),
         ('telnet','telnet')
@@ -41,7 +42,7 @@ class Credential(models.Model):
     name = models.CharField(max_length=40,verbose_name='Credential name',blank=False,unique=True)
     username = models.CharField(max_length=40,verbose_name='Auth user name',blank=False)
     port = models.PositiveIntegerField(default=22,blank=False)
-    method = models.CharField(max_length=40,choices=(('password','password'),('key','key')),blank=False)
+    method = models.CharField(max_length=40,choices=(('password','password'),('key','key')),blank=False,default='password')
     key = models.TextField(blank=True)
     password = models.CharField(max_length=40,blank=True)
     proxy = models.BooleanField(default=False)
@@ -49,12 +50,15 @@ class Credential(models.Model):
     proxyport = models.PositiveIntegerField(blank=True,null=True)
     proxypassword = models.CharField(max_length=40,verbose_name='Proxy password',blank=True)
     protocol = models.CharField(max_length=40,default='ssh', choices=protocol_choices)
+    width = models.PositiveIntegerField(verbose_name='width',default=1024)
+    height = models.PositiveIntegerField(verbose_name='height',default=768)
+    dpi = models.PositiveIntegerField(verbose_name='dpi',default=96)
 
     def __unicode__(self):
         return self.name    
     
     def clean(self):
-        if self.protocol == 'ssh':
+        if self.protocol == 'ssh-password' or self.protocol == 'ssh-key':
             if self.method == 'password' and len(self.password) == 0:
                 raise ValidationError('If you choose password auth method,You must set password!')
             if self.method == 'password' and len(self.key) >0:
