@@ -287,7 +287,7 @@
                                 if ($("#"+tabId).length <= 0){
                                     $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
                                     <!--$('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');-->
-                                    $('.tab-content').append('<div class="tab-pane responsive" id="' +tabId + '"><iframe src="/guacamole/' + ip +'"/ frameborder="0" scrolling="no" id="vnc" onload="this.height=768;this.width=1024;"></iframe>'+ '</div>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' +tabId + '"><iframe src="/guacamole/' + ip +'"/ frameborder="0" scrolling="no" onload="this.height=780;this.width=1030;"></iframe>'+ '</div>');
                                     showTab(tabId);
                                     registerCloseEvent();
                                     <!--var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";-->
