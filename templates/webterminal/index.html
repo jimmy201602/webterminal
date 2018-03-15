@@ -286,12 +286,13 @@
                             }else{
                                 if ($("#"+tabId).length <= 0){
                                     $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
-                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
+                                    <!--$('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');-->
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' +tabId + '"><iframe src="/guacamole/' + ip +'"/ frameborder="0" scrolling="no" id="vnc" onload="this.height=768;this.width=1024;"></iframe>'+ '</div>');
                                     showTab(tabId);
                                     registerCloseEvent();
-                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                    var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/'+ip+"/";
-                                    connect_guacamole(document.getElementById(tabId),ws_path);
+                                    <!--var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";-->
+                                    <!--var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/'+ip+"/";-->
+                                    <!--connect_guacamole(document.getElementById(tabId),ws_path);-->
                                 }else {
                                     showTab(tabId);
                                 }

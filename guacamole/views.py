@@ -7,10 +7,12 @@ import uuid
 
 from django.conf import settings
 from django.http import HttpResponse, StreamingHttpResponse
-from django.shortcuts import render
+from django.shortcuts import render,render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 from guacamole.client import GuacamoleClient
+from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 logger = logging.getLogger(__name__)
 sockets = {}
@@ -20,8 +22,9 @@ write_lock = threading.RLock()
 pending_read_request = threading.Event()
 
 
-def index(request):
-    return render(request, 'index.html', {})
+class Index(LoginRequiredMixin,View):
+    def get(self,request,ip):
+        return render_to_response('guacamole/index.html',locals())
 
 
 @csrf_exempt
@@ -49,7 +52,7 @@ def _do_connect(request):
                      port=settings.SSH_PORT,
                      username=settings.SSH_USER,
                      password=settings.SSH_PASSWORD)
-                     #security='any',)
+    # security='any',)
 
     cache_key = str(uuid.uuid4())
     with sockets_lock:

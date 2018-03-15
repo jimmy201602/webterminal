@@ -5,10 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-<!--<h1>Guacamole远程桌面</h1>-->
+<!--<h1>Guacamole Remote Desktop</h1>-->
 <!-- Guacamole -->
-{% load static %}
-<script type="text/javascript" src="{% static 'js/guacamole/all.min.js' %}"></script>
+{% load staticfiles %}
+<script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
 
 <!-- Display -->
 <div id="display"></div>
@@ -22,7 +22,7 @@
     // Instantiate client, using an HTTP tunnel for communications.
     //http://guacamole.apache.org/doc/guacamole-common-js/Guacamole.WebSocketTunnel.html
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+    var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/{{ip}}/';
     var guac = new Guacamole.Client(
        // new Guacamole.HTTPTunnel("tunnel")
         new Guacamole.WebSocketTunnel(ws_path)
