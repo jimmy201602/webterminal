@@ -141,7 +141,7 @@ CHANNEL_LAYERS = {
                                    "http.request": 1000,
                                    "websocket.send*": 10000,
                                 },
-           "capacity": 10000,           
+           "capacity": 10000,
            },
        "ROUTING": "webterminal.routing.channel_routing",  # load routing from our routing.py file
        },

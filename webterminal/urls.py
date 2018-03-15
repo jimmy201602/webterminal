@@ -39,6 +39,7 @@ router.register('credential', CredentialViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^guacamole/',include('guacamole.urls')),
     url(r'^$',Index.as_view(),name='index'),
     url(r'^commands/add/$',Commands.as_view(),name='commandscreate'),
     url(r'^commandexecute/$',CommandExecute.as_view(),name='commandexecute'),
