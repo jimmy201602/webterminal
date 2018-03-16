@@ -10,6 +10,7 @@ pip install -r requirements.txt
 python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
+docker pull guacamole/guacd
 ```
 You can run server locally like this.
 ```sh
@@ -22,5 +23,6 @@ docker build --no-cache -t webterminal:latest .
 ```
 * run docker
 ```sh
-docker run -d -p 80:80 --name webterminal webterminal
+docker run --name guacd -d guacamole/guacd
+docker run --link guacd:guacd -d -p 80:80 --name webterminal webterminal
 ```
