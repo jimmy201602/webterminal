@@ -9,6 +9,7 @@ ssh web terminal implemented by django
 ![screenshots](./screenshots/screenshots1.jpg  "screenshots")
 ![screenshots](./screenshots/screenshots2.jpg  "screenshots")
 ![screenshots](./screenshots/screenshots3.jpg  "screenshots")
+![screenshots](./screenshots/screenshots4.jpg  "screenshots")
 # Author
 zhengge2012@gmail.com
 # QQ group number
