@@ -23,7 +23,7 @@ pending_read_request = threading.Event()
 
 
 class Index(LoginRequiredMixin,View):
-    def get(self,request,ip):
+    def get(self,request,id):
         return render_to_response('guacamole/index.html',locals())
 
 
