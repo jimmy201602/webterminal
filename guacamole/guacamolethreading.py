@@ -4,6 +4,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
+import time
 
 def get_redis_instance():
     from webterminal.asgi import channel_layer
@@ -11,7 +12,6 @@ def get_redis_instance():
 import ast
 import logging
 logger = logging.getLogger(__name__)
-import time
 
 class GuacamoleThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
