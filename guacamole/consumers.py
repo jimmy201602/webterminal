@@ -26,11 +26,11 @@ class GuacamoleWebsocket(WebsocketConsumer):
     channel_session_user = True   
 
     
-    def connect(self, message,serverip):
+    def connect(self, message,id):
         self.message.reply_channel.send({"accept": True})
         client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
         try:
-            data = ServerInfor.objects.get(ip=serverip)
+            data = ServerInfor.objects.get(id=id)
             if data.credential.protocol in ['vnc','rdp','telnet']:
                 pass
             else:
@@ -56,7 +56,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
         guacamolethreadwrite.setDaemon = True
         guacamolethreadwrite.start()
         
-    def disconnect(self, message,serverip):
+    def disconnect(self, message,id):
         #close threading
         print 'disconnect'
         self.message.reply_channel.send({"accept":False})
@@ -73,4 +73,5 @@ class GuacamoleWebsocket(WebsocketConsumer):
         
     def receive(self,text=None, bytes=None, **kwargs):
         #print 'receive',text
+        #print 'bytes',bytes
         self.queue().publish(self.message.reply_channel.name, text)

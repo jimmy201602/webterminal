@@ -22,7 +22,7 @@
     // Instantiate client, using an HTTP tunnel for communications.
     //http://guacamole.apache.org/doc/guacamole-common-js/Guacamole.WebSocketTunnel.html
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/{{ip}}/';
+    var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/{{id}}/';
     var guac = new Guacamole.Client(
        // new Guacamole.HTTPTunnel("tunnel")
         new Guacamole.WebSocketTunnel(ws_path)
