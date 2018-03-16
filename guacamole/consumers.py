@@ -38,13 +38,17 @@ class GuacamoleWebsocket(WebsocketConsumer):
         except ObjectDoesNotExist:
             #server info not exist
             self.message.reply_channel.send({"accept":False})
+        cache_key = str(uuid.uuid4())
         client.handshake(protocol=data.credential.protocol,
                          hostname=data.ip,
                          port=data.credential.port,
                          username=data.credential.username,
-                         password=data.credential.password)
+                         password=data.credential.password,
+                         recording_path='/tmp/{0}'.format(cache_key),
+                         recording_name=cache_key,
+                         create_recording_path='true',)
+                         #enable_wallpaper='true')
                          #security='any',)
-        cache_key = str(uuid.uuid4())
         self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
        #'0.,36.83940151-b2f9-4743-b5e4-b6eb85a97743;'
 
