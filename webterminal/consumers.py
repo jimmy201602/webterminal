@@ -23,7 +23,7 @@ class webterminal(WebsocketConsumer):
     
     ssh = paramiko.SSHClient() 
     http_user = True
-    http_user_and_session = True
+    #http_user_and_session = True
     channel_session = True
     channel_session_user = True   
 
