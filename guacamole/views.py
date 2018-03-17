@@ -26,6 +26,10 @@ class Index(LoginRequiredMixin,View):
     def get(self,request,id):
         return render_to_response('guacamole/index.html',locals())
 
+class LogPlay(LoginRequiredMixin,View):
+    def get(self,request,id):
+        return render_to_response('guacamole/logplay.html',locals())
+
 
 @csrf_exempt
 def tunnel(request):
