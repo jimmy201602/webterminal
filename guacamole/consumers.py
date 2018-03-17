@@ -19,6 +19,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from webterminal.models import ServerInfor,SshLog
 from django.utils.timezone import now
 from django.contrib.auth.models import User
+from webterminal.settings import MEDIA_ROOT
+import os
 
 class GuacamoleWebsocket(WebsocketConsumer):
     
@@ -41,6 +43,10 @@ class GuacamoleWebsocket(WebsocketConsumer):
             #server info not exist
             self.message.reply_channel.send({"accept":False})
         cache_key = str(uuid.uuid4())
+
+        directory_date_time = now()
+        recording_path = os.path.join(MEDIA_ROOT,'{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day))
+
         client.handshake(width=data.credential.width,
                          height=data.credential.height,
                          protocol=data.credential.protocol,
@@ -48,7 +54,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
                          port=data.credential.port,
                          username=data.credential.username,
                          password=data.credential.password,
-                         recording_path='/tmp/{0}'.format(cache_key),
+                         recording_path=recording_path,
                          recording_name=cache_key,
                          create_recording_path='true',)
                          #enable_wallpaper='true')
