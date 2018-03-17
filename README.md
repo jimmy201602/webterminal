@@ -1,5 +1,5 @@
 # webterminal
-web terminal implemented by django
+web terminal implemented by django.
 This project focus on DevOps and Continuous Delivery.
 For now it support all most remote management protocol such as vnc, ssh,rdp,telnet... It support a possiblity to monitor and recorded user action when user use this project to manage their server!
 You can also replay the user action such as like a video.
