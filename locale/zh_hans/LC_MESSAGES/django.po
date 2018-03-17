@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-14 14:31+0000\n"
+"POT-Creation-Date: 2018-03-17 06:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,8 +76,8 @@ msgid "commands list"
 msgstr "命令列表"
 
 #: templates/base.html:200
-msgid "ssh log list"
-msgstr "ssh日志列表"
+msgid "log list"
+msgstr "日志列表"
 
 #: templates/base.html:233
 msgid "Version"
@@ -107,7 +107,7 @@ msgstr "返回命令列表"
 #: templates/webterminal/grouplist.html:34
 #: templates/webterminal/servercreate.html:30
 #: templates/webterminal/serverlist.html:34
-#: templates/webterminal/sshlogslist.html:30
+#: templates/webterminal/sshlogslist.html:34
 msgid "Action"
 msgstr "操作"
 
@@ -119,7 +119,7 @@ msgstr "操作"
 #: templates/webterminal/grouplist.html:35
 #: templates/webterminal/servercreate.html:31
 #: templates/webterminal/serverlist.html:35
-#: templates/webterminal/sshlogslist.html:31
+#: templates/webterminal/sshlogslist.html:35
 msgid "Another action"
 msgstr "另一个操作"
 
@@ -131,7 +131,7 @@ msgstr "另一个操作"
 #: templates/webterminal/grouplist.html:36
 #: templates/webterminal/servercreate.html:32
 #: templates/webterminal/serverlist.html:36
-#: templates/webterminal/sshlogslist.html:32
+#: templates/webterminal/sshlogslist.html:36
 msgid "Something else here"
 msgstr "其他"
 
@@ -143,7 +143,7 @@ msgstr "其他"
 #: templates/webterminal/grouplist.html:38
 #: templates/webterminal/servercreate.html:34
 #: templates/webterminal/serverlist.html:38
-#: templates/webterminal/sshlogslist.html:34
+#: templates/webterminal/sshlogslist.html:38
 msgid "Separated link"
 msgstr ""
 
@@ -242,7 +242,7 @@ msgstr "组"
 #: templates/webterminal/credentiallist.html:52
 #: templates/webterminal/grouplist.html:51
 #: templates/webterminal/serverlist.html:52
-#: templates/webterminal/sshlogslist.html:50
+#: templates/webterminal/sshlogslist.html:54
 msgid "action"
 msgstr "操作"
 
@@ -302,7 +302,7 @@ msgstr "命令编辑"
 #: templates/webterminal/grouplist.html:316
 #: templates/webterminal/serverlist.html:197
 #: templates/webterminal/serverlist.html:327
-#: templates/webterminal/sshlogslist.html:131
+#: templates/webterminal/sshlogslist.html:145
 msgid "cancel"
 msgstr "取消"
 
@@ -579,11 +579,11 @@ msgstr "确认删除服务器组"
 msgid "connect"
 msgstr "连接"
 
-#: templates/webterminal/index.html:289
+#: templates/webterminal/index.html:307
 msgid "disconnect"
 msgstr "断开"
 
-#: templates/webterminal/index.html:314
+#: templates/webterminal/index.html:332
 msgid "file manager"
 msgstr "文件管理"
 
@@ -639,7 +639,7 @@ msgid "Server list"
 msgstr "服务器列表"
 
 #: templates/webterminal/serverlist.html:49
-#: templates/webterminal/sshlogslist.html:46
+#: templates/webterminal/sshlogslist.html:50
 msgid "server name"
 msgstr "服务器名称 "
 
@@ -671,60 +671,60 @@ msgstr "删除服务器"
 msgid "Ssh log list"
 msgstr "ssh日志列表"
 
-#: templates/webterminal/sshlogslist.html:45
+#: templates/webterminal/sshlogslist.html:49
 msgid "user name"
 msgstr "用户名"
 
-#: templates/webterminal/sshlogslist.html:47
+#: templates/webterminal/sshlogslist.html:51
 msgid "server ip"
 msgstr "服务器ip"
 
-#: templates/webterminal/sshlogslist.html:48
-#: templates/webterminal/sshlogslist.html:111
-#: templates/webterminal/sshlogslist.html:167
+#: templates/webterminal/sshlogslist.html:52
+#: templates/webterminal/sshlogslist.html:115
+#: templates/webterminal/sshlogslist.html:181
 msgid "start time"
 msgstr "开始时间"
 
-#: templates/webterminal/sshlogslist.html:49
+#: templates/webterminal/sshlogslist.html:53
 msgid "is finished"
 msgstr "是否结束"
 
-#: templates/webterminal/sshlogslist.html:63
+#: templates/webterminal/sshlogslist.html:67
 msgid "replay"
 msgstr "重播"
 
-#: templates/webterminal/sshlogslist.html:65
-#: templates/webterminal/sshlogslist.html:127
+#: templates/webterminal/sshlogslist.html:69
+#: templates/webterminal/sshlogslist.html:141
 msgid "kill"
 msgstr "杀掉"
 
-#: templates/webterminal/sshlogslist.html:66
+#: templates/webterminal/sshlogslist.html:70
 msgid "monitor"
 msgstr "监控"
 
-#: templates/webterminal/sshlogslist.html:109
-#: templates/webterminal/sshlogslist.html:165
+#: templates/webterminal/sshlogslist.html:113
+#: templates/webterminal/sshlogslist.html:179
 msgid "user"
 msgstr "用户名"
 
-#: templates/webterminal/sshlogslist.html:110
-#: templates/webterminal/sshlogslist.html:166
+#: templates/webterminal/sshlogslist.html:114
+#: templates/webterminal/sshlogslist.html:180
 msgid "server"
 msgstr "服务器"
 
-#: templates/webterminal/sshlogslist.html:111
+#: templates/webterminal/sshlogslist.html:115
 msgid "end time"
 msgstr "结束时间"
 
-#: templates/webterminal/sshlogslist.html:123
+#: templates/webterminal/sshlogslist.html:137
 msgid "kick user"
 msgstr "踢用户"
 
-#: templates/webterminal/sshlogslist.html:123
-#: templates/webterminal/sshlogslist.html:124
+#: templates/webterminal/sshlogslist.html:137
+#: templates/webterminal/sshlogslist.html:138
 msgid "out"
 msgstr "下线"
 
-#: templates/webterminal/sshlogslist.html:124
+#: templates/webterminal/sshlogslist.html:138
 msgid "Are you sure to kick user"
 msgstr "确认踢掉用户"
