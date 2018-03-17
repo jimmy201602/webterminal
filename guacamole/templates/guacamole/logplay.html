@@ -59,12 +59,12 @@
 
         <!-- Guacamole JavaScript API -->
         <script type="text/javascript"
-            src="all.min.js"></script>
+            src="{% static 'plugins/guacamole/all.min.js' %}"></script>
 
         <!-- -->
-        <script type="text/javascript" src="{% static 'guacamole/playback.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/guacamole/playback.js' %}"></script>
     <script type="application/javascript">
-        initExamplePlayer('recording.guac');
+        initExamplePlayer('{{logpath}}');
     </script>
 
     </body>
