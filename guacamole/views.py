@@ -13,6 +13,9 @@ from django.views.decorators.csrf import csrf_exempt
 from guacamole.client import GuacamoleClient
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.detail import DetailView
+from webterminal.settings import MEDIA_URL
+from webterminal.models import SshLog
 
 logger = logging.getLogger(__name__)
 sockets = {}
@@ -26,10 +29,15 @@ class Index(LoginRequiredMixin,View):
     def get(self,request,id):
         return render_to_response('guacamole/index.html',locals())
 
-class LogPlay(LoginRequiredMixin,View):
-    def get(self,request,id):
-        return render_to_response('guacamole/logplay.html',locals())
-
+class LogPlay(LoginRequiredMixin,DetailView):
+    model = SshLog
+    template_name = 'guacamole/logplay.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(LogPlay, self).get_context_data(**kwargs)
+        objects = kwargs['object']
+        context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
+        return context
 
 @csrf_exempt
 def tunnel(request):
