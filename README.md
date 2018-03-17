@@ -15,6 +15,7 @@ Hope you enjoy it.
 ![screenshots](./screenshots/screenshots3.jpg  "screenshots")
 ![screenshots](./screenshots/screenshots4.jpg  "screenshots")
 ![screenshots](./screenshots/screenshots5.png  "screenshots")
+![screenshots](./screenshots/screenshots6.png  "screenshots")
 # Author
 zhengge2012@gmail.com
 # QQ group number
