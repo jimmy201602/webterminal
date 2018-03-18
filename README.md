@@ -27,7 +27,9 @@ Hope you enjoy it.
 # Author
 zhengge2012@gmail.com
 # QQ group number
-531612760
+# 531612760
+![screenshots](./screenshots/qqgroupqr.jpg  "screenshots")
+
 # Many thanks for [遥遥云](http://idc.yygzs.cn/) donate us a demo server
 
 [Online Demo Server](http://ssh.yygzs.cn/) : http://ssh.yygzs.cn/
