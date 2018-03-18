@@ -1,5 +1,24 @@
 #!/bin/bash
 set -e
+Black=`tput setaf 0`   #${Black}
+Red=`tput setaf 1`     #${Red}
+Green=`tput setaf 2`   #${Green}
+Yellow=`tput setaf 3`  #${Yellow}
+Blue=`tput setaf 4`    #${Blue}
+Magenta=`tput setaf 5` #${Magenta}
+Cyan=`tput setaf 6`    #${Cyan}
+White=`tput setaf 7`   #${White}
+Bold=`tput bold`       #${Bold}
+Rev=`tput smso`        #${Rev}
+Reset=`tput sgr0`      #${Reset}
+
+SCRIPT_VERSION=0.1
+
+HELP () { #Help function
+  echo -e \\n"${Bold}Webterminal Install Script Help.${Reset}"\\n
+  exit 1
+}
+
 centosinstall() {
     Version=`rpm -q centos-release|cut -d- -f3`
 	if [ $Version -eq 6 ]; then
@@ -10,7 +29,7 @@ centosinstall() {
 				if test -f /opt/rh/python27/enable ; then
 					source /opt/rh/python27/enable
 				else
-					echo "Python27 installed failed,Please retry."
+					echo "${Red}Python27 installed failed,Please retry.${Reset}"
 					exit 1
 				fi
 				if ! grep -Eqi "source /opt/rh/python27/enable" /etc/profile ; then
@@ -71,9 +90,9 @@ commoninstall() {
 }
 
 databaseinit() {
-	echo "####install database####"
-	echo -e "1:sqlite3\n2:mysql"
-	read -p "If you just want to test this project recommend you use sqlite database[1/2]:" dbtype
+	echo "${Blue}####install database#### ${Reset}"
+	echo -e "${Blue}1:sqlite3\n2:mysql ${Reset}"
+	read -p "${Blue}If you just want to test this project recommend you use sqlite database[1/2]: ${Yellow}" dbtype
 	
 	if [ ! $dbtype ]; then
 		case $db1 in
@@ -90,7 +109,7 @@ databaseinit() {
 	fi
 	
 	if [ $dbtype = 2 ]; then
-		read -p "do you want to create a new mysql database?[yes/no]:" db1
+		read -p "${Blue}do you want to create a new mysql database?[yes/no]: ${Yellow}" db1
 		if [ ! $db1 ]
 		then
 		db1=yes
@@ -98,7 +117,7 @@ databaseinit() {
 		
 		case $db1 in
 			yes|y|Y|YES)  
-				echo "installing a new mariadb...."
+				echo "${Blue}installing a new mariadb.... ${Reset}"
 				
 				if [ $DISTRO = Ubuntu ]; then
 					apt-get install -y mysql-server
@@ -110,11 +129,11 @@ databaseinit() {
 				mysql -e "CREATE DATABASE if not exists webterminal DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;"
 				;;
 			no|n|N|NO)
-				read -p "your database ip address:" db_ip
-				read -p "your database port:" db_port
-				read -p "your database user:" db_user
-				read -p "your database password:" db_password
-				[ ! $db_password ] && echo "your db_password is empty confirm please press Enter key"
+				read -p "${Blue}your database ip address:${Yellow}" db_ip
+				read -p "${Blue}your database port:${Yellow}" db_port
+				read -p "${Blue}your database user:${Yellow}" db_user
+				read -p "${Blue}your database password:${Yellow}" db_password
+				[ ! $db_password ] && echo "${Blue}your db_password is empty confirm please press Enter key ${Reset}"
 				[ -f /usr/bin/mysql ]
 				sleep 3
 				if [ $? -eq 0 ]
@@ -138,17 +157,17 @@ databaseinit() {
 }
 
 notsupport() {
-	echo "Your os system is $DISTRO: $Version"
-	echo "Your os version is not supported!"
-	echo "Please report this issue to github!"
+	echo "${Red}Your os system is $DISTRO: $Version ${Reset}"
+	echo "${Red}Your os version is not supported! ${Reset}"
+	echo "${Red}Please report this issue to github! ${Reset}"
 	exit 1
 }
 
 installhint() {
-	echo "Your os system is $DISTRO: $Version"
-	echo "Now begin to start install webterminal......"
-	echo "Now begin to install python redis guacd......"
-	echo "It will spent serval minutes, Please waitting........."
+	echo "${Blue}Your os system is $DISTRO: $Version ${Reset}"
+	echo "${Blue}Now begin to start install webterminal...... ${Reset}"
+	echo "${Blue}Now begin to install python redis guacd...... ${Reset}"
+	echo "${Blue}It will spent serval minutes, Please waitting......... ${Reset}"
 }
 
 guacdcentosinstall(){
@@ -275,27 +294,27 @@ guacdfedorainstall(){
 install() {
 	#detact current user
 	if [ `id -u` != 0 ];then  
-		echo "Not root user! Please use with root permission user to run this script!"
+		echo "${Red}Not root user! Please use with root permission user to run this script!${Reset}"
 		exit 1
 	fi
 		
     if grep -Eqii "CentOS" /etc/issue || grep -Eq "CentOS" /etc/*-release; then
-		DISTRO='CentOS'
-		PM='yum'
-		centosinstall
+	DISTRO='CentOS'
+	PM='yum'
+	centosinstall
         guacdcentosinstall
     elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
         DISTRO='RHEL'
         PM='yum'
-		notsupport
+	notsupport
     elif grep -Eqi "Aliyun" /etc/issue || grep -Eq "Aliyun" /etc/*-release; then
         DISTRO='Aliyun'
         PM='yum'
-		notsupport
+	notsupport
     elif grep -Eqi "Fedora" /etc/issue || grep -Eq "Fedora" /etc/*-release; then
         DISTRO='Fedora'
         PM='yum'
-		fedorainstall
+	fedorainstall
         guacdfedorainstall
     elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
         DISTRO='Debian'
@@ -304,18 +323,18 @@ install() {
     elif grep -Eqi "Ubuntu" /etc/issue || grep -Eq "Ubuntu" /etc/*-release; then
         DISTRO='Ubuntu'
         PM='apt'
-		ubuntuinstall
+	ubuntuinstall
         guacdubuntuinstall
     elif grep -Eqi "Raspbian" /etc/issue || grep -Eq "Raspbian" /etc/*-release; then
         DISTRO='Raspbian'
         PM='apt'
-		notsupport
+	notsupport
     else
         DISTRO='unknow'
-		notsupport
+	notsupport
     fi
 	
-    commoninstall
+	commoninstall
 	databaseinit
 }
 
