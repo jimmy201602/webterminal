@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-17 06:09+0000\n"
+"POT-Creation-Date: 2018-03-18 07:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,150 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: permission/templates/permission/userdelete.html:3
+msgid "User delete"
+msgstr "删除用户"
+
+#: permission/templates/permission/userdelete.html:14
+#: permission/templates/permission/userupdate.html:14
+msgid "Return user list"
+msgstr "返回服务器列表"
+
+#: permission/templates/permission/userdelete.html:27
+#: permission/templates/permission/userlist.html:27
+#: permission/templates/permission/userregister.html:26
+#: permission/templates/permission/userupdate.html:27
+#: templates/webterminal/commandcreate.html:30
+#: templates/webterminal/commandslist.html:33
+#: templates/webterminal/credentialcreate.html:31
+#: templates/webterminal/credentiallist.html:34
+#: templates/webterminal/groupcreate.html:30
+#: templates/webterminal/grouplist.html:34
+#: templates/webterminal/servercreate.html:30
+#: templates/webterminal/serverlist.html:34
+#: templates/webterminal/sshlogslist.html:34
+msgid "Action"
+msgstr "操作"
+
+#: permission/templates/permission/userdelete.html:28
+#: permission/templates/permission/userlist.html:28
+#: permission/templates/permission/userregister.html:27
+#: permission/templates/permission/userupdate.html:28
+#: templates/webterminal/commandcreate.html:31
+#: templates/webterminal/commandslist.html:34
+#: templates/webterminal/credentialcreate.html:32
+#: templates/webterminal/credentiallist.html:35
+#: templates/webterminal/groupcreate.html:31
+#: templates/webterminal/grouplist.html:35
+#: templates/webterminal/servercreate.html:31
+#: templates/webterminal/serverlist.html:35
+#: templates/webterminal/sshlogslist.html:35
+msgid "Another action"
+msgstr "另一个操作"
+
+#: permission/templates/permission/userdelete.html:29
+#: permission/templates/permission/userlist.html:29
+#: permission/templates/permission/userregister.html:28
+#: permission/templates/permission/userupdate.html:29
+#: templates/webterminal/commandcreate.html:32
+#: templates/webterminal/commandslist.html:35
+#: templates/webterminal/credentialcreate.html:33
+#: templates/webterminal/credentiallist.html:36
+#: templates/webterminal/groupcreate.html:32
+#: templates/webterminal/grouplist.html:36
+#: templates/webterminal/servercreate.html:32
+#: templates/webterminal/serverlist.html:36
+#: templates/webterminal/sshlogslist.html:36
+msgid "Something else here"
+msgstr "其他"
+
+#: permission/templates/permission/userdelete.html:31
+#: permission/templates/permission/userlist.html:31
+#: permission/templates/permission/userregister.html:30
+#: permission/templates/permission/userupdate.html:31
+#: templates/webterminal/commandcreate.html:34
+#: templates/webterminal/commandslist.html:37
+#: templates/webterminal/credentialcreate.html:35
+#: templates/webterminal/credentiallist.html:38
+#: templates/webterminal/groupcreate.html:34
+#: templates/webterminal/grouplist.html:38
+#: templates/webterminal/servercreate.html:34
+#: templates/webterminal/serverlist.html:38
+#: templates/webterminal/sshlogslist.html:38
+msgid "Separated link"
+msgstr ""
+
+#: permission/templates/permission/userdelete.html:48
+msgid "Are you sure you want to delete user"
+msgstr "确认删除用户"
+
+#: permission/templates/permission/userdelete.html:51
+#: permission/templates/permission/userregister.html:50
+#: permission/templates/permission/userupdate.html:51
+#: templates/webterminal/commandcreate.html:56
+#: templates/webterminal/commandslist.html:201
+#: templates/webterminal/credentialcreate.html:58
+#: templates/webterminal/credentiallist.html:129
+#: templates/webterminal/groupcreate.html:56
+#: templates/webterminal/grouplist.html:183
+#: templates/webterminal/servercreate.html:58
+#: templates/webterminal/serverlist.html:193
+msgid "submit"
+msgstr "提交"
+
+#: permission/templates/permission/userlist.html:3
+msgid "User list"
+msgstr "用户列表"
+
+#: permission/templates/permission/userlist.html:14
+#: templates/webterminal/commandslist.html:20
+#: templates/webterminal/credentiallist.html:21
+#: templates/webterminal/grouplist.html:21
+#: templates/webterminal/serverlist.html:21
+msgid "Add New"
+msgstr "新增"
+
+#: permission/templates/permission/userlist.html:43
+#: templates/webterminal/sshlogslist.html:49
+msgid "user name"
+msgstr "用户名"
+
+#: permission/templates/permission/userlist.html:44
+msgid "email"
+msgstr ""
+
+#: permission/templates/permission/userlist.html:45
+#: templates/webterminal/commandslist.html:51
+#: templates/webterminal/credentiallist.html:52
+#: templates/webterminal/grouplist.html:51
+#: templates/webterminal/serverlist.html:52
+#: templates/webterminal/sshlogslist.html:54
+msgid "action"
+msgstr "操作"
+
+#: permission/templates/permission/userlist.html:54
+#: templates/webterminal/commandslist.html:67
+#: templates/webterminal/credentiallist.html:64
+#: templates/webterminal/credentiallist.html:196
+#: templates/webterminal/grouplist.html:66
+#: templates/webterminal/grouplist.html:312
+#: templates/webterminal/serverlist.html:64
+#: templates/webterminal/serverlist.html:323
+msgid "delete"
+msgstr "删除"
+
+#: permission/templates/permission/userregister.html:3
+msgid "Add new user"
+msgstr "新增用户"
+
+#: permission/templates/permission/userregister.html:14
+msgid "Return user List"
+msgstr "返回用户列表"
+
+#: permission/templates/permission/userupdate.html:3
+msgid "User update"
+msgstr "更新用户信息"
 
 #: templates/base.html:8
 msgid "AdminLTE 2 | Dashboard"
@@ -49,7 +193,7 @@ msgstr "注销"
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: templates/base.html:194 templates/base.html:235
+#: templates/base.html:194 templates/base.html:236
 #: templates/webterminal/commandexecute.html:3
 #: templates/webterminal/index.html:3
 msgid "webterminal"
@@ -79,15 +223,19 @@ msgstr "命令列表"
 msgid "log list"
 msgstr "日志列表"
 
-#: templates/base.html:233
+#: templates/base.html:201
+msgid "user list"
+msgstr "用户列表"
+
+#: templates/base.html:234
 msgid "Version"
 msgstr "版本"
 
-#: templates/base.html:235
+#: templates/base.html:236
 msgid "Copyright &copy; 2014-2018"
 msgstr "Copyright &copy; 2014-2018"
 
-#: templates/base.html:235
+#: templates/base.html:236
 msgid "All rights reserved."
 msgstr "保留所有权利"
 
@@ -98,65 +246,6 @@ msgstr "创建命令"
 #: templates/webterminal/commandcreate.html:18
 msgid "Return Commands List"
 msgstr "返回命令列表"
-
-#: templates/webterminal/commandcreate.html:30
-#: templates/webterminal/commandslist.html:33
-#: templates/webterminal/credentialcreate.html:31
-#: templates/webterminal/credentiallist.html:34
-#: templates/webterminal/groupcreate.html:30
-#: templates/webterminal/grouplist.html:34
-#: templates/webterminal/servercreate.html:30
-#: templates/webterminal/serverlist.html:34
-#: templates/webterminal/sshlogslist.html:34
-msgid "Action"
-msgstr "操作"
-
-#: templates/webterminal/commandcreate.html:31
-#: templates/webterminal/commandslist.html:34
-#: templates/webterminal/credentialcreate.html:32
-#: templates/webterminal/credentiallist.html:35
-#: templates/webterminal/groupcreate.html:31
-#: templates/webterminal/grouplist.html:35
-#: templates/webterminal/servercreate.html:31
-#: templates/webterminal/serverlist.html:35
-#: templates/webterminal/sshlogslist.html:35
-msgid "Another action"
-msgstr "另一个操作"
-
-#: templates/webterminal/commandcreate.html:32
-#: templates/webterminal/commandslist.html:35
-#: templates/webterminal/credentialcreate.html:33
-#: templates/webterminal/credentiallist.html:36
-#: templates/webterminal/groupcreate.html:32
-#: templates/webterminal/grouplist.html:36
-#: templates/webterminal/servercreate.html:32
-#: templates/webterminal/serverlist.html:36
-#: templates/webterminal/sshlogslist.html:36
-msgid "Something else here"
-msgstr "其他"
-
-#: templates/webterminal/commandcreate.html:34
-#: templates/webterminal/commandslist.html:37
-#: templates/webterminal/credentialcreate.html:35
-#: templates/webterminal/credentiallist.html:38
-#: templates/webterminal/groupcreate.html:34
-#: templates/webterminal/grouplist.html:38
-#: templates/webterminal/servercreate.html:34
-#: templates/webterminal/serverlist.html:38
-#: templates/webterminal/sshlogslist.html:38
-msgid "Separated link"
-msgstr ""
-
-#: templates/webterminal/commandcreate.html:56
-#: templates/webterminal/commandslist.html:201
-#: templates/webterminal/credentialcreate.html:58
-#: templates/webterminal/credentiallist.html:129
-#: templates/webterminal/groupcreate.html:56
-#: templates/webterminal/grouplist.html:183
-#: templates/webterminal/servercreate.html:58
-#: templates/webterminal/serverlist.html:193
-msgid "submit"
-msgstr "提交"
 
 #: templates/webterminal/commandcreate.html:85
 #: templates/webterminal/commandcreate.html:86
@@ -220,13 +309,6 @@ msgstr "\\r\\n\\r\\n[已结束...]\\r\\n"
 msgid "execute"
 msgstr "执行"
 
-#: templates/webterminal/commandslist.html:20
-#: templates/webterminal/credentiallist.html:21
-#: templates/webterminal/grouplist.html:21
-#: templates/webterminal/serverlist.html:21
-msgid "Add New"
-msgstr "新增"
-
 #: templates/webterminal/commandslist.html:48
 #: templates/webterminal/credentiallist.html:49
 #: templates/webterminal/servercreate.html:87
@@ -237,14 +319,6 @@ msgstr "名称"
 #: templates/webterminal/commandslist.html:49
 msgid "groups"
 msgstr "组"
-
-#: templates/webterminal/commandslist.html:51
-#: templates/webterminal/credentiallist.html:52
-#: templates/webterminal/grouplist.html:51
-#: templates/webterminal/serverlist.html:52
-#: templates/webterminal/sshlogslist.html:54
-msgid "action"
-msgstr "操作"
 
 #: templates/webterminal/commandslist.html:65
 #: templates/webterminal/credentiallist.html:62
@@ -259,16 +333,6 @@ msgstr "详情"
 #: templates/webterminal/serverlist.html:63
 msgid "edit"
 msgstr "编辑"
-
-#: templates/webterminal/commandslist.html:67
-#: templates/webterminal/credentiallist.html:64
-#: templates/webterminal/credentiallist.html:196
-#: templates/webterminal/grouplist.html:66
-#: templates/webterminal/grouplist.html:312
-#: templates/webterminal/serverlist.html:64
-#: templates/webterminal/serverlist.html:323
-msgid "delete"
-msgstr "删除"
 
 #: templates/webterminal/commandslist.html:108
 #: templates/webterminal/commandslist.html:132
@@ -583,7 +647,11 @@ msgstr "连接"
 msgid "disconnect"
 msgstr "断开"
 
-#: templates/webterminal/index.html:332
+#: templates/webterminal/index.html:330 templates/webterminal/index.html:356
+msgid "This function hasn\\"
+msgstr ""
+
+#: templates/webterminal/index.html:338
 msgid "file manager"
 msgstr "文件管理"
 
@@ -670,10 +738,6 @@ msgstr "删除服务器"
 #: templates/webterminal/sshlogslist.html:4
 msgid "Ssh log list"
 msgstr "ssh日志列表"
-
-#: templates/webterminal/sshlogslist.html:49
-msgid "user name"
-msgstr "用户名"
 
 #: templates/webterminal/sshlogslist.html:51
 msgid "server ip"

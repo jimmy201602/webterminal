@@ -307,23 +307,29 @@
                         "label": "{% trans 'disconnect' %}",
                         "action": function (obj) {
 //                            console.log($node);
-                            if ($("#"+$node.text).length >0){
-                                $.ajax({
-                                    type: "POST",
-                                    url: '{% url 'sshterminalkill' %}',
-                                    dataType: "json",
-                                    data: {'channel_name':$("#"+$node.text).attr('channel_name')},
-                                    success: function (data) {
+                            var protocol = $node.original.protocol;
+                            if (protocol == "ssh-password" || protocol == "ssh-key") {
+                                if ($("#"+$node.text).length >0){
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '{% url 'sshterminalkill' %}',
+                                        dataType: "json",
+                                        data: {'channel_name':$("#"+$node.text).attr('channel_name')},
+                                        success: function (data) {
 
-                                        if (data['status']){
-                                            toastr["success"](data['message']);
-                                        }
-                                    },
-                                    failure: function (errMsg) {
-                                        toastr["error"](errMsg);
-                                    },
-                                });
-                            }
+                                            if (data['status']){
+                                                toastr["success"](data['message']);
+                                            }
+                                        },
+                                        failure: function (errMsg) {
+                                            toastr["error"](errMsg);
+                                        },
+                                    });
+                                }
+                            }else {
+                                toastr["error"]("{% trans 'This function hasn\'t finished!' %}");
+                            };
+
                         }
                     },
                     "file_manager": {
@@ -334,15 +340,20 @@
                             var tabId = $node.text; //this is id on tab content div where the
                             //get server ip
                             var ip = $node.original.ip;
-                            if ($("#"+tabId + "_file_manager").length <= 0){
-                                $('.nav-tabs').append('<li><a href="#' + tabId + "_file_manager" + '"><button class="close closeTab" type="button" >×</button>' + tabId + ' file manager' + '</a></li>');
-                                $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '_file_manager' + '"></div>');
-                                showTab(tabId+'_file_manager');
-                                registerCloseEvent();
-                                file_manager(tabId,$node.original.hostname);
-                            }else {
-                                showTab(tabId+'_file_manager');
+                            var protocol = $node.original.protocol;
+                            if (protocol == "ssh-password" || protocol == "ssh-key") {
+                                if ($("#"+tabId + "_file_manager").length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + "_file_manager" + '"><button class="close closeTab" type="button" >×</button>' + tabId + ' file manager' + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '_file_manager' + '"></div>');
+                                    showTab(tabId+'_file_manager');
+                                    registerCloseEvent();
+                                    file_manager(tabId,$node.original.hostname);
+                                }else {
+                                    showTab(tabId+'_file_manager');
 
+                                }
+                            } else {
+                                toastr["error"]("{% trans 'This function hasn\'t finished!' %}");
                             }
                         }
                     },
