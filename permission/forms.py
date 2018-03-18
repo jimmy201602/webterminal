@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-class register_form(forms.Form):
+class RegisterForm(forms.Form):
     user = forms.CharField(
             required=True,
                 label=u"user name",
@@ -46,5 +46,5 @@ class register_form(forms.Form):
         elif self.cleaned_data['user']:
             if User.objects.filter(username = unicode(self.cleaned_data['user'])):
                 raise forms.ValidationError({'register_code':u"User name has been registered!"})
-        cleaned_data = super(register_form, self).clean()
+        cleaned_data = super(RegisterForm, self).clean()
         return cleaned_data
