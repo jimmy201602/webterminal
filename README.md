@@ -5,13 +5,13 @@ For now it support all most remote management protocol such as vnc, ssh,rdp,teln
 You can also replay the user action such as like a video.
 Hope you enjoy it.
 
-本项目为django框架下实现！为实现自动运维化持续集成而创建。
+本项目为django框架下实现！为实现自动运维化持续集成及集中化管理IT设备而创建。
 
-现支持大多数网络远程管理协议(linux 下ssh、sftp协议、Windows rdp远程管理协议、Telnet远程管理协议及vnc远控协议)。
+现支持绝大多数网络远程管理协议(linux 下ssh、sftp协议、Windows rdp远程管理协议、Telnet远程管理协议及vnc远控协议)。
 
-用户的操作将会被录像及回放。
+用户使用此项目时全部操作将会被录像，在必要时可进行回放审计。另可实时监控用户的操作，在必要时可强制将用户踢下线！
 
-更多功能请自行发掘！
+更多功能请自行发掘......
 # useage
 [useage](./doc/usage_en.md) 
 # Installiation guide
