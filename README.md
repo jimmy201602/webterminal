@@ -4,6 +4,14 @@ This project focus on DevOps and Continuous Delivery.
 For now it support all most remote management protocol such as vnc, ssh,rdp,telnet... It support a possiblity to monitor and recorded user action when user use this project to manage their server!
 You can also replay the user action such as like a video.
 Hope you enjoy it.
+
+本项目为django框架下实现！为实现自动运维化持续集成而创建。
+
+现支持大多数网络远程管理协议(linux 下ssh、sftp协议、Windows rdp远程管理协议、Telnet远程管理协议及vnc远控协议)。
+
+用户的操作将会被录像及回放。
+
+更多功能请自行发掘！
 # useage
 [useage](./doc/usage_en.md) 
 # Installiation guide
