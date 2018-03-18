@@ -14,8 +14,9 @@ from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from webterminal.models import ServerInfor
 import re
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-class ElfinderConnectorView(View):
+class ElfinderConnectorView(LoginRequiredMixin,View):
     """
     Default elfinder backend view
     """
