@@ -2,7 +2,7 @@
 For ubuntu, you can follow these steps
 ``` sh
 apt-get update
-apt-get install -y python python-dev redis-server python-pip supervisor nginx git
+apt-get install -y python python-dev redis-server python-pip supervisor nginx git docker
 cd /opt
 git clone https://github.com/jimmy201602/webterminal.git
 cd webterminal
@@ -11,6 +11,7 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 docker pull guacamole/guacd
+docker run --name guacd -p 4822:4822 -d guacamole/guacd
 ```
 You can run server locally like this.
 ```sh
