@@ -141,4 +141,4 @@ class SshLog(models.Model):
         permissions = (
             ("can_delete", "Can delete log info"),
             ("can_view", "Can view log info"),
-        )    
+        )
