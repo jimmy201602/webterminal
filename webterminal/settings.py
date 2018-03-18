@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'channels',
     'rest_framework',
     'elfinder',
-    'guacamole'
+    'guacamole',
+    'permission'
 ]
 
 MIDDLEWARE = [

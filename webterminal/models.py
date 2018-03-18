@@ -20,6 +20,15 @@ class ServerInfor(models.Model):
         return self.name
     def gethostname(self):
         return slugify(self.hostname)
+    
+    class Meta:
+        permissions = (
+            ("can_add", "Can add server"),
+            ("can_change", "Can change server info"),
+            ("can_delete", "Can delete server info"),
+            ("can_connect", "Can connect to server"),
+            ("can_view", "Can view server info"),
+        )
 
 class ServerGroup(models.Model):
     name = models.CharField(max_length=40,verbose_name='Server group name',blank=False,unique=True)
@@ -29,6 +38,14 @@ class ServerGroup(models.Model):
     
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        permissions = (
+            ("can_add", "Can add group"),
+            ("can_change", "Can change group info"),
+            ("can_delete", "Can delete group info"),
+            ("can_view", "Can view group info"),
+        )
 
 protocol_choices = (
         ('ssh-password','ssh-password'),
@@ -71,6 +88,14 @@ class Credential(models.Model):
                 if self.proxyserverip is None or self.proxyport is None:
                     raise ValidationError('If you choose auth proxy,You must fill in proxyserverip and proxyport field !')
 
+    class Meta:
+        permissions = (
+            ("can_add", "Can add credential"),
+            ("can_change", "Can change credential info"),
+            ("can_delete", "Can delete credential info"),
+            ("can_view", "Can view credential info"),
+        )
+
 class CommandsSequence(models.Model):
     name = models.CharField(max_length=40,verbose_name='Task name',blank=False,unique=True)
     commands = models.TextField(verbose_name='Task commands',blank=False)
@@ -90,6 +115,14 @@ class CommandsSequence(models.Model):
             self.commands = json.dumps(self.commands)
         super(CommandsSequence,self).save(*args, **kwargs)
 
+    class Meta:
+        permissions = (
+            ("can_add", "Can add commands"),
+            ("can_change", "Can change commands info"),
+            ("can_delete", "Can delete commands info"),
+            ("can_view", "Can view commands info"),
+        )
+
 class SshLog(models.Model):
     server = models.ForeignKey(ServerInfor)
     channel = models.CharField(max_length=100,verbose_name='Channel name',blank=False,unique=True,editable=False)
@@ -100,5 +133,12 @@ class SshLog(models.Model):
     user = models.ForeignKey(User)
     width = models.PositiveIntegerField(default=90)
     height = models.PositiveIntegerField(default=40)
+
     def __unicode__(self):
-        return self.server.name    
+        return self.server.name
+    
+    class Meta:
+        permissions = (
+            ("can_delete", "Can delete log info"),
+            ("can_view", "Can view log info"),
+        )    
