@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.shortcuts import render,render_to_response,HttpResponseRedirect
-
-# Create your views here.
 from django.views.generic import FormView,DetailView,DeleteView,ListView,UpdateView
 from django.contrib.auth.models import User
 from permission.forms import RegisterForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.urlresolvers import reverse_lazy
 
 class UserRegister(LoginRequiredMixin,FormView):
     template_name = 'permission/userregister.html'
     form_class = RegisterForm
+    success_url = reverse_lazy('userlist')
 
     def form_valid(self, form):
         username=form.cleaned_data['user']
@@ -24,16 +23,13 @@ class UserList(LoginRequiredMixin,ListView):
     template_name='permission/userlist.html'
     model=User
 
-class UserDetail(LoginRequiredMixin,DetailView):
-    template_name='permission/userdetail.html'
-    model=User
-
 class UserDelete(LoginRequiredMixin,DeleteView):
     template_name='permission/userdelete.html'
     model=User
-    success_url = reverse_lazy('user-list')
+    success_url = reverse_lazy('userlist')
 
 class UserUpdate(LoginRequiredMixin,UpdateView):
     template_name='permission/userupdate.html'
     model=User
-    fields = ['username','email']
+    fields=['email']
+    success_url = reverse_lazy('userlist')

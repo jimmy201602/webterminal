@@ -60,6 +60,7 @@ urlpatterns = [
     url(r'^sshterminalmonitor/(?P<pk>[0-9]+)/',SshTerminalMonitor.as_view(),name='sshterminalmonitor'),
     url(r'^elfinder/',include('elfinder.urls')),
     url(r'^api/',include(router.urls)),
+    url(r'^permission/',include('permission.urls')),
 ]
 
 
