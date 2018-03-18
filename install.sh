@@ -147,8 +147,129 @@ notsupport() {
 installhint() {
 	echo "Your os system is $DISTRO: $Version"
 	echo "Now begin to start install webterminal......"
-	echo "Now begin to install python redis......"
+	echo "Now begin to install python redis guacd......"
 	echo "It will spent serval minutes, Please waitting........."
+}
+
+guacdcentosinstall(){
+    Version=`rpm -q centos-release|cut -d- -f3`
+	if [ $Version -eq 6 ]; then
+
+            rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+            yum localinstall http://li.nux.ro/download/nux/dextop/el6/x86_64/nux-dextop-release-0-2.el6.nux.noarch.rpm -y
+
+            yum clean all
+            yum install epel-release -y
+
+            yum install -y freerdp-plugins gcc gnu-free-mono-fonts pv libjpeg-devel freerdp-devel libssh2-devel libvorbis-devel libwebp-devel pulseaudio-libs-devel libvncserver-devel libssh-devel pango-devel ffmpeg ffmpeg-devel openssl-devel dialog libtelnet-devel wget cairo-devel libpng-devel uuid-devel
+
+            yum localinstall http://sourceforge.net/projects/libjpeg-turbo/files/libjpeg-turbo-official-1.5.2.x86_64.rpm -y
+            ln -vfs /opt/libjpeg-turbo/include/* /usr/include/
+	        ln -vfs /opt/libjpeg-turbo/lib??/* /usr/lib64/
+
+            cd /tmp
+            wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
+            tar -xvpf guacamole-server-0.9.14.tar.gz
+            cd guacamole-server-0.9.14
+            ./configure --with-init-dir=/etc/init.d
+            make && make install
+
+    elif [ $Version -eq 7 ]; then
+            rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+            rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+
+            yum clean all
+            yum install epel-release -y
+
+            yum install -y freerdp-plugins gcc gnu-free-mono-fonts pv libjpeg-devel freerdp-devel libssh2-devel libvorbis-devel libwebp-devel pulseaudio-libs-devel libvncserver-devel libssh-devel pango-devel ffmpeg ffmpeg-devel openssl-devel dialog libtelnet-devel wget cairo-devel libpng-devel uuid-devel
+
+            yum localinstall http://sourceforge.net/projects/libjpeg-turbo/files/libjpeg-turbo-official-1.5.2.x86_64.rpm -y
+            ln -vfs /opt/libjpeg-turbo/include/* /usr/include/
+            ln -vfs /opt/libjpeg-turbo/lib??/* /usr/lib64/
+
+            cd /tmp
+            wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
+            tar -xvpf guacamole-server-0.9.14.tar.gz
+            cd guacamole-server-0.9.14
+            ./configure --with-init-dir=/etc/init.d
+            make && make install
+
+    else
+		notsupport
+	fi
+}
+
+guacdubuntuinstall(){
+	if [ `which lsb_release` ]; then
+		Version=`lsb_release -r --short`
+	else
+		Version=`cat /etc/lsb-release |grep DISTRIB_RELEASE|cut -d = -f2`
+	fi
+
+	if [ $Version = 14.04 ]; then
+        apt-get update
+
+        apt-get install python-software-properties build-essential libpulse-dev libssh-dev libwebp-dev libvncserver-dev software-properties-common curl gcc libavcodec-dev libavutil-dev libcairo2-dev libswscale-dev libpango1.0-dev libfreerdp-dev libjpeg-turbo8-dev libssh2-1-dev libossp-uuid-dev libjpeg62-dev jq wget libpng-dev libvorbis-dev libpng12-dev libtelnet-dev libssl-dev -y
+
+        add-apt-repository ppa:mc3man/trusty-media -y
+
+        apt-get update
+        apt-get install ffmpeg libffmpegthumbnailer-dev -y
+
+        wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
+        tar -xvpf guacamole-server-0.9.14.tar.gz
+        cd guacamole-server-0.9.14
+        ./configure --with-init-dir=/etc/init.d
+        make && make install
+        ldconfig
+    elif [ $Version = 16.04 ]||[ $Version = 17.10 ]||[ $Version = 18.04 ]; then
+        apt-get update
+
+        apt-get install python-software-properties build-essential libpulse-dev libssh-dev libwebp-dev libvncserver-dev software-properties-common curl gcc libavcodec-dev libavutil-dev libcairo2-dev libswscale-dev libpango1.0-dev libfreerdp-dev libssh2-1-dev libossp-uuid-dev jq wget libpng12-dev libvorbis-dev libtelnet-dev libssl-dev libjpeg-dev libjpeg-turbo8-dev -y
+
+        add-apt-repository ppa:mc3man/trusty-media -y
+
+        apt-get update
+        apt-get install ffmpeg libffmpegthumbnailer-dev -y
+
+        wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
+        tar -xvpf guacamole-server-0.9.14.tar.gz
+        cd guacamole-server-0.9.14
+        ./configure --with-init-dir=/etc/init.d
+        make && make install
+        ldconfig
+        service guacd start
+	else
+		notsupport
+	fi
+
+}
+
+guacdfedorainstall(){
+	Version=`cat /etc/os-release |grep VERSION_ID|cut -d = -f2`
+	if [ $Version = 25 ]||[ $Version = 26 ]||[ $Version = 27 ]; then
+            rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
+            rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+
+            yum clean all
+            yum install epel-release -y
+
+            yum install -y freerdp-plugins gcc gnu-free-mono-fonts pv libjpeg-devel freerdp-devel libssh2-devel libvorbis-devel libwebp-devel pulseaudio-libs-devel libvncserver-devel libssh-devel pango-devel ffmpeg ffmpeg-devel openssl-devel dialog libtelnet-devel wget cairo-devel libpng-devel uuid-devel
+
+            yum localinstall http://sourceforge.net/projects/libjpeg-turbo/files/libjpeg-turbo-official-1.5.2.x86_64.rpm -y
+            ln -vfs /opt/libjpeg-turbo/include/* /usr/include/
+            ln -vfs /opt/libjpeg-turbo/lib??/* /usr/lib64/
+
+            cd /tmp
+            wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
+            tar -xvpf guacamole-server-0.9.14.tar.gz
+            cd guacamole-server-0.9.14
+            ./configure --with-init-dir=/etc/init.d
+            make && make install
+	else
+		notsupport
+	fi
+
 }
 
 install() {
@@ -162,6 +283,7 @@ install() {
 		DISTRO='CentOS'
 		PM='yum'
 		centosinstall
+        guacdcentosinstall
     elif grep -Eqi "Red Hat Enterprise Linux Server" /etc/issue || grep -Eq "Red Hat Enterprise Linux Server" /etc/*-release; then
         DISTRO='RHEL'
         PM='yum'
@@ -174,6 +296,7 @@ install() {
         DISTRO='Fedora'
         PM='yum'
 		fedorainstall
+        guacdfedorainstall
     elif grep -Eqi "Debian" /etc/issue || grep -Eq "Debian" /etc/*-release; then
         DISTRO='Debian'
         PM='apt'
@@ -182,6 +305,7 @@ install() {
         DISTRO='Ubuntu'
         PM='apt'
 		ubuntuinstall
+        guacdubuntuinstall
     elif grep -Eqi "Raspbian" /etc/issue || grep -Eq "Raspbian" /etc/*-release; then
         DISTRO='Raspbian'
         PM='apt'
