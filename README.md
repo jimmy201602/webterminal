@@ -40,3 +40,11 @@ password: demo12345678
 # License
 
 [License](LICENSE) 
+
+# Welcome donate
+
+## wechat
+![screenshots](./screenshots/wechatpay.png  "wechat")
+
+## alipay
+![screenshots](./screenshots/alipay.png  "alipay")
