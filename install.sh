@@ -235,6 +235,7 @@ guacdubuntuinstall(){
         apt-get update
         apt-get install ffmpeg libffmpegthumbnailer-dev -y
 
+		cd /tmp
         wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
         tar -xvpf guacamole-server-0.9.14.tar.gz
         cd guacamole-server-0.9.14
@@ -251,6 +252,7 @@ guacdubuntuinstall(){
         apt-get update
         apt-get install ffmpeg libffmpegthumbnailer-dev -y
 
+		cd /tmp
         wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
         tar -xvpf guacamole-server-0.9.14.tar.gz
         cd guacamole-server-0.9.14

@@ -56,9 +56,10 @@ class GuacamoleWebsocket(WebsocketConsumer):
                          password=data.credential.password,
                          recording_path=recording_path,
                          recording_name=cache_key,
-                         create_recording_path='true',)
-                         #enable_wallpaper='true')
-                         #security='any',)
+                         create_recording_path='true',
+                         enable_wallpaper='true',
+                         ignore_cert='true',)
+                         #security='tls',)
         self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
        #'0.,36.83940151-b2f9-4743-b5e4-b6eb85a97743;'
        
