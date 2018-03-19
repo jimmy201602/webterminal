@@ -41,10 +41,10 @@ password: demo12345678
 
 [License](LICENSE) 
 
-# Welcome donate
+# Welcome donate(欢迎打赏)
 
-## wechat
+## wechat(微信)
 ![screenshots](./screenshots/wechatpay.png  "wechat")
 
-## alipay
+## alipay(支付宝)
 ![screenshots](./screenshots/alipay.png  "alipay")
