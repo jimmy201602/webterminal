@@ -15,7 +15,7 @@ from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
 from webterminal.settings import MEDIA_URL
-from webterminal.models import SshLog
+from webterminal.models import Log
 
 logger = logging.getLogger(__name__)
 sockets = {}
@@ -27,10 +27,11 @@ pending_read_request = threading.Event()
 
 class Index(LoginRequiredMixin,View):
     def get(self,request,id):
+        print request.GET
         return render_to_response('guacamole/index.html',locals())
 
 class LogPlay(LoginRequiredMixin,DetailView):
-    model = SshLog
+    model = Log
     template_name = 'guacamole/logplay.html'
     
     def get_context_data(self, **kwargs):

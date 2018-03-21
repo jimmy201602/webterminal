@@ -25,7 +25,7 @@ import errno
 import subprocess
 from django.contrib.auth.models import User 
 from django.utils import timezone
-from webterminal.models import SshLog
+from webterminal.models import Log
 from webterminal.settings import MEDIA_ROOT
 import threading
 import ast
@@ -119,7 +119,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
         with open(os.path.join(MEDIA_ROOT,log_name), "a") as f:
             f.write(json.dumps(attrs, ensure_ascii=True,cls=CustomeFloatEncoder,indent=2))
         
-        audit_log=SshLog.objects.get(channel=channel,log=log_name.rsplit('/')[-1].rsplit('.json')[0])
+        audit_log=Log.objects.get(channel=channel,log=log_name.rsplit('/')[-1].rsplit('.json')[0])
         audit_log.is_finished = True
         audit_log.end_time = timezone.now()
         audit_log.save()

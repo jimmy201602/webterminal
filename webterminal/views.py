@@ -1,7 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render_to_response,HttpResponse
 from django.http import JsonResponse
-from webterminal.models import ServerGroup,CommandsSequence,Credential,ServerInfor,SshLog
+from webterminal.models import ServerGroup,CommandsSequence,Credential,ServerInfor,Log
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 try:
@@ -193,11 +193,11 @@ class GroupCreate(LoginRequiredMixin,View):
 
 
 class SshLogList(LoginRequiredMixin,ListView):
-    model = SshLog
+    model = Log
     template_name = 'webterminal/sshlogslist.html'
 
 class SshLogPlay(LoginRequiredMixin,DetailView):
-    model = SshLog
+    model = Log
     template_name = 'webterminal/sshlogplay.html'
     
     def get_context_data(self, **kwargs):
@@ -207,7 +207,7 @@ class SshLogPlay(LoginRequiredMixin,DetailView):
         return context
 
 class SshTerminalMonitor(LoginRequiredMixin,DetailView):
-    model = SshLog
+    model = Log
     template_name = 'webterminal/sshlogmonitor.html'
         
 class SshTerminalKill(LoginRequiredMixin,View):
@@ -216,7 +216,7 @@ class SshTerminalKill(LoginRequiredMixin,View):
         if request.is_ajax():
             channel_name = request.POST.get('channel_name',None)
             try:
-                data = SshLog.objects.get(channel=channel_name)
+                data = Log.objects.get(channel=channel_name)
                 if data.is_finished:
                     return JsonResponse({'status':False,'message':'Ssh terminal does not exist!'})
                 else:

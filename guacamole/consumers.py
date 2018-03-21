@@ -16,7 +16,7 @@ try:
 except ImportError:
     import json
 from django.core.exceptions import ObjectDoesNotExist
-from webterminal.models import ServerInfor,SshLog
+from webterminal.models import ServerInfor,Log
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 from webterminal.settings import MEDIA_ROOT
@@ -63,7 +63,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
         self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
        #'0.,36.83940151-b2f9-4743-b5e4-b6eb85a97743;'
        
-        audit_log = SshLog.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=data.credential.width,height=data.credential.height,log=cache_key)
+        audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=data.credential.width,height=data.credential.height,log=cache_key)
         audit_log.save()
         guacamolethread=GuacamoleThread(self.message,client)
         guacamolethread.setDaemon = True
@@ -76,7 +76,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
     def disconnect(self, message,id):
         #close threading
         print 'disconnect'
-        audit_log = SshLog.objects.get(channel=self.message.reply_channel.name)
+        audit_log = Log.objects.get(channel=self.message.reply_channel.name)
         audit_log.is_finished = True
         audit_log.end_time = now()
         audit_log.save()
