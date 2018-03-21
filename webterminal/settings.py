@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'elfinder',
     'guacamole',
-    'permission'
+    'permission',
+    'common'
 ]
 
 MIDDLEWARE = [

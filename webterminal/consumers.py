@@ -10,7 +10,7 @@ from webterminal.interactive import interactive_shell,get_redis_instance,SshTerm
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
-from webterminal.models import ServerInfor,ServerGroup,CommandsSequence,SshLog
+from webterminal.models import ServerInfor,ServerGroup,CommandsSequence,Log
 from webterminal.sudoterminal import ShellHandlerThread
 import ast 
 import time
@@ -39,7 +39,7 @@ class webterminal(WebsocketConsumer):
         
         self.message.reply_channel.send({"accept":False})
         
-        audit_log=SshLog.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
+        audit_log=Log.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
         audit_log.is_finished = True
         audit_log.end_time = now()
         audit_log.save()
@@ -69,7 +69,7 @@ class webterminal(WebsocketConsumer):
                         port = data.credential.port
                         method = data.credential.method
                         username = data.credential.username
-                        audit_log = SshLog.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=width,height=height)
+                        audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=width,height=height)
                         audit_log.save()
                         if method == 'password':
                             password = data.credential.password
@@ -116,7 +116,7 @@ class webterminal(WebsocketConsumer):
             elif bytes:
                 self.queue().publish(self.message.reply_channel.name, json.loads(bytes)[1])
         except socket.error:
-            audit_log=SshLog.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
+            audit_log=Log.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
             audit_log.is_finished = True
             audit_log.end_time = now()
             audit_log.save()

@@ -47,15 +47,15 @@ class ServerGroup(models.Model):
             ("can_view", "Can view group info"),
         )
 
-protocol_choices = (
-        ('ssh-password','ssh-password'),
-        ('ssh-key','ssh-key'),
-        ('vnc','vnc'),
-        ('rdp','rdp'),
-        ('telnet','telnet')
-    )
-
 class Credential(models.Model):
+    protocol_choices = (
+            ('ssh-password','ssh-password'),
+            ('ssh-key','ssh-key'),
+            ('vnc','vnc'),
+            ('rdp','rdp'),
+            ('telnet','telnet')
+        )
+
     name = models.CharField(max_length=40,verbose_name='Credential name',blank=False,unique=True)
     username = models.CharField(max_length=40,verbose_name='Auth user name',blank=False)
     port = models.PositiveIntegerField(default=22,blank=False)
@@ -123,7 +123,7 @@ class CommandsSequence(models.Model):
             ("can_view", "Can view commands info"),
         )
 
-class SshLog(models.Model):
+class Log(models.Model):
     server = models.ForeignKey(ServerInfor)
     channel = models.CharField(max_length=100,verbose_name='Channel name',blank=False,unique=True,editable=False)
     log = models.UUIDField(max_length=100,default=uuid.uuid4,verbose_name='Log name',blank=False,unique=True,editable=False)
