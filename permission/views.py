@@ -36,7 +36,7 @@ class UserUpdate(LoginRequiredMixin,UpdateView):
     success_url = reverse_lazy('userlist')
 
 
-class PermissonCreate(LoginRequiredMixin,CreateView):
+class PermissionCreate(LoginRequiredMixin,CreateView):
     model = Permission
     form_class = PermissionForm
     success_url = reverse_lazy('userlist')
