@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'guacamole',
     'permission',
     'common',
-    'guardian'
+    'guardian',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -179,6 +180,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'guardian.backends.ObjectPermissionBackend',
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 from django.conf.locale.en import formats as en_formats
 en_formats.DATETIME_FORMAT = 'Y-m-d H:i:s'
