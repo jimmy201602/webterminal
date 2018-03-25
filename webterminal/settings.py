@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'elfinder',
     'guacamole',
     'permission',
-    'common'
+    'common',
+    'guardian'
 ]
 
 MIDDLEWARE = [
@@ -173,6 +174,11 @@ LOCALE_PATHS = [
                 os.path.join(BASE_DIR,'locale')
         ]
 
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 from django.conf.locale.en import formats as en_formats
 en_formats.DATETIME_FORMAT = 'Y-m-d H:i:s'
