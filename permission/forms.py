@@ -2,8 +2,22 @@ from django import forms
 from django.contrib.auth.models import User
 from permission.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout,Div,Field
+from django.db import models
 
 class RegisterForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        self.model = Permission
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(*[Div(field,css_class='form-group') 
+                                      for field in ['user','newpassword1','newpassword2','email'] ])
+        super(RegisterForm, self).__init__(*args, **kwargs)
+
     user = forms.CharField(
             required=True,
             label=u"user name",
@@ -60,6 +74,16 @@ class RegisterForm(forms.Form):
         return cleaned_data
 
 class PermissionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.model = Permission
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(*[Div(field.name,css_class='form-group') 
+                                      for field in self.model._meta.get_fields() 
+                                      if not isinstance(field,(models.AutoField,models.ManyToOneRel,models.ManyToManyRel))])
+        super(PermissionForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model = Permission
