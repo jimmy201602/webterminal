@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render,render_to_response,HttpResponseRedirect
-from django.views.generic import FormView,DetailView,DeleteView,ListView,UpdateView
+from django.views.generic import FormView,DetailView,DeleteView,ListView,UpdateView,CreateView
 from django.contrib.auth.models import User
-from permission.forms import RegisterForm
+from permission.forms import RegisterForm,PermissionForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
+from permission.models import Permission
 
 class UserRegister(LoginRequiredMixin,FormView):
     template_name = 'permission/userregister.html'
@@ -33,3 +34,10 @@ class UserUpdate(LoginRequiredMixin,UpdateView):
     model=User
     fields=['email']
     success_url = reverse_lazy('userlist')
+
+
+class PermissonCreate(LoginRequiredMixin,CreateView):
+    model = Permission
+    form_class = PermissionForm
+    success_url = reverse_lazy('userlist')
+    template_name = 'permission/userregister.html'

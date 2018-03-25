@@ -1,5 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
+from permission.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
 class RegisterForm(forms.Form):
     user = forms.CharField(
@@ -56,3 +58,12 @@ class RegisterForm(forms.Form):
                 raise forms.ValidationError({'register_code':u"User name has been registered!"})
         cleaned_data = super(RegisterForm, self).clean()
         return cleaned_data
+
+class PermissionForm(forms.ModelForm):
+
+    class Meta:
+        model = Permission
+        fields = ['user', 'permissions', 'groups']
+        widgets = {
+            'permissions': forms.SelectMultiple(choices=[(app.id,app.model) for app in ContentType.objects.filter(app_label='webterminal')]),
+        }        

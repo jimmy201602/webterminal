@@ -35,3 +35,4 @@ txaio==2.8.2
 zope.interface==4.4.2
 future==0.16.0
 django-guardian==1.4.9
+django-crispy-forms==1.7.2
