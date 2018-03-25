@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-18 07:31+0000\n"
+"POT-Creation-Date: 2018-03-25 09:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -127,7 +127,7 @@ msgstr "用户名"
 
 #: permission/templates/permission/userlist.html:44
 msgid "email"
-msgstr ""
+msgstr "邮箱"
 
 #: permission/templates/permission/userlist.html:45
 #: templates/webterminal/commandslist.html:51
@@ -264,7 +264,7 @@ msgstr "服务器组"
 
 #: templates/webterminal/commandcreate.html:96
 #: templates/webterminal/commandslist.html:158
-#: templates/webterminal/commandslist.html:260
+#: templates/webterminal/commandslist.html:260 webterminal/models.py:103
 msgid "Server group you want to execute"
 msgstr "所需执行的服务器组"
 
@@ -478,7 +478,7 @@ msgstr "方式"
 #: templates/webterminal/credentialcreate.html:290
 #: templates/webterminal/credentialcreate.html:335
 #: templates/webterminal/credentiallist.html:485
-#: templates/webterminal/credentiallist.html:495
+#: templates/webterminal/credentiallist.html:495 webterminal/models.py:63
 msgid "password"
 msgstr "密码"
 
@@ -489,7 +489,7 @@ msgstr "密码"
 #: templates/webterminal/credentialcreate.html:342
 #: templates/webterminal/credentialcreate.html:343
 #: templates/webterminal/credentiallist.html:502
-#: templates/webterminal/credentiallist.html:503
+#: templates/webterminal/credentiallist.html:503 webterminal/models.py:71
 msgid "width"
 msgstr "宽度"
 
@@ -500,7 +500,7 @@ msgstr "宽度"
 #: templates/webterminal/credentialcreate.html:350
 #: templates/webterminal/credentialcreate.html:351
 #: templates/webterminal/credentiallist.html:511
-#: templates/webterminal/credentiallist.html:512
+#: templates/webterminal/credentiallist.html:512 webterminal/models.py:72
 msgid "height"
 msgstr "高度"
 
@@ -511,7 +511,7 @@ msgstr "高度"
 #: templates/webterminal/credentialcreate.html:358
 #: templates/webterminal/credentialcreate.html:359
 #: templates/webterminal/credentiallist.html:520
-#: templates/webterminal/credentiallist.html:521
+#: templates/webterminal/credentiallist.html:521 webterminal/models.py:73
 msgid "dpi"
 msgstr "dpi"
 
@@ -572,7 +572,7 @@ msgstr "服务器"
 
 #: templates/webterminal/groupcreate.html:95
 #: templates/webterminal/grouplist.html:133
-#: templates/webterminal/grouplist.html:256
+#: templates/webterminal/grouplist.html:256 webterminal/models.py:36
 msgid "Servers"
 msgstr "服务器"
 
@@ -649,7 +649,7 @@ msgstr "断开"
 
 #: templates/webterminal/index.html:330 templates/webterminal/index.html:356
 msgid "This function hasn\\"
-msgstr ""
+msgstr "此功能还未"
 
 #: templates/webterminal/index.html:338
 msgid "file manager"
@@ -681,7 +681,7 @@ msgstr "服务器主机名"
 #: templates/webterminal/serverlist.html:137
 #: templates/webterminal/serverlist.html:138
 #: templates/webterminal/serverlist.html:270
-#: templates/webterminal/serverlist.html:271
+#: templates/webterminal/serverlist.html:271 webterminal/models.py:15
 msgid "ip"
 msgstr "ip"
 
@@ -694,7 +694,7 @@ msgstr "ip"
 msgid "credential"
 msgstr "凭证"
 
-#: templates/webterminal/servercreate.html:159
+#: templates/webterminal/servercreate.html:159 webterminal/models.py:18
 msgid "Credential"
 msgstr "凭证"
 
@@ -792,3 +792,244 @@ msgstr "下线"
 #: templates/webterminal/sshlogslist.html:138
 msgid "Are you sure to kick user"
 msgstr "确认踢掉用户"
+
+#: webterminal/models.py:13
+msgid "Server name"
+msgstr "服务器名称 "
+
+#: webterminal/models.py:14
+msgid "Host name"
+msgstr "主机名"
+
+#: webterminal/models.py:16 webterminal/models.py:37
+msgid "Create time"
+msgstr "创建时间"
+
+#: webterminal/models.py:17 webterminal/models.py:38
+msgid "Update time"
+msgstr "更新时间"
+
+#: webterminal/models.py:27
+msgid "Can add server"
+msgstr "可新增服务器"
+
+#: webterminal/models.py:28
+msgid "Can change server info"
+msgstr "可更新服务器信息"
+
+#: webterminal/models.py:29
+msgid "Can delete server info"
+msgstr "可删除服务器"
+
+#: webterminal/models.py:30
+msgid "Can connect to server"
+msgstr "可连接至服务器"
+
+#: webterminal/models.py:31
+msgid "Can view server info"
+msgstr "可查看服务器信息"
+
+#: webterminal/models.py:35
+msgid "Server group name"
+msgstr "服务器组名"
+
+#: webterminal/models.py:45
+msgid "Can add group"
+msgstr "可新增组"
+
+#: webterminal/models.py:46
+msgid "Can change group info"
+msgstr "可更新服务器组信息"
+
+#: webterminal/models.py:47
+msgid "Can delete group info"
+msgstr "可删除服务器组信息"
+
+#: webterminal/models.py:48
+msgid "Can view group info"
+msgstr "可查看服务器信息"
+
+#: webterminal/models.py:53
+msgid "ssh-password"
+msgstr "ssh密码"
+
+#: webterminal/models.py:54
+msgid "ssh-key"
+msgstr "ssh key"
+
+#: webterminal/models.py:55
+msgid "vnc"
+msgstr "vnc"
+
+#: webterminal/models.py:56
+msgid "rdp"
+msgstr "rdp"
+
+#: webterminal/models.py:57
+msgid "telnet"
+msgstr "telnet"
+
+#: webterminal/models.py:60
+msgid "Credential name"
+msgstr "凭证名称"
+
+#: webterminal/models.py:61
+msgid "Auth user name"
+msgstr "认证用户名"
+
+#: webterminal/models.py:62
+msgid "Port"
+msgstr "端口"
+
+#: webterminal/models.py:63
+msgid "key"
+msgstr "key"
+
+#: webterminal/models.py:63
+msgid "Method"
+msgstr "方式"
+
+#: webterminal/models.py:64
+msgid "Key"
+msgstr "key"
+
+#: webterminal/models.py:65
+msgid "Password"
+msgstr "密码"
+
+#: webterminal/models.py:66
+msgid "Proxy"
+msgstr "代理"
+
+#: webterminal/models.py:67
+msgid "Proxy ip"
+msgstr "代理ip"
+
+#: webterminal/models.py:68
+msgid "Proxy port"
+msgstr "代理端口"
+
+#: webterminal/models.py:69
+msgid "Proxy password"
+msgstr "代理密码"
+
+#: webterminal/models.py:70
+msgid "Protocol"
+msgstr "协议"
+
+#: webterminal/models.py:81
+msgid "If you choose password auth method,You must set password!"
+msgstr "如果选择密码认证方式，必须设置密码！"
+
+#: webterminal/models.py:83
+msgid "If you choose password auth method,You must make key field for blank!"
+msgstr "如果选择密码认证方式，则必须保持key字段为空！"
+
+#: webterminal/models.py:85
+msgid "If you choose key auth method,You must fill in key field!"
+msgstr "如果选择key方式，则必须填写key字段！"
+
+#: webterminal/models.py:87
+msgid "If you choose key auth method,You must make password field for blank!"
+msgstr "如果选择key认证方式，则必须保持密码字段未空！"
+
+#: webterminal/models.py:90
+msgid ""
+"If you choose auth proxy,You must fill in proxyserverip and proxyport field !"
+msgstr "如果选择代理，必须填写代理ip及代理密码！"
+
+#: webterminal/models.py:94
+msgid "Can add credential"
+msgstr "可新增凭证"
+
+#: webterminal/models.py:95
+msgid "Can change credential info"
+msgstr "可更新凭证信息"
+
+#: webterminal/models.py:96
+msgid "Can delete credential info"
+msgstr "可删除凭证"
+
+#: webterminal/models.py:97
+msgid "Can view credential info"
+msgstr "可查看凭证信息"
+
+#: webterminal/models.py:101
+msgid "Task name"
+msgstr "任务名称"
+
+#: webterminal/models.py:102
+msgid "Task commands"
+msgstr "任务命令"
+
+#: webterminal/models.py:112
+msgid "Commands sequence is not valid json type"
+msgstr "命令序列不是有效的json格式"
+
+#: webterminal/models.py:121
+msgid "Can add commands"
+msgstr "可创建命令"
+
+#: webterminal/models.py:122
+msgid "Can change commands info"
+msgstr "可更新命令信息"
+
+#: webterminal/models.py:123
+msgid "Can delete commands info"
+msgstr "可删除命令信息"
+
+#: webterminal/models.py:124
+msgid "Can view commands info"
+msgstr "可查看命令信息"
+
+#: webterminal/models.py:128
+msgid "Server"
+msgstr "服务器"
+
+#: webterminal/models.py:129
+msgid "Channel name"
+msgstr "频道名称"
+
+#: webterminal/models.py:130
+msgid "Log name"
+msgstr "日志名称"
+
+#: webterminal/models.py:131
+msgid "Start time"
+msgstr "开始时间"
+
+#: webterminal/models.py:132
+msgid "End time"
+msgstr "结束时间"
+
+#: webterminal/models.py:133
+msgid "Is finished"
+msgstr "是否结束"
+
+#: webterminal/models.py:134
+msgid "User"
+msgstr "用户列表"
+
+#: webterminal/models.py:135
+msgid "Width"
+msgstr "宽度"
+
+#: webterminal/models.py:136
+msgid "Height"
+msgstr "高度"
+
+#: webterminal/models.py:143
+msgid "Can delete log info"
+msgstr "可删除日志信息"
+
+#: webterminal/models.py:144
+msgid "Can view log info"
+msgstr "可查看日志信息"
+
+#: webterminal/settings.py:188
+msgid "Simple Chinese"
+msgstr "简体中文"
+
+#: webterminal/settings.py:189
+msgid "English"
+msgstr "英语"
