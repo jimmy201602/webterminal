@@ -1,10 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission as AuthPermission
 from permission.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout,Div,Field
 from django.db import models
+from django.forms.widgets import CheckboxSelectMultiple
 
 class RegisterForm(forms.Form):
 
@@ -75,19 +77,9 @@ class RegisterForm(forms.Form):
 
 class PermissionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.model = Permission
-        self.helper = FormHelper()
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-md-2'
-        self.helper.field_class = 'col-md-8'
-        self.helper.layout = Layout(*[Div(field.name,css_class='form-group') 
-                                      for field in self.model._meta.get_fields() 
-                                      if not isinstance(field,(models.AutoField,models.ManyToOneRel,models.ManyToManyRel))])
         super(PermissionForm, self).__init__(*args, **kwargs)
+        self.fields["permissions"].widget = CheckboxSelectMultiple(choices=[(app.id,'{0}---{1}'.format(app.content_type.model,app.codename)) for app in AuthPermission.objects.filter(content_type__app_label='webterminal')])
 
     class Meta:
         model = Permission
         fields = ['user', 'permissions', 'groups']
-        widgets = {
-            'permissions': forms.SelectMultiple(choices=[(app.id,app.model) for app in ContentType.objects.filter(app_label='webterminal')]),
-        }        
