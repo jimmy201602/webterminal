@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-25 10:52+0000\n"
+"POT-Creation-Date: 2018-03-27 14:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,18 +17,41 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: permission/templates/permission/userdelete.html:3
-msgid "User delete"
-msgstr "删除用户"
+#: permission/models.py:11 webterminal/models.py:134
+msgid "User"
+msgstr "用户列表"
 
-#: permission/templates/permission/userdelete.html:14
-#: permission/templates/permission/userupdate.html:14
-msgid "Return user list"
-msgstr "返回服务器列表"
+#: permission/models.py:12
+msgid "Permissions"
+msgstr "权限"
 
+#: permission/models.py:13
+msgid "Server group"
+msgstr "服务器组"
+
+#: permission/models.py:14 webterminal/models.py:16 webterminal/models.py:37
+msgid "Create time"
+msgstr "创建时间"
+
+#: permission/models.py:15 webterminal/models.py:17 webterminal/models.py:38
+msgid "Update time"
+msgstr "更新时间"
+
+#: permission/templates/permission/permissioncreate.html:3
+#, python-format
+msgid "%(title)s"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:15
+msgid "Return Permission List"
+msgstr "返回用户权限列表"
+
+#: permission/templates/permission/permissioncreate.html:27
+#: permission/templates/permission/permissiondelete.html:27
+#: permission/templates/permission/permissionlist.html:27
 #: permission/templates/permission/userdelete.html:27
 #: permission/templates/permission/userlist.html:27
-#: permission/templates/permission/userregister.html:26
+#: permission/templates/permission/userregister.html:27
 #: permission/templates/permission/userupdate.html:27
 #: templates/webterminal/commandcreate.html:30
 #: templates/webterminal/commandslist.html:33
@@ -42,9 +65,12 @@ msgstr "返回服务器列表"
 msgid "Action"
 msgstr "操作"
 
+#: permission/templates/permission/permissioncreate.html:28
+#: permission/templates/permission/permissiondelete.html:28
+#: permission/templates/permission/permissionlist.html:28
 #: permission/templates/permission/userdelete.html:28
 #: permission/templates/permission/userlist.html:28
-#: permission/templates/permission/userregister.html:27
+#: permission/templates/permission/userregister.html:28
 #: permission/templates/permission/userupdate.html:28
 #: templates/webterminal/commandcreate.html:31
 #: templates/webterminal/commandslist.html:34
@@ -58,9 +84,12 @@ msgstr "操作"
 msgid "Another action"
 msgstr "另一个操作"
 
+#: permission/templates/permission/permissioncreate.html:29
+#: permission/templates/permission/permissiondelete.html:29
+#: permission/templates/permission/permissionlist.html:29
 #: permission/templates/permission/userdelete.html:29
 #: permission/templates/permission/userlist.html:29
-#: permission/templates/permission/userregister.html:28
+#: permission/templates/permission/userregister.html:29
 #: permission/templates/permission/userupdate.html:29
 #: templates/webterminal/commandcreate.html:32
 #: templates/webterminal/commandslist.html:35
@@ -74,9 +103,12 @@ msgstr "另一个操作"
 msgid "Something else here"
 msgstr "其他"
 
+#: permission/templates/permission/permissioncreate.html:31
+#: permission/templates/permission/permissiondelete.html:31
+#: permission/templates/permission/permissionlist.html:31
 #: permission/templates/permission/userdelete.html:31
 #: permission/templates/permission/userlist.html:31
-#: permission/templates/permission/userregister.html:30
+#: permission/templates/permission/userregister.html:31
 #: permission/templates/permission/userupdate.html:31
 #: templates/webterminal/commandcreate.html:34
 #: templates/webterminal/commandslist.html:37
@@ -90,13 +122,10 @@ msgstr "其他"
 msgid "Separated link"
 msgstr ""
 
-#: permission/templates/permission/userdelete.html:48
-msgid "Are you sure you want to delete user"
-msgstr "确认删除用户"
-
+#: permission/templates/permission/permissioncreate.html:48
+#: permission/templates/permission/permissiondelete.html:51
 #: permission/templates/permission/userdelete.html:51
-#: permission/templates/permission/userregister.html:50
-#: permission/templates/permission/userupdate.html:51
+#: permission/templates/permission/userregister.html:48
 #: templates/webterminal/commandcreate.html:56
 #: templates/webterminal/commandslist.html:201
 #: templates/webterminal/credentialcreate.html:58
@@ -108,10 +137,36 @@ msgstr "确认删除用户"
 msgid "submit"
 msgstr "提交"
 
-#: permission/templates/permission/userlist.html:3
-msgid "User list"
-msgstr "用户列表"
+#: permission/templates/permission/permissioncreate.html:49
+#: permission/templates/permission/userregister.html:49
+#: templates/webterminal/commandslist.html:205
+#: templates/webterminal/credentiallist.html:133
+#: templates/webterminal/credentiallist.html:200
+#: templates/webterminal/grouplist.html:187
+#: templates/webterminal/grouplist.html:316
+#: templates/webterminal/serverlist.html:197
+#: templates/webterminal/serverlist.html:327
+#: templates/webterminal/sshlogslist.html:145
+msgid "cancel"
+msgstr "取消"
 
+#: permission/templates/permission/permissiondelete.html:3
+msgid "Permission delete"
+msgstr "删除用户权限"
+
+#: permission/templates/permission/permissiondelete.html:14
+msgid "Return Permission list"
+msgstr "返回权限列表"
+
+#: permission/templates/permission/permissiondelete.html:48
+msgid "Are you sure you want to delete user permission"
+msgstr "确认删除用户权限"
+
+#: permission/templates/permission/permissionlist.html:3
+msgid "Permission list"
+msgstr "权限列表"
+
+#: permission/templates/permission/permissionlist.html:14
 #: permission/templates/permission/userlist.html:14
 #: templates/webterminal/commandslist.html:20
 #: templates/webterminal/credentiallist.html:21
@@ -120,15 +175,22 @@ msgstr "用户列表"
 msgid "Add New"
 msgstr "新增"
 
+#: permission/templates/permission/permissionlist.html:43
 #: permission/templates/permission/userlist.html:43
 #: templates/webterminal/sshlogslist.html:49
 msgid "user name"
 msgstr "用户名"
 
-#: permission/templates/permission/userlist.html:44
-msgid "email"
-msgstr "邮箱"
+#: permission/templates/permission/permissionlist.html:44
+msgid "permissions"
+msgstr "权限"
 
+#: permission/templates/permission/permissionlist.html:45
+#: templates/webterminal/commandslist.html:49
+msgid "groups"
+msgstr "组"
+
+#: permission/templates/permission/permissionlist.html:46
 #: permission/templates/permission/userlist.html:45
 #: templates/webterminal/commandslist.html:51
 #: templates/webterminal/credentiallist.html:52
@@ -138,6 +200,15 @@ msgstr "邮箱"
 msgid "action"
 msgstr "操作"
 
+#: permission/templates/permission/permissionlist.html:64
+#: templates/webterminal/commandslist.html:66
+#: templates/webterminal/credentiallist.html:63
+#: templates/webterminal/grouplist.html:65
+#: templates/webterminal/serverlist.html:63
+msgid "edit"
+msgstr "编辑"
+
+#: permission/templates/permission/permissionlist.html:65
 #: permission/templates/permission/userlist.html:54
 #: templates/webterminal/commandslist.html:67
 #: templates/webterminal/credentiallist.html:64
@@ -149,11 +220,32 @@ msgstr "操作"
 msgid "delete"
 msgstr "删除"
 
+#: permission/templates/permission/userdelete.html:3
+msgid "User delete"
+msgstr "删除用户"
+
+#: permission/templates/permission/userdelete.html:14
+#: permission/templates/permission/userupdate.html:14
+msgid "Return user list"
+msgstr "返回服务器列表"
+
+#: permission/templates/permission/userdelete.html:48
+msgid "Are you sure you want to delete user"
+msgstr "确认删除用户"
+
+#: permission/templates/permission/userlist.html:3
+msgid "User list"
+msgstr "用户列表"
+
+#: permission/templates/permission/userlist.html:44
+msgid "email"
+msgstr "邮箱"
+
 #: permission/templates/permission/userregister.html:3
 msgid "Add new user"
 msgstr "新增用户"
 
-#: permission/templates/permission/userregister.html:14
+#: permission/templates/permission/userregister.html:15
 msgid "Return user List"
 msgstr "返回用户列表"
 
@@ -193,7 +285,7 @@ msgstr "注销"
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: templates/base.html:194 templates/base.html:236
+#: templates/base.html:194 templates/base.html:237
 #: templates/webterminal/commandexecute.html:3
 #: templates/webterminal/index.html:3
 msgid "webterminal"
@@ -227,15 +319,19 @@ msgstr "日志列表"
 msgid "user list"
 msgstr "用户列表"
 
-#: templates/base.html:234
+#: templates/base.html:202
+msgid "permission list"
+msgstr "权限列表"
+
+#: templates/base.html:235
 msgid "Version"
 msgstr "版本"
 
-#: templates/base.html:236
+#: templates/base.html:237
 msgid "Copyright &copy; 2014-2018"
 msgstr "Copyright &copy; 2014-2018"
 
-#: templates/base.html:236
+#: templates/base.html:237
 msgid "All rights reserved."
 msgstr "保留所有权利"
 
@@ -316,23 +412,12 @@ msgstr "执行"
 msgid "name"
 msgstr "名称"
 
-#: templates/webterminal/commandslist.html:49
-msgid "groups"
-msgstr "组"
-
 #: templates/webterminal/commandslist.html:65
 #: templates/webterminal/credentiallist.html:62
 #: templates/webterminal/grouplist.html:64
 #: templates/webterminal/serverlist.html:62
 msgid "detail"
 msgstr "详情"
-
-#: templates/webterminal/commandslist.html:66
-#: templates/webterminal/credentiallist.html:63
-#: templates/webterminal/grouplist.html:65
-#: templates/webterminal/serverlist.html:63
-msgid "edit"
-msgstr "编辑"
 
 #: templates/webterminal/commandslist.html:108
 #: templates/webterminal/commandslist.html:132
@@ -358,17 +443,6 @@ msgstr "加载中..."
 #: templates/webterminal/commandslist.html:197
 msgid "commands edit"
 msgstr "命令编辑"
-
-#: templates/webterminal/commandslist.html:205
-#: templates/webterminal/credentiallist.html:133
-#: templates/webterminal/credentiallist.html:200
-#: templates/webterminal/grouplist.html:187
-#: templates/webterminal/grouplist.html:316
-#: templates/webterminal/serverlist.html:197
-#: templates/webterminal/serverlist.html:327
-#: templates/webterminal/sshlogslist.html:145
-msgid "cancel"
-msgstr "取消"
 
 #: templates/webterminal/commandslist.html:297
 msgid "delete task"
@@ -801,14 +875,6 @@ msgstr "服务器名称 "
 msgid "Host name"
 msgstr "主机名"
 
-#: webterminal/models.py:16 webterminal/models.py:37
-msgid "Create time"
-msgstr "创建时间"
-
-#: webterminal/models.py:17 webterminal/models.py:38
-msgid "Update time"
-msgstr "更新时间"
-
 #: webterminal/models.py:27
 msgid "Can add server"
 msgstr "可新增服务器"
@@ -1006,10 +1072,6 @@ msgstr "结束时间"
 msgid "Is finished"
 msgstr "是否结束"
 
-#: webterminal/models.py:134
-msgid "User"
-msgstr "用户列表"
-
 #: webterminal/models.py:135
 msgid "Width"
 msgstr "宽度"
@@ -1026,10 +1088,10 @@ msgstr "可删除日志信息"
 msgid "Can view log info"
 msgstr "可查看日志信息"
 
-#: webterminal/settings.py:188
+#: webterminal/settings.py:191
 msgid "Simple Chinese"
 msgstr "简体中文"
 
-#: webterminal/settings.py:189
+#: webterminal/settings.py:192
 msgid "English"
 msgstr "英语"
