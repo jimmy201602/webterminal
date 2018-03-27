@@ -11,7 +11,6 @@ from django.forms.widgets import CheckboxSelectMultiple
 class RegisterForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
-        self.model = Permission
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-2'
@@ -76,9 +75,16 @@ class RegisterForm(forms.Form):
         return cleaned_data
 
 class PermissionForm(forms.ModelForm):
+    permissions = forms.MultipleChoiceField(choices=[(app.id,'{0}|{1}'.format(app.content_type.model,app.name)) for app in AuthPermission.objects.filter(content_type__app_label='webterminal')], widget=forms.CheckboxSelectMultiple())
+
     def __init__(self, *args, **kwargs):
         super(PermissionForm, self).__init__(*args, **kwargs)
-        self.fields["permissions"].widget = CheckboxSelectMultiple(choices=[(app.id,'{0}---{1}'.format(app.content_type.model,app.codename)) for app in AuthPermission.objects.filter(content_type__app_label='webterminal')])
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(*[Div(field,css_class='form-group') 
+                                      for field in ['user', 'permissions', 'groups'] ])
 
     class Meta:
         model = Permission
