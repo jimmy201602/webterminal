@@ -1,0 +1,60 @@
+{% extends 'base.html'%}
+{%load i18n%}
+{% block title %}{% blocktrans %}{{ title }}{% endblocktrans %}{% endblock %}
+{% load staticfiles %}
+{% block content %}
+{% load crispy_forms_tags %}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'permissionlist' %}'">
+                            {%trans 'Return Permission List' %}
+                        </button>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">{%trans 'Action' %}</a></li>
+                                <li><a href="#">{%trans 'Another action' %}</a></li>
+                                <li><a href="#">{%trans 'Something else here' %}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">{%trans 'Separated link' %}</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <form id="id-m-form" action="" method="post" class="form form-horizontal " role="form">
+                    <div class="box-body">
+                        {% if form.helper %}
+                            {% crispy form form.helper %}
+                        {% else %}
+                            {% crispy form %}
+                        {% endif %}
+                        <div class="form-group">
+                            <div class="col-xs-offset-2 col-xs-10">
+                                <button type="submit" class="btn btn-primary">{%trans 'submit' %}</button>
+                                <button type="button" class="btn btn-default goback" onclick="history.back()">{%trans 'cancel' %}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
+{% endblock %}

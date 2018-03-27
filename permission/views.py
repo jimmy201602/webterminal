@@ -39,5 +39,30 @@ class UserUpdate(LoginRequiredMixin,UpdateView):
 class PermissionCreate(LoginRequiredMixin,CreateView):
     model = Permission
     form_class = PermissionForm
-    success_url = reverse_lazy('userlist')
-    template_name = 'permission/userregister.html'
+    success_url = reverse_lazy('permissionlist')
+    template_name = 'permission/permissioncreate.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(PermissionCreate, self).get_context_data(**kwargs)
+        context['title'] = 'Create Permission'
+        return context
+
+class PermissionList(LoginRequiredMixin,ListView):
+    model = Permission
+    template_name = 'permission/permissionlist.html'
+
+class PermissionUpdate(LoginRequiredMixin,UpdateView):
+    model = Permission
+    form_class = PermissionForm
+    success_url = reverse_lazy('permissionlist')
+    template_name = 'permission/permissioncreate.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(PermissionUpdate, self).get_context_data(**kwargs)
+        context['title'] = 'Update Permission'
+        return context
+
+class PermissionDelete(LoginRequiredMixin,DeleteView):
+    model = Permission
+    success_url = reverse_lazy('permissionlist')
+    template_name = 'permission/permissiondelete.html'
