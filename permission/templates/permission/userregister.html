@@ -35,29 +35,22 @@
                         </button>
                     </div>
                 </div>
-                <div class="box-body">
 
-                    <div class="row">
-
-
-                        <div class="col-lg-10">
-                            <div class="content float-e-margins">
-                                <div class="content">
-                                    <form action="{% url 'usercreate' %}" class="form-horizontal nice-validator n-yellow form" id="table" method="post" novalidate="novalidate">
-                                        {% csrf_token %}
-                                        {{ form.as_p}}
-                                        <div class="col-sm-4 col-sm-offset-5">
-                                            <button type="submit" id="submit" class="btn btn-primary pull-center">
-                                                {%trans 'submit' %}
-                                            </button>
-                                        </div>
-
-                                    </form>
+                    <form id="id-m-form" action="" method="post" class="form form-horizontal " role="form">
+                            <div class="box-body">
+                                {% if form.helper %}
+                                    {% crispy form form.helper %}
+                                {% else %}
+                                    {% crispy form %}
+                                {% endif %}
+                                <div class="form-group">
+                                    <div class="col-xs-offset-2 col-xs-10">
+                                        <button type="submit" class="btn btn-primary">{%trans 'submit' %}</button>
+                                        <button type="button" class="btn btn-default goback" onclick="history.back()">{%trans 'cancel' %}</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                    </form>
             </div>
             <!-- END EXAMPLE TABLE PORTLET-->
         </div>
