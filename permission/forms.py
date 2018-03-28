@@ -75,7 +75,7 @@ class RegisterForm(forms.Form):
         return cleaned_data
 
 class PermissionForm(forms.ModelForm):
-    permissions = forms.MultipleChoiceField(choices=[(app.id,'{0}|{1}'.format(app.content_type.model,app.name)) for app in AuthPermission.objects.filter(content_type__app_label='webterminal')], widget=forms.CheckboxSelectMultiple())
+    permissions = forms.ModelMultipleChoiceField(queryset=AuthPermission.objects.filter(content_type__app_label='webterminal'), widget=forms.CheckboxSelectMultiple())
 
     def __init__(self, *args, **kwargs):
         super(PermissionForm, self).__init__(*args, **kwargs)
