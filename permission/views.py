@@ -48,6 +48,18 @@ class PermissionCreate(LoginRequiredMixin,CreateView):
         context['title'] = _('Create Permission')
         return context
 
+    def form_valid(self, form):
+        user = form.cleaned_data['user']
+        permissionset = form.cleaned_data['permissions']
+        for permission in user.user_permissions.all():
+            user.user_permissions.remove(permission)
+            user.save()
+        for permission in permissionset:
+            user.user_permissions.add(permission)
+            user.save()
+        self.object = form.save()
+        return super(PermissionCreate, self).form_valid(form)
+
 class PermissionList(LoginRequiredMixin,ListView):
     model = Permission
     template_name = 'permission/permissionlist.html'
@@ -63,7 +75,30 @@ class PermissionUpdate(LoginRequiredMixin,UpdateView):
         context['title'] = _('Update Permission')
         return context
 
+    def form_valid(self, form):
+        user = form.cleaned_data['user']
+        permissionset = form.cleaned_data['permissions']
+        for permission in user.user_permissions.all():
+            user.user_permissions.remove(permission)
+            user.save()
+        for permission in permissionset:
+            user.user_permissions.add(permission)
+            user.save()
+        self.object = form.save()
+        return super(PermissionUpdate, self).form_valid(form)
+
 class PermissionDelete(LoginRequiredMixin,DeleteView):
     model = Permission
     success_url = reverse_lazy('permissionlist')
     template_name = 'permission/permissiondelete.html'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        user = self.object.user
+        permissionset = self.object.permissions.all()
+        for permission in permissionset:
+            user.user_permissions.remove(permission)
+            user.save()
+        self.object.delete()
+        return HttpResponseRedirect(success_url)
