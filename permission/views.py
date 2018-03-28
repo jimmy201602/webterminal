@@ -7,6 +7,7 @@ from permission.forms import RegisterForm,PermissionForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from permission.models import Permission
+from django.utils.translation import ugettext, ugettext_lazy as _
 
 class UserRegister(LoginRequiredMixin,FormView):
     template_name = 'permission/userregister.html'
@@ -44,7 +45,7 @@ class PermissionCreate(LoginRequiredMixin,CreateView):
     
     def get_context_data(self, **kwargs):
         context = super(PermissionCreate, self).get_context_data(**kwargs)
-        context['title'] = 'Create Permission'
+        context['title'] = _('Create Permission')
         return context
 
 class PermissionList(LoginRequiredMixin,ListView):
@@ -59,7 +60,7 @@ class PermissionUpdate(LoginRequiredMixin,UpdateView):
     
     def get_context_data(self, **kwargs):
         context = super(PermissionUpdate, self).get_context_data(**kwargs)
-        context['title'] = 'Update Permission'
+        context['title'] = _('Update Permission')
         return context
 
 class PermissionDelete(LoginRequiredMixin,DeleteView):

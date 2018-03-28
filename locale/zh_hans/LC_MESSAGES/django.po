@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-27 14:13+0000\n"
+"POT-Creation-Date: 2018-03-28 12:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,30 +17,61 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: permission/models.py:11 webterminal/models.py:134
-msgid "User"
-msgstr "用户列表"
+#: permission/forms.py:27
+msgid "Please input a valid user."
+msgstr "请输入有效的用户名"
 
-#: permission/models.py:12
+#: permission/forms.py:38
+msgid "Please input your password"
+msgstr "请输入你的密码"
+
+#: permission/forms.py:41
+msgid "new password"
+msgstr "新密码"
+
+#: permission/forms.py:48 permission/forms.py:52
+msgid "verify your password"
+msgstr "密码验证"
+
+#: permission/forms.py:49
+msgid "please input your  password again"
+msgstr "请重新输入密码"
+
+#: permission/forms.py:60
+msgid "Please input a valid email address."
+msgstr "请输入有效的邮箱地址"
+
+#: permission/forms.py:70
+msgid "every filed required"
+msgstr "每个字段都必须填写"
+
+#: permission/forms.py:72
+msgid "your password does't the same"
+msgstr "密码不一致"
+
+#: permission/forms.py:75
+msgid "User name has been registered!"
+msgstr "用户已经被注册！"
+
+#: permission/models.py:12 webterminal/models.py:134
+msgid "User"
+msgstr "用户"
+
+#: permission/models.py:13
 msgid "Permissions"
 msgstr "权限"
 
-#: permission/models.py:13
+#: permission/models.py:14
 msgid "Server group"
 msgstr "服务器组"
 
-#: permission/models.py:14 webterminal/models.py:16 webterminal/models.py:37
+#: permission/models.py:15 webterminal/models.py:16 webterminal/models.py:37
 msgid "Create time"
 msgstr "创建时间"
 
-#: permission/models.py:15 webterminal/models.py:17 webterminal/models.py:38
+#: permission/models.py:16 webterminal/models.py:17 webterminal/models.py:38
 msgid "Update time"
 msgstr "更新时间"
-
-#: permission/templates/permission/permissioncreate.html:3
-#, python-format
-msgid "%(title)s"
-msgstr ""
 
 #: permission/templates/permission/permissioncreate.html:15
 msgid "Return Permission List"
@@ -252,6 +283,14 @@ msgstr "返回用户列表"
 #: permission/templates/permission/userupdate.html:3
 msgid "User update"
 msgstr "更新用户信息"
+
+#: permission/views.py:48
+msgid "Create Permission"
+msgstr "新增权限"
+
+#: permission/views.py:63
+msgid "Update Permission"
+msgstr "更新权限"
 
 #: templates/base.html:8
 msgid "AdminLTE 2 | Dashboard"
