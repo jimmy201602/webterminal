@@ -52,12 +52,12 @@
                             <td>{{ element.user.username }}</td>
                             <td>
                                 {% for permission in  element.permissions.all %}
-                                    <a>{{permission.app_label}}</a>
+                                    <a>{{permission.name}}</a><br>
                                 {% endfor %}
                             </td>
                             <td>
                                 {% for group in  element.groups.all %}
-                                <a>{{group.name}}</a>
+                                <a>{{group.name}}</a><br>
                                 {% endfor %}
                             </td>
                             <td data-editable="false" class="text-center pull-left">
