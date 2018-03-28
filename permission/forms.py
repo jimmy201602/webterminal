@@ -82,10 +82,7 @@ class CustomModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 
 class PermissionForm(forms.ModelForm):
     permissions = CustomModelMultipleChoiceField(queryset=AuthPermission.objects.\
-                                                 filter(content_type__app_label='webterminal').\
-                                                 exclude(codename__contains='add_').\
-                                                 exclude(codename__contains='change_').\
-                                                 exclude(codename__contains='delete_'),\
+                                                 filter(content_type__app_label='webterminal',codename__contains='can_'),\
                                                  widget=forms.CheckboxSelectMultiple())
 
     def __init__(self, *args, **kwargs):

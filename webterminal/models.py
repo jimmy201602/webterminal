@@ -24,11 +24,11 @@ class ServerInfor(models.Model):
     
     class Meta:
         permissions = (
-            ("can_add", _("Can add server")),
-            ("can_change", _("Can change server info")),
-            ("can_delete", _("Can delete server info")),
-            ("can_connect", _("Can connect to server")),
-            ("can_view", _("Can view server info")),
+            ("can_add_serverinfo", _("Can add server")),
+            ("can_change_serverinfo", _("Can change server info")),
+            ("can_delete_serverinfo", _("Can delete server info")),
+            ("can_connect_serverinfo", _("Can connect to server")),
+            ("can_view_serverinfo", _("Can view server info")),
         )
 
 class ServerGroup(models.Model):
@@ -42,10 +42,10 @@ class ServerGroup(models.Model):
 
     class Meta:
         permissions = (
-            ("can_add", _("Can add group")),
-            ("can_change", _("Can change group info")),
-            ("can_delete", _("Can delete group info")),
-            ("can_view", _("Can view group info")),
+            ("can_add_servergroup", _("Can add group")),
+            ("can_change_servergroup", _("Can change group info")),
+            ("can_delete_servergroup", _("Can delete group info")),
+            ("can_view_servergroup", _("Can view group info")),
         )
 
 class Credential(models.Model):
@@ -91,10 +91,10 @@ class Credential(models.Model):
 
     class Meta:
         permissions = (
-            ("can_add", _("Can add credential")),
-            ("can_change", _("Can change credential info")),
-            ("can_delete", _("Can delete credential info")),
-            ("can_view", _("Can view credential info")),
+            ("can_add_credential", _("Can add credential")),
+            ("can_change_credential", _("Can change credential info")),
+            ("can_delete_credential", _("Can delete credential info")),
+            ("can_view_credential", _("Can view credential info")),
         )
 
 class CommandsSequence(models.Model):
@@ -118,10 +118,10 @@ class CommandsSequence(models.Model):
 
     class Meta:
         permissions = (
-            ("can_add", _("Can add commands")),
-            ("can_change", _("Can change commands info")),
-            ("can_delete", _("Can delete commands info")),
-            ("can_view", _("Can view commands info")),
+            ("can_add_commandssequence", _("Can add commands")),
+            ("can_change_commandssequence", _("Can change commands info")),
+            ("can_delete_commandssequence", _("Can delete commands info")),
+            ("can_view_commandssequence", _("Can view commands info")),
         )
 
 class Log(models.Model):
@@ -140,8 +140,8 @@ class Log(models.Model):
     
     class Meta:
         permissions = (
-            ("can_delete", _("Can delete log info")),
-            ("can_view", _("Can view log info")),
+            ("can_delete_log", _("Can delete log info")),
+            ("can_view_log", _("Can view log info")),
         )
         ordering = [
             ('-start_time')
