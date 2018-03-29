@@ -51,7 +51,7 @@
                             <td>{{ element.username }}</td>
                             <td>{{ element.email }}</td>
                             <td data-editable="false" class="text-center pull-left">
-                                <a class="btn btn-xs btn-danger" href="{% url 'userdelete' element.id %}">{%trans 'delete' %}</a>
+                                {% if perms.permission.can_delete_user %}<a class="btn btn-xs btn-danger" href="{% url 'userdelete' element.id %}">{%trans 'delete' %}</a>{% endif %}
                             </td>
                         </tr>
                         {% endfor %}
