@@ -20,16 +20,24 @@ from django.core.serializers import serialize
 from webterminal.settings import MEDIA_URL
 from django.utils.timezone import now
 from webterminal.interactive import get_redis_instance
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.views.generic import TemplateView
 
-class Index(LoginRequiredMixin,View):
-    def get(self,request):
-        server_groups=ServerGroup.objects.all()
-        return render_to_response('webterminal/index.html',locals())
+class Index(LoginRequiredMixin,TemplateView):
+    template_name = 'webterminal/index.html'
 
-class Commands(LoginRequiredMixin,View):
-    def get(self,request):
-        server_groups=ServerGroup.objects.all()
-        return render_to_response('webterminal/commandcreate.html',locals())
+    def get_context_data(self, **kwargs):
+        context = super(Index, self).get_context_data(**kwargs)
+        context['server_groups'] = ServerGroup.objects.all()
+        return context
+
+class Commands(LoginRequiredMixin,TemplateView):
+    template_name = 'webterminal/commandcreate.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Commands, self).get_context_data(**kwargs)
+        context['server_groups'] = ServerGroup.objects.all()
+        return context
     
     def post(self,request):
         if request.is_ajax():
@@ -75,10 +83,13 @@ class Commands(LoginRequiredMixin,View):
         else:
             pass
 
-class CommandExecute(LoginRequiredMixin,View):
-    def get(self,request):
-        commands=CommandsSequence.objects.all()
-        return render_to_response('webterminal/commandexecute.html',locals())
+class CommandExecute(LoginRequiredMixin,TemplateView):
+    template_name = 'webterminal/commandexecute.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CommandExecute, self).get_context_data(**kwargs)
+        context['commands'] = CommandsSequence.objects.all()
+        return context
 
 class CommandExecuteList(LoginRequiredMixin,ListView):
     model = CommandsSequence
@@ -184,7 +195,7 @@ class GroupList(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         context = super(GroupList, self).get_context_data(**kwargs)
         context['servers'] = ServerInfor.objects.all()
-        return context    
+        return context
 
 class GroupCreate(LoginRequiredMixin,View):
     def get(self,request):
