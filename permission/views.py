@@ -18,7 +18,7 @@ class UserRegister(LoginRequiredMixin,FormView):
         username=form.cleaned_data['user']
         password=form.cleaned_data['newpassword1']
         email=form.cleaned_data['email']
-        User.objects.create_user(username=username,email=email,password=password,is_active=False)
+        User.objects.create_user(username=username,email=email,password=password,is_active=True)
         return HttpResponseRedirect(self.get_success_url())
 
 class UserList(LoginRequiredMixin,ListView):
