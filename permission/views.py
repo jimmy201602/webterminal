@@ -51,12 +51,9 @@ class PermissionCreate(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         user = form.cleaned_data['user']
         permissionset = form.cleaned_data['permissions']
-        for permission in user.user_permissions.all():
-            user.user_permissions.remove(permission)
-            user.save()
-        for permission in permissionset:
-            user.user_permissions.add(permission)
-            user.save()
+        user.user_permissions.clear()
+        user.user_permissions.add(*permissionset)
+        user.save()
         self.object = form.save()
         return super(PermissionCreate, self).form_valid(form)
 
@@ -78,12 +75,9 @@ class PermissionUpdate(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         user = form.cleaned_data['user']
         permissionset = form.cleaned_data['permissions']
-        for permission in user.user_permissions.all():
-            user.user_permissions.remove(permission)
-            user.save()
-        for permission in permissionset:
-            user.user_permissions.add(permission)
-            user.save()
+        user.user_permissions.clear()
+        user.user_permissions.add(*permissionset)
+        user.save()
         self.object = form.save()
         return super(PermissionUpdate, self).form_valid(form)
 
