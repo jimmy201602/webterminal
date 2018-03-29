@@ -114,10 +114,8 @@ class CommandExecuteDetailApi(LoginRequiredMixin,View):
         else:
             return JsonResponse({'status':False,'message':'Method not allowed!'})
 
-class CredentialCreate(LoginRequiredMixin,View):
-    
-    def get(self,request):
-        return render_to_response('webterminal/credentialcreate.html',locals())
+class CredentialCreate(LoginRequiredMixin,TemplateView):
+    template_name = 'webterminal/credentialcreate.html'
     
     def post(self,request):
         if request.is_ajax():
@@ -173,10 +171,13 @@ class CredentialDetailApi(LoginRequiredMixin,View):
             return JsonResponse({'status':False,'message':'Method not allowed!'})
 
 
-class ServerCreate(LoginRequiredMixin,View):
-    def get(self,request):
-        credentials = Credential.objects.all()
-        return render_to_response('webterminal/servercreate.html',locals())
+class ServerCreate(LoginRequiredMixin,TemplateView):
+    template_name = 'webterminal/servercreate.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ServerCreate, self).get_context_data(**kwargs)
+        context['credentials'] = Credential.objects.all()
+        return context
 
 class ServerlList(LoginRequiredMixin,ListView):
     
@@ -197,10 +198,13 @@ class GroupList(LoginRequiredMixin,ListView):
         context['servers'] = ServerInfor.objects.all()
         return context
 
-class GroupCreate(LoginRequiredMixin,View):
-    def get(self,request):
-        servers = ServerInfor.objects.all()
-        return render_to_response('webterminal/groupcreate.html',locals())
+class GroupCreate(LoginRequiredMixin,TemplateView):
+    template_name = 'webterminal/groupcreate.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GroupCreate, self).get_context_data(**kwargs)
+        context['servers'] = ServerInfor.objects.all()
+        return context
 
 
 class SshLogList(LoginRequiredMixin,ListView):

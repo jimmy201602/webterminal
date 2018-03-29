@@ -122,6 +122,7 @@ class CommandsSequence(models.Model):
             ("can_change_commandssequence", _("Can change commands info")),
             ("can_delete_commandssequence", _("Can delete commands info")),
             ("can_view_commandssequence", _("Can view commands info")),
+            ("can_execute_commandssequence", _("Can execute commands")),
         )
 
 class Log(models.Model):
