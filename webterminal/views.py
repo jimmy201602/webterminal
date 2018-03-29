@@ -22,6 +22,7 @@ from django.utils.timezone import now
 from webterminal.interactive import get_redis_instance
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 class Index(LoginRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
@@ -83,18 +84,22 @@ class Commands(LoginRequiredMixin,TemplateView):
         else:
             pass
 
-class CommandExecute(LoginRequiredMixin,TemplateView):
+class CommandExecute(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
     template_name = 'webterminal/commandexecute.html'
+    permission_required = 'webterminal.can_execute_commandssequence'
+    raise_exception = True
 
     def get_context_data(self, **kwargs):
         context = super(CommandExecute, self).get_context_data(**kwargs)
         context['commands'] = CommandsSequence.objects.all()
         return context
 
-class CommandExecuteList(LoginRequiredMixin,ListView):
+class CommandExecuteList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     model = CommandsSequence
     template_name = 'webterminal/commandslist.html'
-    
+    permission_required = 'webterminal.can_view_commandssequence'
+    raise_exception = True
+
     def get_context_data(self, **kwargs):
         context = super(CommandExecuteList, self).get_context_data(**kwargs)
         context['server_groups'] = ServerGroup.objects.all()
@@ -153,10 +158,12 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                 print traceback.print_exc()
                 return JsonResponse({'status':False,'message':'Error happend! Please report it to adminstrator! Error:%s' %(smart_str(e))})
             
-class CredentialList(LoginRequiredMixin,ListView):
+class CredentialList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     
     model = Credential
     template_name = 'webterminal/credentiallist.html'
+    permission_required = 'webterminal.can_view_credential'
+    raise_exception = True
     
 class CredentialDetailApi(LoginRequiredMixin,View):
     
@@ -171,35 +178,43 @@ class CredentialDetailApi(LoginRequiredMixin,View):
             return JsonResponse({'status':False,'message':'Method not allowed!'})
 
 
-class ServerCreate(LoginRequiredMixin,TemplateView):
+class ServerCreate(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
     template_name = 'webterminal/servercreate.html'
+    permission_required = 'webterminal.can_add_serverinfo'
+    raise_exception = True
 
     def get_context_data(self, **kwargs):
         context = super(ServerCreate, self).get_context_data(**kwargs)
         context['credentials'] = Credential.objects.all()
         return context
 
-class ServerlList(LoginRequiredMixin,ListView):
+class ServerlList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     
     model = ServerInfor
     template_name = 'webterminal/serverlist.html'
-    
+    permission_required = 'webterminal.can_view_serverinfo'
+    raise_exception = True
+
     def get_context_data(self, **kwargs):
         context = super(ServerlList, self).get_context_data(**kwargs)
         context['credentials'] = Credential.objects.all()
         return context
 
-class GroupList(LoginRequiredMixin,ListView):
+class GroupList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     model = ServerGroup
     template_name = 'webterminal/grouplist.html'
+    permission_required = 'webterminal.can_view_servergroup'
+    raise_exception = True
     
     def get_context_data(self, **kwargs):
         context = super(GroupList, self).get_context_data(**kwargs)
         context['servers'] = ServerInfor.objects.all()
         return context
 
-class GroupCreate(LoginRequiredMixin,TemplateView):
+class GroupCreate(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
     template_name = 'webterminal/groupcreate.html'
+    permission_required = 'webterminal.can_add_servergroup'
+    raise_exception = True
 
     def get_context_data(self, **kwargs):
         context = super(GroupCreate, self).get_context_data(**kwargs)
@@ -207,9 +222,11 @@ class GroupCreate(LoginRequiredMixin,TemplateView):
         return context
 
 
-class SshLogList(LoginRequiredMixin,ListView):
+class SshLogList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     model = Log
     template_name = 'webterminal/sshlogslist.html'
+    permission_required = 'webterminal.can_view_log'
+    raise_exception = True
 
 class SshLogPlay(LoginRequiredMixin,DetailView):
     model = Log
