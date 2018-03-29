@@ -9,7 +9,6 @@ from django.core.urlresolvers import reverse_lazy
 from permission.models import Permission
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.contrib.auth.mixins import AccessMixin
 
 class UserRegister(PermissionRequiredMixin,LoginRequiredMixin,FormView):
     template_name = 'permission/userregister.html'
