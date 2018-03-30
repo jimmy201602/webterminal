@@ -15,11 +15,14 @@ from django.shortcuts import get_object_or_404
 from webterminal.models import ServerInfor
 import re
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
-class ElfinderConnectorView(LoginRequiredMixin,View):
+class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
     """
     Default elfinder backend view
     """
+    permission_required = 'webterminal.can_filemanage_serverinfo'
+    raise_exception = True
     
     def render_to_response(self, context, **kwargs):
         """

@@ -22,7 +22,6 @@ from django.utils.timezone import now
 from webterminal.interactive import get_redis_instance
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import  PermissionDenied
 
 class Index(LoginRequiredMixin,TemplateView):
