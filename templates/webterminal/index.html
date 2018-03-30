@@ -261,6 +261,7 @@
             "items": function ($node) {
                 var tree = $("#server_list").jstree(true);
                 return {
+            {% if perms.webterminal.can_connect_serverinfo %}
                     "connect": {
                         "separator_before": false,
                         "separator_after": false,
@@ -300,7 +301,7 @@
                             }
 
                         }
-                    },
+                    },{% endif %}
                     "disconnect": {
                         "separator_before": false,
                         "separator_after": false,
@@ -332,6 +333,7 @@
 
                         }
                     },
+            {% if perms.webterminal.can_filemanage_serverinfo %}
                     "file_manager": {
                         "separator_before": false,
                         "separator_after": false,
@@ -356,7 +358,7 @@
                                 toastr["error"]("{% trans 'This function hasn\'t finished!' %}");
                             }
                         }
-                    },
+                    },{% endif %}
 //                    "Create": {
 //                        "separator_before": false,
 //                        "separator_after": false,
