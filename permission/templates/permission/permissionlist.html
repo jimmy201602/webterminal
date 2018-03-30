@@ -52,7 +52,7 @@
                             <td>{{ element.user.username }}</td>
                             <td>
                                 {% for permission in  element.permissions.all %}
-                                    <a>{{permission.name}}</a><br>
+                                    <a>{% trans permission.name %}</a><br>
                                 {% endfor %}
                             </td>
                             <td>
