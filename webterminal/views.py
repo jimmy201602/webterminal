@@ -23,6 +23,7 @@ from webterminal.interactive import get_redis_instance
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.exceptions import  PermissionDenied
 
 class Index(LoginRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
@@ -45,12 +46,16 @@ class Commands(LoginRequiredMixin,TemplateView):
             try:
                 data = json.loads(request.body)
                 if data['action'] == 'create':
+                    if not request.user.has_perm('webterminal.can_add_commandssequence'):
+                        raise PermissionDenied(_('403 Forbidden'))
                     obj = CommandsSequence.objects.create(name=data['name'],commands=data['commands'])
                     for group in data['group']:
                         obj.group.add(ServerGroup.objects.get(name=group))
                     obj.save()
                     return JsonResponse({'status':True,'message':'%s create success!' %(smart_str(data.get('name',None)))})
                 elif data['action'] == 'update':
+                    if not request.user.has_perm('webterminal.can_change_commandssequence'):
+                        raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = CommandsSequence.objects.get(id=data.get('id',None))
                         obj.commands = data['commands']
@@ -62,6 +67,8 @@ class Commands(LoginRequiredMixin,TemplateView):
                     except ObjectDoesNotExist:
                         return JsonResponse({'status':False,'message':'Request object not exist!'})
                 elif data['action'] == 'delete':
+                    if not request.user.has_perm('webterminal.can_delete_commandssequence'):
+                        raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = CommandsSequence.objects.get(id=data.get('id',None))
                         taskname = obj.name 
@@ -106,8 +113,10 @@ class CommandExecuteList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
         return context
         
 
-class CommandExecuteDetailApi(LoginRequiredMixin,View):
-    
+class CommandExecuteDetailApi(PermissionRequiredMixin,LoginRequiredMixin,View):
+    permission_required = 'webterminal.can_execute_commandssequence'
+    raise_exception = True
+
     def post(self,request):
         if request.is_ajax():
             id = request.POST.get('id',None)
@@ -131,10 +140,14 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                 fields = [field.name for field in Credential._meta.get_fields()]
                 [ data.pop(field) for field in data.keys() if field not in fields]
                 if action == 'create':
+                    if not request.user.has_perm('webterminal.can_add_credential'):
+                        raise PermissionDenied(_('403 Forbidden'))
                     obj = Credential.objects.create(**data)
                     obj.save()
                     return JsonResponse({'status':True,'message':'Credential %s was created!' %(obj.name)})
                 elif action == 'update':
+                    if not request.user.has_perm('webterminal.can_change_credential'):
+                        raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = Credential.objects.get(id=id)
                         obj.__dict__.update(**data)
@@ -143,6 +156,8 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                     except ObjectDoesNotExist:
                         return JsonResponse({'status':False,'message':'Request object not exist!'})
                 elif action == 'delete':
+                    if not request.user.has_perm('webterminal.can_delete_credential'):
+                        raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = Credential.objects.get(id=id)
                         obj.delete()
@@ -165,8 +180,10 @@ class CredentialList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     permission_required = 'webterminal.can_view_credential'
     raise_exception = True
     
-class CredentialDetailApi(LoginRequiredMixin,View):
-    
+class CredentialDetailApi(PermissionRequiredMixin,LoginRequiredMixin,View):
+    permission_required = 'webterminal.can_view_credential'
+    raise_exception = True
+
     def post(self,request):
         if request.is_ajax():
             id = request.POST.get('id',None)
@@ -228,22 +245,28 @@ class SshLogList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     permission_required = 'webterminal.can_view_log'
     raise_exception = True
 
-class SshLogPlay(LoginRequiredMixin,DetailView):
+class SshLogPlay(PermissionRequiredMixin,LoginRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogplay.html'
-    
+    permission_required = 'can_play_log'
+    raise_exception = True
+
     def get_context_data(self, **kwargs):
         context = super(SshLogPlay, self).get_context_data(**kwargs)
         objects = kwargs['object']
         context['logpath'] = '{0}{1}-{2}-{3}/{4}.json'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
         return context
 
-class SshTerminalMonitor(LoginRequiredMixin,DetailView):
+class SshTerminalMonitor(PermissionRequiredMixin,LoginRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogmonitor.html'
-        
-class SshTerminalKill(LoginRequiredMixin,View):
-    
+    permission_required = 'can_monitor_serverinfo'
+    raise_exception = True
+
+class SshTerminalKill(PermissionRequiredMixin,LoginRequiredMixin,View):
+    permission_required = 'can_kill_serverinfo'
+    raise_exception = True
+
     def post(self,request):
         if request.is_ajax():
             channel_name = request.POST.get('channel_name',None)

@@ -28,6 +28,8 @@ class ServerInfor(models.Model):
             ("can_change_serverinfo", _("Can change server info")),
             ("can_delete_serverinfo", _("Can delete server info")),
             ("can_connect_serverinfo", _("Can connect to server")),
+            ("can_kill_serverinfo", _("Can kill online user")),
+            ("can_monitor_serverinfo", _("Can monitor user action")),
             ("can_view_serverinfo", _("Can view server info")),
         )
 
@@ -143,6 +145,7 @@ class Log(models.Model):
         permissions = (
             ("can_delete_log", _("Can delete log info")),
             ("can_view_log", _("Can view log info")),
+            ("can_play_log", _("Can play record")),
         )
         ordering = [
             ('-start_time')
