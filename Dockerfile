@@ -8,11 +8,13 @@ RUN apt-get install python-software-properties build-essential libpulse-dev libs
 RUN add-apt-repository ppa:jonathonf/ffmpeg-3 -y
 RUN apt-get update -y
 RUN apt-get install ffmpeg libffmpegthumbnailer-dev -y
-RUN cd /tmp
+WORKDIR /tmp
 RUN wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
 RUN tar -xvpf guacamole-server-0.9.14.tar.gz
-RUN cd guacamole-server-0.9.14 && ./configure --with-init-dir=/etc/init.d
-RUN cd guacamole-server-0.9.14 && make && make install
+WORKDIR /tmp/guacamole-server-0.9.14
+RUN ./configure --with-init-dir=/etc/init.d
+RUN make && make install
+RUN ln -s /usr/local/lib/libguac.so.12.3.0 /usr/lib/libguac.so.12
 RUN mkdir -p /var/log/web
 WORKDIR /opt
 RUN git clone https://github.com/jimmy201602/webterminal.git
