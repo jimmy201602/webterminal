@@ -190,8 +190,8 @@
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">          	
-	    <li class="active"><a href="{% url 'index' %}"><i class="fa fa-laptop"></i> {%trans 'webterminal' %}</a></li>
+          <ul class="treeview-menu">
+            {% if perms.webterminal.can_connect_serverinfo %}<li class="active"><a href="{% url 'index' %}"><i class="fa fa-laptop"></i> {%trans 'webterminal' %}</a></li>{% endif%}
 	    {% if perms.webterminal.can_execute_commandssequence %}<li class="active"><a href="{% url 'commandexecute' %}"><i class="fa fa-play"></i> {%trans 'command execute' %}</a></li>{% endif%}
 	    {% if perms.webterminal.can_add_credential or perms.webterminal.can_change_credential or perms.webterminal.can_delete_credential or perms.webterminal.can_view_credential %}<li class="active"><a href="{% url 'credentiallist' %}"><i class="fa fa-list-ol"></i> {%trans 'credential list' %}</a></li>{% endif%}
             {% if perms.webterminal.can_add_serverinfo or perms.webterminal.can_change_serverinfo or perms.webterminal.can_delete_serverinfo or perms.webterminal.can_view_serverinfo or  perms.webterminal.can_connect_serverinfo %}<li class="active"><a href="{% url 'serverlist' %}"><i class="fa fa-certificate"></i> {%trans 'server list' %}</a></li>{% endif%}
