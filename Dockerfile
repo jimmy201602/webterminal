@@ -8,7 +8,6 @@ RUN apt-get install python-software-properties build-essential libpulse-dev libs
 RUN add-apt-repository ppa:mc3man/trusty-media -y
 RUN apt-get update
 RUN apt-get install ffmpeg libffmpegthumbnailer-dev -y
-
 RUN cd /tmp
 RUN wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
 RUN tar -xvpf guacamole-server-0.9.14.tar.gz
