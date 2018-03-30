@@ -31,6 +31,7 @@ class ServerInfor(models.Model):
             ("can_kill_serverinfo", _("Can kill online user")),
             ("can_monitor_serverinfo", _("Can monitor user action")),
             ("can_view_serverinfo", _("Can view server info")),
+            ("can_filemanage_serverinfo", _("Can manage file")),
         )
 
 class ServerGroup(models.Model):
