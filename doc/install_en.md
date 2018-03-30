@@ -36,3 +36,8 @@ docker build --no-cache -t webterminal:latest .
 ```sh
 docker run --link guacd:guacd -d -p 80:80 --name webterminal webterminal
 ```
+* login user and password
+```sh
+login user: admin
+login password: password!23456
+```
