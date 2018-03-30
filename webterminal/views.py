@@ -23,13 +23,20 @@ from webterminal.interactive import get_redis_instance
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
 from django.core.exceptions import  PermissionDenied
+from permission.models import Permission
 
-class Index(LoginRequiredMixin,TemplateView):
+class Index(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
+    permission_required = 'webterminal.can_connect_serverinfo'
+    raise_exception = True
 
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
-        context['server_groups'] = ServerGroup.objects.all()
+        try:
+            groups = Permission.objects.get(user__username=self.request.user.username)
+        except ObjectDoesNotExist:
+            return context
+        context['server_groups'] = ServerGroup.objects.filter(name__in=[group.name for group in groups.groups.all()])
         return context
 
 class Commands(LoginRequiredMixin,TemplateView):
@@ -97,7 +104,11 @@ class CommandExecute(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CommandExecute, self).get_context_data(**kwargs)
-        context['commands'] = CommandsSequence.objects.all()
+        try:
+            groups = Permission.objects.get(user__username=self.request.user.username)
+        except ObjectDoesNotExist:
+            return context
+        context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
         return context
 
 class CommandExecuteList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
