@@ -11,9 +11,8 @@ RUN apt-get install ffmpeg libffmpegthumbnailer-dev -y
 RUN cd /tmp
 RUN wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
 RUN tar -xvpf guacamole-server-0.9.14.tar.gz
-RUN cd guacamole-server-0.9.14
-RUN ./configure --with-init-dir=/etc/init.d
-RUN make && make install        
+RUN cd guacamole-server-0.9.14 && ./configure --with-init-dir=/etc/init.d
+RUN cd guacamole-server-0.9.14 && make && make install
 RUN mkdir -p /var/log/web
 WORKDIR /opt
 RUN git clone https://github.com/jimmy201602/webterminal.git
