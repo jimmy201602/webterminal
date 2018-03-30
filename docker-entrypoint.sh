@@ -7,6 +7,7 @@ if [ "$1" = "start" ]; then
 	service redis-server start
 	service nginx start
 	service supervisor start 
+	service guacd start
 	sleep inf & wait
 else
 	exec "$@"

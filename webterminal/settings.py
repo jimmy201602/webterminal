@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'UTC'
 
@@ -195,5 +195,5 @@ LANGUAGES = [
 CHANNELS_WS_PROTOCOLS = ["guacamole"]
 
 # guacd daemon host address and port
-GUACD_HOST = '127.0.0.1'
+GUACD_HOST = '172.17.0.2'
 GUACD_PORT = '4822'
