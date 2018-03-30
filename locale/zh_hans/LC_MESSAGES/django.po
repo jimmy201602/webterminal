@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-30 13:16+0000\n"
+"POT-Creation-Date: 2018-03-30 13:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -449,9 +449,8 @@ msgid "Input the command you need to execute"
 msgstr "输入你要执行的命令"
 
 #: templates/webterminal/commandexecute.html:44
-#: templates/webterminal/index.html:47
-msgid "Server List"
-msgstr "服务器列表"
+msgid "Task List"
+msgstr "任务列表"
 
 #: templates/webterminal/commandexecute.html:55
 #: templates/webterminal/index.html:58
@@ -783,6 +782,10 @@ msgstr "删除服务器组"
 #: templates/webterminal/grouplist.html:309
 msgid "Are you sure to delete group"
 msgstr "确认删除服务器组"
+
+#: templates/webterminal/index.html:47
+msgid "Server List"
+msgstr "服务器列表"
 
 #: templates/webterminal/index.html:267
 msgid "connect"
