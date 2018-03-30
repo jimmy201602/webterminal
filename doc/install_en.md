@@ -1,11 +1,11 @@
 # How to install in ubutu
 For ubuntu, you can follow these steps
 ``` sh
-apt-get update
+apt-get update -y
 apt-get install -y python python-dev redis-server python-pip supervisor nginx git docker
 apt-get install python-software-properties build-essential libpulse-dev libssh-dev libwebp-dev libvncserver-dev software-properties-common curl gcc libavcodec-dev libavutil-dev libcairo2-dev libswscale-dev libpango1.0-dev libfreerdp-dev libssh2-1-dev libossp-uuid-dev jq wget libpng12-dev libvorbis-dev libtelnet-dev libssl-dev libjpeg-dev libjpeg-turbo8-dev -y
-add-apt-repository ppa:mc3man/trusty-media -y
-apt-get update
+add-apt-repository ppa:jonathonf/ffmpeg-3 -y
+apt-get update -y
 apt-get install ffmpeg libffmpegthumbnailer-dev -y
 cd /tmp
 wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
