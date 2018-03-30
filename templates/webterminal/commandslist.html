@@ -62,9 +62,9 @@
                             </td>
                             <td class="json"><a id="{{ element.id}}" onclick="get_detail({{element.id}})">{{element.commands|truncatechars:50 }}</td>
                             <td data-editable="false" class="text-center pull-left">
-                                <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
-                                <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
-                                <a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>
+                                {% if permis.webterminal.can_view_commandssequence %}<a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>{% endif %}
+                                {% if permis.webterminal.can_change_commandssequence %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
+                                {% if permis.webterminal.can_delete_commandssequence %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
                             </td>
                         </tr>
                         {% endfor %}

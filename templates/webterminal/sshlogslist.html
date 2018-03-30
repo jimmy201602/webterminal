@@ -64,7 +64,9 @@
                             <td>{{ element.is_finished }}</td>
                             <td data-editable="false" class="text-center pull-left">
                                 {% if element.is_finished %}
+                                {% if permis.webterminal.can_view_log %}
                                     <a class="btn btn-xs btn-primary play" onclick="play('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{{element.start_time}}',{% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %} '{% url 'sshlogplay' element.id %}' {% else %} '{% url 'guacamolelogplay' element.id %}' {% endif %} );">{%trans 'replay' %}</a>
+                                {% endif %}
                                 {% else %}
                                     {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% endif %}
                                     {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{%trans 'monitor' %}</a>{% endif %}

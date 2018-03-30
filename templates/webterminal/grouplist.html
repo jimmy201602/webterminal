@@ -61,9 +61,9 @@
                                 {% endfor %}
                             </td>
                             <td data-editable="false" class="text-center pull-left">
-                                <a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>
-                                <a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>
-                                <a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>
+                                {% if permis.webterminal.can_view_servergroup %}<a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>{% endif %}
+                                {% if permis.webterminal.can_change_servergroup %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
+                                {% if permis.webterminal.can_delete_servergroup %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
                             </td>
                         </tr>
                         {% endfor %}
