@@ -17,7 +17,7 @@ Hope you enjoy it.
 # Installiation guide
 [installiation-en](./doc/install_en.md)  
 [中文安装文档](./doc/install_zh.md)  
-# Run docker
+# Run with docker
 ```sh
 docker pull webterminal/webterminal
 ```
