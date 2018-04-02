@@ -17,6 +17,10 @@ Hope you enjoy it.
 # Installiation guide
 [installiation-en](./doc/install_en.md)  
 [中文安装文档](./doc/install_zh.md)  
+# Run docker
+```sh
+docker pull webterminal/webterminal
+```
 # screenshots
 ![screenshots](./screenshots/screenshots1.jpg  "screenshots")
 ![screenshots](./screenshots/screenshots2.jpg  "screenshots")
