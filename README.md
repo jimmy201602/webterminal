@@ -20,6 +20,10 @@ Hope you enjoy it.
 # Run with docker
 ```sh
 docker pull webterminal/webterminal
+docker run -itd -p 80:80 webterminal/webterminal
+Login user & password
+username: admin
+password: password!23456
 ```
 # screenshots
 ![screenshots](./screenshots/screenshots1.jpg  "screenshots")
