@@ -76,10 +76,13 @@ class GuacamoleWebsocket(WebsocketConsumer):
     def disconnect(self, message,id):
         #close threading
         print 'disconnect'
-        audit_log = Log.objects.get(channel=self.message.reply_channel.name)
-        audit_log.is_finished = True
-        audit_log.end_time = now()
-        audit_log.save()
+        try:
+            audit_log = Log.objects.get(channel=self.message.reply_channel.name)
+            audit_log.is_finished = True
+            audit_log.end_time = now()
+            audit_log.save()
+        except:
+            pass
         self.message.reply_channel.send({"accept":False})
         #self.closeguacamole()
     
