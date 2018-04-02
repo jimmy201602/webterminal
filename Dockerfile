@@ -14,6 +14,8 @@ RUN tar -xvpf guacamole-server-0.9.14.tar.gz
 WORKDIR /tmp/guacamole-server-0.9.14
 RUN ./configure --with-init-dir=/etc/init.d
 RUN make && make install
+RUN rm -rf /tmp/guacamole-server-0.9.14
+RUN rm -rf /tmp/guacamole-server-0.9.14.tar.gz
 RUN ln -s /usr/local/lib/libguac.so.12.3.0 /usr/lib/libguac.so.12
 RUN mkdir -p /var/log/web
 WORKDIR /opt
