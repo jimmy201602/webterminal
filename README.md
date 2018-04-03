@@ -34,7 +34,8 @@ password: password!23456
 ![screenshots](./screenshots/screenshots6.png  "screenshots")
 # Author
 zhengge2012@gmail.com
-# QQ group number 531612760
+# Getting Help
+QQ group number 531612760
 ![screenshots](./screenshots/qqgroupqr.png  "screenshots")
 
 # Many thanks for [遥遥云](http://idc.yygzs.cn/) donate us a demo server
