@@ -26,7 +26,7 @@ from django.core.exceptions import  PermissionDenied
 from permission.models import Permission
 from django.urls import reverse_lazy
 
-class Index(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
+class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
     permission_required = 'webterminal.can_connect_serverinfo'
     raise_exception = False
