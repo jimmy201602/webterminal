@@ -24,11 +24,13 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
 from django.core.exceptions import  PermissionDenied
 from permission.models import Permission
+from django.urls import reverse_lazy
 
 class Index(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
     permission_required = 'webterminal.can_connect_serverinfo'
-    raise_exception = True
+    raise_exception = False
+    login_url = reverse_lazy('admin:login')
 
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
