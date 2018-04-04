@@ -69,7 +69,9 @@ class Commands(LoginRequiredMixin,TemplateView):
                         obj.commands = data['commands']
                         [obj.group.remove(group) for group in obj.group.all()]
                         for group in data['group']:
-                            obj.group.add(ServerGroup.objects.get(name=group))                        
+                            obj.group.add(ServerGroup.objects.get(name=group))
+                        data.pop('group')
+                        obj.__dict__.update(data)
                         obj.save()
                         return JsonResponse({'status':True,'message':'%s update success!' %(smart_str(data.get('name',None)))})                        
                     except ObjectDoesNotExist:
