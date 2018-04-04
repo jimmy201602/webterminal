@@ -4,11 +4,11 @@ from django.shortcuts import render,render_to_response,HttpResponseRedirect
 from django.views.generic import FormView,DetailView,DeleteView,ListView,UpdateView,CreateView
 from django.contrib.auth.models import User
 from permission.forms import RegisterForm,PermissionForm
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from permission.models import Permission
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from common.views import LoginRequiredMixin
 
 class UserRegister(PermissionRequiredMixin,LoginRequiredMixin,FormView):
     template_name = 'permission/userregister.html'
