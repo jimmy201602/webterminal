@@ -12,10 +12,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from guacamole.client import GuacamoleClient
 from django.views.generic import View
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.detail import DetailView
 from webterminal.settings import MEDIA_URL
 from webterminal.models import Log
+from common.views import LoginRequiredMixin
 
 logger = logging.getLogger(__name__)
 sockets = {}
@@ -27,7 +27,6 @@ pending_read_request = threading.Event()
 
 class Index(LoginRequiredMixin,View):
     def get(self,request,id):
-        print request.GET
         return render_to_response('guacamole/index.html',locals())
 
 class LogPlay(LoginRequiredMixin,DetailView):

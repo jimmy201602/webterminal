@@ -15,7 +15,6 @@ from django.utils.encoding import smart_str
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView,CreateView
 from django.views.generic.detail import DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers import serialize
 from webterminal.settings import MEDIA_URL
 from django.utils.timezone import now
@@ -25,6 +24,7 @@ from django.views.generic import TemplateView
 from django.core.exceptions import  PermissionDenied
 from permission.models import Permission
 from django.urls import reverse_lazy
+from common.views import LoginRequiredMixin
 
 class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
@@ -113,7 +113,7 @@ class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
         context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
         return context
 
-class CommandExecuteList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
+class CommandExecuteList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = CommandsSequence
     template_name = 'webterminal/commandslist.html'
     permission_required = 'webterminal.can_view_commandssequence'
@@ -125,7 +125,7 @@ class CommandExecuteList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
         return context
         
 
-class CommandExecuteDetailApi(PermissionRequiredMixin,LoginRequiredMixin,View):
+class CommandExecuteDetailApi(LoginRequiredMixin,PermissionRequiredMixin,View):
     permission_required = 'webterminal.can_execute_commandssequence'
     raise_exception = True
 
@@ -185,14 +185,14 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                 print traceback.print_exc()
                 return JsonResponse({'status':False,'message':'Error happend! Please report it to adminstrator! Error:%s' %(smart_str(e))})
             
-class CredentialList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
+class CredentialList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     
     model = Credential
     template_name = 'webterminal/credentiallist.html'
     permission_required = 'webterminal.can_view_credential'
     raise_exception = True
     
-class CredentialDetailApi(PermissionRequiredMixin,LoginRequiredMixin,View):
+class CredentialDetailApi(LoginRequiredMixin,PermissionRequiredMixin,View):
     permission_required = 'webterminal.can_view_credential'
     raise_exception = True
 
@@ -207,7 +207,7 @@ class CredentialDetailApi(PermissionRequiredMixin,LoginRequiredMixin,View):
             return JsonResponse({'status':False,'message':'Method not allowed!'})
 
 
-class ServerCreate(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
+class ServerCreate(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/servercreate.html'
     permission_required = 'webterminal.can_add_serverinfo'
     raise_exception = True
@@ -217,7 +217,7 @@ class ServerCreate(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
         context['credentials'] = Credential.objects.all()
         return context
 
-class ServerlList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
+class ServerlList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     
     model = ServerInfor
     template_name = 'webterminal/serverlist.html'
@@ -229,7 +229,7 @@ class ServerlList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
         context['credentials'] = Credential.objects.all()
         return context
 
-class GroupList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
+class GroupList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = ServerGroup
     template_name = 'webterminal/grouplist.html'
     permission_required = 'webterminal.can_view_servergroup'
@@ -240,7 +240,7 @@ class GroupList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
         context['servers'] = ServerInfor.objects.all()
         return context
 
-class GroupCreate(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
+class GroupCreate(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/groupcreate.html'
     permission_required = 'webterminal.can_add_servergroup'
     raise_exception = True
@@ -251,13 +251,13 @@ class GroupCreate(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
         return context
 
 
-class SshLogList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
+class SshLogList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = Log
     template_name = 'webterminal/sshlogslist.html'
     permission_required = 'webterminal.can_view_log'
     raise_exception = True
 
-class SshLogPlay(PermissionRequiredMixin,LoginRequiredMixin,DetailView):
+class SshLogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogplay.html'
     permission_required = 'can_play_log'
@@ -269,13 +269,13 @@ class SshLogPlay(PermissionRequiredMixin,LoginRequiredMixin,DetailView):
         context['logpath'] = '{0}{1}-{2}-{3}/{4}.json'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
         return context
 
-class SshTerminalMonitor(PermissionRequiredMixin,LoginRequiredMixin,DetailView):
+class SshTerminalMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogmonitor.html'
     permission_required = 'can_monitor_serverinfo'
     raise_exception = True
 
-class SshTerminalKill(PermissionRequiredMixin,LoginRequiredMixin,View):
+class SshTerminalKill(LoginRequiredMixin,PermissionRequiredMixin,View):
     permission_required = 'can_kill_serverinfo'
     raise_exception = True
 
