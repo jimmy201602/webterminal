@@ -2,6 +2,10 @@
 {%load i18n%}
 {% block title %}{%trans 'Permission list' %}{% endblock %}
 {% load staticfiles %}
+{% block css %}
+<!-- DataTables css -->
+<link rel="stylesheet" href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
+{% endblock %}
 {% block content %}
 <section class="content">
     <div class="row">
@@ -37,7 +41,7 @@
                 </div>
                 <div class="box-body">
 
-                    <table id="sshlogslist" class="table table-hover table-striped">
+                    <table id="permissionlist" class="table table-hover table-striped">
                         <thead>
                         <tr>
                             <th>{%trans 'user name' %}</th>
@@ -76,4 +80,21 @@
 
     </div>
 </section>
+{% endblock %}
+{% block js %}
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script type="application/javascript">
+    $(function () {
+        $('#permissionlist').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "iDisplayLength": 50,
+            "autoWidth": false,
+        });
+    });
+</script>
 {% endblock %}
