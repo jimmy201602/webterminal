@@ -16,8 +16,8 @@
 
     <form action="{{ app_path }}" method="post" id="form">
         {% csrf_token %}
-            <input type="text" name="username" id="id_username" placeholder="Username" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
-            <input type="password" name="password" placeholder="Password" id="id_password" required />
+            <input type="text" name="username" id="id_username" placeholder="{% trans 'Username' %}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
+            <input type="password" name="password" placeholder="{% trans 'Password' %}" id="id_password" required />
             <input type="hidden" name="next" value="{{ next }}" />
             <input name="next" type="hidden" value="{{ redirect_to }}" />
             <input type="submit" value="{% trans 'Log in' %}" />
