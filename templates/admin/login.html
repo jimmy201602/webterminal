@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+{%load i18n%}
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans 'Webterminal Login' %}</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+<div id="logo">
+    <h1><i> WEBTERMINAL</i></h1>
+</div>
+<section class="stark-login">
+
+    <form action="{{ app_path }}" method="post">
+        {% csrf_token %}
+        <div id="fade-box">
+            {{ form.username.errors }}
+            {{ form.username.label_tag }} {{ form.username }}
+            {{ form.password.errors }}
+            {{ form.password.label_tag }} {{ form.password }}
+            <input type="hidden" name="next" value="{{ next }}" />
+            <input type="submit" value="{% trans 'Log in' %}" />
+        </div>
+    </form>
+    <div class="hexagons">
+        <img src="{% static 'img/backgroud.gif' %}" height="100%" width="100%"/>
+    </div>
+</section>
+
+<div id="circle1">
+    <div id="inner-cirlce1">
+        <h2></h2>
+    </div>
+</div>
+
+<ul>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+<script src="{% static 'js/login.js' %}" ></script>
+</body>
+</html>
