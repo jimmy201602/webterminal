@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render,render_to_response,HttpResponseRedirect
 from django.views.generic import FormView,DetailView,DeleteView,ListView,UpdateView,CreateView
 from django.contrib.auth.models import User
-from permission.forms import RegisterForm,PermissionForm,PermissionUpdateForm
+from permission.forms import RegisterForm,PermissionForm
 from django.core.urlresolvers import reverse_lazy
 from permission.models import Permission
 from django.utils.translation import ugettext, ugettext_lazy as _
@@ -67,6 +67,11 @@ class PermissionCreate(PermissionRequiredMixin,LoginRequiredMixin,CreateView):
         self.object = form.save()
         return super(PermissionCreate, self).form_valid(form)
 
+    def get_form(self, form_class=None):
+        form = super(PermissionCreate, self).get_form(form_class)
+        form.fields['permissions'].widget.attrs.update({'checked' : 'checked'})
+        return form
+
 class PermissionList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     model = Permission
     template_name = 'permission/permissionlist.html'
@@ -75,7 +80,7 @@ class PermissionList(PermissionRequiredMixin,LoginRequiredMixin,ListView):
 
 class PermissionUpdate(PermissionRequiredMixin,LoginRequiredMixin,UpdateView):
     model = Permission
-    form_class = PermissionUpdateForm
+    form_class = PermissionForm
     success_url = reverse_lazy('permissionlist')
     template_name = 'permission/permissioncreate.html'
     permission_required = 'permission.can_change_permissions'
