@@ -83,7 +83,7 @@ class CustomModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 class PermissionForm(forms.ModelForm):
     permissions = CustomModelMultipleChoiceField(queryset=AuthPermission.objects.\
                                                  filter(content_type__app_label__in=['webterminal','permission'],codename__contains='can_'),\
-                                                 widget=forms.CheckboxSelectMultiple())
+                                                 widget=forms.CheckboxSelectMultiple(attrs={'checked' : 'checked'}))
 
     def __init__(self, *args, **kwargs):
         super(PermissionForm, self).__init__(*args, **kwargs)
@@ -91,7 +91,25 @@ class PermissionForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-md-2'
         self.helper.field_class = 'col-md-8'
-        self.helper.layout = Layout(*[Div(field,css_class='form-group') 
+        self.helper.layout = Layout(*[Div(field,css_class='form-group')
+                                      for field in ['user', 'permissions', 'groups'] ])
+
+    class Meta:
+        model = Permission
+        fields = ['user', 'permissions', 'groups']
+
+class PermissionUpdateForm(forms.ModelForm):
+    permissions = CustomModelMultipleChoiceField(queryset=AuthPermission.objects.\
+                                                 filter(content_type__app_label__in=['webterminal','permission'],codename__contains='can_'),\
+                                                 widget=forms.CheckboxSelectMultiple())
+
+    def __init__(self, *args, **kwargs):
+        super(PermissionUpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(*[Div(field,css_class='form-group')
                                       for field in ['user', 'permissions', 'groups'] ])
 
     class Meta:
