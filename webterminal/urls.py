@@ -61,6 +61,7 @@ urlpatterns = [
     url(r'^elfinder/',include('elfinder.urls')),
     url(r'^api/',include(router.urls)),
     url(r'^permission/',include('permission.urls')),
+    url(r'^i18n/', include('django.conf.urls.i18n')), 
 ]
 
 
