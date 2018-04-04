@@ -188,7 +188,7 @@ en_formats.DATETIME_FORMAT = 'Y-m-d H:i:s'
 en_formats.DATETIME_INPUT_FORMATS = 'Y-m-d H:i:s'
 
 LANGUAGES = [
-    ('zh_hans', _('Simple Chinese')),
+    ('zh-hans', _('Simple Chinese')),
     ('en', _('English')),
 ]
 
