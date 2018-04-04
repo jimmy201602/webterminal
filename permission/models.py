@@ -6,7 +6,7 @@ from webterminal.models import ServerGroup
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission as AuthPermission
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext_lazy as _
 
 class Permission(models.Model):
     user = models.OneToOneField(User,verbose_name=_('User'),related_name='permissionuser')
