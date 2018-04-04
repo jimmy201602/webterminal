@@ -12,14 +12,11 @@
     <h1><i> WEBTERMINAL</i></h1>
 </div>
 <section class="stark-login">
-
     <form action="{{ app_path }}" method="post">
         {% csrf_token %}
         <div id="fade-box">
-            {{ form.username.errors }}
-            {{ form.username.label_tag }} {{ form.username }}
-            {{ form.password.errors }}
-            {{ form.password.label_tag }} {{ form.password }}
+            <input type="text" name="username" id="id_username" placeholder="Username" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
+            <input type="password" name="password" placeholder="Password" id="id_password" required />
             <input type="hidden" name="next" value="{{ next }}" />
             <input type="submit" value="{% trans 'Log in' %}" />
         </div>
