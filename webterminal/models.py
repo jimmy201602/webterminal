@@ -7,7 +7,7 @@ except ImportError:
 from django.contrib.auth.models import User 
 import uuid
 from django.utils.text import slugify
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext_lazy as _
 
 class ServerInfor(models.Model):
     name = models.CharField(max_length=40,verbose_name=_('Server name'),blank=False,unique=True)
@@ -15,7 +15,7 @@ class ServerInfor(models.Model):
     ip = models.GenericIPAddressField(protocol='ipv4',verbose_name=_('ip'),blank=False)
     createdatetime = models.DateTimeField(auto_now_add=True,verbose_name=_('Create time'))
     updatedatetime = models.DateTimeField(auto_created=True,auto_now=True,verbose_name=_('Update time'))
-    credential = models.ForeignKey(_('Credential'))
+    credential = models.ForeignKey('Credential')
     
     def __unicode__(self):
         return self.name
