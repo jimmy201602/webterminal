@@ -99,7 +99,7 @@ class Commands(LoginRequiredMixin,TemplateView):
         else:
             pass
 
-class CommandExecute(PermissionRequiredMixin,LoginRequiredMixin,TemplateView):
+class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/commandexecute.html'
     permission_required = 'webterminal.can_execute_commandssequence'
     raise_exception = True
