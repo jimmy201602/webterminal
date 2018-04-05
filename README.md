@@ -62,7 +62,7 @@ password: demo12345678
 [License](LICENSE) 
 
 # Reporting Issues
-If you're experiencing a problem, we encourage you to open an issue, and share your feedback.
+If you're experiencing a problem, we encourage you to open an issue[an issue](https://github.com/jimmy201602/webterminal/issues/new) , and share your feedback.
 # Welcome donate(欢迎打赏)
 
 ## wechat(微信)
