@@ -29,7 +29,25 @@ password: password!23456
 zhengge2012@gmail.com
 # Getting Help
 QQ group number 531612760
+
 ![screenshots](./screenshots/qqgroupqr.png  "screenshots")
+
+# screenshots
+![screenshots](./screenshots/screenshots1.png  "screenshots")
+![screenshots](./screenshots/screenshots2.gif  "screenshots")
+![screenshots](./screenshots/screenshots3.gif  "screenshots")
+![screenshots](./screenshots/screenshots4.gif  "screenshots")
+![screenshots](./screenshots/screenshots2.png  "screenshots")
+![screenshots](./screenshots/screenshots5.gif  "screenshots")
+![screenshots](./screenshots/screenshots3.png  "screenshots")
+![screenshots](./screenshots/screenshots4.png  "screenshots")
+![screenshots](./screenshots/screenshots5.png  "screenshots")
+![screenshots](./screenshots/screenshots6.png  "screenshots")
+![screenshots](./screenshots/screenshots7.png  "screenshots")
+![screenshots](./screenshots/screenshots8.png  "screenshots")
+![screenshots](./screenshots/screenshots6.gif  "screenshots")
+![screenshots](./screenshots/screenshots7.gif  "screenshots")
+![screenshots](./screenshots/screenshots8.gif  "screenshots")
 
 # Many thanks for [遥遥云](http://idc.yygzs.cn/) donate us a demo server
 
@@ -52,19 +70,3 @@ If you're experiencing a problem, we encourage you to open an issue, and share y
 
 ## alipay(支付宝)
 ![screenshots](./screenshots/alipay.png  "alipay")
-# screenshots
-![screenshots](./screenshots/screenshots1.png  "screenshots")
-![screenshots](./screenshots/screenshots2.gif  "screenshots")
-![screenshots](./screenshots/screenshots3.gif  "screenshots")
-![screenshots](./screenshots/screenshots4.gif  "screenshots")
-![screenshots](./screenshots/screenshots2.png  "screenshots")
-![screenshots](./screenshots/screenshots5.gif  "screenshots")
-![screenshots](./screenshots/screenshots3.png  "screenshots")
-![screenshots](./screenshots/screenshots4.png  "screenshots")
-![screenshots](./screenshots/screenshots5.png  "screenshots")
-![screenshots](./screenshots/screenshots6.png  "screenshots")
-![screenshots](./screenshots/screenshots7.png  "screenshots")
-![screenshots](./screenshots/screenshots8.png  "screenshots")
-![screenshots](./screenshots/screenshots6.gif  "screenshots")
-![screenshots](./screenshots/screenshots7.gif  "screenshots")
-![screenshots](./screenshots/screenshots8.gif  "screenshots")
