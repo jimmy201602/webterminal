@@ -7,7 +7,8 @@ if [ "$1" = "start" ]; then
 	service redis-server start
 	service nginx start
 	service supervisor start 
-	service guacd start
+	#service guacd start
+	/usr/local/sbin/guacd -b 127.0.0.1 -f
 	sleep inf & wait
 else
 	exec "$@"
