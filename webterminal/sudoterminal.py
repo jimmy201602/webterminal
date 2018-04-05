@@ -116,7 +116,7 @@ class ShellHandlerThread(threading.Thread):
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mExecute task on server:%s \033[0m' %(smart_unicode(server_ip)) ] )},immediately=True)
             
             #get server credential info
-            serverdata = ServerInfor.objects.get(ip=server_ip)
+            serverdata = ServerInfor.objects.get(ip=server_ip,credential__protocol__in=['ssh-password','ssh-key'])
             port = serverdata.credential.port
             method = serverdata.credential.method
             username = serverdata.credential.username

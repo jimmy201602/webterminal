@@ -1,7 +1,7 @@
 # webterminal
 web terminal implemented by django.
 This project focus on DevOps and Continuous Delivery.
-For now it support all most remote management protocol such as vnc, ssh,rdp,telnet... It support a possiblity to monitor and recorded user action when user use this project to manage their server!
+For now it support almost 90% remote management protocol such as vnc, ssh,rdp,telnet... It support a possiblity to monitor and recorded user action when user use this project to manage their server!
 You can also replay the user action such as like a video.
 Hope you enjoy it.
 
@@ -26,12 +26,21 @@ username: admin
 password: password!23456
 ```
 # screenshots
-![screenshots](./screenshots/screenshots1.jpg  "screenshots")
-![screenshots](./screenshots/screenshots2.jpg  "screenshots")
-![screenshots](./screenshots/screenshots4.jpg  "screenshots")
+![screenshots](./screenshots/screenshots1.png  "screenshots")
+![screenshots](./screenshots/screenshots2.gif  "screenshots")
+![screenshots](./screenshots/screenshots3.gif  "screenshots")
+![screenshots](./screenshots/screenshots4.gif  "screenshots")
+![screenshots](./screenshots/screenshots2.png  "screenshots")
+![screenshots](./screenshots/screenshots5.gif  "screenshots")
+![screenshots](./screenshots/screenshots3.png  "screenshots")
+![screenshots](./screenshots/screenshots4.png  "screenshots")
 ![screenshots](./screenshots/screenshots5.png  "screenshots")
-![screenshots](./screenshots/screenshots3.jpg  "screenshots")
 ![screenshots](./screenshots/screenshots6.png  "screenshots")
+![screenshots](./screenshots/screenshots7.png  "screenshots")
+![screenshots](./screenshots/screenshots8.png  "screenshots")
+![screenshots](./screenshots/screenshots6.gif  "screenshots")
+![screenshots](./screenshots/screenshots7.gif  "screenshots")
+![screenshots](./screenshots/screenshots8.gif  "screenshots")
 # Author
 zhengge2012@gmail.com
 # Getting Help
