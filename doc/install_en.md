@@ -27,7 +27,7 @@ You can run server locally like this.
 ```sh
 python manage.py runserver
 ```
-# Use docker
+# Use with docker
 * build docker
 ```sh
 docker build --no-cache -t webterminal:latest .
