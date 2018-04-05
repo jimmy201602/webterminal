@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+{%load i18n%}
+<head>
+    <meta charset="UTF-8">
+    <title>{% trans 'Webterminal Login' %}</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+<div id="logo">
+    <h1><i> WEBTERMINAL</i></h1>
+</div>
+<section class="stark-login">
+    <div id="fade-box">
+
+    <form action="{{ app_path }}" method="post" id="form">
+        {% csrf_token %}
+            <input type="text" name="username" id="id_username" placeholder="{% trans 'Username' %}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
+            <input type="password" name="password" placeholder="{% trans 'Password' %}" id="id_password" required />
+            <input type="hidden" name="next" value="{{ next }}" />
+            <input type="submit" value="{% trans 'Log in' %}" />
+            {% csrf_token %}
+            <select name="language" onchange="selectdo(this)">
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                    {{ language.name_local }} ({{ language.code }})
+                </option>
+                {% endfor %}
+            </select>
+    </form>
+
+    </div>
+
+
+    <div class="hexagons">
+        <img src="{% static 'img/backgroud.gif' %}" height="100%" width="100%"/>
+    </div>
+</section>
+
+<div id="circle1">
+    <div id="inner-cirlce1">
+        <h2></h2>
+    </div>
+</div>
+
+<ul>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+<script src="{% static 'js/login.js' %}" ></script>
+<script  type="text/javascript">
+    function selectdo(obj) {
+        str="{% url 'set_language' %}";
+        myform = document.getElementById('form');
+        myform.method = "POST";
+        myform.action = str;
+        myform.submit();
+    }
+</script>
+</body>
+</html>
