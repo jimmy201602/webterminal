@@ -12,15 +12,15 @@ Hope you enjoy it.
 用户使用此项目时全部操作将会被录像，在必要时可进行回放审计。另可实时监控用户操作，在必要时可强制将用户踢下线！
 
 更多功能请自行发掘......
-# useage
-[useage](./doc/usage_en.md)
+# useage (如何使用)
+[How to use this project](./doc/usage_en.md)
 
 [中文使用文档](./doc/usage_zh.md)
-# Installiation guide
-[installiation-en](./doc/install_en.md)
+# Installiation guide (安装文档)
+[installiation guide](./doc/install_en.md)
 
 [中文安装文档](./doc/install_zh.md)
-# Run with docker
+# Run with docker (以docker方式运行本项目)
 ```sh
 docker pull webterminal/webterminal
 docker run -itd -p 80:80 webterminal/webterminal
@@ -28,10 +28,11 @@ Login user & password
 username: admin
 password: password!23456
 ```
-# Author
+# Author Email
 zhengge2012@gmail.com
-# Getting Help
+# Discussion
 QQ group number 531612760
+QQ群号 531612760
 
 ![screenshots](./screenshots/qqgroupqr.png  "screenshots")
 
