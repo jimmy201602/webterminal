@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-04 15:42+0000\n"
+"POT-Creation-Date: 2018-04-09 05:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,9 +17,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: permission/forms.py:26
+#: permission/templates/permission/permissionlist.html:47
+#: permission/templates/permission/userlist.html:47
+#: templates/webterminal/sshlogslist.html:49
+msgid "user name"
+msgstr "用户名"
+
 #: permission/forms.py:27
 msgid "Please input a valid user."
 msgstr "请输入有效的用户名"
+
+#: permission/forms.py:37
+msgid "your password"
+msgstr "输入密码"
 
 #: permission/forms.py:38
 msgid "Please input your password"
@@ -36,6 +47,10 @@ msgstr "密码验证"
 #: permission/forms.py:49
 msgid "please input your  password again"
 msgstr "请重新输入密码"
+
+#: permission/forms.py:59 permission/templates/permission/userlist.html:48
+msgid "email"
+msgstr "邮箱"
 
 #: permission/forms.py:60
 msgid "Please input a valid email address."
@@ -238,12 +253,6 @@ msgstr "权限列表"
 msgid "Add New"
 msgstr "新增"
 
-#: permission/templates/permission/permissionlist.html:47
-#: permission/templates/permission/userlist.html:47
-#: templates/webterminal/sshlogslist.html:49
-msgid "user name"
-msgstr "用户名"
-
 #: permission/templates/permission/permissionlist.html:48
 msgid "permissions"
 msgstr "权限"
@@ -300,10 +309,6 @@ msgstr "确认删除用户"
 msgid "User list"
 msgstr "用户列表"
 
-#: permission/templates/permission/userlist.html:48
-msgid "email"
-msgstr "邮箱"
-
 #: permission/templates/permission/userregister.html:3
 msgid "Add new user"
 msgstr "新增用户"
@@ -324,21 +329,42 @@ msgstr "新增权限"
 msgid "Update Permission"
 msgstr "更新权限"
 
-#: templates/admin/login.html:7
+#: templates/admin/login.html:7 templates/registration/logged_out.html:7
 msgid "Webterminal Login"
 msgstr "webterminal 登录"
 
-#: templates/admin/login.html:19
+#: templates/admin/login.html:19 templates/registration/logged_out.html:19
 msgid "Username"
 msgstr "用户名"
 
-#: templates/admin/login.html:20 webterminal/models.py:68
+#: templates/admin/login.html:20 templates/registration/logged_out.html:20
+#: webterminal/models.py:68
 msgid "Password"
 msgstr "密码"
 
-#: templates/admin/login.html:22
+#: templates/admin/login.html:22 templates/admin/login1.html:61
+#: templates/registration/logged_out.html:22
 msgid "Log in"
 msgstr "登录"
+
+#: templates/admin/login1.html:21
+msgid "Please correct the error below."
+msgstr ""
+
+#: templates/admin/login1.html:21
+msgid "Please correct the errors below."
+msgstr ""
+
+#: templates/admin/login1.html:37
+#, python-format
+msgid ""
+"You are authenticated as %(username)s, but are not authorized to access this "
+"page. Would you like to login to a different account?"
+msgstr ""
+
+#: templates/admin/login1.html:57
+msgid "Forgotten your password or username?"
+msgstr "忘记密码或用户名?"
 
 #: templates/base.html:8
 msgid "AdminLTE 2 | Dashboard"

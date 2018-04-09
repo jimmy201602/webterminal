@@ -23,7 +23,7 @@ class RegisterForm(forms.Form):
 
     user = forms.CharField(
             required=True,
-            label=u"user name",
+            label=_(u"user name"),
             error_messages={'required': _(u'Please input a valid user.')},
             max_length=100,
             widget=forms.TextInput(
@@ -34,7 +34,7 @@ class RegisterForm(forms.Form):
     )
     newpassword1 = forms.CharField(
             required=True,
-                label=u"your password",
+                label=_(u"your password"),
                 error_messages={'required': _(u'Please input your password')},
                 widget=forms.PasswordInput(
                 attrs={
@@ -56,7 +56,7 @@ class RegisterForm(forms.Form):
         )
     email = forms.EmailField(
             required=True,
-            label=u"email",
+            label=_(u"email"),
             error_messages={'required': _(u'Please input a valid email address.')},
             widget=forms.EmailInput(
             attrs={
