@@ -262,7 +262,7 @@ class SshLogList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 class SshLogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogplay.html'
-    permission_required = 'can_play_log'
+    permission_required = 'webterminal.can_play_log'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -274,11 +274,11 @@ class SshLogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 class SshTerminalMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogmonitor.html'
-    permission_required = 'can_monitor_serverinfo'
+    permission_required = 'webterminal.can_monitor_serverinfo'
     raise_exception = True
 
 class SshTerminalKill(LoginRequiredMixin,PermissionRequiredMixin,View):
-    permission_required = 'can_kill_serverinfo'
+    permission_required = 'webterminal.can_kill_serverinfo'
     raise_exception = True
 
     def post(self,request):
