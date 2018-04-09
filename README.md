@@ -16,8 +16,8 @@ Hope you enjoy it.
 [useage](./doc/usage_en.md) 
 [中文使用文档](./doc/usage_zh.md)
 # Installiation guide
-[installiation-en](./doc/install_en.md)  
-[中文安装文档](./doc/install_zh.md)  
+[installiation-en](./doc/install_en.md)
+[中文安装文档](./doc/install_zh.md)
 # Run with docker
 ```sh
 docker pull webterminal/webterminal
