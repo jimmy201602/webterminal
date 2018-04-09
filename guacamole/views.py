@@ -16,6 +16,7 @@ from django.views.generic.detail import DetailView
 from webterminal.settings import MEDIA_URL
 from webterminal.models import Log
 from common.views import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 
 logger = logging.getLogger(__name__)
 sockets = {}
@@ -25,14 +26,18 @@ write_lock = threading.RLock()
 pending_read_request = threading.Event()
 
 
-class Index(LoginRequiredMixin,View):
+class Index(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'webterminal.can_connect_serverinfo'
+
     def get(self,request,id):
         return render_to_response('guacamole/index.html',locals())
 
-class LogPlay(LoginRequiredMixin,DetailView):
+class LogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'guacamole/logplay.html'
-    
+    permission_required = 'webterminal.can_play_log'
+    raise_exception = True
+
     def get_context_data(self, **kwargs):
         context = super(LogPlay, self).get_context_data(**kwargs)
         objects = kwargs['object']
