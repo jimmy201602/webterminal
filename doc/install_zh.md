@@ -44,3 +44,9 @@ make && make install
 十二、创建管理员账户python manage.py createsuperuser
 
 十三、python manage.py runserver 0.0.0.0:8000
+
+# 注意事项
+若twisted安装失败，有可能pip安装低版本导致　可以按照以下方式安装版本即可
+```sh
+pip install Twisted==17.5.0
+```
