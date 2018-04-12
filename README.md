@@ -53,14 +53,6 @@ QQ群号 531612760
 ![screenshots](./screenshots/screenshots7.gif  "screenshots")
 ![screenshots](./screenshots/screenshots8.gif  "screenshots")
 
-# Many thanks for [遥遥云](http://idc.yygzs.cn/) donate us a demo server
-
-[Online Demo Server](http://ssh.yygzs.cn/) : http://ssh.yygzs.cn/
-
-username: demo
-
-password: demo12345678
-
 # License
 
 [License](LICENSE) 
