@@ -1,70 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" >
 {% load staticfiles %}
-{%load i18n%}
 <head>
-    <meta charset="UTF-8">
-    <title>{% trans 'Webterminal Login' %}</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>退出站点</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+
+
+    <link rel="stylesheet" href="{% static "plugins/bootstrap/css/bootstrap.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/overrides.css" />
+    
+
+    <script type="text/javascript">
+    //<![CDATA[
+        window.__admin_media_prefix__ = "/static/admin/";
+        window.__admin_utc_offset__ = "0";
+    //]]>
+    </script>
+    <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+    <script src="{% static "admin/js/jquery-migrate-1.2.1.min.js" %}"></script>
+    <script src="{% static "plugins/bootstrap/js/bootstrap.min.js" %}"></script>
+
+    
+
+    <meta name="robots" content="NONE,NOARCHIVE" />
+    <script type="text/javascript">
+    //<![CDATA[
+            (function($) {
+                $(document).ready(function() {
+                    $('input[type="submit"]').addClass('btn');
+                    $('[title]').tooltip();
+                });
+            }(jQuery));
+    //]]>
+    </script>
 </head>
-<body>
-<div id="logo">
-    <h1><i> WEBTERMINAL</i></h1>
+
+
+<body class="">
+
+<!-- Container -->
+<div class="container">
+
+    
+    <!-- Header -->
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    
+<a class="navbar-brand" href="/">信息管理系统</a>
+
+                </div>
+                <div id="header-navbar-collapse" class="navbar-collapse collapse navbar-right">
+                    <ul class="nav navbar-nav">
+                        
+                        
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <!-- END Header -->
+    <div class="row">
+        <div class="col-sm-12">
+            
+
+        </div>
+    </div>
+    
+
+    <!-- Content -->
+    <div id="content" class="colM">
+        
+        <div class="navbar navbar-default">
+            <div class="navbar-inner">
+                
+                    <div class="navbar-header">
+                        
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#content-navbar-collapse" aria-expanded="false" aria-controls="navbar">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        
+                    
+                    
+                        <span class="navbar-brand">退出</span>
+                    
+                    
+                    </div>
+                
+            </div>
+        </div>
+        
+
+        
+        
+        
+
+        
+
+<p>感谢你在本站点花费了一些时间！</p>
+
+<p><a href="/" class="btn btn-default">重新登录</a></p>
+
+
+        
+    </div>
+    <!-- END Content -->
+
+    <footer id="footer"></footer>
 </div>
-<section class="stark-login">
-    <div id="fade-box">
+<!-- END Container -->
 
-    <form action="{{ app_path }}" method="post" id="form">
-        {% csrf_token %}
-            <input type="text" name="username" id="id_username" placeholder="{% trans 'Username' %}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
-            <input type="password" name="password" placeholder="{% trans 'Password' %}" id="id_password" required />
-            <input type="hidden" name="next" value="{{ next }}" />
-            <input type="submit" value="{% trans 'Log in' %}" />
-            {% csrf_token %}
-            <select name="language" onchange="selectdo(this)">
-                {% get_current_language as LANGUAGE_CODE %}
-                {% get_available_languages as LANGUAGES %}
-                {% get_language_info_list for LANGUAGES as languages %}
-                {% for language in languages %}
-                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                    {{ language.name_local }} ({{ language.code }})
-                </option>
-                {% endfor %}
-            </select>
-    </form>
-
-    </div>
-
-
-    <div class="hexagons">
-        <img src="{% static 'img/backgroud.gif' %}" height="100%" width="100%"/>
-    </div>
-</section>
-
-<div id="circle1">
-    <div id="inner-cirlce1">
-        <h2></h2>
-    </div>
-</div>
-
-<ul>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-</ul>
-
-<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
-<script src="{% static 'js/login.js' %}" ></script>
-<script  type="text/javascript">
-    function selectdo(obj) {
-        str="{% url 'set_language' %}";
-        myform = document.getElementById('form');
-        myform.method = "POST";
-        myform.action = str;
-        myform.submit();
-    }
-</script>
 </body>
 </html>
