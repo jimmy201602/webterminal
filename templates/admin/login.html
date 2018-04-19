@@ -15,6 +15,21 @@
     <div id="fade-box">
 
     <form action="{{ app_path }}" method="post" id="form">
+        {% if user.is_authenticated %}
+        <a style="color: red;">
+            {% blocktrans trimmed %}
+            You are authenticated as {{ username }}, but are not authorized to
+            access this page. Would you like to login to a different account?
+            {% endblocktrans %}
+        </a>
+        {% endif %}
+        {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+        <a style="color: red;">
+            {{ error }}
+        </a>
+        {% endfor %}
+        {% endif %}
         {% csrf_token %}
             <input type="text" name="username" id="id_username" placeholder="{% trans 'Username' %}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
             <input type="password" name="password" placeholder="{% trans 'Password' %}" id="id_password" required />
@@ -46,14 +61,6 @@
         <h2></h2>
     </div>
 </div>
-
-<ul>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-    <li></li>
-</ul>
 
 <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
 <script src="{% static 'js/login.js' %}" ></script>
