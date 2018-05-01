@@ -26,8 +26,8 @@
 ![choose_config](./img/OTP-TOPT.PNG "OTP_TOPT_HOTP")
 
 # configure user to TOTP authentification 
-![configuration](./img/TOTP device.PNG "OTP_TOPT_HOTP") 
+![configuration](./img/TOTPdevice.PNG "OTP_TOPT_HOTP") 
 
 # get TOTP Token with Qrcode 
-![token qr_code](./img/scan qr code.PNG "qrcode") 
+![token qr_code](./img/scan-qr-code.PNG "qrcode") 
 
