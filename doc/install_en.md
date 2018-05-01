@@ -26,7 +26,7 @@ python manage.py addstatictoken + "superuser"
 ```
 You can run server locally like this.
 ```sh
-python manage.py runpython manage.py addstatictoken + "superuser"
+python manage.py runserver 
 ```
 # Use with docker
 * build docker
