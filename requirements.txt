@@ -36,3 +36,5 @@ zope.interface==4.4.2
 future==0.16.0
 django-guardian==1.4.9
 django-crispy-forms==1.7.2
+django-otp==0.4.3
+qrcode==4.0.4 
