@@ -20,5 +20,14 @@
 ![task](./img/runtask2.png  "task")
 # How to update info
  	On the left panel you can click the credential list ... Then you can update your info when you click the edit button. If you update all your infomation then click submit button.
+![update](./img/update.png  "update")  
+# Add 2F Authentification to users 
+  go to /admin and choose TOTP or HTOTP 
+![choose_config](./img/OTP-TOPT.PNG "OTP_TOPT_HOTP")
 
-![update](./img/update.png  "update")
+# configure user to TOTP authentification 
+![configuration](./img/TOTP device.PNG "OTP_TOPT_HOTP") 
+
+# get TOTP Token with Qrcode 
+![token qr_code](./img/scan qr code.PNG "qrcode") 
+
