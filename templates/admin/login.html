@@ -7,36 +7,44 @@
     <title>{% trans 'Webterminal Login' %}</title>
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
 </head>
+
 <body>
 <div id="logo">
     <h1><i> WEBTERMINAL</i></h1>
 </div>
+
 <section class="stark-login">
     <div id="fade-box">
 
-    <form action="{{ app_path }}" method="post" id="form">
-        {% if user.is_authenticated %}
+
+<form action="{{ app_path }}" method="post" id="form">
+  {% if user.is_authenticated %}
         <a style="color: red;">
             {% blocktrans trimmed %}
             You are authenticated as {{ username }}, but are not authorized to
             access this page. Would you like to login to a different account?
             {% endblocktrans %}
         </a>
-        {% endif %}
+{% endif %}
         {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
         <a style="color: red;">
             {{ error }}
         </a>
         {% endfor %}
-        {% endif %}
-        {% csrf_token %}
-            <input type="text" name="username" id="id_username" placeholder="{% trans 'Username' %}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
-            <input type="password" name="password" placeholder="{% trans 'Password' %}" id="id_password" required />
-            <input type="hidden" name="next" value="{{ next }}" />
-            <input type="submit" value="{% trans 'Log in' %}" />
-            {% csrf_token %}
-            <select name="language" onchange="selectdo(this)">
+{% endif %}
+{% csrf_token %}
+<input type="text" name="username" id="id_username" placeholder="{% trans 'Username' %}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
+<input type="password" name="password" placeholder="{% trans 'Password' %}" id="id_password" required />
+<input type="hidden" name="next" value="{{ next }}" />
+<input type="text" name="otpdevice" placeholder="{% trans 'Token OTP' %}" id="otp_token"  />
+{% if form.get_user %}
+{{ form.otp_device.errors }}{{ form.otp_device }} 
+    {% endif %}
+{{ form.otp_token.errors }}
+
+{% csrf_token %} 
+<select name="language" onchange="selectdo(this)">
                 {% get_current_language as LANGUAGE_CODE %}
                 {% get_available_languages as LANGUAGES %}
                 {% get_language_info_list for LANGUAGES as languages %}
@@ -46,12 +54,13 @@
                 </option>
                 {% endfor %}
             </select>
-    </form>
 
-    </div>
+<input type="submit" value="{% trans 'Log in' %}" />
+</form>
 
+</div>
 
-    <div class="hexagons">
+<div class="hexagons">
         <img src="{% static 'img/backgroud.gif' %}" height="100%" width="100%"/>
     </div>
 </section>
