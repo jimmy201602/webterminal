@@ -25,9 +25,9 @@
   go to /admin and choose TOTP or HTOTP 
 ![choose_config](./img/OTP-TOPT.PNG "OTP_TOPT_HOTP")
 
-# configure user to TOTP authentification 
+# Configure user to TOTP authentification 
 ![configuration](./img/TOTPdevice.PNG "OTP_TOPT_HOTP") 
 
-# get TOTP Token with Qrcode 
+# Get TOTP Token with Qrcode 
 ![token qr_code](./img/scan-qr-code.PNG "qrcode") 
 
