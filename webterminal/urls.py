@@ -1,5 +1,4 @@
 """django_gateone URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
 Examples:
@@ -13,6 +12,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from __future__ import absolute_import
 from django.conf.urls import url,include
 from django.contrib import admin
 from webterminal.views import (Index,Commands,CommandExecute,
@@ -36,6 +36,8 @@ router.register('servergroup', ServerGroupViewSet)
 router.register('serverinfo', ServerInforViewSet)
 router.register('commandssequence', CommandsSequenceViewSet)
 router.register('credential', CredentialViewSet)
+from .admin import OTPAdminSite
+admin.site.__class__ = OTPAdminSite
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
