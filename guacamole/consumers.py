@@ -29,50 +29,60 @@ class GuacamoleWebsocket(WebsocketConsumer):
     channel_session = True
     channel_session_user = True
 
-    
+    @property
+    def authenticate(self):
+        if self.message.user.is_authenticated():
+            return True
+        else:
+            return False
+
     def connect(self, message,id):
         self.message.reply_channel.send({"accept": True})
-        client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
-        try:
-            data = ServerInfor.objects.get(id=id)
-            if data.credential.protocol in ['vnc','rdp','telnet']:
-                pass
-            else:
-                self.message.reply_channel.send({"accept":False})
-        except ObjectDoesNotExist:
-            #server info not exist
+        if not self.authenticate:
+            self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
             self.message.reply_channel.send({"accept":False})
-        cache_key = str(uuid.uuid4())
+        else:
+            client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
+            try:
+                data = ServerInfor.objects.get(id=id)
+                if data.credential.protocol in ['vnc','rdp','telnet']:
+                    pass
+                else:
+                    self.message.reply_channel.send({"accept":False})
+            except ObjectDoesNotExist:
+                #server info not exist
+                self.message.reply_channel.send({"accept":False})
+            cache_key = str(uuid.uuid4())
 
-        directory_date_time = now()
-        recording_path = os.path.join(MEDIA_ROOT,'{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day))
+            directory_date_time = now()
+            recording_path = os.path.join(MEDIA_ROOT,'{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day))
 
-        client.handshake(width=data.credential.width,
-                         height=data.credential.height,
-                         protocol=data.credential.protocol,
-                         hostname=data.ip,
-                         port=data.credential.port,
-                         username=data.credential.username,
-                         password=data.credential.password,
-                         recording_path=recording_path,
-                         recording_name=cache_key,
-                         create_recording_path='true',
-                         enable_wallpaper='true',
-                         ignore_cert='true',)
-                         #security='tls',)
-        self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
-       #'0.,36.83940151-b2f9-4743-b5e4-b6eb85a97743;'
-       
-        audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=data.credential.width,height=data.credential.height,log=cache_key)
-        audit_log.save()
-        guacamolethread=GuacamoleThread(self.message,client)
-        guacamolethread.setDaemon = True
-        guacamolethread.start()
+            client.handshake(width=data.credential.width,
+                             height=data.credential.height,
+                             protocol=data.credential.protocol,
+                             hostname=data.ip,
+                             port=data.credential.port,
+                             username=data.credential.username,
+                             password=data.credential.password,
+                             recording_path=recording_path,
+                             recording_name=cache_key,
+                             create_recording_path='true',
+                             enable_wallpaper='true',
+                             ignore_cert='true',)
+                             #security='tls',)
+            self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
+           #'0.,36.83940151-b2f9-4743-b5e4-b6eb85a97743;'
 
-        guacamolethreadwrite=GuacamoleThreadWrite(self.message,client)
-        guacamolethreadwrite.setDaemon = True
-        guacamolethreadwrite.start()
-        
+            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=data.credential.width,height=data.credential.height,log=cache_key)
+            audit_log.save()
+            guacamolethread=GuacamoleThread(self.message,client)
+            guacamolethread.setDaemon = True
+            guacamolethread.start()
+
+            guacamolethreadwrite=GuacamoleThreadWrite(self.message,client)
+            guacamolethreadwrite.setDaemon = True
+            guacamolethreadwrite.start()
+
     def disconnect(self, message,id):
         #close threading
         print 'disconnect'
