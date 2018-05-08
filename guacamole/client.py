@@ -14,7 +14,7 @@ from .instruction import INST_TERM
 from .instruction import GuacamoleInstruction as Instruction
 
 # supported protocols
-PROTOCOLS = ('vnc', 'rdp', 'ssh')
+PROTOCOLS = ('vnc', 'rdp', 'ssh','telnet')
 
 PROTOCOL_NAME = 'guacamole'
 
