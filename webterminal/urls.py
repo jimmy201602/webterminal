@@ -36,8 +36,8 @@ router.register('servergroup', ServerGroupViewSet)
 router.register('serverinfo', ServerInforViewSet)
 router.register('commandssequence', CommandsSequenceViewSet)
 router.register('credential', CredentialViewSet)
-from .admin import OTPAdminSite
-admin.site.__class__ = OTPAdminSite
+#from .admin import OTPAdminSite
+#admin.site.__class__ = OTPAdminSite
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
