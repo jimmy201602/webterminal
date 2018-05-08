@@ -37,13 +37,14 @@
 <input type="text" name="username" id="id_username" placeholder="{% trans 'Username' %}" value="{% if form.username.value %}{{ form.username.value }}{% endif %}" autofocus required />
 <input type="password" name="password" placeholder="{% trans 'Password' %}" id="id_password" required />
 <input type="hidden" name="next" value="{{ next }}" />
-<input type="text" name="otp_token" placeholder="{% trans 'Token OTP' %}" id="otp_token"  />
-{% if form.get_user %}
-{{ form.otp_device.errors }}{{ form.otp_device }} 
-    {% endif %}
-{{ form.otp_token.errors }}
+<!--<input type="text" name="otp_token" placeholder="{% trans 'Token OTP' %}" id="otp_token"  />-->
+<!--{% if form.get_user %}-->
+<!--{{ form.otp_device.errors }}{{ form.otp_device }} -->
+    <!--{% endif %}-->
+<!--{{ form.otp_token.errors }}-->
 
 {% csrf_token %} 
+<input type="submit" value="{% trans 'Log in' %}" />
 <select name="language" onchange="selectdo(this)">
                 {% get_current_language as LANGUAGE_CODE %}
                 {% get_available_languages as LANGUAGES %}
@@ -54,8 +55,6 @@
                 </option>
                 {% endfor %}
             </select>
-
-<input type="submit" value="{% trans 'Log in' %}" />
 </form>
 
 </div>
