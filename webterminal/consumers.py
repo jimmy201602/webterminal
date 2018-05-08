@@ -27,11 +27,21 @@ class webterminal(WebsocketConsumer):
     channel_session = True
     channel_session_user = True   
 
-    
+    @property
+    def authenticate(self):
+        if self.message.user.is_authenticated():
+            return True
+        else:
+            return False
+
     def connect(self, message):
-        self.message.reply_channel.send({"accept": True})     
-        #permission auth
-        self.message.reply_channel.send({"text":json.dumps(['channel_name',self.message.reply_channel.name])},immediately=True)
+        self.message.reply_channel.send({"accept": True})
+        if not self.authenticate:
+            self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
+            self.message.reply_channel.send({"accept":False})
+        else:
+            #permission auth
+            self.message.reply_channel.send({"text":json.dumps(['channel_name',self.message.reply_channel.name])},immediately=True)
         
     def disconnect(self, message):
         #close threading
@@ -135,9 +145,19 @@ class CommandExecute(WebsocketConsumer):
     channel_session = True
     channel_session_user = True   
     
+
+    @property
+    def authenticate(self):
+        if self.message.user.is_authenticated():
+            return True
+        else:
+            return False
+
     def connect(self, message):
-        self.message.reply_channel.send({"accept": True})     
-        #permission auth
+        self.message.reply_channel.send({"accept": True})
+        if not self.authenticate:
+            self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
+            self.message.reply_channel.send({"accept":False})
 
     def disconnect(self, message):
         self.message.reply_channel.send({"accept":False})
