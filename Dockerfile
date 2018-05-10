@@ -8,6 +8,13 @@ RUN apt-get install build-essential libpulse-dev libssh-dev libwebp-dev libvncse
 #RUN add-apt-repository ppa:jonathonf/ffmpeg-3 -y
 #RUN apt-get update -y
 #RUN apt-get install ffmpeg libffmpegthumbnailer-dev -y
+RUN apt-get remove gcc g++ -y
+RUN add-apt-repository ppa:ubuntu-toolchain-r/test -y
+RUN apt-get update
+RUN apt-get install gcc-snapshot -y
+RUN apt-get update
+RUN apt-get install gcc-6 g++-6 -y
+RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
 WORKDIR /tmp
 RUN wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
 RUN tar -xvpf guacamole-server-0.9.14.tar.gz
