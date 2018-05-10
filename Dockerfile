@@ -4,7 +4,7 @@ LABEL maintainer zhengge2012@gmail.com
 WORKDIR /opt
 RUN apt-get update -y
 RUN apt-get install -y python python-dev redis-server python-pip supervisor nginx git
-RUN apt-get install python-software-properties build-essential libpulse-dev libssh-dev libwebp-dev libvncserver-dev software-properties-common curl gcc libavcodec-dev libavutil-dev libcairo2-dev libswscale-dev libpango1.0-dev libfreerdp-dev libssh2-1-dev libossp-uuid-dev jq wget libpng12-dev libvorbis-dev libtelnet-dev libssl-dev libjpeg-dev libjpeg-turbo8-dev -y
+RUN apt-get install build-essential libpulse-dev libssh-dev libwebp-dev libvncserver-dev software-properties-common curl gcc libavcodec-dev libavutil-dev libcairo2-dev libswscale-dev libpango1.0-dev libfreerdp-dev libssh2-1-dev libossp-uuid-dev jq wget libpng-dev libvorbis-dev libtelnet-dev libssl-dev libjpeg-dev libjpeg-turbo8-dev -y
 RUN add-apt-repository ppa:jonathonf/ffmpeg-3 -y
 RUN apt-get update -y
 RUN apt-get install ffmpeg libffmpegthumbnailer-dev -y
