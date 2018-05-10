@@ -23,6 +23,7 @@ class ServerInfor(models.Model):
         return slugify(self.hostname)
     
     class Meta:
+        unique_together = (("ip", "credential"),)
         permissions = (
             ("can_add_serverinfo", _("Can add server")),
             ("can_change_serverinfo", _("Can change server info")),
