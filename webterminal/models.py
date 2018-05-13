@@ -139,6 +139,7 @@ class Log(models.Model):
     user = models.ForeignKey(User,verbose_name=_('User'))
     width = models.PositiveIntegerField(default=90,verbose_name=_('Width'))
     height = models.PositiveIntegerField(default=40,verbose_name=_('Height'))
+    gucamole_client_id = models.CharField(max_length=100,verbose_name=_('Gucamole channel name'),blank=True,editable=False)
 
     def __unicode__(self):
         return self.server.name
