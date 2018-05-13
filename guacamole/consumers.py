@@ -109,3 +109,25 @@ class GuacamoleWebsocket(WebsocketConsumer):
         #print 'receive',text
         #print 'bytes',bytes
         self.queue().publish(self.message.reply_channel.name, text)
+
+
+class GuacamoleMonitor(GuacamoleWebsocket):
+
+    def connect(self, message,id):
+        self.message.reply_channel.send({"accept": True})
+        if not self.authenticate:
+            self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
+            self.message.reply_channel.send({"accept":False})
+        else:
+            client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
+            cache_key = str(Log.objects.get(id=id).log)
+
+            client.send('6.select,36.{0};'.format(cache_key))
+            self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
+            guacamolethread=GuacamoleThread(self.message,client)
+            guacamolethread.setDaemon = True
+            guacamolethread.start()
+
+            guacamolethreadwrite=GuacamoleThreadWrite(self.message,client)
+            guacamolethreadwrite.setDaemon = True
+            guacamolethreadwrite.start()
