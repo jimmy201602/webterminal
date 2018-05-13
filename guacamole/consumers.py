@@ -21,6 +21,7 @@ from django.utils.timezone import now
 from django.contrib.auth.models import User
 from webterminal.settings import MEDIA_ROOT
 import os
+from guacamole.instruction import GuacamoleInstruction as Instruction
 
 class GuacamoleWebsocket(WebsocketConsumer):
     
@@ -70,10 +71,11 @@ class GuacamoleWebsocket(WebsocketConsumer):
                              enable_wallpaper='true',
                              ignore_cert='true',)
                              #security='tls',)
+
             self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
            #'0.,36.83940151-b2f9-4743-b5e4-b6eb85a97743;'
 
-            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=data.credential.width,height=data.credential.height,log=cache_key)
+            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=data.credential.width,height=data.credential.height,log=cache_key,gucamole_client_id=client._id)
             audit_log.save()
             guacamolethread=GuacamoleThread(self.message,client)
             guacamolethread.setDaemon = True
@@ -121,10 +123,11 @@ class GuacamoleMonitor(GuacamoleWebsocket):
         else:
             client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
             log_object = Log.objects.get(id=id)
-            cache_key = str(log_object.log)
+            cache_key = str(log_object.gucamole_client_id)
 
 
             data = log_object.server
+            print 'cache_key',cache_key
             client.handshake(width=data.credential.width,
                              height=data.credential.height,
                              protocol=data.credential.protocol,
@@ -135,8 +138,7 @@ class GuacamoleMonitor(GuacamoleWebsocket):
                              read_only=True,
                              )
 
-            #client.send('6.select,3.vnc;')
-            #client.send('6.select,37.${0};'.format(cache_key))
+            client.send_instruction(Instruction('select', cache_key))
             #self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
             guacamolethread=GuacamoleThread(self.message,client)
             guacamolethread.setDaemon = True
