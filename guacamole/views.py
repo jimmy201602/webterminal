@@ -44,6 +44,17 @@ class LogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
         context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
         return context
 
+class GuacmoleMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
+    model = Log
+    template_name = 'guacamole/guacamolemonitor.html'
+    permission_required = 'webterminal.can_play_log'
+    raise_exception = True
+
+    def get_context_data(self, **kwargs):
+        context = super(GuacmoleMonitor, self).get_context_data(**kwargs)
+        objects = kwargs['object']
+        return context
+
 @csrf_exempt
 def tunnel(request):
     qs = request.META['QUERY_STRING']
