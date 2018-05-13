@@ -120,10 +120,24 @@ class GuacamoleMonitor(GuacamoleWebsocket):
             self.message.reply_channel.send({"accept":False})
         else:
             client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
-            cache_key = str(Log.objects.get(id=id).log)
+            log_object = Log.objects.get(id=id)
+            cache_key = str(log_object.log)
 
-            client.send('6.select,36.{0};'.format(cache_key))
-            self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
+
+            data = log_object.server
+            client.handshake(width=data.credential.width,
+                             height=data.credential.height,
+                             protocol=data.credential.protocol,
+                             hostname=data.ip,
+                             port=data.credential.port,
+                             username=data.credential.username,
+                             password=data.credential.password,
+                             read_only=True,
+                             )
+
+            #client.send('6.select,3.vnc;')
+            #client.send('6.select,37.${0};'.format(cache_key))
+            #self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
             guacamolethread=GuacamoleThread(self.message,client)
             guacamolethread.setDaemon = True
             guacamolethread.start()
