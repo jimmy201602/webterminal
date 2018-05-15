@@ -127,18 +127,20 @@ class GuacamoleMonitor(GuacamoleWebsocket):
 
 
             data = log_object.server
-            print 'cache_key',cache_key
-            client.handshake(width=data.credential.width,
-                             height=data.credential.height,
-                             protocol=data.credential.protocol,
-                             hostname=data.ip,
-                             port=data.credential.port,
-                             username=data.credential.username,
-                             password=data.credential.password,
-                             read_only=True,
-                             )
 
-            client.send_instruction(Instruction('select', cache_key))
+            #draft version for real time monitor
+            client.send_instruction(Instruction('select',cache_key))
+            instruction=client.read_instruction()
+            kwargs = {'width':1024,'height':768}
+            connection_args = [
+                kwargs.get(arg.replace('-', '_'), '') for arg in instruction.args
+            ]
+            client.send_instruction(Instruction('size', 1024, 768, 96))
+            client.send_instruction(Instruction('audio', *list()))
+            client.send_instruction(Instruction('video', *list()))
+            client.send_instruction(Instruction('image', *list()))
+            client.send_instruction(Instruction('connect', *connection_args))
+
             #self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
             guacamolethread=GuacamoleThread(self.message,client)
             guacamolethread.setDaemon = True
