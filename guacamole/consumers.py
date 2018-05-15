@@ -131,7 +131,7 @@ class GuacamoleMonitor(GuacamoleWebsocket):
             #draft version for real time monitor
             client.send_instruction(Instruction('select',cache_key))
             instruction=client.read_instruction()
-            kwargs = {'width':1024,'height':768}
+            kwargs = {'width':1024,'height':768,'read_only':'true'}
             connection_args = [
                 kwargs.get(arg.replace('-', '_'), '') for arg in instruction.args
             ]

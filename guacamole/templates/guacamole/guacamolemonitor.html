@@ -48,22 +48,22 @@
     // Mouse
     var mouse = new Guacamole.Mouse(guac.getDisplay().getElement());
 
-    <!--mouse.onmousedown =-->
-    <!--mouse.onmouseup   =-->
-    <!--mouse.onmousemove = function(mouseState) {-->
-        <!--guac.sendMouseState(mouseState);-->
-    <!--};-->
+    mouse.onmousedown =
+    mouse.onmouseup   =
+    mouse.onmousemove = function(mouseState) {
+        guac.sendMouseState(mouseState);
+    };
 
     // Keyboard
-    <!--var keyboard = new Guacamole.Keyboard(document);-->
+    var keyboard = new Guacamole.Keyboard(document);
 
-    <!--keyboard.onkeydown = function (keysym) {-->
-        <!--guac.sendKeyEvent(1, keysym);-->
-    <!--};-->
+    keyboard.onkeydown = function (keysym) {
+        guac.sendKeyEvent(1, keysym);
+    };
 
-    <!--keyboard.onkeyup = function (keysym) {-->
-        <!--guac.sendKeyEvent(0, keysym);-->
-    <!--};-->
+    keyboard.onkeyup = function (keysym) {
+        guac.sendKeyEvent(0, keysym);
+    };
 
 /* ]]> */ </script>
 </body>

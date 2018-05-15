@@ -13,6 +13,10 @@
    .play-dialog .modal-dialog {
         width: 58%;
     }
+    .large-dialog .modal-dialog {
+        width: 58%;
+        height: 61%;
+    }
 </style>
 {% endblock %}
 {% block content %}
@@ -72,7 +76,7 @@
                                     {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% endif %}
                                 {% endif %}
                                 {% if perms.webterminal.can_monitor_serverinfo %}
-                                {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{% else %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'guacamolemonitor' element.id %}',)">{% endif %}{%trans 'monitor' %}</a>
+                                {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{% else %}<a class="btn btn-xs btn-success" onclick="monitorguacamole('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'guacamolemonitor' element.id %}',)">{% endif %}{%trans 'monitor' %}</a>
                                 {% endif %}
                                 {% endif %}
                             </td>
@@ -191,6 +195,23 @@ function monitor(user,ip,start_time,url){
             title: title,
             type: BootstrapDialog.TYPE_DEFAULT,
             message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url),
+            draggable: true
+        });
+        return false;
+    }
+
+
+function monitorguacamole(user,ip,start_time,url){
+        var div_username = ' {% trans 'user' %}: '+'<span class="text-info">'+user+'' + '</span>';
+        var div_ip = ' {% trans 'server' %}: '+'<span class="text-info">' + ip + '</span>';
+        var div_time = ' {% trans 'start time' %}: ' + '<span class="text-info">'+start_time +'</span>';
+        var title = div_username + div_ip + div_time;
+        BootstrapDialog.show({
+            size: BootstrapDialog.SIZE_WIDE,
+            title: title,
+            cssClass: 'large-dialog',
+            type: BootstrapDialog.TYPE_DEFAULT,
+            message:$('<iframe src="' + url +'" frameborder="0" scrolling="yes" onload="this.height=780;this.width=1030;this.contentWindow.focus();" onmouseover="this.contentWindow.focus();"></iframe>'),
             draggable: true
         });
         return false;
