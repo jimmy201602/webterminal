@@ -15,19 +15,13 @@ Hope you enjoy it.
 # useage (如何使用)
 [How to use this project](./doc/usage_en.md)
 
-[中文使用文档](./doc/usage_zh.md)
+[中文使用文档](./doc/manual_zh.md)
 # Installiation guide (安装文档)
 [installiation guide](./doc/install_en.md)
 
-[中文安装文档](./doc/install_zh.md)
+[中文安装文档](./doc/Centos7_install_zh.md)
 # Run with docker (以docker方式运行本项目)
-```sh
-docker pull webterminal/webterminal
-docker run -itd -p 80:80 webterminal/webterminal
-Login user & password
-username: admin
-password: password!23456
-```
+[docker运行](./doc/Centos7_docker_deploy_zh.md)
 # Author Email
 zhengge2012@gmail.com
 # Discussion
