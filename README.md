@@ -22,7 +22,7 @@ Hope you enjoy it.
 [中文安装文档](./doc/install_zh.md)
 # Run with docker (以docker方式运行本项目)
 ```sh
-docker pull webterminal/webterminal
+docker pull webterminal/webterminal (国内请使用阿里云镜像 docker pull registry.cn-hangzhou.aliyuncs.com/webterminal/webterminal)
 docker run -itd -p 80:80 webterminal/webterminal
 Login user & password
 username: admin
