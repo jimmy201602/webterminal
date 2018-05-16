@@ -93,23 +93,31 @@ class GuacamoleWebsocket(WebsocketConsumer):
             audit_log.is_finished = True
             audit_log.end_time = now()
             audit_log.save()
+            cache_key = audit_log.gucamole_client_id
+            client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
+            client.send_instruction(Instruction('select',cache_key))
+            instruction=client.read_instruction()
+            kwargs = {'width':1024,'height':768,'read_only':'true'}
+            connection_args = [
+                kwargs.get(arg.replace('-', '_'), '') for arg in instruction.args
+            ]
+            client.send_instruction(Instruction('size', 1024, 768, 96))
+            client.send_instruction(Instruction('audio', *list()))
+            client.send_instruction(Instruction('video', *list()))
+            client.send_instruction(Instruction('image', *list()))
+            client.send_instruction(Instruction('connect', *connection_args))
+            client.send_instruction(Instruction('disconnect', *connection_args))
         except:
             pass
-        self.message.reply_channel.send({"accept":False})
-        #self.closeguacamole()
+        finally:
+            self.message.reply_channel.send({"accept":False})
     
     def queue(self):
         queue = get_redis_instance()
         channel = queue.pubsub()
         return queue
-    
-    def closeguacamole(self):
-        #close threading
-        self.queue().publish(self.message.reply_channel.name, json.dumps(['close']))
         
     def receive(self,text=None, bytes=None, **kwargs):
-        #print 'receive',text
-        #print 'bytes',bytes
         self.queue().publish(self.message.reply_channel.name, text)
 
 
@@ -149,3 +157,27 @@ class GuacamoleMonitor(GuacamoleWebsocket):
             guacamolethreadwrite=GuacamoleThreadWrite(self.message,client)
             guacamolethreadwrite.setDaemon = True
             guacamolethreadwrite.start()
+
+    def disconnect(self, message,id):
+        #close threading
+        print 'disconnect'
+        try:
+            log_object = Log.objects.get(id=id)
+            cache_key = log_object.gucamole_client_id
+            client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
+            client.send_instruction(Instruction('select',cache_key))
+            instruction=client.read_instruction()
+            kwargs = {'width':1024,'height':768,'read_only':'true'}
+            connection_args = [
+                kwargs.get(arg.replace('-', '_'), '') for arg in instruction.args
+            ]
+            client.send_instruction(Instruction('size', 1024, 768, 96))
+            client.send_instruction(Instruction('audio', *list()))
+            client.send_instruction(Instruction('video', *list()))
+            client.send_instruction(Instruction('image', *list()))
+            client.send_instruction(Instruction('connect', *connection_args))
+            client.send_instruction(Instruction('disconnect', *connection_args))
+        except:
+            pass
+        finally:
+            self.message.reply_channel.send({"accept":False})
