@@ -28,6 +28,7 @@ RUN mkdir -p /var/log/web
 WORKDIR /opt
 RUN git clone https://github.com/jimmy201602/webterminal.git
 WORKDIR /opt/webterminal
+RUN mkdir media
 RUN pip install -r requirements.txt
 RUN python manage.py makemigrations
 RUN python manage.py migrate
