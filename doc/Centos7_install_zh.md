@@ -16,9 +16,9 @@ systemctl stop firewalld.service
 #### 1.安装系统依赖
 
 ```
-yum -y groupinstall "Development Tools" 
-
-yum install -y epel-release python python-dev python-devel redis-server redis python-pip supervisor nginx git gcc
+yum install -y epel-release
+yum clean all
+yum install -y python python-dev python-devel redis-server redis python-pip supervisor nginx git gcc
 ```
 
 #### 2.编译安装guacamole-server
