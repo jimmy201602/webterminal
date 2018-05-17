@@ -50,6 +50,7 @@ make && make install
 #### 3.创建python2.7虚拟环境（避免与系统环境混乱）
 
 ```
+cd /opt/
 pip install virtualenv
 virtualenv --python=/usr/bin/python2.7 py2
 source /opt/py2/bin/activate
