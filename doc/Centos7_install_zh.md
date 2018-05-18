@@ -126,6 +126,8 @@ vi /etc/supervisord.d/webterminal.ini
 ###########文件内容##########
 # 被守护项目名称
 [program:webterminal]
+# 项目目录
+directory = /opt/webterminal
 # 启动命令  前边是你python 虚拟环境执行文件  后边是项目启动文件
 command = /opt/py2/bin/python /opt/webterminal/manage.py runserver 0.0.0.0:8000
 # 是否跟随supervisord启动自启
@@ -145,7 +147,8 @@ stdout_logfile_maxbytes = 20MB
 # 日志备份数
 stdout_logfile_backups = 20
 # 日志目录
-stdout_logfile = /var/log/webterminal_stdout.log
+stdout_logfile = /var/log/webterminal_access.log
+stderr_logfile = /var/log/webterminal_error.log
 # 进程被杀死时，是否向进程组发送stop信号。
 stopasgroup=false
 # 向进程组发送kill信号
