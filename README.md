@@ -19,7 +19,7 @@ Hope you enjoy it.
 # Installiation guide (安装文档)
 [installiation guide](./doc/install_en.md)
 
-[中文安装文档](./doc/Centos7_install_zh.md)
+[中文安装部署文档](./doc/Centos7_install_zh.md)
 # Run with docker (以docker方式运行本项目)
 [Centos7 Docker 部署 webterminal](./doc/Centos7_docker_deploy_zh.md)
 ```sh
