@@ -102,26 +102,6 @@ yum install supervisor
 ```
 cp /opt/webterminal/supervisord.conf /etc/supervisord.conf
 ```
-4. 启动supervisor服务
-
-```
-1. 启动服务
-systemctl start supervisord
-2. 加入开机启动项
-systemctl enable supervisord
-```
-
-5. supervisord 管理命令
-
-```
-supervisorctl status                    #查看项目状态
-supervisorctl stop webterminal          #关闭 webterminal
-supervisorctl start webterminal         #启动 webterminal
-supervisorctl restart webterminal       #重启 webterminal
-supervisorctl reread
-supervisorctl update                    #更新新的配置
-```
-
 ## 启动webterminal
 ```sh
 1 开启redis 服务
@@ -129,7 +109,7 @@ systemctl start redis
 2 开启guacamole server服务
 systemctl start guacd
 3 开启supervisor守护进程 (启动webterminal应用)
-systemctl start supervisord
+supervisord -c /etc/supervisord.conf
 4 开启nginx代理
 systemctl start nginx
 ```
