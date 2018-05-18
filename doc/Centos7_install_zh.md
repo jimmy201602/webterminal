@@ -1,10 +1,10 @@
-# Centos7 详细部署 webterminal
+# Centos7 生产中部署webterminal操作手册
 
-## 系统环境
+## 系统准备
 
 ```
 1.全新Centos7系统
-2.项目目录 /opt/
+2.项目部署目录 /opt
 3.关闭防火墙
 setenforce 0
 systemctl stop iptables.service
@@ -21,7 +21,7 @@ yum clean all
 yum install -y python python-dev python-devel redis-server redis python-pip supervisor nginx git gcc 
 ```
 
-#### 2.编译安装guacamole-server
+#### 2.编译安装guacamole server
 
 ```
 rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
@@ -42,24 +42,12 @@ tar -xvpf guacamole-server-0.9.14.tar.gz
 cd guacamole-server-0.9.14
 ./configure --with-init-dir=/etc/init.d
 make && make install
-
-/etc/init.d/guacd start
-加入开机启动项
-/sbin/chkconfig guacd on
 ```
 
-#### 3.创建python2.7虚拟环境（避免与系统环境混乱）
+#### ３.拉取项目代码（时间取决于网络环境）
 
 ```
-cd /opt/
-pip install virtualenv
-virtualenv --python=/usr/bin/python2.7 py2
-source /opt/py2/bin/activate
-```
-
-#### 4.拉取项目（时间取决于网络环境）
-
-```
+cd /opt
 git clone https://github.com/jimmy201602/webterminal.git
 ```
 
@@ -67,61 +55,54 @@ git clone https://github.com/jimmy201602/webterminal.git
 
 ```
 1.进入项目目录
-cd webterminal
-2.安装依赖
+cd /opt/webterminal
+2.安装程序依赖包
 pip install -r requirements.txt
-3.检测变动
+3.检测项目程序数据表变动
 python manage.py makemigrations
-4.建立
+4.创建数据表
 python manage.py migrate
 5.启动redis
 systemctl start redis
-5.1 将redis加入开机启动项
-systemctl enable redis
-6.创建项目管理员账户
+6.创建管理员账户
 python manage.py createsuperuser
 ```
 
-## 启动项目
-
-```
-python manage.py runserver 0.0.0.0:8000
-```
-[http://webterminal_server_ip:8000](http://webterminal_server_ip:8000)
-
-
-## 注意事项
-
-#### 1.twisted 安装失败时 手动安装
-
-```
-wget https://twistedmatrix.com/Releases/Twisted/17.5/Twisted-17.5.0.tar.bz2
-tar -jxvf Twisted-17.5.0.tar.bz2
-cd Twisted-17.5.0/
-python setup.py install
+## nginx代理配置
+```sh
+1 删除原有的nginx配置文件
+rm -rf /etc/nginx/nginx.conf
+2 设置新的nginx配置文件
+cp /opt/webterminal/nginx.conf /etc/nginx/nginx.conf
+3 重启nginx以使配置文件生效
+systemctl restart nginx
 ```
 
-## 开机自启动项目配置
+## 开机自启动服务配置
 
-1. 关闭防火墙启动！ 确认你是否已执行安装教程以上的guacd、redis 等服务加入开机启动项。如果没有请执行以下命令，已执行的请忽略。
+1. 关闭防火墙！ 确认你是否已执行安装教程以上的guacd、redis 等服务加入开机启动项。如果没有请执行以下命令，已执行的请忽略。
 
 ```
 1.将guacd 加入开机启动项
 /sbin/chkconfig guacd on
 2.将redis 加入开机启动项
 systemctl enable redis
+3 将nginx加入开机启动项
+systemctl enable nginx
 ```
 
-2. 配置开机守护进程
+2. 安装supervisor(进程守护程序)
 
 ```
 yum install supervisor
 ```
 
-3. 配置启动文件
+3. supervisor配置文件
 将项目根目录下的的supervisord.conf 拷贝至/etc/supervisord.conf
-
-4. 启动服务
+```
+cp /opt/webterminal/supervisord.conf /etc/supervisord.conf
+```
+4. 启动supervisor服务
 
 ```
 1. 启动服务
@@ -139,4 +120,30 @@ supervisorctl start webterminal         #启动 webterminal
 supervisorctl restart webterminal       #重启 webterminal
 supervisorctl reread
 supervisorctl update                    #更新新的配置
+```
+
+## 启动webterminal
+```sh
+1 开启redis 服务
+systemctl start redis
+2 开启guacamole server服务
+systemctl start guacd
+3 开启supervisor守护进程 (启动webterminal应用)
+systemctl start supervisord
+4 开启nginx代理
+systemctl start nginx
+```
+## 访问webterminal
+
+[http://webterminal_server_ip](http://webterminal_server_ip)
+
+## 注意事项
+
+#### 1.twisted 安装失败时 手动安装
+
+```
+wget https://twistedmatrix.com/Releases/Twisted/17.5/Twisted-17.5.0.tar.bz2
+tar -jxvf Twisted-17.5.0.tar.bz2
+cd Twisted-17.5.0/
+python setup.py install
 ```
