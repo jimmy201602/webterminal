@@ -119,42 +119,7 @@ yum install supervisor
 ```
 
 3. 配置启动文件
-
-```
-vi /etc/supervisord.d/webterminal.ini
-
-###########文件内容##########
-# 被守护项目名称
-[program:webterminal]
-# 项目目录
-directory = /opt/webterminal
-# 启动命令  前边是你python 虚拟环境执行文件  后边是项目启动文件
-command = /opt/py2/bin/python /opt/webterminal/manage.py runserver 0.0.0.0:8000
-# 是否跟随supervisord启动自启
-autostart = true
-# 启动5秒无异常为正常启动
-startsecs = 5
-# 程序异常退出自动启动
-autorestart = true 
-# 启动失败自动重试次数
-startretries = 3
-# 启动用户
-user = root
-# 日志重定向
-redirect_stderr = true
-# 日志文件大小
-stdout_logfile_maxbytes = 20MB
-# 日志备份数
-stdout_logfile_backups = 20
-# 日志目录
-stdout_logfile = /var/log/webterminal_access.log
-stderr_logfile = /var/log/webterminal_error.log
-# 进程被杀死时，是否向进程组发送stop信号。
-stopasgroup=false
-# 向进程组发送kill信号
-killasgroup=false
-###########文件内容##########
-```
+将项目根目录下的的supervisord.conf 拷贝至/etc/supervisord.conf
 
 4. 启动服务
 
