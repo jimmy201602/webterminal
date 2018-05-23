@@ -61,7 +61,13 @@
         guac.sendKeyEvent(1, keysym);
     };
 
-    keyboard.onkeyup = function (keysym) {
+    guac.onstatechange = function(state){
+
+        console.log(state);
+    };
+
+
+keyboard.onkeyup = function (keysym) {
         guac.sendKeyEvent(0, keysym);
     };
 
