@@ -6,7 +6,7 @@ import threading
 import uuid
 
 from django.conf import settings
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse, StreamingHttpResponse,JsonResponse
 from django.shortcuts import render,render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
@@ -17,6 +17,11 @@ from webterminal.settings import MEDIA_URL
 from webterminal.models import Log
 from common.views import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from guacamole.instruction import GuacamoleInstruction as Instruction
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.timezone import now
+import traceback
+from guacamole.guacamolethreading import get_redis_instance
 
 logger = logging.getLogger(__name__)
 sockets = {}
@@ -43,6 +48,34 @@ class LogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
         objects = kwargs['object']
         context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
         return context
+
+class GuacamoleKill(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'webterminal.can_kill_serverinfo'
+    raise_exception = True
+
+    def post(self,request):
+        if request.is_ajax():
+            id = request.POST.get('id',None)
+            try:
+
+                log_object = Log.objects.get(id=id)
+                queue = get_redis_instance()
+                queue.pubsub()
+                queue.publish(log_object.channel, '10.disconnect;')
+
+                log_object.end_time = now()
+                log_object.is_finished = True
+                log_object.save()
+                return JsonResponse({'status':True,'message':'Session has been killed !'})
+            except ObjectDoesNotExist:
+                return JsonResponse({'status':True,'message':'Request object does not exist!'})
+            except Exception ,e:
+                log_object = Log.objects.get(id=id)
+
+                log_object.end_time = now()
+                log_object.is_finished = True
+                log_object.save()
+                return JsonResponse({'status':False,'message':str(e)})
 
 class GuacmoleMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log

@@ -73,7 +73,7 @@
                                 {% endif %}
                                 {% else %}
                                 {% if perms.webterminal.can_kill_serverinfo %}
-                                    {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% endif %}
+                                    {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% else %} <a class="btn btn-xs btn-danger" onclick="killguacamole('{{element.id}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% endif %}
                                 {% endif %}
                                 {% if perms.webterminal.can_monitor_serverinfo %}
                                 {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{% else %}<a class="btn btn-xs btn-success" onclick="monitorguacamole('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'guacamolemonitor' element.id %}',)">{% endif %}{%trans 'monitor' %}</a>
@@ -142,7 +142,7 @@
         return false;
     }
         
-    function kill(channel_name,user_name) {
+function kill(channel_name,user_name) {
     var dialog = bootbox.confirm({
         title: "<a class='text-danger'>"+'{% trans 'kick user' %} ' + user_name +" {% trans 'out' %} </a>",
         message: '{% trans 'Are you sure to kick user' %} ' + user_name +' {% trans 'out' %} ?',
@@ -216,5 +216,47 @@ function monitorguacamole(user,ip,start_time,url){
         });
         return false;
     }
+
+function killguacamole(id,user_name) {
+    var dialog = bootbox.confirm({
+        title: "<a class='text-danger'>"+'{% trans 'kick user' %} ' + user_name +" {% trans 'out' %} </a>",
+        message: '{% trans 'Are you sure to kick user' %} ' + user_name +' {% trans 'out' %} ?',
+        buttons: {
+            confirm: {
+                label: '{% trans 'kill' %}',
+                className: 'btn-danger'
+            },
+            cancel: {
+                label: '{% trans 'cancel' %}',
+                className: 'btn-success'
+            }
+        },
+        callback: function (result) {
+            if (result){
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'guacamolekill' %}',
+                    dataType: "json",
+                    data: {'id':id},
+                    success: function (data) {
+
+                        if (data['status']){
+                            toastr["success"](data['message']);
+                            setTimeout(function () {
+                                location.reload();
+                            },2000);
+                        }else{
+                            toastr["error"](data['message']);
+                        }
+
+                    },
+                    failure: function (errMsg) {
+                        toastr["error"](errMsg);
+                    },
+                });
+            }
+        }
+    });
+}
 </script>
 {% endblock %}

@@ -45,6 +45,11 @@
         guac.disconnect();
     }
 
+    //state change
+    guac.onstatechange = function(state){
+        console.log(state)
+    }
+
     // Mouse
     var mouse = new Guacamole.Mouse(guac.getDisplay().getElement());
 
