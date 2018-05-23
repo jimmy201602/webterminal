@@ -14,8 +14,8 @@
         width: 58%;
     }
     .large-dialog .modal-dialog {
-        width: 58%;
-        height: 61%;
+        width: 1100px;
+        height: auto;
     }
 </style>
 {% endblock %}
@@ -211,7 +211,7 @@ function monitorguacamole(user,ip,start_time,url){
             title: title,
             cssClass: 'large-dialog',
             type: BootstrapDialog.TYPE_DEFAULT,
-            message:$('<iframe src="' + url +'" frameborder="0" scrolling="yes" onload="this.height=780;this.width=1030;this.contentWindow.focus();" onmouseover="this.contentWindow.focus();"></iframe>'),
+            message:$('<iframe src="' + url +'" frameborder="0" scrolling="no" onload="this.height=780;this.width=1030;this.contentWindow.focus();" onmouseover="this.contentWindow.focus();"></iframe>'),
             draggable: true
         });
         return false;
