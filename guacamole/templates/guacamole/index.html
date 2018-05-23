@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Guacamole connection</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/sweetalert/sweetalert.css' %}">
 </head>
 <body>
 <!--<h1>Guacamole Remote Desktop</h1>-->
 <!-- Guacamole -->
 {% load staticfiles %}
 <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert.min.js' %}"></script>
 
 <!-- Display -->
 <div id="display"></div>
@@ -47,7 +50,21 @@
 
     //state change
     guac.onstatechange = function(state){
-        console.log(state)
+        if (state == 4){
+            //alert closed
+            swal({
+                title: "Your connection has been lost or killed!",
+                text: "Do you want to reconnect！",
+                type: "warning",
+                buttons: ["Cancel", "Reconnect"],
+                dangerMode: true,
+                })
+                .then((reconnect) => {
+                if (reconnect) {
+                    document.location.reload();
+                }
+              });
+        }
     }
 
     // Mouse
@@ -64,11 +81,6 @@
 
     keyboard.onkeydown = function (keysym) {
         guac.sendKeyEvent(1, keysym);
-    };
-
-    guac.onstatechange = function(state){
-
-        console.log(state);
     };
 
 
