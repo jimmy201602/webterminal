@@ -23,6 +23,22 @@ from webterminal.settings import MEDIA_ROOT
 import os
 from guacamole.instruction import GuacamoleInstruction as Instruction
 
+
+def mkdir_p(path):
+    """
+    Pythonic version of "mkdir -p".  Example equivalents::
+
+        >>> mkdir_p('/tmp/test/testing') # Does the same thing as...
+        >>> from subprocess import call
+        >>> call('mkdir -p /tmp/test/testing')
+
+    .. note:: This doesn't actually call any external commands.
+    """
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        pass
+
 class GuacamoleWebsocket(WebsocketConsumer):
     
     http_user = True
@@ -57,6 +73,12 @@ class GuacamoleWebsocket(WebsocketConsumer):
 
             directory_date_time = now()
             recording_path = os.path.join(MEDIA_ROOT,'{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day))
+            drive_path = os.path.join(recording_path,self.message.reply_channel.name)
+            """
+            Create recording media file and drive path
+            """
+            mkdir_p(recording_path)
+            mkdir_p(drive_path)
 
             client.handshake(width=data.credential.width,
                              height=data.credential.height,
@@ -69,7 +91,10 @@ class GuacamoleWebsocket(WebsocketConsumer):
                              recording_name=cache_key,
                              create_recording_path='true',
                              enable_wallpaper='true',
-                             ignore_cert='true',)
+                             ignore_cert='true',
+                             enable_drive='true',
+                             drive_path=recording_path,
+                             create_drive_path='true')
                              #security='tls',)
 
             self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)

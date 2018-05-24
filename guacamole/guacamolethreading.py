@@ -11,6 +11,7 @@ def get_redis_instance():
     return channel_layer._connection_list[0]
 import ast
 import logging
+from socket import timeout
 logger = logging.getLogger(__name__)
 
 class GuacamoleThread(threading.Thread):
@@ -51,11 +52,16 @@ class GuacamoleThread(threading.Thread):
             #self.pending_read_request.clear()
 
             while True:
-                instruction = self.client.receive()
-                if instruction:
-                    channel_layer.send(self.message.reply_channel.name,{"text":instruction})
-                else:
-                    break
+                try:
+                    instruction = self.client.receive()
+                    if instruction:
+                        channel_layer.send(self.message.reply_channel.name,{"text":instruction})
+                    else:
+                        break
+                except timeout:
+                    queue = get_redis_instance()
+                    queue.pubsub()
+                    queue.publish(self.message.reply_channel.name, '10.disconnect;')
     
                 #if self.pending_read_request.is_set():
                     #logger.info('Letting another request take over.')
