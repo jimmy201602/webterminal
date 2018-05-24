@@ -2,13 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Guacamole monitor</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/sweetalert/sweetalert.css' %}">
 </head>
 <body>
 <!--<h1>Guacamole Remote Desktop</h1>-->
 <!-- Guacamole -->
 {% load staticfiles %}
 <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert.min.js' %}"></script>
 
 <!-- Display -->
 <div id="display"></div>
@@ -43,6 +46,23 @@
     // Disconnect on close
     window.onunload = function() {
         guac.disconnect();
+    }
+
+
+    //state change
+    guac.onstatechange = function(state){
+        if (state == 5){
+            //alert closed
+            //var STATE_IDLE          = 0;
+            //var STATE_CONNECTING    = 1;
+            //var STATE_WAITING       = 2;
+            //var STATE_CONNECTED     = 3;
+            //var STATE_DISCONNECTING = 4;
+            //var STATE_DISCONNECTED  = 5;
+            swal({
+                title: "The connection has been disconnected!",
+                });
+        }
     }
 
     // Mouse
