@@ -91,10 +91,10 @@ class GuacamoleWebsocket(WebsocketConsumer):
                              recording_name=cache_key,
                              create_recording_path='true',
                              enable_wallpaper='true',
-                             ignore_cert='true',
-                             enable_drive='true',
-                             drive_path=recording_path,
-                             create_drive_path='true')
+                             ignore_cert='true',)
+                             #enable_drive='true',
+                             #drive_path=recording_path,
+                             #create_drive_path='true')
                              #security='tls',)
 
             self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
