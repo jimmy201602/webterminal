@@ -50,8 +50,14 @@
 
     //state change
     guac.onstatechange = function(state){
-        if (state == 4){
+        if (state == 5){
             //alert closed
+            //var STATE_IDLE          = 0;
+            //var STATE_CONNECTING    = 1;
+            //var STATE_WAITING       = 2;
+            //var STATE_CONNECTED     = 3;
+            //var STATE_DISCONNECTING = 4;
+            //var STATE_DISCONNECTED  = 5;
             swal({
                 title: "Your connection has been lost or killed!",
                 text: "Do you want to reconnect！",
