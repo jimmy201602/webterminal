@@ -149,8 +149,8 @@ class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
         used in get method calls
         """
         u_id = str(uuid.uuid4())
+        kwargs['u_id'] = u_id
         if kwargs['optionset'] == 'sftp':
-            kwargs['u_id'] = u_id
             server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
@@ -182,8 +182,8 @@ class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
         It only allows for the 'upload' command
         """
         u_id = str(uuid.uuid4())
+        kwargs['u_id'] = u_id
         if kwargs['optionset'] == 'sftp':
-            kwargs['u_id'] = u_id
             server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
