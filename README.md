@@ -13,6 +13,9 @@ Hope you enjoy it.
 
 更多功能请自行发掘......
 # useage (如何使用)
+[![Usage Video](https://i.ytimg.com/vi/-HwhB21v8L8/1.jpg?time=1527217648531)](https://www.youtube.com/watch?v=-HwhB21v8L8)
+
+
 [How to use this project](./doc/usage_en.md)
 
 [中文使用文档](./doc/manual_zh.md)
