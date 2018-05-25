@@ -44,10 +44,10 @@ INSTALLED_APPS = [
     'permission',
     'common',
     'guardian',
-    #'django_otp',
-    #'django_otp.plugins.otp_totp',
-    #'django_otp.plugins.otp_hotp',
-    #'django_otp.plugins.otp_static',
+    'django_otp',
+    'django_otp.plugins.otp_totp',
+    'django_otp.plugins.otp_hotp',
+    'django_otp.plugins.otp_static',
     'crispy_forms'
 ]
 
@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django_otp.middleware.OTPMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -90,6 +90,8 @@ WSGI_APPLICATION = 'webterminal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+LOGIN_URL ='/login'
+LOGIN_DIRECT = '/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

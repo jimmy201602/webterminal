@@ -15,7 +15,7 @@ Including another URLconf
 from __future__ import absolute_import
 from django.conf.urls import url,include
 from django.contrib import admin
-from webterminal.views import (Index,Commands,CommandExecute,
+from webterminal.views import (Index,login,logout,Commands,CommandExecute,
                                CommandExecuteList,CommandExecuteDetailApi,
                                CredentialCreate,CredentialList,CredentialDetailApi,
                                ServerCreate,ServerlList,GroupList,GroupCreate,
@@ -43,6 +43,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^guacamole/',include('guacamole.urls')),
     url(r'^$',Index.as_view(),name='index'),
+    url(r'^login', login, name='login'),
+    url(r'^logout', logout, name='logout'),
     url(r'^commands/add/$',Commands.as_view(),name='commandscreate'),
     url(r'^commandexecute/$',CommandExecute.as_view(),name='commandexecute'),
     url(r'^commandslist/$',CommandExecuteList.as_view(),name='commandslist'),

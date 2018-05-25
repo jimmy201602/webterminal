@@ -1,5 +1,6 @@
 from django.views.generic import View
 from django.shortcuts import render_to_response,HttpResponse
+from django.shortcuts import render,redirect
 from django.http import JsonResponse
 from webterminal.models import ServerGroup,CommandsSequence,Credential,ServerInfor,Log
 from django.utils.decorators import method_decorator
@@ -8,6 +9,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages as message
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
@@ -25,12 +27,11 @@ from django.core.exceptions import  PermissionDenied
 from permission.models import Permission
 from django.urls import reverse_lazy
 from common.views import LoginRequiredMixin
-
+from django.contrib import  auth
 class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
     permission_required = 'webterminal.can_connect_serverinfo'
     raise_exception = False
-    login_url = reverse_lazy('admin:login')
 
     def get_context_data(self, **kwargs):
         context = super(Index, self).get_context_data(**kwargs)
@@ -300,3 +301,36 @@ class SshTerminalKill(LoginRequiredMixin,PermissionRequiredMixin,View):
                     return JsonResponse({'status':True,'message':'Terminal has been killed !'})
             except ObjectDoesNotExist:
                 return JsonResponse({'status':False,'message':'Request object does not exist!'})
+from django_otp import match_token
+
+def login(request):
+    err_msg = ''
+    if request.method == 'GET':
+        return render(request, 'login.html', {'err_msg': err_msg})
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        password_len = len(password)
+        if password_len <=6:
+            return  render(request, 'login.html', {'err_msg': 'user or password errors'})
+        qrcode = password[-6:]
+        password = password[:password_len-6]
+        u = auth.authenticate(username=username, password=password)
+        if u:
+            if match_token(u,qrcode)!= None:
+                auth.login(request, u)
+                request.session['is_login'] = True
+                request.session.set_expiry(3600)
+                login_ip = request.META['REMOTE_ADDR']
+
+            return redirect('/')
+        else:
+            return render(request, 'login.html', {'err_msg': 'user or password errors'})
+
+    return render(request, 'login.html', {'err_msg': err_msg})
+
+@login_required()
+def logout(request):
+    request.session.clear()
+    auth.logout(request)
+    return redirect('/')
