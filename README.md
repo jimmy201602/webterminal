@@ -13,6 +13,7 @@ Hope you enjoy it.
 
 更多功能请自行发掘......
 # useage (如何使用)
+https://youtu.be/-HwhB21v8L8
 [How to use this project](./doc/usage_en.md)
 
 [中文使用文档](./doc/usage_zh.md)
