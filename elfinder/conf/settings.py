@@ -128,107 +128,107 @@ ELFINDER_CONNECTOR_OPTION_SETS = {
                 #seconds to cache the file and dir data used by the driver 
                 'cache' : 6
             },
-            {
-                'id' : 'lffim',
-                'driver' : ElfinderVolumeLocalFileSystem,
-                'path' : join(settings.MEDIA_ROOT, u'images'),
-                'alias' : 'Elfinder images',
-                'URL' : '%simages/' % settings.MEDIA_URL,
-                'onlyMimes' : ['image',],
-                'uploadAllow' : ['image',],
-                'uploadDeny' : ['all',],
-                'uploadMaxSize' : '128m',
-                'disabled' : ['mkfile', 'archive'],
-                'accessControl' : fs_standard_access,
-                'attributes' : [
-                    {
-                        'pattern' : r'\.tmb$',
-                        'read' : True,
-                        'write': True,
-                        'hidden' : True,
-                        'locked' : True
-                    },
-                ],
-            },
-            {
-                'id' : 'lffimsa',
-                'driver' : ElfinderVolumeLocalFileSystem,
-                'path' : join(settings.MEDIA_ROOT, u'pdf'),
-                'alias' : 'pdf',
-                'URL' : '%spdf/' % settings.MEDIA_URL,
-                'onlyMimes' : ['application/pdf',],
-                'uploadAllow' : ['application/pdf',],
-                'uploadDeny' : ['all',],
-                'uploadMaxSize' : '128m',
-                'disabled' : ['mkfile', 'archive'],
-                'accessControl' : fs_standard_access,
-                'attributes' : [
-                    {
-                        'pattern' : r'\.tmb$',
-                        'read' : True,
-                        'write': True,
-                        'hidden' : True,
-                        'locked' : True
-                    },
-                ],
-            } 
+            #{
+                #'id' : 'lffim',
+                #'driver' : ElfinderVolumeLocalFileSystem,
+                #'path' : join(settings.MEDIA_ROOT, u'images'),
+                #'alias' : 'Elfinder images',
+                #'URL' : '%simages/' % settings.MEDIA_URL,
+                #'onlyMimes' : ['image',],
+                #'uploadAllow' : ['image',],
+                #'uploadDeny' : ['all',],
+                #'uploadMaxSize' : '128m',
+                #'disabled' : ['mkfile', 'archive'],
+                #'accessControl' : fs_standard_access,
+                #'attributes' : [
+                    #{
+                        #'pattern' : r'\.tmb$',
+                        #'read' : True,
+                        #'write': True,
+                        #'hidden' : True,
+                        #'locked' : True
+                    #},
+                #],
+            #},
+            #{
+                #'id' : 'lffimsa',
+                #'driver' : ElfinderVolumeLocalFileSystem,
+                #'path' : join(settings.MEDIA_ROOT, u'pdf'),
+                #'alias' : 'pdf',
+                #'URL' : '%spdf/' % settings.MEDIA_URL,
+                #'onlyMimes' : ['application/pdf',],
+                #'uploadAllow' : ['application/pdf',],
+                #'uploadDeny' : ['all',],
+                #'uploadMaxSize' : '128m',
+                #'disabled' : ['mkfile', 'archive'],
+                #'accessControl' : fs_standard_access,
+                #'attributes' : [
+                    #{
+                        #'pattern' : r'\.tmb$',
+                        #'read' : True,
+                        #'write': True,
+                        #'hidden' : True,
+                        #'locked' : True
+                    #},
+                #],
+            #}
         ]
     },
     #option set to only allow image files
-    'image' : {
-        'debug' : True,
-        'roots' : [
-            {
-                'id' : 'imageid',
-                'driver' : ElfinderVolumeLocalFileSystem,
-                'path' : join(settings.MEDIA_ROOT, u'images'),
-                'alias' : 'Elfinder images',
-                'URL' : '%simages/' % settings.MEDIA_URL,
-                'onlyMimes' : ['image',],
-                'uploadAllow' : ['image',],
-                'uploadDeny' : ['all',],
-                'uploadMaxSize' : '128m',
-                'disabled' : ['mkfile', 'archive'],
-                'accessControl' : fs_standard_access,
-                'attributes' : [
-                    {
-                        'pattern' : r'\.tmb$',
-                        'read' : True,
-                        'write': True,
-                        'hidden' : True,
-                        'locked' : True
-                    },
-                ],
-            }
-        ]  
-    },
-    'pdf':{
-        'debug':True,
-        'roots':[
-            {
-                'id' : 'pdf',
-                'driver' : ElfinderVolumeLocalFileSystem,
-                'path' : join(settings.MEDIA_ROOT, u'pdf'),
-                'alias' : 'pdf',
-                'URL' : '%spdf/' % settings.MEDIA_URL,
-                'onlyMimes' : ['application/pdf',],
-                'uploadAllow' : ['application/pdf',],
-                'uploadDeny' : ['all',],
-                'uploadMaxSize' : '128m',
-                'disabled' : ['mkfile', 'archive'],
-                'accessControl' : fs_standard_access,
-                'attributes' : [
-                    {
-                        'pattern' : r'\.tmb$',
-                        'read' : True,
-                        'write': True,
-                        'hidden' : True,
-                        'locked' : True
-                    },
-                ],
-            }             
-        ]
-        },
+    #'image' : {
+        #'debug' : True,
+        #'roots' : [
+            #{
+                #'id' : 'imageid',
+                #'driver' : ElfinderVolumeLocalFileSystem,
+                #'path' : join(settings.MEDIA_ROOT, u'images'),
+                #'alias' : 'Elfinder images',
+                #'URL' : '%simages/' % settings.MEDIA_URL,
+                #'onlyMimes' : ['image',],
+                #'uploadAllow' : ['image',],
+                #'uploadDeny' : ['all',],
+                #'uploadMaxSize' : '128m',
+                #'disabled' : ['mkfile', 'archive'],
+                #'accessControl' : fs_standard_access,
+                #'attributes' : [
+                    #{
+                        #'pattern' : r'\.tmb$',
+                        #'read' : True,
+                        #'write': True,
+                        #'hidden' : True,
+                        #'locked' : True
+                    #},
+                #],
+            #}
+        #]
+    #},
+    #'pdf':{
+        #'debug':True,
+        #'roots':[
+            #{
+                #'id' : 'pdf',
+                #'driver' : ElfinderVolumeLocalFileSystem,
+                #'path' : join(settings.MEDIA_ROOT, u'pdf'),
+                #'alias' : 'pdf',
+                #'URL' : '%spdf/' % settings.MEDIA_URL,
+                #'onlyMimes' : ['application/pdf',],
+                #'uploadAllow' : ['application/pdf',],
+                #'uploadDeny' : ['all',],
+                #'uploadMaxSize' : '128m',
+                #'disabled' : ['mkfile', 'archive'],
+                #'accessControl' : fs_standard_access,
+                #'attributes' : [
+                    #{
+                        #'pattern' : r'\.tmb$',
+                        #'read' : True,
+                        #'write': True,
+                        #'hidden' : True,
+                        #'locked' : True
+                    #},
+                #],
+            #}
+        #]
+        #},
     'sftp' : {
         'debug' : True,
         'roots' : [
