@@ -33,10 +33,10 @@ username: admin
 password: password!23456
 ```
 # Demo server 
-```sh
+
 [demo server](http://193.112.194.114:8000/)
 user/password: demo/demo12345678
-```
+
 
 # Author Email
 zhengge2012@gmail.com
