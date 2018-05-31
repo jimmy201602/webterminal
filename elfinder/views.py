@@ -16,6 +16,14 @@ from webterminal.models import ServerInfor
 import re
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from common.views import LoginRequiredMixin
+from django.conf import settings
+import os
+
+def mkdir_p(path):
+    try:
+        os.makedirs(path)
+    except OSError as exc:
+        pass
 
 class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
     """
@@ -173,7 +181,12 @@ class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
                                                                    'key_label': key_label}
             self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         else:
-            self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), u_id, request.session)
+            optinon_sets = self.get_optionset(**kwargs)
+            optinon_sets['roots'][u_id][0]['alias'] = '{0}_tmp_dir'.format(request.user.username)
+            optinon_sets['roots'][u_id][0]['path'] = os.path.join(settings.MEDIA_ROOT, request.user.username)
+            optinon_sets['roots'][u_id][0]['URL'] = '{0}{1}/'.format(settings.MEDIA_URL,request.user.username)
+            mkdir_p(os.path.join(settings.MEDIA_ROOT, request.user.username))
+            self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         return self.output(self.get_command(request.GET), request.GET)
 
     def post(self, request, *args, **kwargs):
@@ -206,7 +219,11 @@ class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
                                                                    'key_label': key_label}
             self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         else:
-            self.elfinder = ElfinderConnector(self.get_optionset(**kwargs), u_id, request.session)
+            optinon_sets = self.get_optionset(**kwargs)
+            optinon_sets['roots'][u_id][0]['alias'] = '{0}_tmp_dir'.format(request.user.username)
+            optinon_sets['roots'][u_id][0]['path'] = os.path.join(settings.MEDIA_ROOT, request.user.username)
+            optinon_sets['roots'][u_id][0]['URL'] = '{0}{1}/'.format(settings.MEDIA_URL,request.user.username)
+            self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         cmd = self.get_command(request.POST)
         
         if not cmd in ['upload']:
