@@ -294,12 +294,12 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         
         return path
     
-    def _save_uploaded(self, uploaded_file, dir_, name, **kwargs):
+    def _save_uploaded(self, uploaded_file, dir_, name,chunk_name, is_first_chunk, **kwargs):
         """
         Save the django UploadedFile object and return its new path
         """
         path = self._join_path(dir_, name)
-        first_chunk = kwargs.get('first_chunk',False)
+        first_chunk = kwargs.get('is_first_chunk',False)
         chunk = kwargs.get('chunk',False)
         if chunk is False:
             target = self._fopen(path, 'wb+')
