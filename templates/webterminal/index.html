@@ -354,7 +354,17 @@
                                     showTab(tabId+'_file_manager');
 
                                 }
-                            } else {
+                            } else if (protocol == "rdp" ) {
+                                if ($("#"+tabId + "_file_manager").length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + "_file_manager" + '"><button class="close closeTab" type="button" >×</button>' + tabId + ' file manager' + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '_file_manager' + '"></div>');
+                                    showTab(tabId+'_file_manager');
+                                    registerCloseEvent();
+                                    rdp_file_manager(tabId,$node.original.hostname);
+                                }else {
+                                    showTab(tabId+'_file_manager');
+                                }
+                            }else{
                                 toastr["error"]("{% trans 'This function hasn\'t finished!' %}");
                             }
                         }
@@ -407,6 +417,33 @@
                         resizable: false,
                         height: '100%',
                         url : '/elfinder/yawd-connector/sftp/'+hostname+'/', // connector URL (REQUIRED)
+                        lang: lng,                   // language (OPTIONAL)
+                        <!--uploadMaxChunkSize: 124445261824,-->
+                        soundPath: "{% static '/elfinder/sounds' %}",
+                        baseUrl : "{% static 'elfinder/' %}",
+                    });
+
+            }
+
+    function rdp_file_manager(tabId,hostname) {
+
+                var loct = window.location.search,
+                    full_lng, locm, lng;
+                    // detect language
+                if (loct && (locm = loct.match(/lang=([a-zA-Z_-]+)/))) {
+                        full_lng = locm[1];
+                } else {
+                        full_lng = (navigator.browserLanguage || navigator.language || navigator.userLanguage);
+                }
+                lng = full_lng.substr(0,2);
+                if (lng == 'ja') lng = 'jp';
+                else if (lng == 'pt') lng = 'pt_BR';
+                else if (lng == 'zh') lng = (full_lng.substr(0,5) == 'zh-tw')? 'zh_TW' : 'zh_CN';
+
+                $('#'+tabId+'_file_manager').elfinder({
+                        resizable: false,
+                        height: '100%',
+                        url : '/elfinder/yawd-connector/default/roots/', // connector URL (REQUIRED)
                         lang: lng,                   // language (OPTIONAL)
                         <!--uploadMaxChunkSize: 124445261824,-->
                         soundPath: "{% static '/elfinder/sounds' %}",
