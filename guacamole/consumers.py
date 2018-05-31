@@ -73,7 +73,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
 
             directory_date_time = now()
             recording_path = os.path.join(MEDIA_ROOT,'{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day))
-            drive_path = os.path.join(recording_path,self.message.reply_channel.name)
+            drive_path = os.path.join(MEDIA_ROOT,self.message.user.username)
             """
             Create recording media file and drive path
             """
@@ -91,10 +91,10 @@ class GuacamoleWebsocket(WebsocketConsumer):
                              recording_name=cache_key,
                              create_recording_path='true',
                              enable_wallpaper='true',
-                             ignore_cert='true',)
-                             #enable_drive='true',
-                             #drive_path=recording_path,
-                             #create_drive_path='true')
+                             ignore_cert='true',
+                             enable_drive='true',
+                             drive_path=drive_path,
+                             create_drive_path='true')
                              #security='tls',)
 
             self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
