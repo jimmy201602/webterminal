@@ -11,7 +11,7 @@
 <!-- Guacamole -->
 <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert.min.js' %}"></script>
-
+<script type="text/javascript" src="{% static 'plugins/mousetrap/mousetrap.min.js' %}"></script>
 <!-- Display -->
 <div id="display"></div>
 
@@ -91,6 +91,17 @@ keyboard.onkeyup = function (keysym) {
         guac.sendKeyEvent(0, keysym);
     };
 
+Mousetrap.bind('ctrl+shift+alt', function(e) {
+    swal({
+      content: {
+        element: "input",
+        attributes: {
+          placeholder: "Type your password",
+          type: "textarea",
+        },
+      },
+    });
+});
 /* ]]> */ </script>
 </body>
 </html>
