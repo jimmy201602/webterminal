@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <title>Guacamole connection</title>
     {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'plugins/sweetalert/sweetalert.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'plugins/sweetalert/sweetalert2.min.css' %}">
 </head>
 <body>
 <!--<h1>Guacamole Remote Desktop</h1>-->
 <!-- Guacamole -->
 <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert2.all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/mousetrap/mousetrap.min.js' %}"></script>
 <!-- Display -->
 <div id="display"></div>
@@ -57,16 +57,22 @@
             //var STATE_CONNECTED     = 3;
             //var STATE_DISCONNECTING = 4;
             //var STATE_DISCONNECTED  = 5;
+
             swal({
-                title: "Your connection has been lost or killed!",
-                text: "Do you want to reconnect！",
-                buttons: ["Cancel", "Reconnect"],
-                })
-                .then((reconnect) => {
-                if (reconnect) {
-                    document.location.reload();
-                }
-              });
+              title: 'Your connection has been lost or killed!',
+              text: "Do you want to reconnect！",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Reconnect',
+              cancelButtonText: 'Cancel'
+            }).then((result) => {
+              if (result.value) {
+                document.location.reload();
+              }
+            })
+
         }
     }
 
@@ -91,16 +97,30 @@ keyboard.onkeyup = function (keysym) {
         guac.sendKeyEvent(0, keysym);
     };
 
+function sendString(client, str) {
+    for (var i=0; i < str.length; i++) {
+        var codepoint = str.charCodeAt(i);
+        var keysym;
+        if (codepoint >= 0x0100)
+            keysym = 0x01000000 | codepoint;
+        else
+            keysym = codepoint;
+        client.sendKeyEvent(1, keysym);
+        <!--client.sendKeyEvent(0, keysym);-->
+
+    }
+
+}
+
 Mousetrap.bind('ctrl+shift+alt', function(e) {
     swal({
-      content: {
-        element: "input",
-        attributes: {
-          placeholder: "Type your password",
-          type: "textarea",
-        },
-      },
-    });
+      title: 'clipboard',
+      input: 'textarea',
+      confirmButtonText: 'paste data',
+    }).then(function(text) {
+        console.log(text.value);
+        sendString(guac,text.value)
+    })
 });
 /* ]]> */ </script>
 </body>
