@@ -184,7 +184,7 @@ class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][u_id][0]['alias'] = '{0}_tmp_dir'.format(request.user.username)
             optinon_sets['roots'][u_id][0]['path'] = os.path.join(settings.MEDIA_ROOT, request.user.username,'Download')
-            optinon_sets['roots'][u_id][0]['URL'] = '{0}{1}/'.format(settings.MEDIA_URL,request.user.username)
+            optinon_sets['roots'][u_id][0]['URL'] = '{0}{1}/{2}/'.format(settings.MEDIA_URL,request.user.username,'Download')
             mkdir_p(os.path.join(settings.MEDIA_ROOT, request.user.username))
             self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         return self.output(self.get_command(request.GET), request.GET)
@@ -222,7 +222,7 @@ class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][u_id][0]['alias'] = '{0}_tmp_dir'.format(request.user.username)
             optinon_sets['roots'][u_id][0]['path'] = os.path.join(settings.MEDIA_ROOT, request.user.username, 'Download')
-            optinon_sets['roots'][u_id][0]['URL'] = '{0}{1}/'.format(settings.MEDIA_URL,request.user.username)
+            optinon_sets['roots'][u_id][0]['URL'] = '{0}{1}/{2}/'.format(settings.MEDIA_URL,request.user.username,'Download')
             self.elfinder = ElfinderConnector(optinon_sets, u_id, request.session)
         cmd = self.get_command(request.POST)
         
