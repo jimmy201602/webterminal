@@ -56,6 +56,7 @@
             };
             f.onend = function () {
                 console.log(3,e);
+                //guac.setClipboard = e;
             }
         }
     }
@@ -130,20 +131,30 @@ Mousetrap.bind('ctrl+shift+alt', function(e) {
       input: 'textarea',
       confirmButtonText: 'paste data',
     }).then(function(text) {
-        console.log('copy data',text.value);
+        //console.log('copy data',text.value);
         //sendString(guac,text.value)
         <!--guac.setClipboard = text.value;-->
         //guac.sendkeys("Ctrl+V");
         var data = text.value;
         var stream = guac.createClipboardStream("text/plain");
         var writer = new Guacamole.StringWriter(stream);
+        //console.log(2,guac.setClipboard)
+        if (data != undefined){
+            // Send text chunks
+            <!--for (var i=0; i<data.length; i += 4096)-->
+                <!--writer.sendText(data.substring(i, i+4096));-->
 
-        // Send text chunks
-        for (var i=0; i<data.length; i += 4096)
-            writer.sendText(data.substring(i, i+4096));
+            // Close stream
+            <!--writer.sendEnd();-->
+            <!--guac.clipboardData = data;-->
+            c = new Guacamole.StringWriter(stream);
+            c.sendText(data);
+            c.sendEnd();
+            guac.setClipboard = data;
+            console.log('set clipboard');
+            console.log('data',data);
+        }
 
-        // Close stream
-        writer.sendEnd();
     })
 });
 /* ]]> */ </script>
