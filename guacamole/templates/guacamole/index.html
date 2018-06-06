@@ -46,7 +46,19 @@
     window.onunload = function() {
         guac.disconnect();
     }
-
+    guac.onclipboard = function(stream, mimetype){
+        var f;
+        if (/^text\//.exec(mimetype)) {
+            f = new Guacamole.StringReader(stream);
+            var e = "";
+            f.ontext = function (a) {
+                e += a
+            };
+            f.onend = function () {
+                console.log(3,e);
+            }
+        }
+    }
     //state change
     guac.onstatechange = function(state){
         if (state == 5){
@@ -118,8 +130,10 @@ Mousetrap.bind('ctrl+shift+alt', function(e) {
       input: 'textarea',
       confirmButtonText: 'paste data',
     }).then(function(text) {
-        console.log(text.value);
-        sendString(guac,text.value)
+        console.log(1,text.value);
+        //sendString(guac,text.value)
+        <!--guac.setClipboard = text.value;-->
+        //guac.sendkeys("Ctrl+V");
     })
 });
 /* ]]> */ </script>
