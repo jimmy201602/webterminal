@@ -110,21 +110,6 @@ keyboard.onkeyup = function (keysym) {
         guac.sendKeyEvent(0, keysym);
     };
 
-function sendString(client, str) {
-    for (var i=0; i < str.length; i++) {
-        var codepoint = str.charCodeAt(i);
-        var keysym;
-        if (codepoint >= 0x0100)
-            keysym = 0x01000000 | codepoint;
-        else
-            keysym = codepoint;
-        client.sendKeyEvent(1, keysym);
-        <!--client.sendKeyEvent(0, keysym);-->
-
-    }
-
-}
-
 Mousetrap.bind('ctrl+shift+alt', function(e) {
     swal({
       title: 'clipboard',
@@ -136,34 +121,21 @@ Mousetrap.bind('ctrl+shift+alt', function(e) {
         <!--guac.setClipboard = text.value;-->
         //guac.sendkeys("Ctrl+V");
         var data = text.value;
-        var stream = guac.createClipboardStream("text/plain");
-        var writer = new Guacamole.StringWriter(stream);
+        <!--var stream = guac.createClipboardStream("text/plain");-->
+        <!--var writer = new Guacamole.StringWriter(stream);-->
         //console.log(2,guac.setClipboard)
         if (data != undefined){
+            //console.log('set clipboard');
+            //console.log('data',data);
+            var stream = guac.createClipboardStream("text/plain");
+            var writer = new Guacamole.StringWriter(stream);
+
             // Send text chunks
-            <!--for (var i=0; i<data.length; i += 4096)-->
-                <!--writer.sendText(data.substring(i, i+4096));-->
+            for (var i = 0; i < data.length; i += 4096)
+            writer.sendText(data.substring(i, i + 4096));
 
             // Close stream
-            <!--writer.sendEnd();-->
-            <!--guac.clipboardData = data;-->
-            <!--c = new Guacamole.StringWriter(stream);-->
-            <!--c.sendText(data);-->
-            <!--c.sendEnd();-->
-            <!--guac.setClipboard = data;-->
-            console.log('set clipboard');
-            console.log('data',data);
-            <!--guac.sendMessage("clipboard", stream.index, "text/plain");-->
-            console.log(guac);
-    <!--var stream = guac.createClipboardStream("text/plain");-->
-    <!--var writer = new Guacamole.StringWriter(stream);-->
-
-    <!--// Send text chunks-->
-    <!--for (var i = 0; i < data.length; i += 4096)-->
-    <!--writer.sendText(data.substring(i, i + 4096));-->
-
-    <!--// Close stream-->
-    <!--writer.sendEnd();-->
+            writer.sendEnd();
         }
 
     })
