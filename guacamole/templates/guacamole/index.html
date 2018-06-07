@@ -12,9 +12,10 @@
 <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert2.all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/mousetrap/mousetrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'plugins/clipboard.js/clipboard.min.js' %}"></script>
 <!-- Display -->
-<div id="display"></div>
-
+<div id="display">
+</div>
 <!-- Init -->
 <script type="text/javascript"> /* <![CDATA[ */
 
@@ -57,6 +58,9 @@
             f.onend = function () {
                 console.log(3,e);
                 //guac.setClipboard = e;
+                <!--document.querySelector('textarea').select();-->
+                document.getElementsByTagName('textarea').innerText =e;
+                <!--document.execCommand('copy');-->
             }
         }
     }
@@ -111,10 +115,15 @@ keyboard.onkeyup = function (keysym) {
     };
 
 Mousetrap.bind('ctrl+shift+alt', function(e) {
+    var data = document.getElementsByTagName('textarea').innerText;
+    if (data == undefined){
+        data = ''
+    }
     swal({
       title: 'clipboard',
       input: 'textarea',
       confirmButtonText: 'paste data',
+      inputValue: data,
     }).then(function(text) {
         //console.log('copy data',text.value);
         //sendString(guac,text.value)
@@ -140,6 +149,12 @@ Mousetrap.bind('ctrl+shift+alt', function(e) {
 
     })
 });
+var textarea = document.createElement("textarea");
+textarea.textContent = '';
+textarea.style.display = "none";  // Prevent scrolling to bottom of page in MS Edge.
+textarea.setAttribute('id','textarea');
+document.body.appendChild(textarea);
+textarea.select();
 /* ]]> */ </script>
 </body>
 </html>
