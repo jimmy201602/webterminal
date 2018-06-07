@@ -147,15 +147,25 @@ Mousetrap.bind('ctrl+shift+alt', function(e) {
             // Close stream
             <!--writer.sendEnd();-->
             <!--guac.clipboardData = data;-->
-            c = new Guacamole.StringWriter(stream);
-            c.sendText(data);
-            c.sendEnd();
-            guac.setClipboard = data;
+            <!--c = new Guacamole.StringWriter(stream);-->
+            <!--c.sendText(data);-->
+            <!--c.sendEnd();-->
+            <!--guac.setClipboard = data;-->
             console.log('set clipboard');
             console.log('data',data);
-        }
+            guac.sendMessage("clipboard", stream.index, mimetype);
+    <!--var stream = guac.createClipboardStream("text/plain");-->
+    <!--var writer = new Guacamole.StringWriter(stream);-->
 
-    })
+    <!--// Send text chunks-->
+    <!--for (var i = 0; i < data.length; i += 4096)-->
+    <!--writer.sendText(data.substring(i, i + 4096));-->
+
+    <!--// Close stream-->
+    <!--writer.sendEnd();-->
+        <!--}-->
+
+    <!--})-->
 });
 /* ]]> */ </script>
 </body>
