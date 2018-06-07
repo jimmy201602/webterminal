@@ -114,6 +114,21 @@ keyboard.onkeyup = function (keysym) {
         guac.sendKeyEvent(0, keysym);
     };
 
+function sendString(client, str) {
+    for (var i=0; i < str.length; i++) {
+        var codepoint = str.charCodeAt(i);
+        var keysym;
+        if (codepoint >= 0x0100)
+            keysym = 0x01000000 | codepoint;
+        else
+            keysym = codepoint;
+        client.sendKeyEvent(1, keysym);
+        <!--client.sendKeyEvent(0, keysym);-->
+
+    }
+
+}
+
 Mousetrap.bind('ctrl+shift+alt', function(e) {
     var data = document.getElementsByTagName('textarea').innerText;
     if (data == undefined){
