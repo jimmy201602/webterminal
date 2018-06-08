@@ -19,6 +19,20 @@
 <!-- Init -->
 <script type="text/javascript"> /* <![CDATA[ */
 
+// convert unicode
+function encodeUnicode(str) {
+    var res = [];
+    for ( var i=0; i<str.length; i++ ) {
+    res[i] = ( "00" + str.charCodeAt(i).toString(16) ).slice(-4);
+    }
+    return "\\u" + res.join("\\u");
+}
+
+// decode unicode
+function decodeUnicode(str) {
+    str = str.replace(/\\/g, "%");
+    return unescape(str);
+}
     // Get display div from document
     var display = document.getElementById("display");
 
@@ -59,7 +73,7 @@
                 console.log(3,e);
                 //guac.setClipboard = e;
                 <!--document.querySelector('textarea').select();-->
-                document.getElementsByTagName('textarea').innerText =e;
+                document.getElementsByTagName('textarea').innerText =decodeUnicode(e);
                 <!--document.execCommand('copy');-->
             }
         }
@@ -151,6 +165,7 @@ Mousetrap.bind('ctrl+shift+alt', function(e) {
         if (data != undefined){
             //console.log('set clipboard');
             //console.log('data',data);
+            <!--sendString(guac,data);-->
             var stream = guac.createClipboardStream("text/plain");
             var writer = new Guacamole.StringWriter(stream);
 
@@ -160,6 +175,7 @@ Mousetrap.bind('ctrl+shift+alt', function(e) {
 
             // Close stream
             writer.sendEnd();
+            guac.setClipboard(data);
         }
 
     })
