@@ -17,22 +17,23 @@
 <div id="display">
 </div>
 <!-- Init -->
-<script type="text/javascript"> /* <![CDATA[ */
+<script type="text/javascript">
 
-// convert unicode
-function encodeUnicode(str) {
-    var res = [];
-    for ( var i=0; i<str.length; i++ ) {
-    res[i] = ( "00" + str.charCodeAt(i).toString(16) ).slice(-4);
+    // convert unicode
+    function encodeUnicode(str) {
+        var res = [];
+        for ( var i=0; i<str.length; i++ ) {
+        res[i] = ( "00" + str.charCodeAt(i).toString(16) ).slice(-4);
+        }
+        return "\\u" + res.join("\\u");
     }
-    return "\\u" + res.join("\\u");
-}
 
-// decode unicode
-function decodeUnicode(str) {
-    str = str.replace(/\\/g, "%");
-    return unescape(str);
-}
+    // decode unicode
+    function decodeUnicode(str) {
+        str = str.replace(/\\/g, "%");
+        return unescape(str);
+    }
+
     // Get display div from document
     var display = document.getElementById("display");
 
@@ -50,7 +51,6 @@ function decodeUnicode(str) {
 
     // Error handler
     guac.onerror = function(error) {
-        <!--alert(error);-->
         console.log(error);
     };
 
@@ -70,11 +70,7 @@ function decodeUnicode(str) {
                 e += a
             };
             f.onend = function () {
-                //console.log(3,e);
-                //guac.setClipboard = e;
-                <!--document.querySelector('textarea').select();-->
                 document.getElementsByTagName('textarea').innerText =decodeUnicode(e);
-                <!--document.execCommand('copy');-->
             }
         }
     }
@@ -124,68 +120,62 @@ function decodeUnicode(str) {
     };
 
 
-keyboard.onkeyup = function (keysym) {
-        guac.sendKeyEvent(0, keysym);
+    keyboard.onkeyup = function (keysym) {
+            guac.sendKeyEvent(0, keysym);
     };
 
-function sendString(client, str) {
-    for (var i=0; i < str.length; i++) {
-        var codepoint = str.charCodeAt(i);
-        var keysym;
-        if (codepoint >= 0x0100)
-            keysym = 0x01000000 | codepoint;
-        else
-            keysym = codepoint;
-        client.sendKeyEvent(1, keysym);
-        <!--client.sendKeyEvent(0, keysym);-->
+    function sendString(client, str) {
+        for (var i=0; i < str.length; i++) {
+            var codepoint = str.charCodeAt(i);
+            var keysym;
+            if (codepoint >= 0x0100)
+                keysym = 0x01000000 | codepoint;
+            else
+                keysym = codepoint;
+            client.sendKeyEvent(1, keysym);
 
-    }
-
-}
-
-Mousetrap.bind('ctrl+shift+alt', function(e) {
-    var data = document.getElementsByTagName('textarea').innerText;
-    if (data == undefined){
-        data = ''
-    }
-    swal({
-      title: 'clipboard',
-      input: 'textarea',
-      confirmButtonText: 'paste data',
-      inputValue: data,
-    }).then(function(text) {
-        //console.log('copy data',text.value);
-        //sendString(guac,text.value)
-        <!--guac.setClipboard = text.value;-->
-        //guac.sendkeys("Ctrl+V");
-        var data = text.value;
-        <!--var stream = guac.createClipboardStream("text/plain");-->
-        <!--var writer = new Guacamole.StringWriter(stream);-->
-        //console.log(2,guac.setClipboard)
-        if (data != undefined){
-            //console.log('set clipboard');
-            //console.log('data',data);
-            <!--sendString(guac,data);-->
-            var stream = guac.createClipboardStream("text/plain");
-            var writer = new Guacamole.StringWriter(stream);
-
-            // Send text chunks
-            for (var i = 0; i < data.length; i += 4096)
-            writer.sendText(data.substring(i, i + 4096));
-
-            // Close stream
-            writer.sendEnd();
-            guac.setClipboard(data);
         }
+    }
 
-    })
-});
-var textarea = document.createElement("textarea");
-textarea.textContent = '';
-textarea.style.display = "none";  // Prevent scrolling to bottom of page in MS Edge.
-textarea.setAttribute('id','textarea');
-document.body.appendChild(textarea);
-textarea.select();
-/* ]]> */ </script>
+    Mousetrap.bind('ctrl+shift+alt', function(e) {
+        var data = document.getElementsByTagName('textarea').innerText;
+        if (data == undefined){
+            data = ''
+        }
+        swal({
+          title: 'clipboard',
+          input: 'textarea',
+          confirmButtonText: 'copy to clipboard',
+          inputValue: data,
+          cancelButtonText: 'send data',
+          <!--showCancelButton: true,-->
+          <!--cancelButtonColor: '#d33',-->
+        }).then(function(result) {
+            if (result.value){
+                var data = result.value;
+                if (data != undefined){
+                    var stream = guac.createClipboardStream("text/plain");
+                    var writer = new Guacamole.StringWriter(stream);
+
+                    // Send text chunks
+                    for (var i = 0; i < data.length; i += 4096)
+                    writer.sendText(data.substring(i, i + 4096));
+
+                    // Close stream
+                    writer.sendEnd();
+                    guac.setClipboard(data);
+                }
+            }else if (result.dismiss === swal.DismissReason.cancel) {
+                console.log(result.value);
+          }
+
+        })
+    });
+    var textarea = document.createElement("textarea");
+    textarea.textContent = '';
+    textarea.style.display = "none";  // Prevent scrolling to bottom of page in MS Edge.
+    textarea.setAttribute('id','textarea');
+    document.body.appendChild(textarea);
+</script>
 </body>
 </html>
