@@ -29,7 +29,7 @@ import traceback
 
 class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
-    permission_required = 'webterminal.can_connect_serverinfo'
+    permission_required = 'common.can_connect_serverinfo'
     raise_exception = False
     login_url = reverse_lazy('admin:login')
 
@@ -55,7 +55,7 @@ class Commands(LoginRequiredMixin,TemplateView):
             try:
                 data = json.loads(request.body)
                 if data['action'] == 'create':
-                    if not request.user.has_perm('webterminal.can_add_commandssequence'):
+                    if not request.user.has_perm('common.can_add_commandssequence'):
                         raise PermissionDenied(_('403 Forbidden'))
                     obj = CommandsSequence.objects.create(name=data['name'],commands=data['commands'])
                     for group in data['group']:
@@ -63,7 +63,7 @@ class Commands(LoginRequiredMixin,TemplateView):
                     obj.save()
                     return JsonResponse({'status':True,'message':'%s create success!' %(smart_str(data.get('name',None)))})
                 elif data['action'] == 'update':
-                    if not request.user.has_perm('webterminal.can_change_commandssequence'):
+                    if not request.user.has_perm('common.can_change_commandssequence'):
                         raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = CommandsSequence.objects.get(id=data.get('id',None))
@@ -78,7 +78,7 @@ class Commands(LoginRequiredMixin,TemplateView):
                     except ObjectDoesNotExist:
                         return JsonResponse({'status':False,'message':'Request object not exist!'})
                 elif data['action'] == 'delete':
-                    if not request.user.has_perm('webterminal.can_delete_commandssequence'):
+                    if not request.user.has_perm('common.can_delete_commandssequence'):
                         raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = CommandsSequence.objects.get(id=data.get('id',None))
@@ -103,7 +103,7 @@ class Commands(LoginRequiredMixin,TemplateView):
 
 class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/commandexecute.html'
-    permission_required = 'webterminal.can_execute_commandssequence'
+    permission_required = 'common.can_execute_commandssequence'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -118,7 +118,7 @@ class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
 class CommandExecuteList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = CommandsSequence
     template_name = 'webterminal/commandslist.html'
-    permission_required = 'webterminal.can_view_commandssequence'
+    permission_required = 'common.can_view_commandssequence'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -128,7 +128,7 @@ class CommandExecuteList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
         
 
 class CommandExecuteDetailApi(LoginRequiredMixin,PermissionRequiredMixin,View):
-    permission_required = 'webterminal.can_execute_commandssequence'
+    permission_required = 'common.can_execute_commandssequence'
     raise_exception = True
 
     def post(self,request):
@@ -154,13 +154,13 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                 fields = [field.name for field in Credential._meta.get_fields()]
                 [ data.pop(field) for field in data.keys() if field not in fields]
                 if action == 'create':
-                    if not request.user.has_perm('webterminal.can_add_credential'):
+                    if not request.user.has_perm('common.can_add_credential'):
                         raise PermissionDenied(_('403 Forbidden'))
                     obj = Credential.objects.create(**data)
                     obj.save()
                     return JsonResponse({'status':True,'message':'Credential %s was created!' %(obj.name)})
                 elif action == 'update':
-                    if not request.user.has_perm('webterminal.can_change_credential'):
+                    if not request.user.has_perm('common.can_change_credential'):
                         raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = Credential.objects.get(id=id)
@@ -170,7 +170,7 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                     except ObjectDoesNotExist:
                         return JsonResponse({'status':False,'message':'Request object not exist!'})
                 elif action == 'delete':
-                    if not request.user.has_perm('webterminal.can_delete_credential'):
+                    if not request.user.has_perm('common.can_delete_credential'):
                         raise PermissionDenied(_('403 Forbidden'))
                     try:
                         obj = Credential.objects.get(id=id)
@@ -190,11 +190,11 @@ class CredentialList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     
     model = Credential
     template_name = 'webterminal/credentiallist.html'
-    permission_required = 'webterminal.can_view_credential'
+    permission_required = 'common.can_view_credential'
     raise_exception = True
     
 class CredentialDetailApi(LoginRequiredMixin,PermissionRequiredMixin,View):
-    permission_required = 'webterminal.can_view_credential'
+    permission_required = 'common.can_view_credential'
     raise_exception = True
 
     def post(self,request):
@@ -210,7 +210,7 @@ class CredentialDetailApi(LoginRequiredMixin,PermissionRequiredMixin,View):
 
 class ServerCreate(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/servercreate.html'
-    permission_required = 'webterminal.can_add_serverinfo'
+    permission_required = 'common.can_add_serverinfo'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -222,7 +222,7 @@ class ServerlList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     
     model = ServerInfor
     template_name = 'webterminal/serverlist.html'
-    permission_required = 'webterminal.can_view_serverinfo'
+    permission_required = 'common.can_view_serverinfo'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -233,7 +233,7 @@ class ServerlList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 class GroupList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = ServerGroup
     template_name = 'webterminal/grouplist.html'
-    permission_required = 'webterminal.can_view_servergroup'
+    permission_required = 'common.can_view_servergroup'
     raise_exception = True
     
     def get_context_data(self, **kwargs):
@@ -243,7 +243,7 @@ class GroupList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
 
 class GroupCreate(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/groupcreate.html'
-    permission_required = 'webterminal.can_add_servergroup'
+    permission_required = 'common.can_add_servergroup'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -255,13 +255,13 @@ class GroupCreate(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
 class SshLogList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = Log
     template_name = 'webterminal/sshlogslist.html'
-    permission_required = 'webterminal.can_view_log'
+    permission_required = 'common.can_view_log'
     raise_exception = True
 
 class SshLogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogplay.html'
-    permission_required = 'webterminal.can_play_log'
+    permission_required = 'common.can_play_log'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -273,11 +273,11 @@ class SshLogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
 class SshTerminalMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'webterminal/sshlogmonitor.html'
-    permission_required = 'webterminal.can_monitor_serverinfo'
+    permission_required = 'common.can_monitor_serverinfo'
     raise_exception = True
 
 class SshTerminalKill(LoginRequiredMixin,PermissionRequiredMixin,View):
-    permission_required = 'webterminal.can_kill_serverinfo'
+    permission_required = 'common.can_kill_serverinfo'
     raise_exception = True
 
     def post(self,request):
