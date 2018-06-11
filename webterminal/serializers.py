@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from webterminal.models import ServerInfor,ServerGroup,Credential,CommandsSequence
+from common.models import ServerInfor,ServerGroup,Credential,CommandsSequence
 
 class ServerInforSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from webterminal.serializers import ServerGroupSerializer,ServerInforSerializer,CommandsSequenceSerializer,CredentialSerializer
-from webterminal.models import ServerGroup,ServerInfor,CommandsSequence,Credential
+from common.models import ServerGroup,ServerInfor,CommandsSequence,Credential
 
 class ServerGroupViewSet(viewsets.ModelViewSet):
     queryset = ServerGroup.objects.all()

@@ -6,7 +6,7 @@ except ImportError:
     import json
 from django.utils.encoding import smart_unicode
 import threading
-from webterminal.models import ServerInfor
+from common.models import ServerInfor
 
 class ShellHandler(object):
 

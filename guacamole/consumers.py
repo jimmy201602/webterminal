@@ -16,7 +16,7 @@ try:
 except ImportError:
     import json
 from django.core.exceptions import ObjectDoesNotExist
-from webterminal.models import ServerInfor,Log
+from common.models import ServerInfor,Log
 from django.utils.timezone import now
 from django.contrib.auth.models import User
 from webterminal.settings import MEDIA_ROOT

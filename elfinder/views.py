@@ -12,7 +12,7 @@ from elfinder.connector import ElfinderConnector
 from elfinder.conf import settings as ls
 from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
-from webterminal.models import ServerInfor
+from common.models import ServerInfor
 import re
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from common.views import LoginRequiredMixin
