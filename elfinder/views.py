@@ -29,7 +29,7 @@ class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
     """
     Default elfinder backend view
     """
-    permission_required = 'webterminal.can_filemanage_serverinfo'
+    permission_required = 'common.can_filemanage_serverinfo'
     raise_exception = True
     
     def render_to_response(self, context, **kwargs):

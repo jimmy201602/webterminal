@@ -32,7 +32,7 @@ pending_read_request = threading.Event()
 
 
 class Index(LoginRequiredMixin,PermissionRequiredMixin,View):
-    permission_required = 'webterminal.can_connect_serverinfo'
+    permission_required = 'common.can_connect_serverinfo'
 
     def get(self,request,id):
         return render_to_response('guacamole/index.html',locals())
@@ -40,7 +40,7 @@ class Index(LoginRequiredMixin,PermissionRequiredMixin,View):
 class LogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'guacamole/logplay.html'
-    permission_required = 'webterminal.can_play_log'
+    permission_required = 'common.can_play_log'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -50,7 +50,7 @@ class LogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
         return context
 
 class GuacamoleKill(LoginRequiredMixin,PermissionRequiredMixin,View):
-    permission_required = 'webterminal.can_kill_serverinfo'
+    permission_required = 'common.can_kill_serverinfo'
     raise_exception = True
 
     def post(self,request):
@@ -80,7 +80,7 @@ class GuacamoleKill(LoginRequiredMixin,PermissionRequiredMixin,View):
 class GuacmoleMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     model = Log
     template_name = 'guacamole/guacamolemonitor.html'
-    permission_required = 'webterminal.can_play_log'
+    permission_required = 'common.can_play_log'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
