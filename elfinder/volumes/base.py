@@ -1156,7 +1156,7 @@ class ElfinderVolumeDriver(object):
         root_cache = None
         
         if stat_cache is None or root_cache != self._root:
-            #print cache_key, stat_cache, root_cache, self._root
+            #print(cache_key, stat_cache, root_cache, self._root)
             stat = self._stat(path)
             stat['hash'] = self.encode(path)
     

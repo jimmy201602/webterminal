@@ -98,7 +98,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
             except socket.timeout:
                 pass
             except Exception,e:
-                print traceback.print_exc()
+                print(traceback.print_exc())
                 channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e)]) })
 
     finally:
@@ -168,7 +168,7 @@ class SshTerminalThread(threading.Thread):
                 
                 if isinstance(data,(list,tuple)):
                     if data[0] == 'close':
-                        print 'close threading'
+                        print('close threading')
                         self.chan.close()
                         self.stop()
                     elif data[0] == 'set_size':
@@ -186,7 +186,7 @@ class SshTerminalThread(threading.Thread):
                     try:
                         self.chan.send(str(data))
                     except socket.error:
-                        print 'close threading error'
+                        print('close threading error')
                         self.stop()
 
 class InterActiveShellThread(threading.Thread):

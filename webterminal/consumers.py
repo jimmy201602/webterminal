@@ -18,6 +18,7 @@ from django.contrib.auth.models import User
 from django.utils.timezone import now
 import os
 from channels import Group
+import traceback
 
 class webterminal(WebsocketConsumer):
     
@@ -133,8 +134,7 @@ class webterminal(WebsocketConsumer):
             self.closessh()
             self.close()
         except Exception,e:
-            import traceback
-            print traceback.print_exc()
+            print(traceback.print_exc())
             self.closessh()
             self.close()
 
