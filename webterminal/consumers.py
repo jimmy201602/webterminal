@@ -10,7 +10,7 @@ from webterminal.interactive import interactive_shell,get_redis_instance,SshTerm
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
-from webterminal.models import ServerInfor,ServerGroup,CommandsSequence,Log
+from common.models import ServerInfor,ServerGroup,CommandsSequence,Log
 from webterminal.sudoterminal import ShellHandlerThread
 import ast 
 import time

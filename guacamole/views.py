@@ -14,7 +14,7 @@ from guacamole.client import GuacamoleClient
 from django.views.generic import View
 from django.views.generic.detail import DetailView
 from webterminal.settings import MEDIA_URL
-from webterminal.models import Log
+from common.models import Log
 from common.views import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from guacamole.instruction import GuacamoleInstruction as Instruction

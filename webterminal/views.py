@@ -1,7 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render_to_response,HttpResponse
 from django.http import JsonResponse
-from webterminal.models import ServerGroup,CommandsSequence,Credential,ServerInfor,Log
+from common.models import ServerGroup,CommandsSequence,Credential,ServerInfor,Log
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 try:

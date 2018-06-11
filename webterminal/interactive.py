@@ -25,7 +25,7 @@ import errno
 import subprocess
 from django.contrib.auth.models import User 
 from django.utils import timezone
-from webterminal.models import Log
+from common.models import Log
 from webterminal.settings import MEDIA_ROOT
 import threading
 import ast
