@@ -25,6 +25,7 @@ from django.core.exceptions import  PermissionDenied
 from permission.models import Permission
 from django.urls import reverse_lazy
 from common.views import LoginRequiredMixin
+import traceback
 
 class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
@@ -95,8 +96,7 @@ class Commands(LoginRequiredMixin,TemplateView):
             except KeyError:
                 return JsonResponse({'status':False,'message':"Invalid parameter,Please report it to the adminstrator!" })
             except Exception,e:
-                import traceback
-                print traceback.print_exc()
+                print(traceback.print_exc())
                 return JsonResponse({'status':False,'message':'Some error happend! Please report it to the adminstrator! Error info:%s' %(smart_str(e)) })
         else:
             pass
@@ -183,8 +183,7 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
             except IntegrityError:
                 return JsonResponse({'status':False,'message':'Credential %s already exist! Please use another name instead!' %(smart_str(json.loads(request.body).get('name',None)))})
             except Exception,e:
-                import traceback
-                print traceback.print_exc()
+                print(traceback.print_exc())
                 return JsonResponse({'status':False,'message':'Error happend! Please report it to adminstrator! Error:%s' %(smart_str(e))})
             
 class CredentialList(LoginRequiredMixin,PermissionRequiredMixin,ListView):

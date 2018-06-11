@@ -93,7 +93,7 @@ class GuacamoleThreadWrite(GuacamoleThread):
                 if isinstance(data,(long,int)) and data == 1:
                     pass
                 else:
-                    #print 'write',data
+                    #print('write',data)
                     with self.write_lock:
                         self.client.send(str(data))
             else:

@@ -37,14 +37,14 @@ class ShellHandler(object):
         print('STDOUT:')
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDOUT:')])})
         for line in out_buf:
-            print line, "end="
+            print(line, "end=")
             channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line.strip('\n'))])})
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDOUT')])})
         print('end of STDOUT')
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDERR:')])})
         print('STDERR:')
         for line in err_buf:
-            print line, "end="
+            print(line, "end=")
             channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line, "end=")])})
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDERR')])})
         print('end of STDERR')

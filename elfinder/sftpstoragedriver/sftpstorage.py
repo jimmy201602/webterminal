@@ -19,7 +19,7 @@ from django.utils.six import BytesIO
 from django.utils.six.moves.urllib import parse as urlparse
 
 from elfinder.sftpstoragedriver.utils import setting
-
+import traceback
 
 @deconstructible
 class SFTPStorage(Storage):
@@ -77,7 +77,7 @@ class SFTPStorage(Storage):
             else:
                 raise paramiko.AuthenticationException(e)
         except Exception as e:
-            print(e)
+            print(traceback.print_exc())
 
         if not hasattr(self, '_sftp'):
             self._sftp = self._ssh.open_sftp()

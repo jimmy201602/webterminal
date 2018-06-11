@@ -521,7 +521,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
                 raise Exception('Could not create temporary directory')
             else:
                 shutil.rmtree(quarantine_dir)
-        #print os.getcwd()
+        #print(os.getcwd())
         os.mkdir(quarantine_dir)
         
         for file_ in files:
@@ -612,7 +612,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         """
         Extract files from archive.
         """
-        #print os.getcwd() 
+        #print(os.getcwd())
         archive_name = self._basename(path)
         archive_dir = self._dirname(path)
         quarantine_dir = self._join_path(self._quarantine, u'%s%s' % (str(time.time()).replace(' ', '_'), archive_name))

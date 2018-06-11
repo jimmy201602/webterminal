@@ -112,7 +112,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
 
     def disconnect(self, message,id):
         #close threading
-        print 'disconnect'
+        print('disconnect')
         try:
             audit_log = Log.objects.get(channel=self.message.reply_channel.name)
             audit_log.is_finished = True
@@ -185,7 +185,7 @@ class GuacamoleMonitor(GuacamoleWebsocket):
 
     def disconnect(self, message,id):
         #close threading
-        print 'disconnect'
+        print('disconnect')
         try:
             log_object = Log.objects.get(id=id)
             cache_key = log_object.gucamole_client_id
