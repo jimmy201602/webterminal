@@ -252,9 +252,9 @@ class GroupCreate(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
         return context
 
 
-class SshLogList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+class LogList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     model = Log
-    template_name = 'webterminal/sshlogslist.html'
+    template_name = 'webterminal/logslist.html'
     permission_required = 'common.can_view_log'
     raise_exception = True
 
