@@ -19,7 +19,7 @@ from webterminal.views import (Index,Commands,CommandExecute,
                                CommandExecuteList,CommandExecuteDetailApi,
                                CredentialCreate,CredentialList,CredentialDetailApi,
                                ServerCreate,ServerlList,GroupList,GroupCreate,
-                               SshLogList,SshLogPlay,SshTerminalKill,SshTerminalMonitor)
+                               LogList,SshLogPlay,SshTerminalKill,SshTerminalMonitor)
 from django.contrib.auth.views import LoginView,LogoutView
 
 #Webterminal api
@@ -56,7 +56,7 @@ urlpatterns = [
     url(r'^serverlist/$',ServerlList.as_view(),name='serverlist'),
     url(r'^groupcreate/$',GroupCreate.as_view(),name='groupcreate'),
     url(r'^grouplist/$',GroupList.as_view(),name='grouplist'),
-    url(r'^sshlogslist/$',SshLogList.as_view(),name='sshlogslist'),
+    url(r'^logslist/$',LogList.as_view(),name='logslist'),
     url(r'^sshterminalkill/$',SshTerminalKill.as_view(),name='sshterminalkill'),
     url(r'^sshlogplay/(?P<pk>[0-9]+)/',SshLogPlay.as_view(),name='sshlogplay'),
     url(r'^sshterminalmonitor/(?P<pk>[0-9]+)/',SshTerminalMonitor.as_view(),name='sshterminalmonitor'),
