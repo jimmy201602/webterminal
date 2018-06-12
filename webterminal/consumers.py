@@ -111,7 +111,7 @@ class webterminal(WebsocketConsumer):
                     sshterminal.start()     
                     
                     directory_date_time = now()
-                    log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}.json'.format(audit_log.log))
+                    log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}'.format(audit_log.log))
                     
                     #interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
                     interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)

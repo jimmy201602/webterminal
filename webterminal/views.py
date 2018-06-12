@@ -267,7 +267,7 @@ class SshLogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super(SshLogPlay, self).get_context_data(**kwargs)
         objects = kwargs['object']
-        context['logpath'] = '{0}{1}-{2}-{3}/{4}.json'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
+        context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
         return context
 
 class SshTerminalMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
