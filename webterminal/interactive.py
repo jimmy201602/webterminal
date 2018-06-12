@@ -94,7 +94,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                     channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
                 #send message to monitor group
                 if log_name:
-                    channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1].rsplit('.json')[0]), {'text': json.dumps(['stdout',smart_unicode(x)]) })
+                    channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {'text': json.dumps(['stdout',smart_unicode(x)]) })
             except socket.timeout:
                 pass
             except Exception,e:
@@ -119,7 +119,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
         with open(os.path.join(MEDIA_ROOT,log_name), "a") as f:
             f.write(json.dumps(attrs, ensure_ascii=True,cls=CustomeFloatEncoder,indent=2))
         
-        audit_log=Log.objects.get(channel=channel,log=log_name.rsplit('/')[-1].rsplit('.json')[0])
+        audit_log=Log.objects.get(channel=channel,log=log_name.rsplit('/')[-1])
         audit_log.is_finished = True
         audit_log.end_time = timezone.now()
         audit_log.save()
