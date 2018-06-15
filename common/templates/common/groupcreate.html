@@ -1,0 +1,170 @@
+{% extends 'base.html'%}
+{% block title %}Group create{% endblock %}
+{% load staticfiles %}
+{%load i18n%}
+{% block css%}
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
+{%endblock%}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'grouplist' %}'">
+                            {% trans 'Return Group List' %}
+                        </button>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">{% trans 'Action' %}</a></li>
+                                <li><a href="#">{% trans 'Another action' %}</a></li>
+                                <li><a href="#">{% trans 'Something else here' %}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">{% trans 'Separated link' %}</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+
+                    <div class="row">
+
+
+                        <div class="col-lg-10">
+                            <div class="content float-e-margins">
+                                <div class="content">
+                                    <form action="{% url 'groupcreate' %}" class="form-horizontal nice-validator n-yellow form" id="table" method="post" novalidate="novalidate">
+                                        {% csrf_token %}
+                                        <div id='container1' class="table"></div>
+
+
+                                        <div class="col-sm-4 col-sm-offset-5">
+                                            <button type="submit" id="submit" class="btn btn-primary pull-center">
+                                                {% trans 'submit' %}
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+{% block js %}
+<script src="{% static 'plugins/markdown/markdown.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
+<script type="application/javascript">
+    var schema = {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                'title': "{% trans 'Group name' %}",
+                "description": "{% trans 'Group name' %}",
+                "required": true,
+                "minLength": 1,
+                "maxLength": 40,
+            },
+            "servers": {
+                "type": "array",
+                "title": "{% trans 'servers' %}",
+                "minItems": 1,
+                "description": "{% trans 'Servers' %}",
+                "items": {
+                    "type": "string",
+                    "enum":[
+                    {% for server in servers %}
+                         "{{ server.name }}",
+                    {% endfor %}
+                    ],
+                    "required": true,
+                },
+                "required": true,
+                },
+
+            }
+        };
+
+
+    var BrutusinForms = brutusin["json-forms"];
+    BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", function (element) {
+        alert("user callback on element " + element)
+    });
+    BrutusinForms.bootstrap.addFormatDecorator("date", "date");
+    BrutusinForms.bootstrap.addFormatDecorator("password", "password");
+    BrutusinForms.bootstrap.addFormatDecorator("ipv4", "ipv4");
+    var bf = BrutusinForms.create(schema);
+    var container = document.getElementById('container1');
+    bf.render(container, null);
+
+    $("#submit").on('click', function (e) {
+        e.preventDefault();
+        var jsondata = bf.getData();
+
+        if (bf.validate()) {
+            //Replace servers
+            var serverreplace = [];
+            var servers = {
+                {% for server in servers %}
+                    "{{ server.name }}":{{ server.id }},
+                {% endfor %}
+            };
+            $.each(jsondata['servers'],function (index,value) {
+                serverreplace.push("http://"+window.location.host + '{% url 'serverinfor-list' %}' + servers[jsondata['servers'][index]] + '/')
+            });
+
+            jsondata['servers'] = serverreplace;
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'servergroup-list' %}",
+                data: JSON.stringify(jsondata, null, 4),
+                dataType: "json",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (data) {
+                    toastr["success"]("{% trans 'Group' %} "+data.name+"{% trans 'create success!' %}");
+                    setTimeout(function () {
+                        location.reload();
+                    },2000);
+                },
+                failure: function (errMsg) {
+                    toastr["error"](errMsg);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                        $.each(value, function(index, value) {
+                            toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
+                        });
+                    });
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

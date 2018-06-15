@@ -1,0 +1,262 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{%load i18n%}
+{%block title%}{%trans 'Log list' %}{%endblock%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
+<!-- DataTables css -->
+<link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
+<link rel="stylesheet" href="{% static "plugins/json-view/jquery.jsonview.min.css" %}">
+<link rel="stylesheet" href="{% static "plugins/bootstrap-dialog/css/bootstrap-dialog.css" %}">
+<style>
+   .play-dialog .modal-dialog {
+        width: 58%;
+    }
+    .large-dialog .modal-dialog {
+        width: 1100px;
+        height: auto;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">{% trans 'Action' %}</a></li>
+                                <li><a href="#">{% trans 'Another action' %}</a></li>
+                                <li><a href="#">{% trans 'Something else here' %}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">{% trans 'Separated link' %}</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="sshlogslist" class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{%trans 'user name' %}</th>
+                            <th>{%trans 'server name' %}</th>
+                            <th>{%trans 'server ip' %}</th>
+                            <th>{%trans 'start time' %}</th>
+                            <th>{%trans 'is finished' %}</th>
+                            <th>{%trans 'action' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for element in object_list %}
+                        <tr>
+                            <td>{{ element.user.username }}</td>
+                            <td>{{ element.server.name }}</td>
+                            <td>{{ element.server.ip }}</td>
+                            <td>{{ element.start_time }}</td>
+                            <td>{{ element.is_finished }}</td>
+                            <td data-editable="false" class="text-center pull-left">
+                                {% if element.is_finished %}
+                                {% if perms.webterminal.can_play_log %}
+                                    <a class="btn btn-xs btn-primary play" onclick="play('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{{element.start_time}}',{% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %} '{% url 'sshlogplay' element.id %}' {% else %} '{% url 'guacamolelogplay' element.id %}' {% endif %} );">{%trans 'replay' %}</a>
+                                {% endif %}
+                                {% else %}
+                                {% if perms.webterminal.can_kill_serverinfo %}
+                                    {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% else %} <a class="btn btn-xs btn-danger" onclick="killguacamole('{{element.id}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% endif %}
+                                {% endif %}
+                                {% if perms.webterminal.can_monitor_serverinfo %}
+                                {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{% else %}<a class="btn btn-xs btn-success" onclick="monitorguacamole('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'guacamolemonitor' element.id %}',)">{% endif %}{%trans 'monitor' %}</a>
+                                {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+{% block js %}
+<script src="{% static 'plugins/markdown/markdown.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
+<!-- DataTables -->
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+<script src="{% static "plugins/json-view/jquery.jsonview.min.js" %}"></script>
+<script src="{% static "plugins/bootstrap-dialog/js/bootstrap-dialog.js" %}"></script>
+<script src="{% static "plugins/bootbox/bootbox.js" %}"></script>
+
+
+<script type="application/javascript">
+    $(function () {
+        $('#sshlogslist').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "iDisplayLength": 50,
+            "autoWidth": false,
+        });
+    });
+
+    function play(user,ip,start_time,end_time,url){
+        var div_username = ' {% trans 'user' %}: '+'<span class="text-info">'+user+'' + '</span>';
+        var div_ip = ' {% trans 'server' %}: '+'<span class="text-info">' + ip + '</span>';
+        var div_time = ' {% trans 'start time' %}: ' + '<span class="text-info">'+start_time +'</span>' + ' {% trans 'end time' %}: ' +'<span class="text-info">' + end_time + '</span>';
+        var title = div_username + div_ip + div_time;
+        if (url.indexOf("guacamole") >= 0){
+            var size=BootstrapDialog.SIZE_WIDE;
+            var cssclass='play-dialog';
+        }else{
+            var size=BootstrapDialog.SIZE_NORMAL;
+            var cssclass='primary-default';
+        };
+        BootstrapDialog.show({
+            title: title,
+            type: BootstrapDialog.TYPE_DEFAULT,
+            message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url),
+            size:size,
+            draggable: true,
+            cssClass: cssclass,
+        });
+        return false;
+    }
+        
+function kill(channel_name,user_name) {
+    var dialog = bootbox.confirm({
+        title: "<a class='text-danger'>"+'{% trans 'kick user' %} ' + user_name +" {% trans 'out' %} </a>",
+        message: '{% trans 'Are you sure to kick user' %} ' + user_name +' {% trans 'out' %} ?',
+        buttons: {
+            confirm: {
+                label: '{% trans 'kill' %}',
+                className: 'btn-danger'
+            },
+            cancel: {
+                label: '{% trans 'cancel' %}',
+                className: 'btn-success'
+            }
+        },
+        callback: function (result) {
+            if (result){
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'sshterminalkill' %}',
+                    dataType: "json",
+                    data: {'channel_name':channel_name},
+                    success: function (data) {
+                    
+                        if (data['status']){
+                            toastr["success"](data['message']);
+                            setTimeout(function () {
+                                location.reload();
+                            },2000);
+                        }else{
+                            toastr["error"](data['message']);
+                        }
+                        
+                    },
+                    failure: function (errMsg) {
+                        toastr["error"](errMsg);
+                    },
+                });
+            }
+        }
+    });
+}
+
+
+function monitor(user,ip,start_time,url){
+        var div_username = ' {% trans 'user' %}: '+'<span class="text-info">'+user+'' + '</span>';
+        var div_ip = ' {% trans 'server' %}: '+'<span class="text-info">' + ip + '</span>';
+        var div_time = ' {% trans 'start time' %}: ' + '<span class="text-info">'+start_time +'</span>';
+        var title = div_username + div_ip + div_time;
+        BootstrapDialog.show({
+            size: BootstrapDialog.SIZE_WIDE,
+            title: title,
+            type: BootstrapDialog.TYPE_DEFAULT,
+            message:$('<div style="overflow: auto;background-color: rgba(0, 0, 0, 0);"></div>').load(url),
+            draggable: true
+        });
+        return false;
+    }
+
+
+function monitorguacamole(user,ip,start_time,url){
+        var div_username = ' {% trans 'user' %}: '+'<span class="text-info">'+user+'' + '</span>';
+        var div_ip = ' {% trans 'server' %}: '+'<span class="text-info">' + ip + '</span>';
+        var div_time = ' {% trans 'start time' %}: ' + '<span class="text-info">'+start_time +'</span>';
+        var title = div_username + div_ip + div_time;
+        BootstrapDialog.show({
+            size: BootstrapDialog.SIZE_WIDE,
+            title: title,
+            cssClass: 'large-dialog',
+            type: BootstrapDialog.TYPE_DEFAULT,
+            message:$('<iframe src="' + url +'" frameborder="0" scrolling="no" onload="this.height=780;this.width=1030;this.contentWindow.focus();" onmouseover="this.contentWindow.focus();"></iframe>'),
+            draggable: true
+        });
+        return false;
+    }
+
+function killguacamole(id,user_name) {
+    var dialog = bootbox.confirm({
+        title: "<a class='text-danger'>"+'{% trans 'kick user' %} ' + user_name +" {% trans 'out' %} </a>",
+        message: '{% trans 'Are you sure to kick user' %} ' + user_name +' {% trans 'out' %} ?',
+        buttons: {
+            confirm: {
+                label: '{% trans 'kill' %}',
+                className: 'btn-danger'
+            },
+            cancel: {
+                label: '{% trans 'cancel' %}',
+                className: 'btn-success'
+            }
+        },
+        callback: function (result) {
+            if (result){
+                $.ajax({
+                    type: "POST",
+                    url: '{% url 'guacamolekill' %}',
+                    dataType: "json",
+                    data: {'id':id},
+                    success: function (data) {
+
+                        if (data['status']){
+                            toastr["success"](data['message']);
+                            setTimeout(function () {
+                                location.reload();
+                            },2000);
+                        }else{
+                            toastr["error"](data['message']);
+                        }
+
+                    },
+                    failure: function (errMsg) {
+                        toastr["error"](errMsg);
+                    },
+                });
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
