@@ -1,0 +1,154 @@
+{% extends 'base.html'%}
+{%load i18n%}
+{% block title %}{%trans 'Create commands' %}{% endblock %}
+{% load staticfiles %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
+{%endblock%}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'commandslist' %}'">
+                            {%trans 'Return Commands List' %}
+                        </button>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">{%trans 'Action' %}</a></li>
+                                <li><a href="#">{%trans 'Another action' %}</a></li>
+                                <li><a href="#">{%trans 'Something else here' %}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">{%trans 'Separated link' %}</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+
+                    <div class="row">
+
+
+                        <div class="col-lg-10">
+                            <div class="content float-e-margins">
+                                <div class="content">
+                                    <form action="{% url 'commandscreate' %}" class="form-horizontal nice-validator n-yellow form" id="table" method="post" novalidate="novalidate">
+                                        {% csrf_token %}
+                                        <div id='container1' class="table"></div>
+
+
+                                        <div class="col-sm-4 col-sm-offset-5">
+                                            <button type="submit" id="submit" class="btn btn-primary pull-center">
+                                                {%trans 'submit' %}
+                                            </button>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+{% block js %}
+<script src="{% static 'plugins/markdown/markdown.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
+<script type="application/javascript">
+    var schema = {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                'title': "{%trans 'task name' %}",
+                "description": "{%trans 'task name' %}",
+                "required": true,
+                "minLength": 1,
+                "maxLength": 50,
+            },
+            "group": {
+                "type": "array",
+                "title": "{%trans 'server groups' %}",
+                "minItems": 1,
+                "uniqueItems": true,
+                "description": "{%trans 'Server group you want to execute' %}",
+                "items": {
+                    "type": "string",
+                    "enum": [
+                        {% for group in server_groups %}
+                            "{{group.name}}",
+                        {% endfor %}
+                    ]
+                },
+                "required": true,
+            },
+            "commands": {
+                "type": "array",
+                "title": "{%trans 'commands' %}",
+                "minItems": 1,
+                "items": {
+                    "description": "{%trans 'Input the command you need to execute' %}",
+                    "type": "string",
+                }
+            },
+        }
+    };
+    var BrutusinForms = brutusin["json-forms"];
+    BrutusinForms.bootstrap.addFormatDecorator("inputstream", "file", "glyphicon-search", function (element) {
+        alert("user callback on element " + element)
+    });
+    BrutusinForms.bootstrap.addFormatDecorator("color", "color");
+    BrutusinForms.bootstrap.addFormatDecorator("date", "date");
+    var bf = BrutusinForms.create(schema);
+    var container = document.getElementById('container1');
+    bf.render(container, null);
+    $("#submit").on('click', function (e) {
+        e.preventDefault();
+        var jsondata = bf.getData();
+        jsondata["action"] = "create";
+        if (bf.validate()) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'commandscreate' %}",
+                data: JSON.stringify(jsondata, null, 4),
+                dataType: "json",
+                success: function (data) {
+                    if(data.status){
+                        toastr["success"](data.message);
+                        setTimeout(function () {
+                            location.reload();
+                        },2000);
+                    } else {
+                        toastr["error"](data.message);
+                    }
+                },
+                failure: function (errMsg) {
+                    toastr["error"](errMsg);
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

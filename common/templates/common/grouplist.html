@@ -1,0 +1,349 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{%load i18n%}
+{%block title%}{%trans 'Group list' %}{%endblock%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
+<!-- DataTables css -->
+<link rel="stylesheet" href="{% static "plugins/datatables/dataTables.bootstrap.css" %}">
+<link rel="stylesheet" href="{% static "plugins/json-view/jquery.jsonview.min.css" %}">
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'groupcreate' %}'">
+                            {% trans 'Add New' %}
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">{% trans 'Action' %}</a></li>
+                                <li><a href="#">{% trans 'Another action' %}</a></li>
+                                <li><a href="#">{% trans 'Something else here' %}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">{% trans 'Separated link' %}</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="commands_list" class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{%trans 'group name' %}</th>
+                            <th>{%trans 'servers' %}</th>
+                            <th>{%trans 'action' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for element in object_list %}
+                        <tr>
+                            <td>{{ element.name }}</td>
+                            <td>
+                                {% for server in element.servers.all %}
+                                <a>{{ server.name }}</a><br>
+                                {% endfor %}
+                            </td>
+                            <td data-editable="false" class="text-center pull-left">
+                                {% if perms.webterminal.can_view_servergroup %}<a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>{% endif %}
+                                {% if perms.webterminal.can_change_servergroup %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
+                                {% if perms.webterminal.can_delete_servergroup %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+{% block js %}
+<script src="{% static 'plugins/markdown/markdown.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
+<!-- DataTables -->
+<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
+<script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
+<script src="{% static "plugins/json-view/jquery.jsonview.min.js" %}"></script>
+<script src="{% static "plugins/bootbox/bootbox.js" %}"></script>
+<script type="application/javascript">
+    $(function () {
+        $('#commands_list').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "iDisplayLength": 50,
+            "autoWidth": false,
+        });
+    });
+</script>
+<script type="application/javascript">
+    function detail(id) {
+        var dialog = bootbox.dialog({
+            title: '{% trans 'Group information detail' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>'
+        });
+        dialog.init(function(){
+            var url = '{% url 'servergroup-list' %}';
+            $.ajax({
+                url: url + id +'/',
+                type: 'GET',
+                success: function(data, textStatus, jqXHR) {
+                    var schema = {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                'title': "{% trans 'Group name' %}",
+                                "description": "{% trans 'Group name' %}",
+                                "required": true,
+                                "minLength": 1,
+                                "maxLength": 40,
+                                "readOnly": true,
+                            },
+                            "servers": {
+                                "type": "array",
+                                "title": "{% trans 'servers' %}",
+                                "minItems": 1,
+                                "readOnly": true,
+                                "description": "{% trans 'Servers' %}",
+                                "items": {
+                                    "type": "string",
+                                    "enum":[
+                                        {% for server in servers %}
+                                            "{{ server.name }}",
+                                        {% endfor %}
+                                    ],
+                                    "readOnly": true,
+                                    "required": true,
+                                },
+                                "required": true,
+                            },
+
+                }
+                };
+                    dialog.find('.bootbox-body').html("<div id='container'></div>");
+                    var BrutusinForms = brutusin["json-forms"];
+                    var bf = BrutusinForms.create(schema);
+                    var container = document.getElementById('container');
+                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>');
+                    var servers = [];
+                    $.each(data['servers'],function (key,value) {
+                        $.ajax({url: data['servers'][key], success: function(result){
+                            servers.push(result['name']);
+                        }})
+                    });
+                    setTimeout(function () {
+                        data['servers'] = servers;
+                        $("#container").empty();
+                        bf.render(container, data);
+                    },2000);
+
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                        $.each(value, function(index, value) {
+                            toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
+                        });
+                    });
+                }
+            });
+        });
+    }
+    function edit(id) {
+        var dialog = bootbox.confirm({
+            title: '{% trans 'Group information edit' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>',
+            buttons: {
+                confirm: {
+                    label: '{% trans 'submit' %}',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: '{% trans 'cancel' %}',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    if ($.gbf.validate()) {
+                        var jsondata = $.gbf.getData();
+
+                        //Replace servers
+                        var serverreplace = [];
+                        var servers = {
+                            {% for server in servers %}
+                                "{{ server.name }}":{{ server.id }},
+                            {% endfor %}
+                        };
+                        $.each(jsondata['servers'],function (index,value) {
+                            serverreplace.push("http://"+window.location.host + '{% url 'serverinfor-list' %}' + servers[jsondata['servers'][index]] + '/')
+                        });
+
+                        jsondata['servers'] = serverreplace;
+                        $.ajax({
+                            type: "PUT",
+                            url: '{% url 'servergroup-list' %}' + id + '/',
+                            data: JSON.stringify(jsondata, null, 4),
+                            dataType: "json",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                toastr["success"]("{% trans 'Update group info' %} " +data.name + " {% trans 'success' %}!");
+                                setTimeout(function () {
+                                    location.reload();
+                                },2000);
+                            },
+                            failure: function (errMsg) {
+                                toastr["error"](errMsg);
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                                    $.each(value, function(index, value) {
+                                        toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
+                                    });
+                                });
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        dialog.init(function(){
+
+            $.ajax({
+                url: '{% url 'servergroup-list' %}' + id + '/',
+                type: 'GET',
+                success: function(data, textStatus, jqXHR) {
+                    var schema = {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                'title': "{% trans 'Group name' %}",
+                                "description": "{% trans 'Group name' %}",
+                                "required": true,
+                                "minLength": 1,
+                                "maxLength": 40,
+                            },
+                            "servers": {
+                                "type": "array",
+                                "title": "{% trans 'servers' %}",
+                                "minItems": 1,
+                                "description": "{% trans 'Servers' %}",
+                                "items": {
+                                    "type": "string",
+                                    "enum":[
+                                    {% for server in servers %}
+                                         "{{ server.name }}",
+                                    {% endfor %}
+                                    ],
+                                "required": true,
+                                },
+                                "required": true,
+                            },
+
+                            }
+                    };
+                    $.ajax({url: data['credential'], success: function(result){
+                        data['credential'] = result['name'];
+                    }});
+                    dialog.find('.bootbox-body').html("<div id='container'></div>");
+                    var BrutusinForms = brutusin["json-forms"];
+                    var bf = BrutusinForms.create(schema);
+                    var container = document.getElementById('container');
+
+                    $("#container").append('<p><i class="fa fa-spin fa-spinner"></i> {% trans 'Loading...' %}</p>');
+                    var servers = [];
+                    $.each(data['servers'],function (key,value) {
+                        $.ajax({url: data['servers'][key], success: function(result){
+                            servers.push(result['name']);
+                        }})
+                    });
+                    setTimeout(function () {
+                        data['servers'] = servers;
+                        $("#container").empty();
+                        bf.render(container, data);
+                    },2000);
+                    $.gbf = bf;
+                },
+                error: function(data, textStatus, jqXHR) {
+                    toastr['error'](data);
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                        $.each(value, function(index, value) {
+                            toastr["error"]("{% trans 'Please check field' %} "+key + " {% trans 'error' %}: "+ value);
+                        });
+                    });
+                }
+            });
+        });
+    };
+    function del(id,name) {
+        var dialog = bootbox.confirm({
+            title: "<a class='text-danger'>"+'{% trans 'delete group' %} ' + name +"</a>",
+            message: '{% trans 'Are you sure to delete group' %} ' + name +' ?',
+            buttons: {
+                confirm: {
+                    label: '{% trans 'delete' %}',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: '{% trans 'cancel' %}',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    $.ajax({
+                        type: "DELETE",
+                        url: '{% url 'servergroup-list' %}' + id + '/',
+                        dataType: "json",
+                        success: function (data) {
+                            toastr["success"]("Delete group " +name +" success!");
+                            setTimeout(function () {
+                                location.reload();
+                            },2000);
+
+                        },
+                        failure: function (errMsg) {
+                            toastr["error"](errMsg);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            $.each(JSON.parse(XMLHttpRequest.responseText), function(key, value){
+                                $.each(value, function(index, value) {
+                                    toastr["error"]("Please check field "+key + " error: "+ value);
+                                });
+                            });
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,340 @@
+{% extends 'base.html'%}
+{%load i18n%}
+{% block title %}{%trans 'webterminal' %}{% endblock %}
+{% load staticfiles %}
+    {% block css %}
+    <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
+    <link rel="stylesheet" href="{% static 'plugins/jstree/themes/proton/style.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'plugins/font-awesome/css/font-awesome.min.css' %}"/>
+    {% endblock %}
+    <style>
+        body {
+            font-family: helvetica, sans-serif, arial;
+            font-size: 1em;
+            color: #111;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #terminal-container {
+            width: 960px;
+            height: 600px;
+            margin: 0 auto;
+            padding: 2px;
+        }
+
+        #terminal-container .terminal {
+            background-color: #111;
+            color: #fafafa;
+            padding: 2px;
+        }
+
+        #terminal-container .terminal:focus .terminal-cursor {
+            background-color: #fafafa;
+        }
+    </style>
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="portlet box box-success" style="overflow:scroll;height: 800px;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <a class="text-danger">{%trans 'Task List' %}</a>
+                </div>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+                    <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+                    <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <form id="search">
+                    <input type="search" id="q" placeholder="{%trans 'search' %}"/>
+                    <span>
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </form>
+                <div id="server_list" class="tree-demo" role="tree"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+
+        <div class="span2 leftMenu">
+            <ul class="nav nav-tabs marginBottom" id="myTab">
+                <li class="active ">
+                    <a href="#help" class="backgroundRed">{%trans 'help info' %}<button class="close closeTab" type="button" >×</button></a>
+                </li>
+            </ul>
+        </div>
+        <div class="tab-content span4">
+            <div class="tab-pane active responsive" id="help">{%trans 'help info' %}</div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'plugins/xterm/xterm.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
+<script src="{% static 'plugins/jstree/jstree.js' %}"></script>
+
+<script type="application/javascript">
+
+
+    var currentTab;
+    var composeCount = 0;
+    //initilize tabs
+    $(function () {
+
+        //when ever any tab is clicked this method will be call
+        $("#myTab").on("click", "a", function (e) {
+            e.preventDefault();
+
+            $(this).tab('show');
+            $currentTab = $(this);
+        });
+
+
+        //registerComposeButtonEvent();
+        registerCloseEvent();
+    });
+
+
+    //this method will register event on close icon on the tab..
+    function registerCloseEvent() {
+
+        $(".closeTab").click(function () {
+
+            //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
+            var tabContentId = $(this).parent().attr("href");
+            $(this).parent().parent().remove(); //remove li of tab
+            $('#myTab a:last').tab('show'); // Select first tab
+            $(tabContentId).remove(); //remove respective tab content
+
+        });
+    }
+
+    //shows the tab with passed content div id..paramter tabid indicates the div where the content resides
+    function showTab(tabId) {
+        $('#myTab a[href="#' + tabId + '"]').tab('show');
+    }
+    //return current active tab
+    function getCurrentTab() {
+        return currentTab;
+    }
+
+
+    //this will return element from current tab
+    //example : if there are two tabs having  textarea with same id or same class name then when $("#someId") whill return both the text area from both tabs
+    //to take care this situation we need get the element from current tab.
+    function getElement(selector) {
+        var tabContentId = $currentTab.attr("href");
+        return $("" + tabContentId).find("" + selector);
+
+    }
+
+
+    function removeCurrentTab() {
+        var tabContentId = $currentTab.attr("href");
+        $currentTab.parent().remove(); //remove li of tab
+        $('#myTab a:last').tab('show'); // Select first tab
+        $(tabContentId).remove(); //remove respective tab content
+    }
+
+</script>
+<script type="application/javascript">
+    function make_terminal(element, size, ws_url,paramter) {
+        var term = new Terminal({
+            cols: size.cols,
+            rows: size.rows,
+            screenKeys: true,
+            useStyle: true,
+            cursorBlink: true,  // Blink the terminal's cursor
+        });
+        term.open(element, false);
+        var ws = new WebSocket(ws_url);
+        //console.log('paramter',paramter);
+        ws.onopen = function (event) {
+            ws.send(JSON.stringify({"parameter":paramter}));
+            //set terminal width and height
+            <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
+                <!--window.innerHeight, window.innerWidth]));-->
+            term.on('data', function (data) {
+                ws.send(JSON.stringify(['stdin', data]));
+            });
+
+            term.on('title', function (title) {
+                document.title = title;
+            });
+
+
+            <!--term.fit();-->
+            term.toggleFullscreen(true);
+            ws.onmessage = function (event) {
+                json_msg = JSON.parse(event.data);
+                console.log(json_msg);
+                switch (json_msg[0]) {
+                    case "stdout":
+                        term.writeln(json_msg[1]);
+                        break;
+                    case "disconnect":
+                        term.write("{%trans '\r\n\r\n[Finished...]\r\n' %}");
+                        break;
+                }
+            };
+        };
+        return {socket: ws, term: term};
+    }
+
+    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+    var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+
+</script>
+<script type="application/javascript">
+    $("#server_list").jstree({
+        core: {
+            themes: {
+                name: 'proton',
+                responsive: true
+                },
+            check_callback: !0,
+            data: [
+                {% for command in commands %}
+                    {
+                        text: "{{ command.name }}",
+                        taskname:"{{ command.name }}",
+                        children: [
+                            {% for group in command.group.all %}
+                                {
+                                text: "{{ group.name }}", 
+                                icon: "fa fa-server", 
+                                groupname: "{{ group.name }}",
+                                taskname: "{{ command.name }}",
+                                state: {selected: !0},
+                                children:[
+                                    {% for server in group.servers.all %}
+                                        {
+                                        text: "{{ server.name }}",
+                                        icon: "fa fa-server",
+                                        ip: "{{ server.ip }}",
+                                        groupname: "{{ group.name }}",
+                                        taskname: "{{ command.name }}",
+                                        state: {selected: !0}
+                                        },
+                                    {% endfor %}
+                                    ],
+                                },
+                            {% endfor %}
+                        ],
+                    },
+                {% endfor %}
+            ],
+        },
+        types: {
+            default: {icon: "fa fa-folder icon-state-warning icon-lg"},
+            file: {icon: "fa fa-file icon-state-warning icon-lg"}
+        },
+        plugins: ["contextmenu", "state", "types", "search"],
+        contextmenu: {
+            "items": function ($node) {
+                var tree = $("#server_list").jstree(true);
+                //console.log($node.parents.length);
+                if ($node.parents.length == 1){
+                    return {
+                        "execute": {
+                            "separator_before": false,
+                                "separator_after": false,
+                                "label": "{%trans 'execute' %}",
+                                "action": function (obj) {
+
+                                var tabId = $node.text; //this is id on tab content div where the
+                                //get server ip
+                                //console.log($node.original);
+                                var taskname = $node.original.taskname;
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname});
+                                }else {
+                                    showTab(tabId);
+                                }
+                            }
+                        },
+                    }
+                } else  if ( $node.parents.length == 2){
+                    return {
+                        "execute": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "{%trans 'execute' %}",
+                            "action": function (obj) {
+
+                                var tabId = $node.text; //this is id on tab content div where the
+                                //get server ip
+                                //console.log($node.original);
+                                var taskname = $node.original.taskname;
+                                var groupname = $node.original.groupname;
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname});
+                                }else {
+                                    showTab(tabId);
+                                }
+                            }
+                        },
+                    }
+                } else {
+                    return {
+                        "execute": {
+                            "separator_before": false,
+                            "separator_after": false,
+                            "label": "{%trans 'execute' %}",
+                            "action": function (obj) {
+
+                                var tabId = $node.text; //this is id on tab content div where the
+                                //get server ip
+                                //console.log($node.original);
+                                var taskname = $node.original.taskname;
+                                var groupname = $node.original.groupname;
+                                var ip = $node.original.ip;
+                                if ($("#"+tabId).length <= 0){
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
+                                    showTab(tabId);
+                                    registerCloseEvent();
+                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname,'ip':ip});
+                                }else {
+                                    showTab(tabId);
+                                }
+                            }
+                        },
+                    }
+                }
+            }
+        },
+    });
+    
+    $("#search").submit(function(e) {
+        e.preventDefault();
+        $("#server_list").jstree(true).search($("#q").val());
+    });
+</script>
+{% endblock %}

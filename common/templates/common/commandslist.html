@@ -1,0 +1,339 @@
+{% extends 'base.html'%}
+{% load staticfiles %}
+{%load i18n%}
+{%block title%}{%trans 'commands list' %}{%endblock%}
+{% block css %}
+<link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
+<link rel="stylesheet" href="{% static 'plugins/json-forms/css/brutusin-json-forms.css' %} ">
+<!-- DataTables css -->
+<link rel="stylesheet" href="{% static 'plugins/datatables/dataTables.bootstrap.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/json-view/jquery.jsonview.min.css' %}">
+{% endblock %}
+{% block content %}
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN EXAMPLE TABLE PORTLET-->
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <div class="caption">
+                        <button class="btn btn-primary" onclick="window.location.href = '{% url 'commandscreate' %}'"> {% trans 'Add New' %}
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                class="fa fa-minus"></i>
+                        </button>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-wrench"></i></button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">{%trans 'Action' %}</a></li>
+                                <li><a href="#">{%trans 'Another action' %}</a></li>
+                                <li><a href="#">{%trans 'Something else here' %}</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#">{%trans 'Separated link' %}</a></li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <table id="commands_list" class="table table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th>{%trans 'name' %}</th>
+                            <th>{%trans 'groups' %}</th>
+                            <th>{%trans 'commands' %}</th>
+                            <th>{%trans 'action' %}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for element in object_list %}
+                        <tr>
+                            <td>{{ element.name }}</td>
+                            <td>
+                                {% for group in element.group.all %}
+                                <a>{{ group.name }}</a><br>
+                                {% endfor %}
+                            </td>
+                            <td class="json"><a id="{{ element.id}}" onclick="get_detail({{element.id}})">{{element.commands|truncatechars:50 }}</td>
+                            <td data-editable="false" class="text-center pull-left">
+                                {% if perms.webterminal.can_view_commandssequence %}<a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>{% endif %}
+                                {% if perms.webterminal.can_change_commandssequence %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
+                                {% if perms.webterminal.can_delete_commandssequence %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- END EXAMPLE TABLE PORTLET-->
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+{% block js %}
+<script src="{% static 'plugins/markdown/markdown.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/bootstrap-select.js' %} "></script>
+<script src="{% static 'plugins/bootstrap-select/js/i18n/defaults-en_US.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
+<script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
+<!-- DataTables -->
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/json-view/jquery.jsonview.min.js' %}"></script>
+<script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
+<script type="application/javascript">
+    $(function () {
+        $('#commands_list').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "iDisplayLength": 50,
+            "autoWidth": false,
+        });
+    });
+</script>
+<script type="application/javascript">
+    function get_detail(id) {
+        var dialog = bootbox.dialog({
+            title: '{%trans 'commands detail' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>'
+        });
+        dialog.init(function(){
+            $.ajax({
+                url: '{% url 'commandsapi' %}',
+                type: 'POST',
+                data: {'id':id},
+                success: function(data, textStatus, jqXHR) {
+                    if(data.status){
+                        dialog.find('.bootbox-body').html( JSON.stringify(data.commands));
+                        dialog.find('.bootbox-body').JSONView(data.commands, { collapsed: true });
+                    } else {
+                       toastr['error'](data.message);
+                    }
+                },
+                error: function(data, textStatus, jqXHR) {
+                    toastr['error'](data);
+                }
+            });
+        });
+    }
+    function detail(id) {
+        var dialog = bootbox.dialog({
+            title: '{%trans 'commands detail' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>'
+        });
+        dialog.init(function(){
+            $.ajax({
+                url: '{% url 'commandsapi' %}',
+                type: 'POST',
+                data: {'id':id},
+                success: function(data, textStatus, jqXHR) {
+                    var schema = {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                'title': "{%trans 'task name' %}",
+                                "description": "{%trans 'task name' %}",
+                                "required": true,
+                                "minLength": 1,
+                                "maxLength": 50,
+                                "readOnly": true
+                            },
+                            "group": {
+                                "type": "array",
+                                "title": "{%trans 'server groups' %}",
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "description": "{%trans 'Server group you want to execute' %}",
+                                "readOnly": true,
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                        {% for group in server_groups %}
+                                            "{{group.name}}",
+                                        {% endfor %}
+                                    ],
+                                    "required": true,
+                                },
+                                "required": true,
+                            },
+                            "commands": {
+                                "type": "array",
+                                    "title": "{%trans 'commands' %}",
+                                    "minItems": 1,
+                                    "readOnly": true,
+                                    "items": {
+                                    "description": "{%trans 'Input the command you need to execute' %}",
+                                        "type": "string",
+                                }
+                            },
+                        }
+                    };
+                    dialog.find('.bootbox-body').html("<div id='container'></div>");
+                    //console.log(data.data);
+                    var BrutusinForms = brutusin["json-forms"];
+                    var bf = BrutusinForms.create(schema);
+                    var container = document.getElementById('container');
+                    bf.render(container, data.data);
+                },
+                error: function(data, textStatus, jqXHR) {
+                    toastr['error'](data);
+                }
+            });
+        });
+    }
+    function edit(id) {
+        var dialog = bootbox.confirm({
+            title: '{%trans 'commands edit' %}',
+            message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>',
+            buttons: {
+                confirm: {
+                    label: '{%trans 'submit' %}',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: '{%trans 'cancel' %}',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    if ($.gbf.validate()) {
+                        var jsondata = $.gbf.getData();
+                        jsondata["action"] = "update";
+                        jsondata["id"] = id;
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'commandscreate' %}",
+                            data: JSON.stringify(jsondata, null, 4),
+                            dataType: "json",
+                            success: function (data) {
+                                if(data.status){
+                                    toastr["success"](data.message);
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },2000);
+                                } else {
+                                    toastr["error"](data.message);
+                                }
+                            },
+                            failure: function (errMsg) {
+                                toastr["error"](errMsg);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+        dialog.init(function(){
+            $.ajax({
+                url: '{% url 'commandsapi' %}',
+                type: 'POST',
+                data: {'id':id},
+                success: function(data, textStatus, jqXHR) {
+                    var schema = {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                'title': "{%trans 'task name' %}",
+                                "description": "{%trans 'task name' %}",
+                                "required": true,
+                                "minLength": 1,
+                                "maxLength": 50,
+                            },
+                            "group": {
+                                "type": "array",
+                                "title": "{%trans 'server groups' %}",
+                                "minItems": 1,
+//                                "uniqueItems": true,
+                                "description": "{%trans 'Server group you want to execute' %}",
+                                "items": {
+                                    "type": "string",
+                                    "enum": [
+                                     {% for group in server_groups %}
+                                        "{{group.name}}",
+                                    {% endfor %}
+                                    ],
+                                "required": true,
+                                },
+                                "required": true,
+                            },
+                            "commands": {
+                                "type": "array",
+                                    "title": "{%trans 'commands' %}",
+                                    "minItems": 1,
+                                    "items": {
+                                    "description": "{%trans 'Input the command you need to execute' %}",
+                                        "type": "string",
+                                }
+                            },
+                        }
+                    };
+                    dialog.find('.bootbox-body').html("<div id='container'></div>");
+                    var BrutusinForms = brutusin["json-forms"];
+                    var bf = BrutusinForms.create(schema);
+                    var container = document.getElementById('container');
+                    console.log(data);
+                    $("#container").empty();
+                    bf.render(container, data.data);
+                    $.gbf = bf;
+                },
+                error: function(data, textStatus, jqXHR) {
+                    toastr['error'](data);
+                }
+            });
+        });
+    };
+    function del(id,name) {
+        var dialog = bootbox.confirm({
+            title: "<a class='text-danger'>"+'{% trans 'delete task' %} ' + name +"</a>",
+            message: '{%trans 'Are you sure to delete task ' %}' + name +' ?',
+            buttons: {
+                confirm: {
+                    label: '{%trans 'delete ' %}',
+                    className: 'btn-danger'
+                },
+                cancel: {
+                    label: '{%trans 'cancel ' %}',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                        $.ajax({
+                            type: "POST",
+                            url: "{% url 'commandscreate' %}",
+                            data: JSON.stringify({"id":id,"action":'delete',"name":name}),
+                            dataType: "json",
+                            success: function (data) {
+                                if(data.status){
+                                    toastr["success"](data.message);
+                                    setTimeout(function () {
+                                        location.reload();
+                                    },2000);
+                                } else {
+                                    toastr["error"](data.message);
+                                }
+                            },
+                            failure: function (errMsg) {
+                                toastr["error"](errMsg);
+                            }
+                        });
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}
