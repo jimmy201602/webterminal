@@ -6,6 +6,19 @@ from common.views import (Commands,CommandExecute,
                           CredentialCreate,CredentialList,CredentialDetailApi,
                           ServerCreate,ServerlList,GroupList,GroupCreate,
                           LogList)
+from common.api import ServerGroupViewSet,ServerInforViewSet,CommandsSequenceViewSet,CredentialViewSet
+from rest_framework import routers
+from django.contrib import admin
+
+#from common.admin import OTPAdminSite
+#admin.site.__class__ = OTPAdminSite
+
+#Register webterminal api
+router = routers.DefaultRouter()
+router.register('servergroup', ServerGroupViewSet)
+router.register('serverinfo', ServerInforViewSet)
+router.register('commandssequence', CommandsSequenceViewSet)
+router.register('credential', CredentialViewSet)
 
 urlpatterns = [
         url(r'^commands/add/$',Commands.as_view(),name='commandscreate'),
@@ -19,5 +32,6 @@ urlpatterns = [
         url(r'^serverlist/$',ServerlList.as_view(),name='serverlist'),
         url(r'^groupcreate/$',GroupCreate.as_view(),name='groupcreate'),
         url(r'^grouplist/$',GroupList.as_view(),name='grouplist'),
-        url(r'^logslist/$',LogList.as_view(),name='logslist'),    
+        url(r'^logslist/$',LogList.as_view(),name='logslist'),
+        url(r'^api/',include(router.urls)),
 ]
