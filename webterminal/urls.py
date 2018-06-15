@@ -19,21 +19,9 @@ from webterminal.views import Index,SshLogPlay,SshTerminalKill,SshTerminalMonito
 from django.contrib.auth.views import LoginView,LogoutView
 
 #Webterminal api
-from rest_framework import routers
-from webterminal.api import ServerGroupViewSet,ServerInforViewSet,CommandsSequenceViewSet,CredentialViewSet
-
 from django.views.static import serve
 from django.conf import settings
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-#Register webterminal api
-router = routers.DefaultRouter()
-router.register('servergroup', ServerGroupViewSet)
-router.register('serverinfo', ServerInforViewSet)
-router.register('commandssequence', CommandsSequenceViewSet)
-router.register('credential', CredentialViewSet)
-#from .admin import OTPAdminSite
-#admin.site.__class__ = OTPAdminSite
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -45,7 +33,6 @@ urlpatterns = [
     url(r'^accounts/login/$', LoginView.as_view(template_name='admin/login.html'),name='login'),
     url(r'^accounts/logout/$',LogoutView.as_view(template_name='registration/logged_out.html'),name='logout'),    
     url(r'^elfinder/',include('elfinder.urls')),
-    url(r'^api/',include(router.urls)),
     url(r'^permission/',include('permission.urls')),
     url(r'^common/',include('common.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')), 
