@@ -19,48 +19,24 @@ msgstr ""
 
 #: elfinder/connector.py:339 elfinder/connector.py:347
 msgid "File not found"
-msgstr "文件没有查找到"
+msgstr ""
 
 #: elfinder/connector.py:342
 msgid "Access denied"
-msgstr "访问拒绝"
+msgstr ""
 
 #: elfinder/exceptions.py:61
 msgid "Volume could not be found"
-msgstr "文件卷未查找到"
+msgstr ""
 
 #: elfinder/exceptions.py:87
 msgid "This is not a valid image file"
-msgstr "不是一个有效的图像文件"
+msgstr ""
 
 #: elfinder/volumes/base.py:197
 msgid "No volume id found"
-msgstr "文件卷未找到"
+msgstr ""
 
 #: elfinder/volumes/base.py:1205
 msgid "Unknown"
-msgstr "未知"
-
-#~ msgid "This file is no longer valid"
-#~ msgstr "文件不再有效"
-
-#~ msgid "Size"
-#~ msgstr "大小"
-
-#~ msgid "Path"
-#~ msgstr "路径"
-
-#~ msgid "Link"
-#~ msgstr "连接"
-
-#~ msgid "Modified"
-#~ msgstr "已修改"
-
-#~ msgid "Dimensions"
-#~ msgstr "尺寸"
-
-#~ msgid "Update"
-#~ msgstr "更新"
-
-#~ msgid "Set"
-#~ msgstr "设置"
+msgstr ""
