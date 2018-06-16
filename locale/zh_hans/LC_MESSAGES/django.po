@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-15 14:48+0000\n"
+"POT-Creation-Date: 2018-06-16 04:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -361,7 +361,7 @@ msgstr "返回命令列表"
 #: permission/templates/permission/userdelete.html:27
 #: permission/templates/permission/userlist.html:31
 #: permission/templates/permission/userregister.html:27
-#: permission/templates/permission/userupdate.html:27
+#: permission/templates/permission/userupdate.html:28
 msgid "Action"
 msgstr "操作"
 
@@ -380,7 +380,7 @@ msgstr "操作"
 #: permission/templates/permission/userdelete.html:28
 #: permission/templates/permission/userlist.html:32
 #: permission/templates/permission/userregister.html:28
-#: permission/templates/permission/userupdate.html:28
+#: permission/templates/permission/userupdate.html:29
 msgid "Another action"
 msgstr "另一个操作"
 
@@ -399,7 +399,7 @@ msgstr "另一个操作"
 #: permission/templates/permission/userdelete.html:29
 #: permission/templates/permission/userlist.html:33
 #: permission/templates/permission/userregister.html:29
-#: permission/templates/permission/userupdate.html:29
+#: permission/templates/permission/userupdate.html:30
 msgid "Something else here"
 msgstr "其他"
 
@@ -418,7 +418,7 @@ msgstr "其他"
 #: permission/templates/permission/userdelete.html:31
 #: permission/templates/permission/userlist.html:35
 #: permission/templates/permission/userregister.html:31
-#: permission/templates/permission/userupdate.html:31
+#: permission/templates/permission/userupdate.html:32
 msgid "Separated link"
 msgstr ""
 
@@ -555,7 +555,7 @@ msgstr "编辑"
 #: common/templates/common/serverlist.html:64
 #: common/templates/common/serverlist.html:323
 #: permission/templates/permission/permissionlist.html:69
-#: permission/templates/permission/userlist.html:58
+#: permission/templates/permission/userlist.html:59
 msgid "delete"
 msgstr "删除"
 
@@ -823,7 +823,7 @@ msgstr "确认删除服务器组"
 msgid "Log list"
 msgstr "日志列表"
 
-#: common/templates/common/logslist.html:53 permission/forms.py:26
+#: common/templates/common/logslist.html:53 permission/forms.py:30
 #: permission/templates/permission/permissionlist.html:47
 #: permission/templates/permission/userlist.html:47
 msgid "user name"
@@ -961,52 +961,52 @@ msgstr "确认删除服务器"
 msgid "Delete server"
 msgstr "删除服务器"
 
-#: common/views.py:59 common/views.py:67 common/views.py:82 common/views.py:158
-#: common/views.py:164 common/views.py:174
+#: common/views.py:60 common/views.py:74 common/views.py:82 common/views.py:97
+#: common/views.py:173 common/views.py:179 common/views.py:189
 msgid "403 Forbidden"
 msgstr "403 拒绝"
 
-#: permission/forms.py:27
+#: permission/forms.py:31
 msgid "Please input a valid user."
 msgstr "请输入有效的用户名"
 
-#: permission/forms.py:37
+#: permission/forms.py:41
 msgid "your password"
 msgstr "输入密码"
 
-#: permission/forms.py:38
+#: permission/forms.py:42
 msgid "Please input your password"
 msgstr "请输入你的密码"
 
-#: permission/forms.py:41
+#: permission/forms.py:45
 msgid "new password"
 msgstr "新密码"
 
-#: permission/forms.py:48 permission/forms.py:52
+#: permission/forms.py:52 permission/forms.py:56
 msgid "verify your password"
 msgstr "密码验证"
 
-#: permission/forms.py:49
+#: permission/forms.py:53
 msgid "please input your  password again"
 msgstr "请重新输入密码"
 
-#: permission/forms.py:59 permission/templates/permission/userlist.html:48
+#: permission/forms.py:63 permission/templates/permission/userlist.html:48
 msgid "email"
 msgstr "邮箱"
 
-#: permission/forms.py:60
+#: permission/forms.py:64
 msgid "Please input a valid email address."
 msgstr "请输入有效的邮箱地址"
 
-#: permission/forms.py:70
+#: permission/forms.py:74
 msgid "every filed required"
 msgstr "每个字段都必须填写"
 
-#: permission/forms.py:72
+#: permission/forms.py:76
 msgid "your password does't the same"
 msgstr "密码不一致"
 
-#: permission/forms.py:75
+#: permission/forms.py:80
 msgid "User name has been registered!"
 msgstr "用户已经被注册！"
 
@@ -1079,7 +1079,7 @@ msgid "User delete"
 msgstr "删除用户"
 
 #: permission/templates/permission/userdelete.html:14
-#: permission/templates/permission/userupdate.html:14
+#: permission/templates/permission/userupdate.html:15
 msgid "Return user list"
 msgstr "返回服务器列表"
 
@@ -1090,6 +1090,12 @@ msgstr "确认删除用户"
 #: permission/templates/permission/userlist.html:3
 msgid "User list"
 msgstr "用户列表"
+
+#: permission/templates/permission/userlist.html:58
+#, fuzzy
+#| msgid "User update"
+msgid "update"
+msgstr "更新用户信息"
 
 #: permission/templates/permission/userregister.html:3
 msgid "Add new user"
@@ -1103,11 +1109,11 @@ msgstr "返回用户列表"
 msgid "User update"
 msgstr "更新用户信息"
 
-#: permission/views.py:58
+#: permission/views.py:86
 msgid "Create Permission"
 msgstr "新增权限"
 
-#: permission/views.py:91
+#: permission/views.py:119
 msgid "Update Permission"
 msgstr "更新权限"
 
