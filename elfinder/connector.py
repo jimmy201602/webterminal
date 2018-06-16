@@ -1,5 +1,5 @@
 import os, re, time, urllib
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
 from utils.volumes import instantiate_driver
 import sys
