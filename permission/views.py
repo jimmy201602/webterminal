@@ -28,7 +28,7 @@ class UserList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     template_name='permission/userlist.html'
     model=User
     permission_required = 'permission.can_view_user'
-    raise_exception = False
+    raise_exception = True
 
 class UserDelete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
     template_name='permission/userdelete.html'
