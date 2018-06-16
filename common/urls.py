@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from django.conf.urls import url,include
-from common.views import (Commands,CommandExecute,
+from common.views import (Commands,
                           CommandExecuteList,CommandExecuteDetailApi,
                           CredentialCreate,CredentialList,CredentialDetailApi,
                           ServerCreate,ServerlList,GroupList,GroupCreate,
@@ -22,7 +22,6 @@ router.register('credential', CredentialViewSet)
 
 urlpatterns = [
         url(r'^commands/add/$',Commands.as_view(),name='commandscreate'),
-        url(r'^commandexecute/$',CommandExecute.as_view(),name='commandexecute'),
         url(r'^commandslist/$',CommandExecuteList.as_view(),name='commandslist'),
         url(r'^commandsapi/$',CommandExecuteDetailApi.as_view(),name='commandsapi'),
         url(r'^credentialcreate/$',CredentialCreate.as_view(),name='credentialcreate'),
