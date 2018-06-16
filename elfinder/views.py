@@ -25,7 +25,7 @@ def mkdir_p(path):
     except OSError as exc:
         pass
 
-class ElfinderConnectorView(PermissionRequiredMixin,LoginRequiredMixin,View):
+class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
     """
     Default elfinder backend view
     """
