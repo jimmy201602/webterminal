@@ -290,7 +290,6 @@
                         "label": "{% trans 'disconnect' %}",
                         "icon": "fa fa-remove icon-state-warning icon-lg",
                         "action": function (obj) {
-//                            console.log($node);
                             var protocol = $node.original.protocol;
                             if (protocol == "ssh-password" || protocol == "ssh-key") {
                                 if ($("#"+$node.text).length >0){
