@@ -13,6 +13,9 @@ import ast
 import logging
 from socket import timeout
 logger = logging.getLogger(__name__)
+from django.utils.timezone import now
+from webterminal.settings import MEDIA_ROOT
+import os
 
 class GuacamoleThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
@@ -26,7 +29,9 @@ class GuacamoleThread(threading.Thread):
         self.client = client
         self.read_lock = threading.RLock()
         self.write_lock = threading.RLock()
-        self.pending_read_request = threading.Event()        
+        self.pending_read_request = threading.Event()
+        directory_date_time = now()
+        self.recording_path = os.path.join(MEDIA_ROOT,'{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day))
         
     def stop(self):
         self._stop_event.set()
@@ -56,16 +61,14 @@ class GuacamoleThread(threading.Thread):
                     instruction = self.client.receive()
                     if instruction:
                         channel_layer.send(self.message.reply_channel.name,{"text":instruction})
+                        #with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
+                            #f.write(instruction)
                     else:
                         break
                 except timeout:
                     queue = get_redis_instance()
                     queue.pubsub()
                     queue.publish(self.message.reply_channel.name, '10.disconnect;')
-    
-                #if self.pending_read_request.is_set():
-                    #logger.info('Letting another request take over.')
-                    #break
 
             # End-of-instruction marker
             channel_layer.send(self.message.reply_channel.name,{"text":'0.;'})
@@ -96,5 +99,7 @@ class GuacamoleThreadWrite(GuacamoleThread):
                     #print('write',data)
                     with self.write_lock:
                         self.client.send(str(data))
+                        #with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
+                            #f.write(data)
             else:
                 time.sleep(0.001)
