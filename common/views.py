@@ -32,6 +32,7 @@ from permission.models import Permission
 from django.urls import reverse_lazy
 import traceback
 from django.contrib.auth.views import redirect_to_login
+from django.utils.translation import ugettext, ugettext_lazy as _
 
 class LoginRequiredMixin(AccessMixin):
     """
