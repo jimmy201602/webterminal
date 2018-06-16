@@ -179,7 +179,7 @@
             term.toggleFullscreen(true);
             ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
-                console.log(json_msg);
+                //console.log(json_msg);
                 switch (json_msg[0]) {
                     case "stdout":
                         term.writeln(json_msg[1]);
@@ -226,7 +226,8 @@
                                         ip: "{{ server.ip }}",
                                         groupname: "{{ group.name }}",
                                         taskname: "{{ command.name }}",
-                                        state: {selected: !0}
+                                        state: {selected: !0},
+                                        elementid: "{{ server.gethostname }}"
                                         },
                                     {% endfor %}
                                     ],
@@ -254,12 +255,13 @@
                                 "label": "{%trans 'execute' %}",
                                 "action": function (obj) {
 
-                                var tabId = $node.text; //this is id on tab content div where the
+                                var tabtext = $node.text; //this is id on tab content div where the
+                                var tabId = $node.original.elementid;
                                 //get server ip
                                 //console.log($node.original);
                                 var taskname = $node.original.taskname;
                                 if ($("#"+tabId).length <= 0){
-                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabtext + '</a></li>');
                                     $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
                                     showTab(tabId);
                                     registerCloseEvent();
@@ -280,13 +282,14 @@
                             "label": "{%trans 'execute' %}",
                             "action": function (obj) {
 
-                                var tabId = $node.text; //this is id on tab content div where the
+                                var tabtext = $node.text; //this is id on tab content div where the
+                                var tabId = $node.original.elementid;
                                 //get server ip
                                 //console.log($node.original);
                                 var taskname = $node.original.taskname;
                                 var groupname = $node.original.groupname;
                                 if ($("#"+tabId).length <= 0){
-                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabtext + '</a></li>');
                                     $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
                                     showTab(tabId);
                                     registerCloseEvent();
@@ -307,14 +310,15 @@
                             "label": "{%trans 'execute' %}",
                             "action": function (obj) {
 
-                                var tabId = $node.text; //this is id on tab content div where the
+                                var tabtext = $node.text; //this is id on tab content div where the
+                                var tabId = $node.original.elementid;
                                 //get server ip
                                 //console.log($node.original);
                                 var taskname = $node.original.taskname;
                                 var groupname = $node.original.groupname;
                                 var ip = $node.original.ip;
                                 if ($("#"+tabId).length <= 0){
-                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabId + '</a></li>');
+                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabtext + '</a></li>');
                                     $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
                                     showTab(tabId);
                                     registerCloseEvent();
