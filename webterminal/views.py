@@ -74,8 +74,7 @@ class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
         context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
         return context
 
-class SshTerminalKill(LoginRequiredMixin,PermissionRequiredMixin,View):
-    permission_required = 'common.can_kill_serverinfo'
+class SshTerminalKill(LoginRequiredMixin,View):
     raise_exception = True
 
     def post(self,request):
@@ -83,17 +82,20 @@ class SshTerminalKill(LoginRequiredMixin,PermissionRequiredMixin,View):
             channel_name = request.POST.get('channel_name',None)
             try:
                 data = Log.objects.get(channel=channel_name)
-                if data.is_finished:
-                    return JsonResponse({'status':False,'message':'Ssh terminal does not exist!'})
+                if request.user.username == data.user.username or request.user.has_perm('common.can_kill_serverinfo'):
+                    if data.is_finished:
+                        return JsonResponse({'status':False,'message':'Ssh terminal does not exist!'})
+                    else:
+                        data.end_time = now()
+                        data.is_finished = True
+                        data.save()
+
+                        queue = get_redis_instance()
+                        redis_channel = queue.pubsub()
+                        queue.publish(channel_name, json.dumps(['close']))
+
+                        return JsonResponse({'status':True,'message':'Terminal has been killed !'})
                 else:
-                    data.end_time = now()
-                    data.is_finished = True
-                    data.save()
-                    
-                    queue = get_redis_instance()
-                    redis_channel = queue.pubsub()
-                    queue.publish(channel_name, json.dumps(['close'])) 
-                    
-                    return JsonResponse({'status':True,'message':'Terminal has been killed !'})
+                    return JsonResponse({'status':False,'message':'You do not have permission to kill active user action !'})
             except ObjectDoesNotExist:
                 return JsonResponse({'status':False,'message':'Request object does not exist!'})
