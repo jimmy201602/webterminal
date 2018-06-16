@@ -19,6 +19,10 @@ class RegisterForm(forms.Form):
         self.helper.field_class = 'col-md-8'
         self.helper.layout = Layout(*[Div(field,css_class='form-group') 
                                       for field in ['user','newpassword1','newpassword2','email'] ])
+        self.instance = False
+        if kwargs.has_key('instance'):
+            kwargs.pop('instance')
+            self.instance = True
         super(RegisterForm, self).__init__(*args, **kwargs)
 
     user = forms.CharField(
@@ -71,8 +75,9 @@ class RegisterForm(forms.Form):
         elif self.cleaned_data['newpassword1'] <> self.cleaned_data['newpassword2']:
             raise forms.ValidationError({'newpassword1':_(u"your password does't the same"),'newpassword2':_(u"your password does't the same")})
         elif self.cleaned_data['user']:
-            if User.objects.filter(username = unicode(self.cleaned_data['user'])):
-                raise forms.ValidationError({'register_code':_(u"User name has been registered!")})
+            if not self.instance:
+                if User.objects.filter(username = unicode(self.cleaned_data['user'])):
+                    raise forms.ValidationError({'user':_(u"User name has been registered!")})
         cleaned_data = super(RegisterForm, self).clean()
         return cleaned_data
 

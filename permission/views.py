@@ -37,7 +37,7 @@ class UserDelete(PermissionRequiredMixin,LoginRequiredMixin,DeleteView):
     permission_required = 'permission.can_delete_user'
     raise_exception = True
 
-class UserUpdate(PermissionRequiredMixin,LoginRequiredMixin,FormView,DetailView):
+class UserUpdate(LoginRequiredMixin,PermissionRequiredMixin,FormView,UpdateView):
     template_name='permission/userupdate.html'
     model=User
     form_class = RegisterForm
@@ -45,12 +45,33 @@ class UserUpdate(PermissionRequiredMixin,LoginRequiredMixin,FormView,DetailView)
     permission_required = 'permission.can_change_user'
     raise_exception = True
 
-    #def form_valid(self, form):
-        #username=form.cleaned_data['user']
-        #password=form.cleaned_data['newpassword1']
-        #email=form.cleaned_data['email']
-        #User.objects.create_user(username=username,email=email,password=password,is_active=True,is_staff=True)
-        #return HttpResponseRedirect(self.get_success_url())
+    def get_initial(self):
+        """
+        Returns the initial data to use for forms on this view.
+        """
+        data = self.get_object()
+        initial = super(UserUpdate,self).get_initial()
+        initial['user'] = data.username
+        initial['email'] = data.email
+        return initial
+
+    def form_valid(self, form):
+        username=form.cleaned_data['user']
+        password=form.cleaned_data['newpassword1']
+        email=form.cleaned_data['email']
+        data = self.get_object()
+        if len(password) != 0:
+            data.set_password(password)
+        data.email = email
+        data.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_form(self, form_class=None):
+        form = super(UserUpdate, self).get_form(form_class)
+        form.fields['user'].widget.attrs.update({'readonly' : True})
+        form.fields['newpassword1'].required = False
+        form.fields['newpassword2'].required = False
+        return form
 
 class PermissionCreate(PermissionRequiredMixin,LoginRequiredMixin,CreateView):
     model = Permission
