@@ -72,25 +72,28 @@ class GuacamoleWebsocket(WebsocketConsumer,WebsocketAuth):
             mkdir_p(recording_path)
             mkdir_p(drive_path)
 
-            client.handshake(width=data.credential.width,
-                             height=data.credential.height,
-                             protocol=data.credential.protocol,
-                             hostname=data.ip,
-                             port=data.credential.port,
-                             username=data.credential.username,
-                             password=data.credential.password,
-                             recording_path=recording_path,
-                             recording_name=cache_key,
-                             create_recording_path='true',
-                             enable_wallpaper='true',
-                             ignore_cert='true',
-                             enable_drive='true',
-                             drive_path=drive_path,
-                             create_drive_path='true')
-                             #security='tls',)
+            try:
+                client.handshake(width=data.credential.width,
+                                 height=data.credential.height,
+                                 protocol=data.credential.protocol,
+                                 hostname=data.ip,
+                                 port=data.credential.port,
+                                 username=data.credential.username,
+                                 password=data.credential.password,
+                                 recording_path=recording_path,
+                                 recording_name=cache_key,
+                                 create_recording_path='true',
+                                 enable_wallpaper='true',
+                                 ignore_cert='true',
+                                 enable_drive='true',
+                                 drive_path=drive_path,
+                                 create_drive_path='true')
+                                 #security='tls',)
+            except Exception:
+                self.message.reply_channel.send({"accept":False})
+                return
 
             self.message.reply_channel.send({"text":'0.,{0}.{1};'.format(len(cache_key),cache_key)},immediately=True)
-           #'0.,36.83940151-b2f9-4743-b5e4-b6eb85a97743;'
 
             audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=data.credential.width,height=data.credential.height,log=cache_key,gucamole_client_id=client._id)
             audit_log.save()
