@@ -19,6 +19,8 @@ from django.utils.timezone import now
 import os
 from channels import Group
 import traceback
+import logging
+logger = logging.getLogger(__name__)
 
 class webterminal(WebsocketConsumer):
     
@@ -134,7 +136,7 @@ class webterminal(WebsocketConsumer):
             self.closessh()
             self.close()
         except Exception,e:
-            print(traceback.print_exc())
+            logger.info(traceback.print_exc())
             self.closessh()
             self.close()
 
@@ -197,8 +199,7 @@ class CommandExecute(WebsocketConsumer):
             if bytes:
                 data = json.loads(bytes)
         except Exception,e:
-            import traceback
-            print traceback.print_exc()
+            logger.info(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
             
 class SshTerminalMonitor(WebsocketConsumer):
