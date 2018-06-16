@@ -146,6 +146,11 @@ class GuacamoleMonitor(GuacamoleWebsocket,WebsocketAuth):
             self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
             self.message.reply_channel.send({"accept":False})
         else:
+            #permission auth
+            if not self.haspermission('common.can_monitor_serverinfo'):
+                self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You have not permission to monitor user action!'})},immediately=True)
+                self.message.reply_channel.send({"accept":False})
+
             client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
             log_object = Log.objects.get(id=id)
             cache_key = str(log_object.gucamole_client_id)
