@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from webterminal.serializers import ServerGroupSerializer,ServerInforSerializer,CommandsSequenceSerializer,CredentialSerializer
+from common.serializers import ServerGroupSerializer,ServerInforSerializer,CommandsSequenceSerializer,CredentialSerializer
 from common.models import ServerGroup,ServerInfor,CommandsSequence,Credential
 
 class ServerGroupViewSet(viewsets.ModelViewSet):
