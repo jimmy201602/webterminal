@@ -51,6 +51,14 @@ class LoginRequiredMixin(AccessMixin):
 class Commands(LoginRequiredMixin,TemplateView):
     template_name = 'common/commandcreate.html'
 
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        if not request.user.is_authenticated():
+            return redirect_to_login(self.request.get_full_path(), self.get_login_url(), self.get_redirect_field_name())
+        if not request.user.has_perm('common.can_add_commandssequence'):
+            raise PermissionDenied(_('403 Forbidden'))
+        return self.render_to_response(context)
+
     def get_context_data(self, **kwargs):
         context = super(Commands, self).get_context_data(**kwargs)
         context['server_groups'] = ServerGroup.objects.all()
