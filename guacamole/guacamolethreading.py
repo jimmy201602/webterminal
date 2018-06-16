@@ -43,15 +43,8 @@ class GuacamoleThread(threading.Thread):
         return redis_sub
             
     def run(self):
-        #while (not self._stop_event.is_set()):
-            #text = self.queue.get_message()
-            #if text:
-                #if isinstance(data,(list,tuple)):
-                    #if data[0] == 'close':
-                        #self.stop()
         from webterminal.asgi import channel_layer
         with self.read_lock:
-            #self.pending_read_request.clear()
 
             while True:
                 try:
