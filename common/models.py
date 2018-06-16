@@ -22,8 +22,9 @@ class ServerInfor(models.Model):
     
     def __unicode__(self):
         return self.name
+
     def gethostname(self):
-        return slugify(self.hostname)
+        return slugify('{0} {1} {2}'.format(self.name,self.ip,self.hostname))
     
     class Meta:
         unique_together = (("ip", "credential"),)

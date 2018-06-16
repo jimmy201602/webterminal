@@ -20,6 +20,7 @@ import os
 from channels import Group
 import traceback
 from common.utils import WebsocketAuth
+from permission.models import Permission
 import logging
 logger = logging.getLogger(__name__)
 
@@ -71,6 +72,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                     width = data[2]
                     height = data[3]
                     self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+                    #Permission.objects.filter(user__username='jimmy',groups__servers__ip=ip,groups__servers__credential__protocol__contains='ssh')
                     try:
                         data = ServerInfor.objects.get(ip=ip,credential__protocol__contains='ssh')
                         port = data.credential.port
