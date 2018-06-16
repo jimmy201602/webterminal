@@ -57,7 +57,6 @@ class GuacamoleKill(LoginRequiredMixin,PermissionRequiredMixin,View):
         if request.is_ajax():
             id = request.POST.get('id',None)
             try:
-
                 log_object = Log.objects.get(id=id)
                 queue = get_redis_instance()
                 queue.pubsub()
@@ -68,7 +67,7 @@ class GuacamoleKill(LoginRequiredMixin,PermissionRequiredMixin,View):
                 log_object.save()
                 return JsonResponse({'status':True,'message':'Session has been killed !'})
             except ObjectDoesNotExist:
-                return JsonResponse({'status':True,'message':'Request object does not exist!'})
+                return JsonResponse({'status':False,'message':'Request object does not exist!'})
             except Exception ,e:
                 log_object = Log.objects.get(id=id)
 
