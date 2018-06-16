@@ -37,13 +37,20 @@ class UserDelete(PermissionRequiredMixin,LoginRequiredMixin,DeleteView):
     permission_required = 'permission.can_delete_user'
     raise_exception = True
 
-class UserUpdate(PermissionRequiredMixin,LoginRequiredMixin,UpdateView):
+class UserUpdate(PermissionRequiredMixin,LoginRequiredMixin,FormView,DetailView):
     template_name='permission/userupdate.html'
     model=User
-    fields=['email']
+    form_class = RegisterForm
     success_url = reverse_lazy('userlist')
     permission_required = 'permission.can_change_user'
     raise_exception = True
+
+    #def form_valid(self, form):
+        #username=form.cleaned_data['user']
+        #password=form.cleaned_data['newpassword1']
+        #email=form.cleaned_data['email']
+        #User.objects.create_user(username=username,email=email,password=password,is_active=True,is_staff=True)
+        #return HttpResponseRedirect(self.get_success_url())
 
 class PermissionCreate(PermissionRequiredMixin,LoginRequiredMixin,CreateView):
     model = Permission
