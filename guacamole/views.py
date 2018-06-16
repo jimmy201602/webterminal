@@ -21,7 +21,7 @@ from guacamole.instruction import GuacamoleInstruction as Instruction
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 import traceback
-from guacamole.guacamolethreading import get_redis_instance
+from common.utils import get_redis_instance
 
 logger = logging.getLogger(__name__)
 sockets = {}

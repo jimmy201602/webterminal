@@ -30,29 +30,8 @@ from webterminal.settings import MEDIA_ROOT
 import threading
 import ast
 import traceback
+from common.utils import get_redis_instance,mkdir_p
 
-def get_redis_instance():
-    from webterminal.asgi import channel_layer    
-    return channel_layer._connection_list[0]
-
-def mkdir_p(path):
-    """
-    Pythonic version of "mkdir -p".  Example equivalents::
-
-        >>> mkdir_p('/tmp/test/testing') # Does the same thing as...
-        >>> from subprocess import call
-        >>> call('mkdir -p /tmp/test/testing')
-
-    .. note:: This doesn't actually call any external commands.
-    """
-    try:
-        os.makedirs(path)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST:
-            pass
-        else:
-            raise # The original exception
-        
 def interactive_shell(chan,channel,log_name=None,width=90,height=40):
     if has_termios:
         posix_shell(chan,channel,log_name=log_name,width=width,height=height)

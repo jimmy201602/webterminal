@@ -5,10 +5,6 @@ try:
 except ImportError:
     import json
 import time
-
-def get_redis_instance():
-    from webterminal.asgi import channel_layer
-    return channel_layer._connection_list[0]
 import ast
 import logging
 from socket import timeout
@@ -16,6 +12,7 @@ logger = logging.getLogger(__name__)
 from django.utils.timezone import now
 from webterminal.settings import MEDIA_ROOT
 import os
+from common.utils import get_redis_instance
 
 class GuacamoleThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check

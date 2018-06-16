@@ -17,13 +17,8 @@ import re
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from common.views import LoginRequiredMixin
 from django.conf import settings
+from common.utils import mkdir_p
 import os
-
-def mkdir_p(path):
-    try:
-        os.makedirs(path)
-    except OSError as exc:
-        pass
 
 class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
     """
