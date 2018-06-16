@@ -6,7 +6,7 @@ except ImportError:
     import json
 import sys
 from django.utils.encoding import smart_unicode
-from common.utils import get_redis_instance,mkdir_p
+from common.utils import get_redis_instance,mkdir_p,WebsocketAuth
 from guacamole.client import GuacamoleClient
 import uuid
 from django.conf import settings
@@ -22,8 +22,9 @@ from django.contrib.auth.models import User
 from webterminal.settings import MEDIA_ROOT
 import os
 from guacamole.instruction import GuacamoleInstruction as Instruction
+from permission.models import Permission
 
-class GuacamoleWebsocket(WebsocketConsumer):
+class GuacamoleWebsocket(WebsocketConsumer,WebsocketAuth):
     
     http_user = True
     #http_user_and_session = True
@@ -43,6 +44,13 @@ class GuacamoleWebsocket(WebsocketConsumer):
             self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
             self.message.reply_channel.send({"accept":False})
         else:
+            #permission auth
+            try:
+                Permission.objects.get(user__username=self.message.user.username,groups__servers__id=id)
+            except ObjectDoesNotExist:
+                self.message.reply_channel.send({"text":json.dumps('\033[1;3;31mYou have not permission to connect server !\033[0m')},immediately=True)
+                self.message.reply_channel.send({"accept":False})
+                return
             client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
             try:
                 data = ServerInfor.objects.get(id=id)
@@ -130,7 +138,7 @@ class GuacamoleWebsocket(WebsocketConsumer):
         self.queue().publish(self.message.reply_channel.name, text)
 
 
-class GuacamoleMonitor(GuacamoleWebsocket):
+class GuacamoleMonitor(GuacamoleWebsocket,WebsocketAuth):
 
     def connect(self, message,id):
         self.message.reply_channel.send({"accept": True})
