@@ -23,9 +23,18 @@ import logging
 logger = logging.getLogger(__name__)
 
 class WebsocketAuth(object):
+
     @property
     def authenticate(self):
+        #user auth
         if self.message.user.is_authenticated():
+            return True
+        else:
+            return False
+
+    def haspermission(self,perm):
+        #permission auth
+        if self.message.user.has_perm(perm):
             return True
         else:
             return False
@@ -36,9 +45,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
     http_user = True
     #http_user_and_session = True
     channel_session = True
-    channel_session_user = True   
-
-
+    channel_session_user = True
 
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})
@@ -206,11 +213,16 @@ class SshTerminalMonitor(WebsocketConsumer,WebsocketAuth):
     
     
     def connect(self, message,channel):
+        """
+        User authenticate and detect user has permission to monitor user ssh action!
+        """
         if not self.authenticate:
             self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
             self.message.reply_channel.send({"accept":False})
+        if not self.haspermission('common.can_monitor_serverinfo'):
+            self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You have not permission to monitor user ssh action!'})},immediately=True)
+            self.message.reply_channel.send({"accept":False})
         self.message.reply_channel.send({"accept": True})     
-        #permission auth
         Group(channel).add(self.message.reply_channel.name)
 
     def disconnect(self, message,channel):
