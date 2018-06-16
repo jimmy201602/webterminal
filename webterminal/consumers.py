@@ -22,7 +22,15 @@ import traceback
 import logging
 logger = logging.getLogger(__name__)
 
-class webterminal(WebsocketConsumer):
+class WebsocketAuth(object):
+    @property
+    def authenticate(self):
+        if self.message.user.is_authenticated():
+            return True
+        else:
+            return False
+
+class webterminal(WebsocketConsumer,WebsocketAuth):
     
     ssh = paramiko.SSHClient() 
     http_user = True
@@ -30,12 +38,7 @@ class webterminal(WebsocketConsumer):
     channel_session = True
     channel_session_user = True   
 
-    @property
-    def authenticate(self):
-        if self.message.user.is_authenticated():
-            return True
-        else:
-            return False
+
 
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})
@@ -141,19 +144,11 @@ class webterminal(WebsocketConsumer):
             self.close()
 
 
-class CommandExecute(WebsocketConsumer):
+class CommandExecute(WebsocketConsumer,WebsocketAuth):
     http_user = True
     http_user_and_session = True
     channel_session = True
     channel_session_user = True   
-    
-
-    @property
-    def authenticate(self):
-        if self.message.user.is_authenticated():
-            return True
-        else:
-            return False
 
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})
@@ -202,7 +197,7 @@ class CommandExecute(WebsocketConsumer):
             logger.info(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
             
-class SshTerminalMonitor(WebsocketConsumer):
+class SshTerminalMonitor(WebsocketConsumer,WebsocketAuth):
     
     http_user = True
     http_user_and_session = True
@@ -211,6 +206,9 @@ class SshTerminalMonitor(WebsocketConsumer):
     
     
     def connect(self, message,channel):
+        if not self.authenticate:
+            self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
+            self.message.reply_channel.send({"accept":False})
         self.message.reply_channel.send({"accept": True})     
         #permission auth
         Group(channel).add(self.message.reply_channel.name)
