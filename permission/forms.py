@@ -8,7 +8,7 @@ from crispy_forms.layout import Layout,Div,Field
 from django.db import models
 from django.forms.widgets import CheckboxSelectMultiple
 from django.utils.encoding import force_text
-from django.utils.translation import gettext as _
+from django.utils.translation import ugettext_lazy as _
 
 class RegisterForm(forms.Form):
 
