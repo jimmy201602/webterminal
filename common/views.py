@@ -31,16 +31,22 @@ from django.core.exceptions import  PermissionDenied
 from permission.models import Permission
 from django.urls import reverse_lazy
 import traceback
+from django.contrib.auth.views import redirect_to_login
 
 class LoginRequiredMixin(AccessMixin):
     """
     CBV mixin which verifies that the current user is authenticated.
     """
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if not request.user.is_authenticated():
             return self.handle_no_permission()
         activate(request.LANGUAGE_CODE.replace('-','_'))
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+    def handle_no_permission(self):
+        if self.raise_exception and self.request.user.is_authenticated():
+            raise PermissionDenied(self.get_permission_denied_message())
+        return redirect_to_login(self.request.get_full_path(), self.get_login_url(), self.get_redirect_field_name())
 
 class Commands(LoginRequiredMixin,TemplateView):
     template_name = 'common/commandcreate.html'
