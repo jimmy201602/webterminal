@@ -67,12 +67,18 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
             if text:
                 data = json.loads(text)
                 begin_time = time.time()
-                if data[0] == 'ip':
+                if data[0] == 'ip' and len(data) == 5:
                     ip = data[1]
                     width = data[2]
                     height = data[3]
+                    id = data[4]
                     self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-                    #Permission.objects.filter(user__username='jimmy',groups__servers__ip=ip,groups__servers__credential__protocol__contains='ssh')
+                    try:
+                        Permission.objects.get(user__username=self.message.user.username,groups__servers__ip=ip,groups__servers__id=id,groups__servers__credential__protocol__contains='ssh')
+                    except ObjectDoesNotExist:
+                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])},immediately=True)
+                        self.message.reply_channel.send({"accept":False})
+                        return
                     try:
                         data = ServerInfor.objects.get(ip=ip,credential__protocol__contains='ssh')
                         port = data.credential.port

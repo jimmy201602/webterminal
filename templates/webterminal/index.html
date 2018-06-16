@@ -148,7 +148,7 @@
 
 </script>
 <script type="application/javascript">
-    function make_terminal(element, size, ws_url,ip) {
+    function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
             cols: size.cols,
             rows: size.rows,
@@ -164,7 +164,7 @@
             <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
                 <!--term.cols, term.rows]));-->
             term.resize(term.cols, term.rows);
-            ws.send(JSON.stringify(["ip", ip,term.cols, term.rows]));
+            ws.send(JSON.stringify(["ip", ip,term.cols, term.rows, id]));
             term.on('data', function (data) {
                 <!--console.log(data);-->
                 ws.send(JSON.stringify(['stdin', data]));
@@ -261,7 +261,7 @@
                                     registerCloseEvent('ssh');
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip);
+                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip, id);
                                 }else {
                                     showTab(tabId);
                                 }
