@@ -1092,8 +1092,6 @@ msgid "User list"
 msgstr "用户列表"
 
 #: permission/templates/permission/userlist.html:58
-#, fuzzy
-#| msgid "User update"
 msgid "update"
 msgstr "更新用户信息"
 
