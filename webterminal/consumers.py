@@ -6,7 +6,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from webterminal.interactive import interactive_shell,get_redis_instance,SshTerminalThread,InterActiveShellThread
+from webterminal.interactive import interactive_shell,SshTerminalThread,InterActiveShellThread
 import sys
 from django.utils.encoding import smart_unicode
 from django.core.exceptions import ObjectDoesNotExist
@@ -19,7 +19,7 @@ from django.utils.timezone import now
 import os
 from channels import Group
 import traceback
-from common.utils import WebsocketAuth
+from common.utils import WebsocketAuth,get_redis_instance
 from permission.models import Permission
 import logging
 logger = logging.getLogger(__name__)

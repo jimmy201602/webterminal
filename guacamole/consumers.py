@@ -6,7 +6,7 @@ except ImportError:
     import json
 import sys
 from django.utils.encoding import smart_unicode
-from guacamole.guacamolethreading import get_redis_instance
+from common.utils import get_redis_instance,mkdir_p
 from guacamole.client import GuacamoleClient
 import uuid
 from django.conf import settings
@@ -22,22 +22,6 @@ from django.contrib.auth.models import User
 from webterminal.settings import MEDIA_ROOT
 import os
 from guacamole.instruction import GuacamoleInstruction as Instruction
-
-
-def mkdir_p(path):
-    """
-    Pythonic version of "mkdir -p".  Example equivalents::
-
-        >>> mkdir_p('/tmp/test/testing') # Does the same thing as...
-        >>> from subprocess import call
-        >>> call('mkdir -p /tmp/test/testing')
-
-    .. note:: This doesn't actually call any external commands.
-    """
-    try:
-        os.makedirs(path)
-    except OSError as exc:
-        pass
 
 class GuacamoleWebsocket(WebsocketConsumer):
     
