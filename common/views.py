@@ -24,7 +24,6 @@ from django.views.generic.detail import DetailView
 from django.core.serializers import serialize
 from webterminal.settings import MEDIA_URL
 from django.utils.timezone import now
-from common.utils import get_redis_instance
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
 from django.core.exceptions import  PermissionDenied
