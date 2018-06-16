@@ -221,7 +221,7 @@
                                 children:[
                                     {% for server in group.servers.all %}
                                         {
-                                        text: "{{ server.name }}",
+                                        text: "{{ server.name }}  {{ server.ip }}  {{ server.hostname }}",
                                         icon: "fa fa-server",
                                         ip: "{{ server.ip }}",
                                         groupname: "{{ group.name }}",

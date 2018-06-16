@@ -16,7 +16,7 @@ class Permission(models.Model):
     updatedatetime = models.DateTimeField(auto_created=True,auto_now=True,verbose_name=_('Update time'))
     
     def __unicode__(self):
-        return self.user
+        return self.user.username
     
     class Meta:
         permissions = (
