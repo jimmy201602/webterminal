@@ -1,0 +1,18 @@
+version: '3'
+services:
+  webterminal:
+    image: webterminal/webterminal:latest
+    container_name: webterminal
+    ports:
+      - "80:80"
+    networks:
+      - public
+      - private
+    volumes:
+      - /var/log:/var/log
+    #command: ["sh","/docker-entrypoint.sh","start"]
+networks:
+  public:
+    driver: bridge
+  private:
+    driver: bridge
