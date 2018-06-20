@@ -47,7 +47,8 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
     from webterminal.asgi import channel_layer
     stdout = list()
     begin_time = time.time()
-    last_write_time = {'last_activity_time':begin_time}    
+    last_write_time = {'last_activity_time':begin_time}
+    command = list()
     try:
         chan.settimeout(0.0)
         while True:
@@ -62,6 +63,14 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
                     chan.close()
                 else:
+                    print('x',x)
+                    if '\r\n' not in x:
+                        command.append(x)
+                    else:
+                        print('rn',command)
+                        print(re.compile('\[.*@.*\][\$#]').search(''.join(command)))
+                        print('command2',''.join(command))
+                        command = list()
                     if isinstance(x,unicode):
                         stdout.append([delay,x])
                     else:
@@ -143,7 +152,6 @@ class SshTerminalThread(threading.Thread):
                         data = text['data']
                 else:
                     data = text['data']
-                
                 if isinstance(data,(list,tuple)):
                     if data[0] == 'close':
                         print('close threading')
