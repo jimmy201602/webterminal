@@ -158,6 +158,22 @@ class Log(models.Model):
             ('-start_time')
         ]
 
+class CommandLog(models.Model):
+    log = models.ForeignKey(Log,verbose_name=_('Log'))
+    datetime = models.DateTimeField(auto_now=True,verbose_name=_('date time'))
+    command = models.CharField(max_length=255,verbose_name=_('command'))
+
+    class Meta:
+        permissions = (
+            ("can_view_command_log", _("Can view command log info")),
+        )
+        ordering = [
+            ('-datetime')
+        ]
+
+    def __unicode__(self):
+        return self.log.user.username
+
 # Create your models here.
 #from django.contrib.contenttypes.models import ContentType
 #from django.contrib.contenttypes import generic

@@ -7,7 +7,7 @@ from django.utils.translation import activate
 from django.views.generic import View
 from django.shortcuts import render_to_response,HttpResponse
 from django.http import JsonResponse
-from common.models import ServerGroup,CommandsSequence,Credential,ServerInfor,Log
+from common.models import ServerGroup,CommandsSequence,Credential,ServerInfor,Log,CommandLog
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_protect,csrf_exempt
 try:
@@ -257,3 +257,18 @@ class LogList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     template_name = 'common/logslist.html'
     permission_required = 'common.can_view_log'
     raise_exception = True
+
+
+class CommandLogList(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'common.can_view_command_log'
+    raise_exception = True
+
+    def post(self,request):
+        if request.is_ajax():
+            id = request.POST.get('id',None)
+            data = CommandLog.objects.filter(log__id=id)
+            if data.count() == 0:
+                return JsonResponse({'status':False,'message':'Request object not exist!'})
+            return JsonResponse({'status':True,'message':json.dumps([{'datetime':i.datetime.strftime('%Y-%m-%d %H:%M:%S'),'command':i.command} for i in data])})
+        else:
+            return JsonResponse({'status':False,'message':'Method not allowed!'})

@@ -24,12 +24,13 @@ import re
 import subprocess
 from django.contrib.auth.models import User 
 from django.utils import timezone
-from common.models import Log
+from common.models import Log,CommandLog
 from webterminal.settings import MEDIA_ROOT
 import threading
 import ast
 import traceback
 from common.utils import get_redis_instance,mkdir_p
+from webterminal.commandextract import CommandDeal
 
 def interactive_shell(chan,channel,log_name=None,width=90,height=40):
     if has_termios:
@@ -49,6 +50,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
     begin_time = time.time()
     last_write_time = {'last_activity_time':begin_time}
     command = list()
+    logobj = Log.objects.get(channel=channel)
     try:
         chan.settimeout(0.0)
         while True:
@@ -63,13 +65,13 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
                     chan.close()
                 else:
-                    print('x',x)
                     if '\r\n' not in x:
                         command.append(x)
                     else:
-                        print('rn',command)
-                        print(re.compile('\[.*@.*\][\$#]').search(''.join(command)))
-                        print('command2',''.join(command))
+                        command = CommandDeal().deal_command(''.join(command))
+                        if len(command) != 0:
+                            print('command',command)
+                            CommandLog.objects.create(log=logobj,command=command)
                         command = list()
                     if isinstance(x,unicode):
                         stdout.append([delay,x])
