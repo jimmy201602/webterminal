@@ -273,8 +273,13 @@ function get_commands_detail(id) {
             data: {'id':id},
             success: function(data, textStatus, jqXHR) {
                 if(data.status){
-                    dialog.find('.bootbox-body').html( JSON.stringify(data.message));
-                    dialog.find('.bootbox-body').JSONView(data.message, { collapsed: false });
+                    dialog.find('.modal-body').css("height","300px").css("overflow-y","scroll").css("font-size","16px");
+                    var html = "";
+                    var data = data.message;
+                    for ( var i=0; i<data.length; i++ ) {
+                        html += data[i].datetime + " :  " + data[i].command  +"</br>"
+                    }
+                    dialog.find('.bootbox-body').html(html);
                 } else {
                    toastr['error'](data.message);
                 }
