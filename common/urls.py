@@ -5,7 +5,7 @@ from common.views import (Commands,
                           CommandExecuteList,CommandExecuteDetailApi,
                           CredentialCreate,CredentialList,CredentialDetailApi,
                           ServerCreate,ServerlList,GroupList,GroupCreate,
-                          LogList)
+                          LogList,CommandLogList)
 from common.api import ServerGroupViewSet,ServerInforViewSet,CommandsSequenceViewSet,CredentialViewSet
 from rest_framework import routers
 from django.contrib import admin
@@ -32,5 +32,6 @@ urlpatterns = [
         url(r'^groupcreate/$',GroupCreate.as_view(),name='groupcreate'),
         url(r'^grouplist/$',GroupList.as_view(),name='grouplist'),
         url(r'^logslist/$',LogList.as_view(),name='logslist'),
+        url(r'^commandsloglist/$',CommandLogList.as_view(),name='commandsloglist'),
         url(r'^api/',include(router.urls)),
 ]

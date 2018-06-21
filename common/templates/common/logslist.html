@@ -79,6 +79,9 @@
                                 {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{% else %}<a class="btn btn-xs btn-success" onclick="monitorguacamole('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'guacamolemonitor' element.id %}',)">{% endif %}{%trans 'monitor' %}</a>
                                 {% endif %}
                                 {% endif %}
+                                {% if perms.webterminal.can_view_command_log %}
+                                {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-warning" onclick="get_commands_detail('{{element.id}}')">{%trans 'commands' %}</a>{% endif %}
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -256,6 +259,30 @@ function killguacamole(id,user_name) {
                 });
             }
         }
+    });
+}
+function get_commands_detail(id) {
+    var dialog = bootbox.dialog({
+        title: '{%trans 'commands detail' %}',
+        message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>'
+    });
+    dialog.init(function(){
+        $.ajax({
+            url: '{% url 'commandsloglist' %}',
+            type: 'POST',
+            data: {'id':id},
+            success: function(data, textStatus, jqXHR) {
+                if(data.status){
+                    dialog.find('.bootbox-body').html( JSON.stringify(data.message));
+                    dialog.find('.bootbox-body').JSONView(data.message, { collapsed: false });
+                } else {
+                   toastr['error'](data.message);
+                }
+            },
+            error: function(data, textStatus, jqXHR) {
+                toastr['error'](data);
+            }
+        });
     });
 }
 </script>
