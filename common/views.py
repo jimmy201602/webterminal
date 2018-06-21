@@ -269,6 +269,6 @@ class CommandLogList(LoginRequiredMixin,PermissionRequiredMixin,View):
             data = CommandLog.objects.filter(log__id=id)
             if data.count() == 0:
                 return JsonResponse({'status':False,'message':'Request object not exist!'})
-            return JsonResponse({'status':True,'message':json.dumps([{'datetime':i.datetime.strftime('%Y-%m-%d %H:%M:%S'),'command':i.command} for i in data])})
+            return JsonResponse({'status':True,'message':[{'datetime':i.datetime.strftime('%Y-%m-%d %H:%M:%S'),'command':i.command} for i in data]})
         else:
             return JsonResponse({'status':False,'message':'Method not allowed!'})
