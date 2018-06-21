@@ -143,6 +143,7 @@ class SshTerminalThread(threading.Thread):
     def run(self):
         #fix the first login 1 bug
         first_flag = True
+        command = list()
         while (not self._stop_event.is_set()):
             text = self.queue.get_message()
             if text:
@@ -166,6 +167,15 @@ class SshTerminalThread(threading.Thread):
                         self.chan.send(data[1])
                         
                 elif isinstance(data,(int,long)):
+                    #get user command and block user action in the future
+                    if '\r\n' not in str(data):
+                        command.append(str(data))
+                    else:
+                        command = CommandDeal().deal_command(''.join(command))
+                        if len(command) != 0:
+                            print('command',command)
+                            command = list()
+
                     if data == 1 and first_flag:
                         first_flag = False
                     else:
