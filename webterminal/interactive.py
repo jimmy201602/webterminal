@@ -175,7 +175,7 @@ class SshTerminalThread(threading.Thread):
                         if len(command) != 0:
                             print('command',command)
                             command = list()
-
+                    #vi bug need to be fixed
                     if data == 1 and first_flag:
                         first_flag = False
                     else:
