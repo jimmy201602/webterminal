@@ -15,7 +15,7 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 from common.models import ServerInfor,Log
 from django.utils.timezone import now
 from django.contrib.auth.models import User
@@ -51,6 +51,8 @@ class GuacamoleWebsocket(WebsocketConsumer,WebsocketAuth):
                 self.message.reply_channel.send({"text":json.dumps('\033[1;3;31mYou have not permission to connect server !\033[0m')},immediately=True)
                 self.message.reply_channel.send({"accept":False})
                 return
+            except MultipleObjectsReturned:
+                pass
             client = GuacamoleClient(settings.GUACD_HOST, settings.GUACD_PORT)
             try:
                 data = ServerInfor.objects.get(id=id)

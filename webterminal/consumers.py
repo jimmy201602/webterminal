@@ -9,7 +9,7 @@ except ImportError:
 from webterminal.interactive import interactive_shell,SshTerminalThread,InterActiveShellThread
 import sys
 from django.utils.encoding import smart_unicode
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 from common.models import ServerInfor,ServerGroup,CommandsSequence,Log
 from webterminal.sudoterminal import ShellHandlerThread
 import ast 
@@ -79,6 +79,8 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
                         return
+                    except MultipleObjectsReturned:
+                        pass
                     try:
                         data = ServerInfor.objects.get(ip=ip,credential__protocol__contains='ssh')
                         port = data.credential.port
