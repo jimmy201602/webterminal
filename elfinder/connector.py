@@ -175,6 +175,10 @@ class ElfinderConnector:
                 'volumes' : [v.debug() for v in self._volumes.values()],
                 'mountErrors' : self._mountErrors
             }
+
+        #fix sftp open transfer not close session bug
+        if self._volumes.has_key('spdfid_'):
+            self._volumes['spdfid_']._options['storage'].sftp.close()
         return result
 
     def _open(self, target='', init=False, tree=False):
