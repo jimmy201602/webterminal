@@ -26,7 +26,6 @@ class ServerInfor(models.Model):
         return self.name
 
     def gethostname(self):
-        print self.hostname
         return slugify('{0} {1} {2} {3}'.format(self.name,self.ip,self.hostname,''.join(random.choice(string.ascii_letters) for _ in range(15)).lower()))
 
     def getrandomid(self):
