@@ -218,7 +218,8 @@
                                 text: "{{ server.name }} {{ server.ip }} {{ server.hostname }}",
                                 icon: "fa fa-server",
                                 ip: "{{ server.ip }}",
-                                id: "{{ server.id }}",
+                                id: "{{ server.getrandomid }}",
+                                oid: "{{ server.id }}",
                                 state: {selected: !0},
                                 hostname:"{{ server.hostname }}",
                                 protocol: "{{ server.credential.protocol }}",
@@ -252,7 +253,7 @@
                             var tabId = $node.original.elementid;
                             //get server ip
                             var ip = $node.original.ip;
-                            var id = $node.original.id;
+                            var id = $node.original.oid;
                             var protocol = $node.original.protocol;
                             if (protocol == "ssh-password" || protocol == "ssh-key"){
                                 if ($("#"+tabId).length <= 0){
@@ -333,7 +334,7 @@
                                     $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '_file_manager' + '"></div>');
                                     showTab(tabId+'_file_manager');
                                     registerCloseEvent('none');
-                                    file_manager(tabId,$node.original.hostname);
+                                    file_manager(tabId,$node.original.oid);
                                 }else {
                                     showTab(tabId+'_file_manager');
 
@@ -382,7 +383,7 @@
         e.preventDefault();
         $("#server_list").jstree(true).search($("#q").val());
     });
-    function file_manager(tabId,hostname) {
+    function file_manager(tabId,id) {
 
                 var loct = window.location.search,
                     full_lng, locm, lng;
@@ -400,7 +401,7 @@
                 $('#'+tabId+'_file_manager').elfinder({
                         resizable: false,
                         height: '100%',
-                        url : '/elfinder/yawd-connector/sftp/'+hostname+'/', // connector URL (REQUIRED)
+                        url : '/elfinder/yawd-connector/sftp/'+id+'/', // connector URL (REQUIRED)
                         lang: lng,                   // language (OPTIONAL)
                         <!--uploadMaxChunkSize: 124445261824,-->
                         soundPath: "{% static '/elfinder/sounds' %}",
