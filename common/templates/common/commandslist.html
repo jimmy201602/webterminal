@@ -62,9 +62,9 @@
                             </td>
                             <td class="json"><a id="{{ element.id}}" onclick="get_detail({{element.id}})">{{element.commands|truncatechars:50 }}</td>
                             <td data-editable="false" class="text-center pull-left">
-                                {% if perms.webterminal.can_view_commandssequence %}<a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>{% endif %}
-                                {% if perms.webterminal.can_change_commandssequence %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
-                                {% if perms.webterminal.can_delete_commandssequence %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
+                                {% if perms.common.can_view_commandssequence %}<a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail' %}</a>{% endif %}
+                                {% if perms.common.can_change_commandssequence %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
+                                {% if perms.common.can_delete_commandssequence %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
                             </td>
                         </tr>
                         {% endfor %}

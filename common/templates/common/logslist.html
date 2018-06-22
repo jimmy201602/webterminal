@@ -68,18 +68,18 @@
                             <td>{{ element.is_finished }}</td>
                             <td data-editable="false" class="text-center pull-left">
                                 {% if element.is_finished %}
-                                {% if perms.webterminal.can_play_log %}
+                                {% if perms.common.can_play_log %}
                                     <a class="btn btn-xs btn-primary play" onclick="play('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{{element.start_time}}',{% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %} '{% url 'sshlogplay' element.id %}' {% else %} '{% url 'guacamolelogplay' element.id %}' {% endif %} );">{%trans 'replay' %}</a>
                                 {% endif %}
                                 {% else %}
-                                {% if perms.webterminal.can_kill_serverinfo %}
+                                {% if perms.common.can_kill_serverinfo %}
                                     {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-danger" onclick="kill('{{element.channel}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% else %} <a class="btn btn-xs btn-danger" onclick="killguacamole('{{element.id}}','{{element.user.username}}')">{%trans 'kill' %}</a>{% endif %}
                                 {% endif %}
-                                {% if perms.webterminal.can_monitor_serverinfo %}
+                                {% if perms.common.can_monitor_serverinfo %}
                                 {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-success" onclick="monitor('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'sshterminalmonitor' element.id %}',)">{% else %}<a class="btn btn-xs btn-success" onclick="monitorguacamole('{{element.user.username}}','{{element.server.ip}}','{{element.start_time}}','{% url 'guacamolemonitor' element.id %}',)">{% endif %}{%trans 'monitor' %}</a>
                                 {% endif %}
                                 {% endif %}
-                                {% if perms.webterminal.can_view_command_log %}
+                                {% if perms.common.can_view_command_log %}
                                 {% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %}<a class="btn btn-xs btn-warning" onclick="get_commands_detail('{{element.id}}')">{%trans 'commands' %}</a>{% endif %}
                                 {% endif %}
                             </td>
