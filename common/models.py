@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 import uuid
 from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
+import random
+import string
 
 class ServerInfor(models.Model):
     name = models.CharField(max_length=40,verbose_name=_('Server name'),blank=False,unique=True)
@@ -25,7 +27,10 @@ class ServerInfor(models.Model):
 
     def gethostname(self):
         return slugify('{0} {1} {2}'.format(self.name,self.ip,self.hostname))
-    
+
+    def getrandomid(self):
+        return '{0}{1}'.format(self.pk,''.join(random.choice(string.ascii_letters) for _ in range(15)).lower())
+
     class Meta:
         unique_together = (("ip", "credential"),)
         permissions = (

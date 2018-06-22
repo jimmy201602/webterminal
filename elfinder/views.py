@@ -154,7 +154,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
         u_id = str(uuid.uuid4())
         kwargs['u_id'] = u_id
         if kwargs['optionset'] == 'sftp':
-            server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
+            server_object = get_object_or_404(ServerInfor,id=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
             key_label = "%s::%s" % (server_object.ip, server_object.credential.username)
@@ -192,7 +192,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
         u_id = str(uuid.uuid4())
         kwargs['u_id'] = u_id
         if kwargs['optionset'] == 'sftp':
-            server_object = get_object_or_404(ServerInfor,hostname=kwargs['start_path'])
+            server_object = get_object_or_404(ServerInfor,id=kwargs['start_path'])
             optinon_sets = self.get_optionset(**kwargs)
             optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(server_object.name,server_object.ip)
             key_label = "%s::%s" % (server_object.ip, server_object.credential.username)
