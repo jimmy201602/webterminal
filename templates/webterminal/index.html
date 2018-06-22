@@ -345,7 +345,7 @@
                                     $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '_file_manager' + '"></div>');
                                     showTab(tabId+'_file_manager');
                                     registerCloseEvent('none');
-                                    rdp_file_manager(tabId,$node.original.hostname);
+                                    rdp_file_manager(tabId,$node.original.oid);
                                 }else {
                                     showTab(tabId+'_file_manager');
                                 }
@@ -410,7 +410,7 @@
 
             }
 
-    function rdp_file_manager(tabId,hostname) {
+    function rdp_file_manager(tabId,id) {
 
                 var loct = window.location.search,
                     full_lng, locm, lng;
