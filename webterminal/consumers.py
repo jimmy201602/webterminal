@@ -22,6 +22,7 @@ import traceback
 from common.utils import WebsocketAuth,get_redis_instance
 from permission.models import Permission
 import logging
+import StringIO
 logger = logging.getLogger(__name__)
 
 class webterminal(WebsocketConsumer,WebsocketAuth):
@@ -99,12 +100,15 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                         if method == 'password':
                             self.ssh.connect(ip, port=port, username=username, password=password, timeout=3)
                         else:
-                            self.ssh.connect(ip, port=port, username=username, key_filename=key, timeout=3)
+                            private_key = StringIO.StringIO(key)
+                            pkey = paramiko.RSAKey.from_private_key(private_key)
+                            self.ssh.connect(ip, port=port, username=username, key_filename=pkey, timeout=3)
                     except socket.timeout:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
                         return
-                    except Exception:
+                    except Exception,e:
+                        print(e)
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server\033[0m'])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
                         return
