@@ -7,6 +7,7 @@ except ImportError:
 from django.utils.encoding import smart_unicode
 import threading
 from common.models import ServerInfor
+import StringIO
 
 class ShellHandler(object):
 
@@ -18,7 +19,9 @@ class ShellHandler(object):
         if method == 'password':
             self.ssh.connect(ip, port=port, username=username, password=credential, timeout=timeout)
         else:
-            self.ssh.connect(ip, port=port, username=username, key_filename=credential, timeout=timeout)
+            private_key = StringIO.StringIO(credential)
+            pkey = paramiko.RSAKey.from_private_key(private_key)
+            self.ssh.connect(ip, port=port, username=username, key_filename=pkey, timeout=timeout)
 
         channel = self.ssh.invoke_shell()
         self.stdin = channel.makefile('wb')
