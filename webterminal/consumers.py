@@ -107,9 +107,8 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
                         return
-                    except Exception,e:
-                        print(e)
-                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server\033[0m'])},immediately=True)
+                    except Exception as e:
+                        self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
                         return
                     
