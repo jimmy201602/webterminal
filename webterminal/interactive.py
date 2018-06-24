@@ -51,6 +51,8 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
     last_write_time = {'last_activity_time':begin_time}
     command = list()
     logobj = Log.objects.get(channel=channel)
+    vim_flag = False
+    vim_data = ''
     try:
         chan.settimeout(0.0)
         while True:
@@ -65,14 +67,26 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
                     chan.close()
                 else:
+                    if vim_flag:
+                        vim_data += x
                     if '\r\n' not in x:
                         command.append(x)
                     else:
                         command = CommandDeal().deal_command(''.join(command))
                         if len(command) != 0:
-                            print('command',command)
-                            CommandLog.objects.create(log=logobj,command=command)
+                            #vim command record patch
+                            if command.strip().startswith('vi') or command.strip().startswith('fg'):
+                                CommandLog.objects.create(log=logobj,command=command)
+                                vim_flag = True
+                            else:
+                                if vim_flag:
+                                    if re.compile('\[.*@.*\][\$#]').search(vim_data):
+                                        vim_flag = False
+                                        vim_data = ''
+                                else:
+                                    CommandLog.objects.create(log=logobj,command=command)
                         command = list()
+
                     if isinstance(x,unicode):
                         stdout.append([delay,x])
                     else:
@@ -167,15 +181,6 @@ class SshTerminalThread(threading.Thread):
                         self.chan.send(data[1])
                         
                 elif isinstance(data,(int,long)):
-                    #get user command and block user action in the future
-                    if '\r\n' not in str(data):
-                        command.append(str(data))
-                    else:
-                        command = CommandDeal().deal_command(''.join(command))
-                        if len(command) != 0:
-                            print('command',command)
-                            command = list()
-                    #vi bug need to be fixed
                     if data == 1 and first_flag:
                         first_flag = False
                     else:
