@@ -195,9 +195,9 @@ class CommandExecute(WebsocketConsumer,WebsocketAuth):
                     commands = json.loads(CommandsSequence.objects.get(name = taskname).commands)
                     if isinstance(commands,(basestring,str,unicode)):
                         commands = ast.literal_eval(commands)
-                    
+
                     #Run commands 
-                    commandshell = ShellHandlerThread(message=self.message,commands=commands,server_list=server_list)
+                    commandshell = ShellHandlerThread(message=self.message,commands=commands,server_list=set(server_list))
                     commandshell.setDaemon = True
                     commandshell.start()
                         
