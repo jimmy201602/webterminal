@@ -19,14 +19,14 @@ class ShellHandler(object):
         if method == 'password':
             self.ssh.connect(ip, port=port, username=username, password=credential, timeout=timeout)
         else:
-            private_key = StringIO.StringIO(key)
-            if 'RSA' in key:
+            private_key = StringIO.StringIO(credential)
+            if 'RSA' in credential:
                 private_key = paramiko.RSAKey.from_private_key(private_key)
-            elif 'DSA' in key:
+            elif 'DSA' in credential:
                 private_key = paramiko.DSSKey.from_private_key(private_key)
-            elif 'EC' in key:
+            elif 'EC' in credential:
                 private_key = paramiko.ECDSAKey.from_private_key(private_key)
-            elif 'OPENSSH' in key:
+            elif 'OPENSSH' in credential:
                 private_key = paramiko.Ed25519Key.from_private_key(private_key)
             else:
                 self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])},immediately=True)
