@@ -2,9 +2,6 @@ import re
 
 class CommandDeal(object):
 
-    def __init__(self):
-        self.vim_flag = False
-
     @staticmethod
     def remove_obstruct_char(cmd_str):
         '''delete some special control delimiter'''
@@ -127,10 +124,4 @@ class CommandDeal(object):
                                           [\x80-\x9f] | (?:\x1b\]0.*) | \[.*@.*\][\$#] | (.*mysql>.*)      #enter every special key
                                           """, re.X)
         result_command = control_char.sub('', result_command.strip())
-    
-        if not self.vim_flag:
-            if result_command.startswith('vi') or result_command.startswith('fg'):
-                self.vim_flag = True
-            return result_command.decode('utf8',"ignore")
-        else:
-            return ''
+        return result_command.decode('utf8',"ignore")
