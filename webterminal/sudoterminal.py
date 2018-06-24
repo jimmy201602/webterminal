@@ -128,7 +128,7 @@ class ShellHandlerThread(threading.Thread):
     def run(self):
         for server_ip in self.server_list:
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mExecute task on server:%s \033[0m' %(smart_unicode(server_ip)) ] )},immediately=True)
-            
+
             #get server credential info
             serverdata = ServerInfor.objects.get(ip=server_ip,credential__protocol__in=['ssh-password','ssh-key'])
             port = serverdata.credential.port
@@ -137,9 +137,9 @@ class ShellHandlerThread(threading.Thread):
             if method == 'password':
                 credential = serverdata.credential.password
             else:
-                credential = serverdata.credential.key     
-            
-            
+                credential = serverdata.credential.key
+
+
             #do actual job    
             ssh = ShellHandler(server_ip,username,port,method,credential,channel_name=self.message.reply_channel.name)
             for command in self.commands:
