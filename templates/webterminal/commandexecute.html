@@ -220,6 +220,7 @@
                                 state: {selected: !0},
                                 children:[
                                     {% for server in group.servers.all %}
+                                        {% if server.credential.protocol == 'ssh-password' or server.credential.protocol == 'ssh-key' %}
                                         {
                                         text: "{{ server.name }}  {{ server.ip }}  {{ server.hostname }}",
                                         icon: "fa fa-server",
@@ -229,6 +230,7 @@
                                         state: {selected: !0},
                                         elementid: "{{ server.gethostname }}"
                                         },
+                                        {% endif %}
                                     {% endfor %}
                                     ],
                                 },
