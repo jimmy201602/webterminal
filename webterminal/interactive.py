@@ -69,12 +69,14 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 else:
                     if vim_flag:
                         vim_data += x
+                    #print('raw data',command)
                     if '\r\n' not in x:
                         command.append(x)
                     else:
                         command = CommandDeal().deal_command(''.join(command))
                         if len(command) != 0:
                             #vim command record patch
+                            #print('command',command)
                             if command.strip().startswith('vi') or command.strip().startswith('fg'):
                                 CommandLog.objects.create(log=logobj,command=command)
                                 vim_flag = True
@@ -187,6 +189,15 @@ class SshTerminalThread(threading.Thread):
                         self.chan.send(str(data))
                 else:
                     try:
+                        #get user command and block user action in the future
+                        if '\r' not in str(data):
+                            command.append(str(data))
+                        else:
+                            record_command = CommandDeal().deal_command(''.join(command))
+                            if len(record_command) != 0:
+                                print('command input',record_command)
+                                command = list()
+                        #vi bug need to be fixed
                         self.chan.send(str(data))
                     except socket.error:
                         print('close threading error')
