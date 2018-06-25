@@ -15,7 +15,7 @@ Including another URLconf
 from __future__ import absolute_import
 from django.conf.urls import url,include
 from django.contrib import admin
-from webterminal.views import Index,SshLogPlay,SshTerminalKill,SshTerminalMonitor,CommandExecute
+from webterminal.views import Index,SshLogPlay,SshTerminalKill,SshTerminalMonitor,CommandExecute,BatchCommandExecute
 from django.contrib.auth.views import LoginView,LogoutView
 from django.views.static import serve
 from django.conf import settings
@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^guacamole/',include('guacamole.urls')),
     url(r'^$',Index.as_view(),name='index'),
     url(r'^commandexecute/$',CommandExecute.as_view(),name='commandexecute'),
+    url(r'^batchcommandexecute/$',BatchCommandExecute.as_view(),name='batchcommandexecute'),
     url(r'^sshterminalkill/$',SshTerminalKill.as_view(),name='sshterminalkill'),
     url(r'^sshlogplay/(?P<pk>[0-9]+)/',SshLogPlay.as_view(),name='sshlogplay'),
     url(r'^sshterminalmonitor/(?P<pk>[0-9]+)/',SshTerminalMonitor.as_view(),name='sshterminalmonitor'),
