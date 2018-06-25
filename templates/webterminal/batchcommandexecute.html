@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {%load i18n%}
-{% block title %}{%trans 'command execute' %}{% endblock %}
+{% block title %}{%trans 'batch command execute' %}{% endblock %}
 {% load staticfiles %}
     {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
@@ -37,45 +37,86 @@
     </style>
 {% block content %}
 <div class="row">
-    <div class="col-md-3">
-        <div class="portlet box box-success" style="overflow:scroll;height: 800px;">
-            <div class="portlet-title">
-                <div class="caption">
-                    <a class="text-danger">{%trans 'Task List' %}</a>
-                </div>
-                <div class="tools">
-                    <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-                    <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
-                    <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
-                </div>
-            </div>
-            <div class="portlet-body">
-                <form id="search">
-                    <input type="search" id="q" placeholder="{%trans 'search' %}"/>
-                    <span>
+  <div class="col-md-3">
+    <div class="portlet box box-success" style="overflow:scroll;height: 800px;">
+      <div class="portlet-title">
+        <div class="caption">
+          <a class="text-danger">{%trans 'Task List' %}</a>
+        </div>
+        <div class="tools">
+          <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+          <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
+          <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
+          <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+        </div>
+      </div>
+      <div class="portlet-body">
+        <form id="search">
+          <input type="search" id="q" placeholder="{%trans 'search' %}"/>
+          <span>
                         <button type="submit"><i class="fa fa-search"></i></button>
                     </span>
-                </form>
-                <div id="server_list" class="tree-demo" role="tree"></div>
+        </form>
+        <div id="server_list" class="tree-demo" role="tree"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9">
+
+    <div class="row">
+      <div class="col-md-6">
+        <!-- AREA CHART -->
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Area Chart</h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
             </div>
+          </div>
+          <div class="box-body">
+            <div class="chart">
+              <canvas id="areaChart" style="height:250px"></canvas>
+            </div>
+          </div>
+          <!-- /.box-body -->
         </div>
-    </div>
-    <div class="col-md-9">
+        <!-- /.box -->
 
-        <div class="span2 leftMenu">
-            <ul class="nav nav-tabs marginBottom" id="myTab">
-                <li class="active ">
-                    <a href="#help" class="backgroundRed">{%trans 'help info' %}<button class="close closeTab" type="button" >×</button></a>
-                </li>
-            </ul>
+      </div>
+      <!-- /.col (LEFT) -->
+      <div class="col-md-6">
+        <!-- LINE CHART -->
+        <div class="box box-info">
+          <div class="box-header with-border">
+            <h3 class="box-title">Line Chart</h3>
+
+            <div class="box-tools pull-right">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <div class="chart">
+              <canvas id="lineChart" style="height:250px"></canvas>
+            </div>
+          </div>
+          <!-- /.box-body -->
         </div>
-        <div class="tab-content span4">
-            <div class="tab-pane active responsive" id="help">{%trans 'help info' %}</div>
-        </div>
+        <!-- /.box -->
+
+
+      </div>
+      <!-- /.col (RIGHT) -->
+
 
     </div>
+  </div>
 </div>
+
 {% endblock %}
 
 {% block js %}

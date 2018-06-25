@@ -74,6 +74,20 @@ class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
         context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
         return context
 
+class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
+    template_name = 'webterminal/batchcommandexecute.html'
+    permission_required = 'common.can_execute_commandssequence'
+    raise_exception = True
+
+    def get_context_data(self, **kwargs):
+        context = super(BatchCommandExecute, self).get_context_data(**kwargs)
+        try:
+            groups = Permission.objects.get(user__username=self.request.user.username)
+        except ObjectDoesNotExist:
+            return context
+        context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
+        return context
+
 class SshTerminalKill(LoginRequiredMixin,View):
     raise_exception = True
 
