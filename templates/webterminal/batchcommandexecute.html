@@ -76,55 +76,7 @@
           </div>
       </div>
 
-    <div class="row">
-      <div class="col-md-6">
-        <!-- AREA CHART -->
-        <div class="box box-primary">
-          <div class="box-header with-border">
-            <h3 class="box-title">Area Chart</h3>
-
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-          </div>
-          <div class="box-body">
-            <div class="chart">
-              <canvas id="areaChart" style="height:250px"></canvas>
-            </div>
-          </div>
-          <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-
-      </div>
-      <!-- /.col (LEFT) -->
-      <div class="col-md-6">
-        <!-- LINE CHART -->
-        <div class="box box-info">
-          <div class="box-header with-border">
-            <h3 class="box-title">Line Chart</h3>
-
-            <div class="box-tools pull-right">
-              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-          </div>
-          <div class="box-body">
-            <div class="chart">
-              <canvas id="lineChart" style="height:250px"></canvas>
-            </div>
-          </div>
-          <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-
-
-      </div>
-      <!-- /.col (RIGHT) -->
-
+    <div class="row" id="terminal-container">
 
     </div>
   </div>
@@ -411,11 +363,13 @@
         //console.log(data);
         var i, j, r = [];
         for(i = 0, j = data.selected.length; i < j; i++) {
-          if ( data.instance.get_node(data.selected[i]).original.hasOwnProperty('ip') ){
+          if ( data.instance.get_node(data.selected[i]).original.hasOwnProperty('ip') && data.instance.get_node(data.selected[i]).state.checked == false){
             r.push(data.instance.get_node(data.selected[i]));
+            // remove unchecked server
+            $("#"+data.instance.get_node(data.selected[i]).original.elementid+"parent").remove();
           }
         }
-        console.log('uncheck',r);
+        //console.log('uncheck',r);
       })
       // create the instance
       .jstree();
@@ -429,12 +383,38 @@
         for(i = 0, j = selected.length; i < j; i++) {
           if ( selected[i].original.hasOwnProperty('ip') ){
             r.push(selected[i]);
+            //add checked server
+            serverterminal(selected[i].original.text,selected[i].original.elementid);
           }
         }
-        console.log('check',r);
+        //console.log('check',r);
       })
       // create the instance
       .jstree();
+
+
+    function serverterminal(title,id) {
+        html = '<div class="col-md-6" id="'+id +'parent">\n' +
+            '        <div class="box box-primary">\n' +
+            '        <div class="box-header with-border">\n' +
+            '        <h3 class="box-title">' + title + '</h3>\n'
+        html += '    <div class="box-tools pull-right">\n' +
+            '        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>\n' +
+            '        </button>\n' +
+            '        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>\n' +
+            '    </div>\n' +
+            '    </div>\n' +
+            '    <div class="box-body">\n' +
+            '        <div id="' + id + '" style="height:250px">\n' +
+            '        </div>\n' +
+            '        </div>\n' +
+            '        </div>\n' +
+            '\n' +
+            '        </div>'
+        if ($("#"+id).length <= 0 ){
+            $("#terminal-container").append(html);
+        }
+    }
 
 </script>
 {% endblock %}
