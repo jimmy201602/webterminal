@@ -267,7 +267,7 @@
                         children: [
                             {% for group in command.group.all %}
                                 {
-                                text: "{{ group.name }}", 
+                                text: "{{ group.name }}",
                                 icon: "fa fa-server", 
                                 groupname: "{{ group.name }}",
                                 taskname: "{{ command.name }}",
@@ -282,7 +282,8 @@
                                         groupname: "{{ group.name }}",
                                         taskname: "{{ command.name }}",
                                         state: {selected: !0},
-                                        elementid: "{{ server.gethostname }}"
+                                        elementid: "{{ server.gethostname }}",
+                                        serverid: "{{ server.id }}"
                                         },
                                         {% endif %}
                                     {% endfor %}
@@ -299,6 +300,9 @@
             file: {icon: "fa fa-file icon-state-warning icon-lg"}
         },
         plugins: ["contextmenu", "state", "types", "search", "sort", "checkbox"],
+        checkbox: {
+            "tie_selection": false
+        },
         contextmenu: {
             "items": function ($node) {
                 var tree = $("#server_list").jstree(true);
@@ -399,5 +403,38 @@
         e.preventDefault();
         $("#server_list").jstree(true).search($("#q").val());
     });
+
+    //uncheck server
+    $('#server_list')
+      // listen for event
+      .on('uncheck_node.jstree', function (e, data) {
+        //console.log(data);
+        var i, j, r = [];
+        for(i = 0, j = data.selected.length; i < j; i++) {
+          if ( data.instance.get_node(data.selected[i]).original.hasOwnProperty('ip') ){
+            r.push(data.instance.get_node(data.selected[i]));
+          }
+        }
+        console.log('uncheck',r);
+      })
+      // create the instance
+      .jstree();
+
+    //check server
+    $('#server_list')
+      // listen for event
+      .on('check_node.jstree', function (e, data) {
+        var selected = $("#server_list").jstree().get_checked(true);
+        var i, j, r = [];
+        for(i = 0, j = selected.length; i < j; i++) {
+          if ( selected[i].original.hasOwnProperty('ip') ){
+            r.push(selected[i]);
+          }
+        }
+        console.log('check',r);
+      })
+      // create the instance
+      .jstree();
+
 </script>
 {% endblock %}
