@@ -419,6 +419,8 @@
 
     $("#autocomplete").typeahead({
         loadingAnimation: true,
+        fitToElement: false,
+        items: 20,
         source: function (query, process) {
             return $.ajax({
                 url: '{% url "batchcommandexecute" %}',
