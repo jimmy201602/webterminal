@@ -26,6 +26,8 @@ from permission.models import Permission
 from django.urls import reverse_lazy
 from common.views import LoginRequiredMixin
 import traceback
+import re
+import commands
 
 class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
@@ -87,6 +89,19 @@ class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateVie
             return context
         context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
         return context
+
+    def post(self,request):
+        if request.is_ajax():
+            cmd = request.POST.get('cmd','')
+            commandall = commands.getoutput("PATH=$PATH:./:/usr/lib:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin;for dir in $(echo $PATH |sed 's/:/ /g');do ls $dir;done").strip().split('\n')
+            commandmatch = []
+            for command in commandall:
+                match = re.search('^{0}.*'.format(cmd), command)
+                if match:
+                    commandmatch.append(match.group())
+                else:
+                    continue
+            return JsonResponse({'status':True,'message':commandmatch})
 
 class SshTerminalKill(LoginRequiredMixin,View):
     raise_exception = True
