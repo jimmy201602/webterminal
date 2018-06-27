@@ -101,7 +101,7 @@ class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateVie
                     commandmatch.append(match.group())
                 else:
                     continue
-            return JsonResponse({'status':True,'message':commandmatch})
+            return JsonResponse({'status':True,'message':list(set(commandmatch))})
 
 class SshTerminalKill(LoginRequiredMixin,View):
     raise_exception = True
