@@ -418,6 +418,7 @@
     }
 
     $("#autocomplete").typeahead({
+        loadingAnimation: true,
         source: function (query, process) {
             return $.ajax({
                 url: '{% url "batchcommandexecute" %}',
@@ -433,6 +434,12 @@
     function executecommand(){
         alert($("#autocomplete").val());
     }
+    <!--$('#autocomplete').on('keydown', function(e) {-->
+      <!--if (e.keyCode == 13) {-->
+        <!--console.log('keydown');-->
+        <!--executecommand();-->
+      <!--}-->
+    <!--})-->
 
 </script>
 {% endblock %}
