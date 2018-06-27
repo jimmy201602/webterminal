@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-16 12:07+0000\n"
+"POT-Creation-Date: 2018-06-27 12:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: elfinder/connector.py:339 elfinder/connector.py:347
+#: elfinder/connector.py:343 elfinder/connector.py:351
 msgid "File not found"
 msgstr "文件没有查找到"
 
-#: elfinder/connector.py:342
+#: elfinder/connector.py:346
 msgid "Access denied"
 msgstr "访问拒绝"
 
