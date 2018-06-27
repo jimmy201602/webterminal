@@ -67,7 +67,7 @@
           <div class="col-md-12">
               <p></p>
               <div class="input-group input-group-sm">
-                  <input class="form-control" type="text">
+                  <input class="form-control" type="text" id="autocomplete">
                   <span class="input-group-btn">
                       <button type="button" class="btn btn-info btn-flat">{% trans 'execute' %}</button>
                     </span>
@@ -90,6 +90,7 @@
 <script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
 <script src="{% static 'plugins/jstree/jstree.js' %}"></script>
+<script src="{% static 'plugins/typeahead.js/bootstrap-typeahead.jquery.min.js' %}"></script>
 
 <script type="application/javascript">
 
@@ -416,5 +417,18 @@
         }
     }
 
+
+$("#autocomplete").typeahead({
+        source: function (query, process) {
+            return $.ajax({
+                url: '{% url "batchcommandexecute" %}',
+                type: 'post',
+                data: {cmd: query},
+                success: function (result) {
+                    return process(result.message);
+                },
+            });
+        }
+});
 </script>
 {% endblock %}
