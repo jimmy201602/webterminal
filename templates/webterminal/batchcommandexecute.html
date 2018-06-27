@@ -418,17 +418,17 @@
     }
 
 
-$("#autocomplete").typeahead({
-        source: function (query, process) {
-            return $.ajax({
-                url: '{% url "batchcommandexecute" %}',
-                type: 'post',
-                data: {cmd: query},
-                success: function (result) {
-                    return process(result.message);
-                },
-            });
-        }
-});
+    $("#autocomplete").typeahead({
+            source: function (query, process) {
+                return $.ajax({
+                    url: '{% url "batchcommandexecute" %}',
+                    type: 'post',
+                    data: {cmd: query},
+                    success: function (result) {
+                        return process(result.message);
+                    },
+                });
+            }
+    });
 </script>
 {% endblock %}
