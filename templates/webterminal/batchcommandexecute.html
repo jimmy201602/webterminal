@@ -69,7 +69,7 @@
               <div class="input-group input-group-sm">
                   <input class="form-control" type="text" id="autocomplete">
                   <span class="input-group-btn">
-                      <button type="button" class="btn btn-info btn-flat">{% trans 'execute' %}</button>
+                      <button type="button" class="btn btn-info btn-flat" onclick="executecommand();">{% trans 'execute' %}</button>
                     </span>
               </div>
               <p></p>
@@ -417,18 +417,22 @@
         }
     }
 
-
     $("#autocomplete").typeahead({
-            source: function (query, process) {
-                return $.ajax({
-                    url: '{% url "batchcommandexecute" %}',
-                    type: 'post',
-                    data: {cmd: query},
-                    success: function (result) {
-                        return process(result.message);
-                    },
-                });
-            }
+        source: function (query, process) {
+            return $.ajax({
+                url: '{% url "batchcommandexecute" %}',
+                type: 'post',
+                data: {cmd: query},
+                success: function (result) {
+                    return process(result.message);
+                },
+            });
+        }
     });
+
+    function executecommand(){
+        alert($("#autocomplete").val());
+    }
+
 </script>
 {% endblock %}
