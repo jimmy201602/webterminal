@@ -66,7 +66,7 @@
       <div class="row">
           <div class="col-md-12">
               <p></p>
-              <div class="input-group input-group-sm">
+              <div class="input-group input-group-sm" id="complete">
                   <input class="form-control" type="text" id="autocomplete">
                   <span class="input-group-btn">
                       <button type="button" class="btn btn-info btn-flat" onclick="executecommand();">{% trans 'execute' %}</button>
@@ -420,13 +420,26 @@
     $("#autocomplete").typeahead({
         loadingAnimation: true,
         fitToElement: false,
-        items: 20,
+        items: 'all',
+        updater: function(item) {
+            // do what you want with the item here
+            console.log('update',item);
+            $('#autocomplete').on('keydown', function(e) {
+                if (e.keyCode == 13) {
+                    console.log('keydown');
+                    executecommand();
+                }
+            });
+            return item;
+        },
         source: function (query, process) {
             return $.ajax({
                 url: '{% url "batchcommandexecute" %}',
                 type: 'post',
                 data: {cmd: query},
                 success: function (result) {
+                    $('#autocomplete').unbind('keydown');
+                    $('#autocomplete').typeahead('close');
                     return process(result.message);
                 },
             });
@@ -436,12 +449,5 @@
     function executecommand(){
         alert($("#autocomplete").val());
     }
-    <!--$('#autocomplete').on('keydown', function(e) {-->
-      <!--if (e.keyCode == 13) {-->
-        <!--console.log('keydown');-->
-        <!--executecommand();-->
-      <!--}-->
-    <!--})-->
-
 </script>
 {% endblock %}
