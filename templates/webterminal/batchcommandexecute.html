@@ -157,7 +157,8 @@
 
 </script>
 <script type="application/javascript">
-    function make_terminal(element, size, ws_url,paramter) {
+    //make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip, id);
+    function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
             cols: size.cols,
             rows: size.rows,
@@ -167,13 +168,15 @@
         });
         term.open(element, false);
         var ws = new WebSocket(ws_url);
-        //console.log('paramter',paramter);
         ws.onopen = function (event) {
-            ws.send(JSON.stringify({"parameter":paramter}));
             //set terminal width and height
+            term.fit();
             <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
-                <!--window.innerHeight, window.innerWidth]));-->
+                <!--term.cols, term.rows]));-->
+            //term.resize(term.cols, term.rows);
+            ws.send(JSON.stringify(["ip", ip,term.cols, term.rows, id]));
             term.on('data', function (data) {
+                <!--console.log(data);-->
                 ws.send(JSON.stringify(['stdin', data]));
             });
 
@@ -181,18 +184,21 @@
                 document.title = title;
             });
 
-
-            <!--term.fit();-->
             term.toggleFullscreen(true);
             ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
-                //console.log(json_msg);
                 switch (json_msg[0]) {
                     case "stdout":
-                        term.writeln(json_msg[1]);
+                        term.write(json_msg[1]);
                         break;
                     case "disconnect":
-                        term.write("{%trans '\r\n\r\n[Finished...]\r\n' %}");
+                        term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
+                        break;
+                    case "channel_name":
+                        <!--console.log(json_msg[1]);-->
+                        var channel_name_attribute = document.createAttribute('channel_name')
+                        channel_name_attribute.value = json_msg[1];
+                        element.setAttributeNode(channel_name_attribute)
                         break;
                 }
             };
@@ -385,7 +391,8 @@
           if ( selected[i].original.hasOwnProperty('ip') ){
             r.push(selected[i]);
             //add checked server
-            serverterminal(selected[i].original.text,selected[i].original.elementid);
+            //console.log(selected[i].original.text,selected[i].original);
+            serverterminal(selected[i].original.text,selected[i].original.elementid,selected[i].original.ip,selected[i].original.serverid);
           }
         }
         //console.log('check',r);
@@ -394,7 +401,7 @@
       .jstree();
 
 
-    function serverterminal(title,id) {
+    function serverterminal(title,id,ip,serverid) {
         html = '<div class="col-md-6" id="'+id +'parent">\n' +
             '        <div class="box box-primary">\n' +
             '        <div class="box-header with-border">\n' +
@@ -414,6 +421,18 @@
             '        </div>'
         if ($("#"+id).length <= 0 ){
             $("#terminal-container").append(html);
+            <!--var term = new Terminal({-->
+                <!--cols: size.cols,-->
+                <!--rows: size.rows,-->
+                <!--screenKeys: true,-->
+                <!--useStyle: true,-->
+                <!--cursorBlink: true,  // Blink the terminal's cursor-->
+            <!--});-->
+            <!--term.open(document.getElementById(id), false);-->
+            <!--term.fit();-->
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+            var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
+            //make_terminal(document.getElementById(id), {rows: 40, cols: 90}, ws_path, ip, serverid);
         }
     }
 
