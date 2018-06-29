@@ -258,7 +258,7 @@
             default: {icon: "fa fa-folder icon-state-warning icon-lg"},
             file: {icon: "fa fa-file icon-state-warning icon-lg"}
         },
-        plugins: ["contextmenu", "state", "types", "search", "sort", "checkbox"],
+        plugins: ["contextmenu", "types", "search", "sort", "checkbox"],
         checkbox: {
             "tie_selection": false
         },
@@ -432,7 +432,7 @@
             <!--term.fit();-->
             var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
             var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-            //make_terminal(document.getElementById(id), {rows: 40, cols: 90}, ws_path, ip, serverid);
+            make_terminal(document.getElementById(id), {rows: 40, cols: 90}, ws_path, ip, serverid);
         }
     }
 
