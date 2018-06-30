@@ -87,7 +87,6 @@ class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateVie
             groups = Permission.objects.get(user__username=self.request.user.username)
         except ObjectDoesNotExist:
             return context
-        context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
         context['server_groups'] = ServerGroup.objects.filter(name__in=[group.name for group in groups.groups.all()])
         return context
 

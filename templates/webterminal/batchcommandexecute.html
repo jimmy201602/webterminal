@@ -150,35 +150,19 @@
             responsive: true,
             check_callback: 0,
             data: [
-                {% for command in commands %}
+                {% for server_group in server_groups %}
                     {
-                        text: "{{ command.name }}",
-                        taskname:"{{ command.name }}",
+                        text: "{{ server_group.name }}",
                         children: [
-                            {% for group in command.group.all %}
+                            {% for server in server_group.servers.all %}
                                 {
-                                text: "{{ group.name }}",
+                                text: "{{ server.name }}  {{ server.ip }}  {{ server.hostname }}",
+                                ip: "{{ server.ip }}",
                                 icon: "fa fa-server", 
-                                groupname: "{{ group.name }}",
-                                taskname: "{{ command.name }}",
-                                state: {selected: 0},
-                                children:[
-                                    {% for server in group.servers.all %}
-                                        {% if server.credential.protocol == 'ssh-password' or server.credential.protocol == 'ssh-key' %}
-                                        {
-                                        text: "{{ server.name }}  {{ server.ip }}  {{ server.hostname }}",
-                                        icon: "fa fa-server",
-                                        ip: "{{ server.ip }}",
-                                        groupname: "{{ group.name }}",
-                                        taskname: "{{ command.name }}",
-                                        state: {selected: !0},
-                                        elementid: "{{ server.gethostname }}",
-                                        id: "{{ server.gethostname }}",
-                                        serverid: "{{ server.id }}"
-                                        },
-                                        {% endif %}
-                                    {% endfor %}
-                                    ],
+                                state: {selected: !0},
+                                elementid: "{{ server.gethostname }}",
+                                id: "{{ server.gethostname }}",
+                                serverid: "{{ server.id }}"
                                 },
                             {% endfor %}
                         ],
