@@ -157,6 +157,7 @@
 
 </script>
 <script type="application/javascript">
+    var terminals = new Object;
     //make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, ip, id);
     function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
@@ -167,6 +168,7 @@
             cursorBlink: true,  // Blink the terminal's cursor
         });
         term.open(element, false);
+        terminals[element.id] = term;
         var ws = new WebSocket(ws_url);
         ws.onopen = function (event) {
             //set terminal width and height
@@ -264,100 +266,6 @@
         checkbox: {
             "tie_selection": false
         },
-        contextmenu: {
-            "items": function ($node) {
-                var tree = $("#server_list").jstree(true);
-                //console.log($node.parents.length);
-                if ($node.parents.length == 1){
-                    return {
-                        "execute": {
-                            "separator_before": false,
-                                "separator_after": false,
-                                "label": "{%trans 'execute' %}",
-                                "icon": "fa fa-play icon-state-warning icon-lg",
-                                "action": function (obj) {
-
-                                var tabtext = $node.text; //this is id on tab content div where the
-                                var tabId = $node.original.elementid;
-                                //get server ip
-                                //console.log($node.original);
-                                var taskname = $node.original.taskname;
-                                if ($("#"+tabId).length <= 0){
-                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabtext + '</a></li>');
-                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
-                                    showTab(tabId);
-                                    registerCloseEvent();
-                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname});
-                                }else {
-                                    showTab(tabId);
-                                }
-                            }
-                        },
-                    }
-                } else  if ( $node.parents.length == 2){
-                    return {
-                        "execute": {
-                            "separator_before": false,
-                            "separator_after": false,
-                            "label": "{%trans 'execute' %}",
-                            "icon": "fa fa-play icon-state-warning icon-lg",
-                            "action": function (obj) {
-
-                                var tabtext = $node.text; //this is id on tab content div where the
-                                var tabId = $node.original.elementid;
-                                //get server ip
-                                //console.log($node.original);
-                                var taskname = $node.original.taskname;
-                                var groupname = $node.original.groupname;
-                                if ($("#"+tabId).length <= 0){
-                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabtext + '</a></li>');
-                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
-                                    showTab(tabId);
-                                    registerCloseEvent();
-                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname});
-                                }else {
-                                    showTab(tabId);
-                                }
-                            }
-                        },
-                    }
-                } else {
-                    return {
-                        "execute": {
-                            "separator_before": false,
-                            "separator_after": false,
-                            "label": "{%trans 'execute' %}",
-                            "icon": "fa fa-play icon-state-warning icon-lg",
-                            "action": function (obj) {
-
-                                var tabtext = $node.text; //this is id on tab content div where the
-                                var tabId = $node.original.elementid;
-                                //get server ip
-                                //console.log($node.original);
-                                var taskname = $node.original.taskname;
-                                var groupname = $node.original.groupname;
-                                var ip = $node.original.ip;
-                                if ($("#"+tabId).length <= 0){
-                                    $('.nav-tabs').append('<li><a href="#' + tabId + '"><button class="close closeTab" type="button" >×</button>' + tabtext + '</a></li>');
-                                    $('.tab-content').append('<div class="tab-pane responsive" id="' + tabId + '"></div>');
-                                    showTab(tabId);
-                                    registerCloseEvent();
-                                    var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-                                    var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname,'ip':ip});
-                                }else {
-                                    showTab(tabId);
-                                }
-                            }
-                        },
-                    }
-                }
-            }
-        },
     });
     
     $("#search").submit(function(e) {
@@ -425,6 +333,7 @@
             $("#terminal-container").append(html);
             var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
             var ws_path = ws_scheme + '://' + window.location.host + '/batchexecute/';
+            //console.log(id);
             make_terminal(document.getElementById(id), {rows: 40, cols: 90}, ws_path, ip, serverid);
         }
     }
