@@ -258,6 +258,23 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         self.close()
 
     def receive(self,text=None, bytes=None, **kwargs):
+        """
+        Protocol
+        register terminal id
+        ["register", ip, term.cols, term.rows, serverid, element.id]
+        stdin data
+        ['stdin', data, element.id]
+        stdout data
+        ['stdout', data, element.id]
+        command data
+        ["command",  data, selected[i].original.elementid]
+        close terminal data
+        ["close",  'close', selected[i].original.elementid]
+        channel_name data
+        ["channel_name","channel_name",elementid]
+        disconnect data
+        ["disconnect",msg,elementid]
+        """
         try:
             if text:
                 data = json.loads(text)
