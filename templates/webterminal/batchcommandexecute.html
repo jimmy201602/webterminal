@@ -206,6 +206,10 @@
         for(i = 0, j = data.selected.length; i < j; i++) {
           if ( data.instance.get_node(data.selected[i]).original.hasOwnProperty('ip') && data.instance.get_node(data.selected[i]).state.checked == false){
             r.push(data.instance.get_node(data.selected[i]));
+            //when user unchecked the terminal then delete the correspond terminal
+            //console.log(data.instance.get_node(data.selected[i]).original.elementid);
+            delete terminals[data.instance.get_node(data.selected[i]).original.elementid]
+            //console.log(terminals);
             // remove unchecked server
             $("#"+data.instance.get_node(data.selected[i]).original.elementid+"parent").remove();
           }
@@ -280,19 +284,21 @@
     });
 
     function executecommand(){
-        var selected = $("#server_list").jstree().get_checked(true);
-        var i, j, r = [];
-        for(i = 0, j = selected.length; i < j; i++) {
-          if ( selected[i].original.hasOwnProperty('ip') ){
-            r.push(selected[i]);
-          }
-        }
-        console.log(r);
         if ($("#autocomplete").val().length >0){
-            ws.send(JSON.stringify(["all",$("#autocomplete").val()]));
+            var data = $("#autocomplete").val();
+            var selected = $("#server_list").jstree().get_checked(true);
+            var i, j, r = [];
+            for(i = 0, j = selected.length; i < j; i++) {
+              if ( selected[i].original.hasOwnProperty('ip') ){
+                r.push(selected[i]);
+                console.log(selected[i]);
+                ws.send(JSON.stringify(["command", selected[i].original.elementid, data]));
+              }
+            }
+            //console.log(r);
         }else{
             alert($("#autocomplete").val());
-        }
+        };
     };
 
     $('input').keypress(function (e) {
@@ -305,6 +311,9 @@
     function unchecknode(jstreeid,id) {
         $("#server_list").jstree(true).uncheck_node(jstreeid+'_anchor');
         $("#"+id).remove();
+        //when user close selected terminal then delete correspondly terminals
+        delete terminals[id.split('parent')[0]]
+        //console.log(terminals);
     }
 </script>
 {% endblock %}
