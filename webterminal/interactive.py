@@ -50,7 +50,10 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
     begin_time = time.time()
     last_write_time = {'last_activity_time':begin_time}
     command = list()
-    logobj = Log.objects.get(channel=channel)
+    if elementid:
+        logobj = Log.objects.get(channel=elementid)
+    else:
+        logobj = Log.objects.get(channel=channel)
     vim_flag = False
     vim_data = ''
     try:
@@ -60,7 +63,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                 x = u(chan.recv(1024))
                 if len(x) == 0:
                     if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n'),elementid]) })
+                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n'),elementid.rsplit('_')[0]]) })
                     else:
                         channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n')]) })
                     break             
@@ -98,12 +101,12 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                         stdout.append([delay,codecs.getincrementaldecoder('UTF-8')('replace').decode(x)])
                 if isinstance(x,unicode):
                     if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(['stdout',x,elementid]) })
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',x,elementid.rsplit('_')[0]]) })
                     else:
                         channel_layer.send(channel, {'text': json.dumps(['stdout',x]) })
                 else:
                     if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x),elementid]) })
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x),elementid.rsplit('_')[0]]) })
                     else:
                         channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
                 #send message to monitor group
@@ -114,7 +117,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
             except Exception,e:
                 print(traceback.print_exc())
                 if elementid:
-                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e),elementid]) })
+                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e),elementid.rsplit('_')[0]]) })
                 else:
                     channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e)]) })
 
@@ -136,7 +139,10 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
         with open(os.path.join(MEDIA_ROOT,log_name), "a") as f:
             f.write(json.dumps(attrs, ensure_ascii=True,cls=CustomeFloatEncoder,indent=2))
         
-        audit_log=Log.objects.get(channel=channel,log=log_name.rsplit('/')[-1])
+        if elementid:
+            audit_log=Log.objects.get(channel=elementid,log=log_name.rsplit('/')[-1])
+        else:
+            audit_log=Log.objects.get(channel=channel,log=log_name.rsplit('/')[-1])
         audit_log.is_finished = True
         audit_log.end_time = timezone.now()
         audit_log.save()
@@ -167,7 +173,7 @@ class SshTerminalThread(threading.Thread):
         redis_instance = get_redis_instance()
         redis_sub = redis_instance.pubsub()
         if self.elementid:
-            redis_sub.subscribe(elementid)
+            redis_sub.subscribe(self.elementid.rsplit('_')[0])
         else:
             redis_sub.subscribe(self.message.reply_channel.name)
         return redis_sub
