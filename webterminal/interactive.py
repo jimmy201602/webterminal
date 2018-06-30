@@ -32,9 +32,9 @@ import traceback
 from common.utils import get_redis_instance,mkdir_p
 from webterminal.commandextract import CommandDeal
 
-def interactive_shell(chan,channel,log_name=None,width=90,height=40):
+def interactive_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
     if has_termios:
-        posix_shell(chan,channel,log_name=log_name,width=width,height=height)
+        posix_shell(chan,channel,log_name=log_name,width=width,height=height,elementid=elementid)
     else:
         sys.exit(1)
        
@@ -44,7 +44,7 @@ class CustomeFloatEncoder(json.JSONEncoder):
             return format(obj, '.6f')
         return json.JSONEncoder.encode(self, obj)
 
-def posix_shell(chan,channel,log_name=None,width=90,height=40):
+def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
     from webterminal.asgi import channel_layer
     stdout = list()
     begin_time = time.time()
@@ -59,7 +59,10 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
             try:               
                 x = u(chan.recv(1024))
                 if len(x) == 0:
-                    channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n')]) })
+                    if elementid:
+                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n'),elementid]) })
+                    else:
+                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n')]) })
                     break             
                 now = time.time()
                 delay = now - last_write_time['last_activity_time']
@@ -94,9 +97,15 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                     else:
                         stdout.append([delay,codecs.getincrementaldecoder('UTF-8')('replace').decode(x)])
                 if isinstance(x,unicode):
-                    channel_layer.send(channel, {'text': json.dumps(['stdout',x]) })
+                    if elementid:
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',x,elementid]) })
+                    else:
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',x]) })
                 else:
-                    channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
+                    if elementid:
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x),elementid]) })
+                    else:
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
                 #send message to monitor group
                 if log_name:
                     channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {'text': json.dumps(['stdout',smart_unicode(x)]) })
@@ -104,7 +113,10 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40):
                 pass
             except Exception,e:
                 print(traceback.print_exc())
-                channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e)]) })
+                if elementid:
+                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e),elementid]) })
+                else:
+                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e)]) })
 
     finally:
         attrs = {
@@ -137,12 +149,13 @@ class SshTerminalThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
     regularly for the stopped() condition."""
     
-    def __init__(self,message,chan):
+    def __init__(self,message,chan,elementid=None):
         super(SshTerminalThread, self).__init__()
         self._stop_event = threading.Event()
         self.message = message
         self.queue = self.redis_queue()
         self.chan = chan
+        self.elementid = elementid
         
     def stop(self):
         self._stop_event.set()
@@ -205,14 +218,15 @@ class SshTerminalThread(threading.Thread):
 
 class InterActiveShellThread(threading.Thread):
     
-    def __init__(self,chan,channel,log_name=None,width=90,height=40):
+    def __init__(self,chan,channel,log_name=None,width=90,height=40,elementid=None):
         super(InterActiveShellThread, self).__init__()
         self.chan = chan
         self.channel = channel
         self.log_name = log_name
         self.width = width
         self.height = height
+        self.elementid = elementid
     
     def run(self):
-        interactive_shell(self.chan, self.channel,log_name=self.log_name,width=self.width,height=self.height)
+        interactive_shell(self.chan, self.channel,log_name=self.log_name,width=self.width,height=self.height,elementid=self.elementid)
         

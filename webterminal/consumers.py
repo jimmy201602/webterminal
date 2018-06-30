@@ -274,6 +274,8 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         ["channel_name","channel_name",elementid]
         disconnect data
         ["disconnect",msg,elementid]
+        auth data
+        {'status':False,'message':'You must login to the system!'}
         """
         try:
             if text:
@@ -281,6 +283,10 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                 print(data)
                 if len(data) >0 and isinstance(data,list) and data[0] == 'register':
                     self.message.reply_channel.send({"text":json.dumps(['stdout', '\033[1;3;31mYou have connect to server:{0}'.format(data[1]), data[5] ] )},immediately=True)
+                elif len(data) >0 and isinstance(data,list) and data[0] == 'command':
+                    self.message.reply_channel.send({"text":json.dumps(['stdout', '\033[1;3;31mReceive command:{0}'.format(data[1]), data[2] ] )},immediately=True)
+                elif len(data) >0 and isinstance(data,list) and data[0] == 'stdin':
+                    self.message.reply_channel.send({"text":json.dumps(['stdout', '\033[1;3;31mReceive user input:{0}'.format(data[1]), data[2] ] )},immediately=True)
         except Exception,e:
             logger.info(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
