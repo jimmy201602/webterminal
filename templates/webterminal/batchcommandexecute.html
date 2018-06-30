@@ -102,16 +102,17 @@
         json_msg = JSON.parse(event.data);
         switch (json_msg[0]) {
             case "stdout":
-                term.write(json_msg[1]);
+                //['stdout', data, element.id]
+                terminals[json_msg[2]].write(json_msg[1]);
                 break;
             case "disconnect":
-                term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
+                terminals[json_msg[2]].write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
                 break;
             case "channel_name":
                 <!--console.log(json_msg[1]);-->
                 var channel_name_attribute = document.createAttribute('channel_name')
                 channel_name_attribute.value = json_msg[1];
-                element.setAttributeNode(channel_name_attribute)
+                document.getElementById(json_msg[2]).setAttributeNode(channel_name_attribute)
                 break;
         }
     };
@@ -127,7 +128,7 @@
         term.open(element, false);
         terminals[element.id] = term;
         //register the terminal
-        ws.send(JSON.stringify(["ip", element.id, ip, term.cols, term.rows, id]));
+        ws.send(JSON.stringify(["register", ip, term.cols, term.rows, id, element.id,]));
         term.fit();
         //send user input to server
         term.on('data', function (data) {
@@ -212,6 +213,8 @@
             //console.log(terminals);
             // remove unchecked server
             $("#"+data.instance.get_node(data.selected[i]).original.elementid+"parent").remove();
+            //close ssh terminal threading
+            ws.send(JSON.stringify(["close", 'close', data.instance.get_node(data.selected[i]).original.elementid ]));
           }
         }
         //console.log('uncheck',r);
@@ -292,7 +295,7 @@
               if ( selected[i].original.hasOwnProperty('ip') ){
                 r.push(selected[i]);
                 console.log(selected[i]);
-                ws.send(JSON.stringify(["command", selected[i].original.elementid, data]));
+                ws.send(JSON.stringify(["command", data, selected[i].original.elementid ]));
               }
             }
             //console.log(r);
@@ -313,6 +316,8 @@
         $("#"+id).remove();
         //when user close selected terminal then delete correspondly terminals
         delete terminals[id.split('parent')[0]]
+        //close ssh terminal threading
+        ws.send(JSON.stringify(["close", 'close', id.split('parent')[0] ]));
         //console.log(terminals);
     }
 </script>
