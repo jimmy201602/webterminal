@@ -280,7 +280,6 @@
     });
 
     function executecommand(){
-        alert($("#autocomplete").val());
         var selected = $("#server_list").jstree().get_checked(true);
         var i, j, r = [];
         for(i = 0, j = selected.length; i < j; i++) {
@@ -289,6 +288,11 @@
           }
         }
         console.log(r);
+        if ($("#autocomplete").val().length >0){
+            ws.send(JSON.stringify(["all",$("#autocomplete").val()]));
+        }else{
+            alert($("#autocomplete").val());
+        }
     };
 
     $('input').keypress(function (e) {
