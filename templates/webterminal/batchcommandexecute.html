@@ -411,7 +411,7 @@
         html += '    <div class="box-tools pull-right">\n' +
             '        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>\n' +
             '        </button>\n' +
-            '        <button type="button" class="btn btn-box-tool" data-widget="remove" onclick="unchecknode($(this).parents()[3].attributes.jstreeid.nodeValue)"><i class="fa fa-times"></i></button>\n' +
+            '        <button type="button" class="btn btn-box-tool" data-widget="remove" onclick="unchecknode($(this).parents()[3].attributes.jstreeid.nodeValue,$(this).parents()[3].id)"><i class="fa fa-times"></i></button>\n' +
             '    </div>\n' +
             '    </div>\n' +
             '    <div class="box-body">\n' +
@@ -468,8 +468,9 @@
         }
     });
 
-    function unchecknode(id) {
-        $("#server_list").jstree(true).uncheck_node(id+'_anchor');
+    function unchecknode(jstreeid,id) {
+        $("#server_list").jstree(true).uncheck_node(jstreeid+'_anchor');
+        $("#"+id).remove();
     }
 </script>
 {% endblock %}
