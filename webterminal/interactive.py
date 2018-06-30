@@ -75,7 +75,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                 else:
                     if vim_flag:
                         vim_data += x
-                    #print('raw data',command)
+                    # print('raw data',command)
                     if '\r\n' not in x:
                         command.append(x)
                     else:
@@ -202,6 +202,7 @@ class SshTerminalThread(threading.Thread):
                         self.chan.resize_pty(width=data[3], height=data[4])
                         break
                     elif data[0] in ['stdin','stdout']:
+                        #print(data)
                         self.chan.send(data[1])
                         
                 elif isinstance(data,(int,long)):
