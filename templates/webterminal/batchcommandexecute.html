@@ -217,7 +217,8 @@
                 name: 'proton',
                 responsive: true
                 },
-            check_callback: !0,
+            responsive: true,
+            check_callback: 0,
             data: [
                 {% for command in commands %}
                     {
@@ -230,7 +231,7 @@
                                 icon: "fa fa-server", 
                                 groupname: "{{ group.name }}",
                                 taskname: "{{ command.name }}",
-                                state: {selected: !0},
+                                state: {selected: 0},
                                 children:[
                                     {% for server in group.servers.all %}
                                         {% if server.credential.protocol == 'ssh-password' or server.credential.protocol == 'ssh-key' %}
@@ -242,6 +243,7 @@
                                         taskname: "{{ command.name }}",
                                         state: {selected: !0},
                                         elementid: "{{ server.gethostname }}",
+                                        id: "{{ server.gethostname }}",
                                         serverid: "{{ server.id }}"
                                         },
                                         {% endif %}
@@ -391,8 +393,8 @@
           if ( selected[i].original.hasOwnProperty('ip') ){
             r.push(selected[i]);
             //add checked server
-            //console.log(selected[i].original.text,selected[i].original);
-            serverterminal(selected[i].original.text,selected[i].original.elementid,selected[i].original.ip,selected[i].original.serverid);
+            //console.log(selected[i].parents[0]);
+            serverterminal(selected[i].original.text,selected[i].original.elementid,selected[i].original.ip,selected[i].original.serverid,selected[i].original.id);
           }
         }
         //console.log('check',r);
@@ -401,19 +403,19 @@
       .jstree();
 
 
-    function serverterminal(title,id,ip,serverid) {
-        html = '<div class="col-md-6" id="'+id +'parent">\n' +
+    function serverterminal(title,id,ip,serverid,jstreeid) {
+        html = '<div class="col-md-6" id="'+id +'parent"'+' jstreeid="'+jstreeid+'">\n' +
             '        <div class="box box-primary">\n' +
             '        <div class="box-header with-border">\n' +
             '        <h3 class="box-title">' + title + '</h3>\n'
         html += '    <div class="box-tools pull-right">\n' +
             '        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>\n' +
             '        </button>\n' +
-            '        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>\n' +
+            '        <button type="button" class="btn btn-box-tool" data-widget="remove" onclick="unchecknode($(this).parents()[3].attributes.jstreeid.nodeValue)"><i class="fa fa-times"></i></button>\n' +
             '    </div>\n' +
             '    </div>\n' +
             '    <div class="box-body">\n' +
-            '        <div id="' + id + '" style="height:500px">\n' +
+            '        <div id="' + id + '" style="height:300px">\n' +
             '        </div>\n' +
             '        </div>\n' +
             '        </div>\n' +
@@ -435,6 +437,7 @@
             make_terminal(document.getElementById(id), {rows: 40, cols: 90}, ws_path, ip, serverid);
         }
     }
+
 
     $("#autocomplete").typeahead({
         loadingAnimation: true,
@@ -464,5 +467,9 @@
             return false;
         }
     });
+
+    function unchecknode(id) {
+        $("#server_list").jstree(true).uncheck_node(id+'_anchor');
+    }
 </script>
 {% endblock %}
