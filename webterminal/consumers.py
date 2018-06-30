@@ -239,3 +239,29 @@ class SshTerminalMonitor(WebsocketConsumer,WebsocketAuth):
     
     def receive(self,text=None, bytes=None, **kwargs):
         pass
+
+
+class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
+    http_user = True
+    http_user_and_session = True
+    channel_session = True
+    channel_session_user = True
+
+    def connect(self, message):
+        self.message.reply_channel.send({"accept": True})
+        if not self.authenticate:
+            self.message.reply_channel.send({"text":json.dumps({'status':False,'message':'You must login to the system!'})},immediately=True)
+            self.message.reply_channel.send({"accept":False})
+
+    def disconnect(self, message):
+        self.message.reply_channel.send({"accept":False})
+        self.close()
+
+    def receive(self,text=None, bytes=None, **kwargs):
+        try:
+            if text:
+                data = json.loads(text)
+                print(data)
+        except Exception,e:
+            logger.info(traceback.print_exc())
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
