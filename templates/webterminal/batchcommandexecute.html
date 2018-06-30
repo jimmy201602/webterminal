@@ -459,6 +459,14 @@
 
     function executecommand(){
         alert($("#autocomplete").val());
+        var selected = $("#server_list").jstree().get_checked(true);
+        var i, j, r = [];
+        for(i = 0, j = selected.length; i < j; i++) {
+          if ( selected[i].original.hasOwnProperty('ip') ){
+            r.push(selected[i]);
+          }
+        }
+        console.log(r);
     };
 
     $('input').keypress(function (e) {
