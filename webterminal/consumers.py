@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 class webterminal(WebsocketConsumer,WebsocketAuth):
     
-    ssh = paramiko.SSHClient() 
+    ssh = paramiko.SSHClient()
     http_user = True
     #http_user_and_session = True
     channel_session = True
@@ -247,6 +247,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
     http_user_and_session = True
     channel_session = True
     channel_session_user = True
+    ssh = paramiko.SSHClient()
 
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})
@@ -291,3 +292,68 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         except Exception,e:
             logger.info(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
+
+    def openterminal(self,ip,id,channel,width,height,elementid=None):
+        self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        try:
+            Permission.objects.get(user__username=self.message.user.username,groups__servers__ip=ip,groups__servers__id=id,groups__servers__credential__protocol__contains='ssh')
+        except ObjectDoesNotExist:
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])},immediately=True)
+            self.message.reply_channel.send({"accept":False})
+            return
+        except MultipleObjectsReturned:
+            pass
+        try:
+            data = ServerInfor.objects.get(ip=ip,credential__protocol__contains='ssh')
+            port = data.credential.port
+            method = data.credential.method
+            username = data.credential.username
+            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=width,height=height)
+            audit_log.save()
+            if method == 'password':
+                password = data.credential.password
+            else:
+                key = data.credential.key
+        except ObjectDoesNotExist:
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])},immediately=True)
+            self.message.reply_channel.send({"accept":False})
+        try:
+            if method == 'password':
+                self.ssh.connect(ip, port=port, username=username, password=password, timeout=3)
+            else:
+                private_key = StringIO.StringIO(key)
+                if 'RSA' in key:
+                    private_key = paramiko.RSAKey.from_private_key(private_key)
+                elif 'DSA' in key:
+                    private_key = paramiko.DSSKey.from_private_key(private_key)
+                elif 'EC' in key:
+                    private_key = paramiko.ECDSAKey.from_private_key(private_key)
+                elif 'OPENSSH' in key:
+                    private_key = paramiko.Ed25519Key.from_private_key(private_key)
+                else:
+                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])},immediately=True)
+                    self.message.reply_channel.send({"accept":False})
+                self.ssh.connect(ip, port=port, username=username, pkey=private_key, timeout=3)
+        except socket.timeout:
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])},immediately=True)
+            self.message.reply_channel.send({"accept":False})
+            return
+        except Exception as e:
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])},immediately=True)
+            self.message.reply_channel.send({"accept":False})
+            return
+
+        chan = self.ssh.invoke_shell(width=width, height=height,)
+
+        #open a new threading to handle ssh to avoid global variable bug
+        sshterminal=SshTerminalThread(self.message,chan)
+        sshterminal.setDaemon = True
+        sshterminal.start()
+
+        directory_date_time = now()
+        log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}'.format(audit_log.log))
+
+        #interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
+        interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
+        interactivessh.setDaemon = True
+        interactivessh.start()
