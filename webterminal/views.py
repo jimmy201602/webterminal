@@ -78,7 +78,7 @@ class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
 
 class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/batchcommandexecute.html'
-    permission_required = 'common.can_execute_commandssequence'
+    permission_required = 'common.can_connect_serverinfo'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -88,6 +88,7 @@ class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateVie
         except ObjectDoesNotExist:
             return context
         context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
+        context['server_groups'] = ServerGroup.objects.filter(name__in=[group.name for group in groups.groups.all()])
         return context
 
     def post(self,request):

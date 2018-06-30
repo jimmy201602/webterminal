@@ -193,6 +193,7 @@
           <ul class="treeview-menu">
             {% if perms.common.can_connect_serverinfo %}<li class=""><a href="{% url 'index' %}"><i class="fa fa-laptop"></i> {%trans 'webterminal' %}</a></li>{% endif%}
 	    {% if perms.common.can_execute_commandssequence %}<li class=""><a href="{% url 'commandexecute' %}"><i class="fa fa-play"></i> {%trans 'command execute' %}</a></li>{% endif%}
+	    {% if perms.common.can_connect_serverinfo %}<li class=""><a href="{% url 'batchcommandexecute' %}"><i class="fa fa-clone"></i> {%trans 'batch command execute' %}</a></li>{% endif%}
 	    {% if perms.common.can_add_credential or perms.common.can_change_credential or perms.common.can_delete_credential or perms.common.can_view_credential %}<li class=""><a href="{% url 'credentiallist' %}"><i class="fa fa-list-ol"></i> {%trans 'credential list' %}</a></li>{% endif%}
             {% if perms.common.can_add_serverinfo or perms.common.can_change_serverinfo or perms.common.can_delete_serverinfo or perms.common.can_view_serverinfo %}<li class=""><a href="{% url 'serverlist' %}"><i class="fa fa-certificate"></i> {%trans 'server list' %}</a></li>{% endif%}
             {% if perms.common.can_add_servergroup or perms.common.can_change_servergroup or perms.common.can_delete_servergroup or perms.common.can_view_servergroup %}<li class=""><a href="{% url 'grouplist' %}"><i class="fa  fa-crop"></i> {%trans 'server group list' %}</a></li>{% endif%}
