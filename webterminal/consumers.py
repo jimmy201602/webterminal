@@ -315,7 +315,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         try:
             Permission.objects.get(user__username=self.message.user.username,groups__servers__ip=ip,groups__servers__id=id,groups__servers__credential__protocol__contains='ssh')
         except ObjectDoesNotExist:
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])},immediately=True)
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip),elementid.rsplit('_')[0]])},immediately=True)
             self.message.reply_channel.send({"accept":False})
             return
         except MultipleObjectsReturned:
@@ -332,7 +332,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
             else:
                 key = data.credential.key
         except ObjectDoesNotExist:
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])},immediately=True)
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m',elementid.rsplit('_')[0]])},immediately=True)
             self.message.reply_channel.send({"accept":False})
         try:
             if method == 'password':
@@ -348,15 +348,15 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                 elif 'OPENSSH' in key:
                     private_key = paramiko.Ed25519Key.from_private_key(private_key)
                 else:
-                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])},immediately=True)
+                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m',elementid.rsplit('_')[0]])},immediately=True)
                     self.message.reply_channel.send({"accept":False})
                 self.ssh.connect(ip, port=port, username=username, pkey=private_key, timeout=3)
         except socket.timeout:
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])},immediately=True)
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m',elementid.rsplit('_')[0]])},immediately=True)
             self.message.reply_channel.send({"accept":False})
             return
         except Exception as e:
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])},immediately=True)
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e),elementid.rsplit('_')[0]])},immediately=True)
             self.message.reply_channel.send({"accept":False})
             return
 
