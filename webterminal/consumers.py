@@ -24,6 +24,7 @@ from permission.models import Permission
 import logging
 import StringIO
 logger = logging.getLogger(__name__)
+import uuid
 
 class webterminal(WebsocketConsumer,WebsocketAuth):
     
@@ -259,6 +260,12 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         self.message.reply_channel.send({"accept":False})
         self.close()
 
+    @property
+    def queue(self):
+        queue = get_redis_instance()
+        channel = queue.pubsub()
+        return queue
+
     def receive(self,text=None, bytes=None, **kwargs):
         """
         Protocol
@@ -284,11 +291,21 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                 data = json.loads(text)
                 print(data)
                 if len(data) >0 and isinstance(data,list) and data[0] == 'register':
-                    self.message.reply_channel.send({"text":json.dumps(['stdout', '\033[1;3;31mYou have connect to server:{0}'.format(data[1]), data[5] ] )},immediately=True)
+                    ip = data[1]
+                    id = data[4]
+                    channel = self.message.reply_channel.name
+                    width = data[2]
+                    height = data[3]
+                    elementid = data[5]
+                    elementid = '{0}_{1}'.format(elementid,str(uuid.uuid4()))
+                    self.openterminal(ip,id,channel,width,height,elementid=elementid)
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'command':
-                    self.message.reply_channel.send({"text":json.dumps(['stdout', '\033[1;3;31mReceive command:{0}'.format(data[1]), data[2] ] )},immediately=True)
+                    command = data[1].strip('\n')
+                    self.queue.publish(data[2], json.dumps(['stdin','{0}\n'.format(command)]))
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'stdin':
-                    self.message.reply_channel.send({"text":json.dumps(['stdout', '\033[1;3;31mReceive user input:{0}'.format(data[1]), data[2] ] )},immediately=True)
+                    self.queue.publish(data[2], json.dumps(['stdin',data[1]]))
+                elif len(data) >0 and isinstance(data,list) and data[0] == 'close':
+                    self.queue.publish(data[2], json.dumps(['close']))
         except Exception,e:
             logger.info(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
@@ -308,7 +325,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
             port = data.credential.port
             method = data.credential.method
             username = data.credential.username
-            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=width,height=height)
+            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=elementid,width=width,height=height)
             audit_log.save()
             if method == 'password':
                 password = data.credential.password
@@ -346,7 +363,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         chan = self.ssh.invoke_shell(width=width, height=height,)
 
         #open a new threading to handle ssh to avoid global variable bug
-        sshterminal=SshTerminalThread(self.message,chan)
+        sshterminal=SshTerminalThread(self.message,chan,elementid=elementid)
         sshterminal.setDaemon = True
         sshterminal.start()
 
@@ -354,6 +371,6 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}'.format(audit_log.log))
 
         #interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
-        interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
+        interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height,elementid=elementid)
         interactivessh.setDaemon = True
         interactivessh.start()
