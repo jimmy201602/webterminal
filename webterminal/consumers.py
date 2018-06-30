@@ -279,6 +279,8 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
             if text:
                 data = json.loads(text)
                 print(data)
+                if len(data) >0 and isinstance(data,list) and data[0] == 'register':
+                    self.message.reply_channel.send({"text":json.dumps(['stdout', '\033[1;3;31mYou have connect to server:{0}'.format(data[1]), data[5] ] )},immediately=True)
         except Exception,e:
             logger.info(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
