@@ -423,15 +423,6 @@
             '        </div>'
         if ($("#"+id).length <= 0 ){
             $("#terminal-container").append(html);
-            <!--var term = new Terminal({-->
-                <!--cols: size.cols,-->
-                <!--rows: size.rows,-->
-                <!--screenKeys: true,-->
-                <!--useStyle: true,-->
-                <!--cursorBlink: true,  // Blink the terminal's cursor-->
-            <!--});-->
-            <!--term.open(document.getElementById(id), false);-->
-            <!--term.fit();-->
             var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
             var ws_path = ws_scheme + '://' + window.location.host + '/batchexecute/';
             make_terminal(document.getElementById(id), {rows: 40, cols: 90}, ws_path, ip, serverid);
