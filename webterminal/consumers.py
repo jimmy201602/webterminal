@@ -53,7 +53,8 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
         audit_log.end_time = now()
         audit_log.save()
         self.close()
-    
+
+    @property
     def queue(self):
         queue = get_redis_instance()
         channel = queue.pubsub()
@@ -61,7 +62,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
     
     def closessh(self):
         #close threading
-        self.queue().publish(self.message.reply_channel.name, json.dumps(['close']))
+        self.queue.publish(self.message.reply_channel.name, json.dumps(['close']))
         
     def receive(self,text=None, bytes=None, **kwargs):
         try:
@@ -138,13 +139,13 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                     interactivessh.start()
                     
                 elif data[0] in ['stdin','stdout']:
-                    self.queue().publish(self.message.reply_channel.name, json.loads(text)[1])
+                    self.queue.publish(self.message.reply_channel.name, json.loads(text)[1])
                 elif data[0] == u'set_size':
-                    self.queue().publish(self.message.reply_channel.name, text)
+                    self.queue.publish(self.message.reply_channel.name, text)
                 else:
                     self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mUnknow command found!\033[0m'])},immediately=True)
             elif bytes:
-                self.queue().publish(self.message.reply_channel.name, json.loads(bytes)[1])
+                self.queue.publish(self.message.reply_channel.name, json.loads(bytes)[1])
         except socket.error:
             audit_log=Log.objects.get(user=User.objects.get(username=self.message.user),channel=self.message.reply_channel.name)
             audit_log.is_finished = True
