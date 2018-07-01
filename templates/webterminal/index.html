@@ -12,7 +12,6 @@
     z-index: 9999 !important;
 }
 </style>
-<!--<link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css">-->
 <link rel="stylesheet" type="text/css" href="{% static "plugins/jquery-ui/jquery-ui.min.css"%}">
 <!-- elFinder CSS (REQUIRED) -->
 <link rel="stylesheet" type="text/css" href="{% static "plugins/elfinder/css/elfinder.min.css"%}">
@@ -68,6 +67,12 @@
 <!-- elFinder JS (REQUIRED) -->
 <script src="{% static "plugins/elfinder/js/elfinder.min.js"%}"></script>
 <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
+<!--Ace Editor -->
+<script type="text/javascript" src="{% static "plugins/ace/ace.js" %}"></script>
+<script type="text/javascript" src="{% static "plugins/ace/ext-modelist.js" %}"></script>
+<script type="text/javascript" src="{% static "plugins/ace/ext-settings_menu.js" %}"></script>
+<script type="text/javascript" src="{% static "plugins/ace/ext-language_tools.js" %}"></script>
+
 <script type="application/javascript">
 
 
@@ -379,62 +384,215 @@
             $('.vakata-context').remove();
         }
     });
+
     $("#search").submit(function(e) {
         e.preventDefault();
         $("#server_list").jstree(true).search($("#q").val());
     });
+
     function file_manager(tabId,id) {
-
-                var loct = window.location.search,
-                    full_lng, locm, lng;
-                    // detect language
-                if (loct && (locm = loct.match(/lang=([a-zA-Z_-]+)/))) {
-                        full_lng = locm[1];
-                } else {
-                        full_lng = (navigator.browserLanguage || navigator.language || navigator.userLanguage);
-                }
-                lng = full_lng.substr(0,2);
-                if (lng == 'ja') lng = 'jp';
-                else if (lng == 'pt') lng = 'pt_BR';
-                else if (lng == 'zh') lng = (full_lng.substr(0,5) == 'zh-tw')? 'zh_TW' : 'zh_CN';
-
-                $('#'+tabId+'_file_manager').elfinder({
-                        resizable: false,
-                        height: '100%',
-                        url : '/elfinder/yawd-connector/sftp/'+id+'/', // connector URL (REQUIRED)
-                        lang: lng,                   // language (OPTIONAL)
-                        <!--uploadMaxChunkSize: 124445261824,-->
-                        soundPath: "{% static '/elfinder/sounds' %}",
-                        baseUrl : "{% static 'elfinder/' %}",
-                    });
-
-            }
+        var elemetid = '#'+tabId+'_file_manager';
+        var url = '/elfinder/yawd-connector/sftp/'+id+'/';
+        elfinderinit(elemetid,url);
+        }
 
     function rdp_file_manager(tabId,id) {
+            var elemetid = '#'+tabId+'_file_manager';
+            var url = "/elfinder/yawd-connector/default/roots/";
+            elfinderinit(elemetid,url);
+        }
 
-                var loct = window.location.search,
-                    full_lng, locm, lng;
-                    // detect language
-                if (loct && (locm = loct.match(/lang=([a-zA-Z_-]+)/))) {
-                        full_lng = locm[1];
-                } else {
-                        full_lng = (navigator.browserLanguage || navigator.language || navigator.userLanguage);
+    function elfinderinit(elemetid,url){
+        var loct = window.location.search,
+            full_lng, locm, lng;
+            // detect language
+        if (loct && (locm = loct.match(/lang=([a-zA-Z_-]+)/))) {
+                full_lng = locm[1];
+        } else {
+                full_lng = (navigator.browserLanguage || navigator.language || navigator.userLanguage);
+        }
+        lng = full_lng.substr(0,2);
+        if (lng == 'ja') lng = 'jp';
+        else if (lng == 'pt') lng = 'pt_BR';
+        else if (lng == 'zh') lng = (full_lng.substr(0,5) == 'zh-tw')? 'zh_TW' : 'zh_CN';
+        $(elemetid).elfinder({
+                resizable: false,
+                height: '100%',
+                url : url, // connector URL (REQUIRED)
+                lang: lng,                   // language (OPTIONAL)
+                <!--uploadMaxChunkSize: 124445261824,-->
+                soundPath: "{% static '/elfinder/sounds' %}",
+                baseUrl : "{% static 'elfinder/' %}",
+                commandsOptions: {
+                    edit: {
+                        editors : [
+                            {
+                                // ACE Editor
+                                // `mimes` is not set for support everything kind of text file
+                                load : function(textarea) {
+                                    var self = this,
+                                        dfrd = $.Deferred(),
+                                        cdn  = '{% static "plugins/ace" %}',
+                                        init = function() {
+                                            start();
+                                        },
+                                        start = function() {
+                                            var editor, editorBase, mode,
+                                            ta = $(textarea),
+                                            taBase = ta.parent(),
+                                            dialog = taBase.parent(),
+                                            id = textarea.id + '_ace',
+                                            ext = self.file.name.replace(/^.+\.([^.]+)|(.+)$/, '$1$2').toLowerCase(),
+                                            // MIME/mode map
+                                            mimeMode = {
+                                                'text/x-php'              : 'php',
+                                                'application/x-php'       : 'php',
+                                                'text/html'               : 'html',
+                                                'application/xhtml+xml'   : 'html',
+                                                'text/javascript'         : 'javascript',
+                                                'application/javascript'  : 'javascript',
+                                                'text/css'                : 'css',
+                                                'text/x-c'                : 'c_cpp',
+                                                'text/x-csrc'             : 'c_cpp',
+                                                'text/x-chdr'             : 'c_cpp',
+                                                'text/x-c++'              : 'c_cpp',
+                                                'text/x-c++src'           : 'c_cpp',
+                                                'text/x-c++hdr'           : 'c_cpp',
+                                                'text/x-shellscript'      : 'sh',
+                                                'application/x-csh'       : 'sh',
+                                                'text/x-python'           : 'python',
+                                                'text/x-java'             : 'java',
+                                                'text/x-java-source'      : 'java',
+                                                'text/x-ruby'             : 'ruby',
+                                                'text/x-perl'             : 'perl',
+                                                'application/x-perl'      : 'perl',
+                                                'text/x-sql'              : 'sql',
+                                                'text/xml'                : 'xml',
+                                                'application/docbook+xml' : 'xml',
+                                                'application/xml'         : 'xml'
+                                            };
+
+                                            // set basePath of ace
+                                            ace.config.set('basePath', cdn);
+
+                                            // set base height
+                                            taBase.height(taBase.height());
+
+                                            // detect mode
+                                            mode = ace.require('ace/ext/modelist').getModeForPath('/' + self.file.name).name;
+                                            if (mode === 'text') {
+                                                if (mimeMode[self.file.mime]) {
+                                                    mode = mimeMode[self.file.mime];
+                                                }
+                                            }
+
+                                            // show MIME:mode in title bar
+                                            taBase.prev().children('.elfinder-dialog-title').append(' (' + self.file.mime + ' : ' + mode.split(/[\/\\]/).pop() + ')');
+
+                                            // TextArea button and Setting button
+                                            $('<div class="ui-dialog-buttonset"/>').css('float', 'left')
+                                            .append(
+                                                $('<button>{% trans 'TextArea' %}</button>')
+                                                .button()
+                                                .on('click', function(){
+                                                    if (ta.data('ace')) {
+                                                        ta.removeData('ace');
+                                                        editorBase.hide();
+                                                        ta.val(editor.session.getValue()).show().focus();
+                                                        $(this).text('{% trans 'AceEditor' %}');
+                                                    } else {
+                                                        ta.data('ace', true);
+                                                        editorBase.show();
+                                                        editor.setValue(ta.hide().val(), -1);
+                                                        editor.focus();
+                                                        $(this).text('{% trans 'TextArea' %}');
+                                                    }
+                                                })
+                                            )
+                                            .append(
+                                                $('<button>{% trans "Ace editor setting" %}</button>')
+                                                .button({
+                                                    icons: {
+                                                        primary: 'ui-icon-gear',
+                                                        secondary: 'ui-icon-triangle-1-e'
+                                                    },
+                                                    text: false
+                                                })
+                                                .on('click', function(){
+                                                    editor.showSettingsMenu();
+                                                })
+                                            )
+                                            .prependTo(taBase.next());
+
+                                            // Base node of Ace editor
+                                            editorBase = $('<div id="'+id+'" style="width:100%; height:100%;"/>').text(ta.val()).insertBefore(ta.hide());
+
+                                            // Ace editor configure
+                                            ta.data('ace', true);
+                                            editor = ace.edit(id);
+                                            ace.require('ace/ext/language_tools');
+                                            ace.require('ace/ext/settings_menu').init(editor);
+                                            editor.$blockScrolling = Infinity;
+                                            editor.setOptions({
+                                                theme: 'ace/theme/monokai',
+                                                mode: 'ace/mode/' + mode,
+                                                fontSize: '14px',
+                                                wrap: true,
+                                                enableBasicAutocompletion: true,
+                                                enableSnippets: true,
+                                                enableLiveAutocompletion: false
+                                            });
+                                            editor.commands.addCommand({
+                                                name : "{% trans 'saveFile' %}",
+                                                bindKey: {
+                                                    win : 'Ctrl-s',
+                                                    mac : 'Command-s'
+                                                },
+                                                exec: function(editor) {
+                                                    self.doSave();
+                                                }
+                                            });
+                                            editor.commands.addCommand({
+                                                name : "{% trans 'closeEditor' %}",
+                                                bindKey: {
+                                                    win : 'Ctrl-w|Ctrl-q',
+                                                    mac : 'Command-w|Command-q'
+                                                },
+                                                exec: function(editor) {
+                                                    self.doCancel();
+                                                }
+                                            });
+
+                                            editor.resize();
+
+                                            dfrd.resolve(editor);
+                                        };
+
+                                    // init & start
+                                    init();
+
+                                    return dfrd;
+                                },
+                                close : function(textarea, instance) {
+                                    if (instance) {
+                                        instance.destroy();
+                                        $(textarea).show();
+                                    }
+                                },
+                                save : function(textarea, instance) {
+                                    instance && $(textarea).data('ace') && (textarea.value = instance.session.getValue());
+                                },
+                                focus : function(textarea, instance) {
+                                    instance && $(textarea).data('ace') && instance.focus();
+                                },
+                                resize : function(textarea, instance, e, data) {
+                                    instance && instance.resize();
+                                }
+                            }
+                        ]
+                    }
                 }
-                lng = full_lng.substr(0,2);
-                if (lng == 'ja') lng = 'jp';
-                else if (lng == 'pt') lng = 'pt_BR';
-                else if (lng == 'zh') lng = (full_lng.substr(0,5) == 'zh-tw')? 'zh_TW' : 'zh_CN';
-
-                $('#'+tabId+'_file_manager').elfinder({
-                        resizable: false,
-                        height: '100%',
-                        url : '/elfinder/yawd-connector/default/roots/', // connector URL (REQUIRED)
-                        lang: lng,                   // language (OPTIONAL)
-                        <!--uploadMaxChunkSize: 124445261824,-->
-                        soundPath: "{% static '/elfinder/sounds' %}",
-                        baseUrl : "{% static 'elfinder/' %}",
-                    });
-
-            }
+            });
+    }
 </script>
 {% endblock %}
