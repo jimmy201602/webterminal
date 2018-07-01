@@ -209,12 +209,9 @@ class SshTerminalThread(threading.Thread):
                         if '\r' not in str(data[1]):
                             command.append(data[1])
                         else:
-                            command.append(data[1])
-                            record_command = CommandDeal().deal_command(''.join(command))
-                            if len(record_command) != 0:
-                                print('command input stdin',record_command)
-                                command = list()
-                                CommandLog.objects.create(log=logobj,command=record_command)
+                            #fix command record duplicate
+                            if data[2] == 'command':
+                                CommandLog.objects.create(log=logobj,command=data[1].strip('r'))
                         self.chan.send(data[1])
                         
                 elif isinstance(data,(int,long)):

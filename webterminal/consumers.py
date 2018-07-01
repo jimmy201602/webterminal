@@ -301,7 +301,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                     self.openterminal(ip,id,channel,width,height,elementid=elementid)
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'command':
                     command = data[1].strip('\n')
-                    self.queue.publish(data[2], ['stdin','{0}\r'.format(command)])
+                    self.queue.publish(data[2], ['stdin','{0}\r'.format(command),'command'])
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'stdin':
                     self.queue.publish(data[2], ['stdin',data[1]])
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'close':
