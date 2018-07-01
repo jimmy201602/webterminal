@@ -265,8 +265,8 @@
                 type: 'post',
                 data: {cmd: query},
                 success: function (result) {
-                    <!--$('#autocomplete').unbind('keydown');-->
                     $('#autocomplete').typeahead('close');
+                    $('#autocomplete').focus();
                     return process(result.message);
                 },
             });
@@ -278,6 +278,7 @@
             var data = $("#autocomplete").val();
             var selected = $("#server_list").jstree().get_checked(true);
             var i, j, r = [];
+            $('#autocomplete').focus();
             for(i = 0, j = selected.length; i < j; i++) {
               if ( selected[i].original.hasOwnProperty('ip') ){
                 r.push(selected[i]);
