@@ -121,7 +121,10 @@ class SshTerminalKill(LoginRequiredMixin,View):
 
                         queue = get_redis_instance()
                         redis_channel = queue.pubsub()
-                        queue.publish(channel_name, json.dumps(['close']))
+                        if '_' in channel_name:
+                            queue.publish(channel_name.rsplit('_')[0], json.dumps(['close']))
+                        else:
+                            queue.publish(channel_name, json.dumps(['close']))
 
                         return JsonResponse({'status':True,'message':'Terminal has been killed !'})
                 else:

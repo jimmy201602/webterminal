@@ -374,3 +374,4 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height,elementid=elementid)
         interactivessh.setDaemon = True
         interactivessh.start()
+        self.message.reply_channel.send({"text":json.dumps(['channel_name',elementid.rsplit('_')[0],elementid.rsplit('_')[0]])},immediately=True)

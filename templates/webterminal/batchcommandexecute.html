@@ -111,7 +111,7 @@
                     terminals[json_msg[2]].write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
                     break;
                 case "channel_name":
-                    <!--console.log(json_msg[1]);-->
+                    //console.log(json_msg[1]);
                     var channel_name_attribute = document.createAttribute('channel_name')
                     channel_name_attribute.value = json_msg[1];
                     document.getElementById(json_msg[2]).setAttributeNode(channel_name_attribute)
