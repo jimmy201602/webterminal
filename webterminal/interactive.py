@@ -185,7 +185,7 @@ class SshTerminalThread(threading.Thread):
         if self.elementid:
             logobj = Log.objects.get(channel=self.elementid)
         else:
-            logobj = Log.objects.get(channel=channel)
+            logobj = Log.objects.get(channel=self.message.reply_channel.name)
         while (not self._stop_event.is_set()):
             text = self.queue.get_message()
             if text:
