@@ -182,6 +182,10 @@ class SshTerminalThread(threading.Thread):
         #fix the first login 1 bug
         first_flag = True
         command = list()
+        if self.elementid:
+            logobj = Log.objects.get(channel=self.elementid)
+        else:
+            logobj = Log.objects.get(channel=channel)
         while (not self._stop_event.is_set()):
             text = self.queue.get_message()
             if text:
@@ -202,7 +206,15 @@ class SshTerminalThread(threading.Thread):
                         self.chan.resize_pty(width=data[3], height=data[4])
                         break
                     elif data[0] in ['stdin','stdout']:
-                        #print(data)
+                        if '\r' not in str(data[1]):
+                            command.append(data[1])
+                        else:
+                            command.append(data[1])
+                            record_command = CommandDeal().deal_command(''.join(command))
+                            if len(record_command) != 0:
+                                print('command input stdin',record_command)
+                                command = list()
+                                CommandLog.objects.create(log=logobj,command=record_command)
                         self.chan.send(data[1])
                         
                 elif isinstance(data,(int,long)):
@@ -213,7 +225,7 @@ class SshTerminalThread(threading.Thread):
                 else:
                     try:
                         #get user command and block user action in the future
-                        if '\r' not in str(data):
+                        if '\r' not in str(data) or '\n' not in str(data):
                             command.append(str(data))
                         else:
                             record_command = CommandDeal().deal_command(''.join(command))
