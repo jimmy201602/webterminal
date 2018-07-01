@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-27 12:32+0000\n"
+"POT-Creation-Date: 2018-07-01 03:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -482,7 +482,7 @@ msgstr "命令"
 msgid "Input the command you need to execute"
 msgstr "输入你要执行的命令"
 
-#: common/templates/common/commandslist.html:4 templates/base.html:199
+#: common/templates/common/commandslist.html:4 templates/base.html:200
 msgid "commands list"
 msgstr "命令列表"
 
@@ -1158,7 +1158,7 @@ msgstr "注销"
 msgid "Dashboard"
 msgstr "仪表盘"
 
-#: templates/base.html:194 templates/base.html:237
+#: templates/base.html:194 templates/base.html:238
 #: templates/webterminal/index.html:3
 msgid "webterminal"
 msgstr "webterminal"
@@ -1167,45 +1167,45 @@ msgstr "webterminal"
 msgid "command execute"
 msgstr "命令执行"
 
-#: templates/base.html:196
+#: templates/base.html:196 templates/webterminal/batchcommandexecute.html:3
+msgid "batch command execute"
+msgstr "批量命令执行"
+
+#: templates/base.html:197
 msgid "credential list"
 msgstr "凭证列表"
 
-#: templates/base.html:197
+#: templates/base.html:198
 msgid "server list"
 msgstr "服务器列表"
 
-#: templates/base.html:198
+#: templates/base.html:199
 msgid "server group list"
 msgstr "服务器组列表"
 
-#: templates/base.html:200
+#: templates/base.html:201
 msgid "log list"
 msgstr "日志列表"
 
-#: templates/base.html:201
+#: templates/base.html:202
 msgid "user list"
 msgstr "用户列表"
 
-#: templates/base.html:202
+#: templates/base.html:203
 msgid "permission list"
 msgstr "权限列表"
 
-#: templates/base.html:235
+#: templates/base.html:236
 msgid "Version"
 msgstr "版本"
 
-#: templates/base.html:237
+#: templates/base.html:238
 msgid "Copyright &copy; 2014-2018"
 msgstr "Copyright &copy; 2014-2018"
 
-#: templates/base.html:237
+#: templates/base.html:238
 msgid "All rights reserved."
 msgstr "保留所有权利"
-
-#: templates/webterminal/batchcommandexecute.html:3
-msgid "batch command execute"
-msgstr "批量命令执行"
 
 #: templates/webterminal/batchcommandexecute.html:44
 #: templates/webterminal/index.html:26
@@ -1219,16 +1219,13 @@ msgid "search"
 msgstr "搜索"
 
 #: templates/webterminal/batchcommandexecute.html:72
-#: templates/webterminal/batchcommandexecute.html:267
-#: templates/webterminal/batchcommandexecute.html:295
-#: templates/webterminal/batchcommandexecute.html:324
 #: templates/webterminal/commandexecute.html:257
 #: templates/webterminal/commandexecute.html:285
 #: templates/webterminal/commandexecute.html:314
 msgid "execute"
 msgstr "执行"
 
-#: templates/webterminal/batchcommandexecute.html:194
+#: templates/webterminal/batchcommandexecute.html:111
 #: templates/webterminal/commandexecute.html:188
 #: templates/webterminal/index.html:185
 #: templates/webterminal/sshlogmonitor.html:57
