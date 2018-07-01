@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-01 03:15+0000\n"
+"POT-Creation-Date: 2018-07-01 10:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -529,6 +529,7 @@ msgstr "详情"
 #: common/templates/common/grouplist.html:65
 #: common/templates/common/serverlist.html:63
 #: permission/templates/permission/permissionlist.html:68
+#: templates/webterminal/index.html:433
 msgid "edit"
 msgstr "编辑"
 
@@ -1208,13 +1209,13 @@ msgid "All rights reserved."
 msgstr "保留所有权利"
 
 #: templates/webterminal/batchcommandexecute.html:44
-#: templates/webterminal/index.html:26
+#: templates/webterminal/index.html:25
 msgid "Server List"
 msgstr "服务器列表"
 
 #: templates/webterminal/batchcommandexecute.html:55
 #: templates/webterminal/commandexecute.html:55
-#: templates/webterminal/index.html:37
+#: templates/webterminal/index.html:36
 msgid "search"
 msgstr "搜索"
 
@@ -1227,7 +1228,7 @@ msgstr "执行"
 
 #: templates/webterminal/batchcommandexecute.html:111
 #: templates/webterminal/commandexecute.html:188
-#: templates/webterminal/index.html:185
+#: templates/webterminal/index.html:190
 #: templates/webterminal/sshlogmonitor.html:57
 msgid "\\r\\n\\r\\n[Finished...]\\r\\n"
 msgstr "\\r\\n\\r\\n[已结束...]\\r\\n"
@@ -1238,25 +1239,45 @@ msgstr "任务列表"
 
 #: templates/webterminal/commandexecute.html:69
 #: templates/webterminal/commandexecute.html:74
-#: templates/webterminal/index.html:49 templates/webterminal/index.html:54
+#: templates/webterminal/index.html:48 templates/webterminal/index.html:53
 msgid "help info"
 msgstr "帮助信息"
 
-#: templates/webterminal/index.html:248
+#: templates/webterminal/index.html:253
 msgid "connect"
 msgstr "连接"
 
-#: templates/webterminal/index.html:291
+#: templates/webterminal/index.html:296
 msgid "disconnect"
 msgstr "断开"
 
-#: templates/webterminal/index.html:314 templates/webterminal/index.html:353
+#: templates/webterminal/index.html:319 templates/webterminal/index.html:358
 msgid "This function hasn\\"
 msgstr "此功能还未"
 
-#: templates/webterminal/index.html:323
+#: templates/webterminal/index.html:328
 msgid "file manager"
 msgstr "文件管理"
+
+#: templates/webterminal/index.html:498 templates/webterminal/index.html:511
+msgid "TextArea"
+msgstr "文本编辑"
+
+#: templates/webterminal/index.html:505
+msgid "AceEditor"
+msgstr "Ace编辑器"
+
+#: templates/webterminal/index.html:516
+msgid "Ace editor setting"
+msgstr "Ace编辑器设置"
+
+#: templates/webterminal/index.html:549
+msgid "saveFile"
+msgstr "保存文件"
+
+#: templates/webterminal/index.html:559
+msgid "closeEditor"
+msgstr "关闭编辑器"
 
 #: webterminal/settings.py:194
 msgid "Simple Chinese"
