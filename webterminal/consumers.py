@@ -289,7 +289,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         try:
             if text:
                 data = json.loads(text)
-                print(data)
+                #print(data)
                 if len(data) >0 and isinstance(data,list) and data[0] == 'register':
                     ip = data[1]
                     id = data[4]
