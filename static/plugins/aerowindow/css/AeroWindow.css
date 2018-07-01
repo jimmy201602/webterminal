@@ -1,0 +1,194 @@
+.AeroWindow {
+  position: absolute;
+  background: url(../images/lines.png);
+  background-position: 0px -100px;
+  z-index: 10;
+  overflow: hidden;
+  display: block;  
+}
+.AeroWindow .table-tl {
+  background: url(../images/tl.png);
+  min-width: 9px;
+  height: 9px;
+}
+.AeroWindow .table-tm {
+  background: url(../images/tm.png);
+}
+.AeroWindow .table-tr {
+  background: url(../images/tr.png);
+  min-width: 9px;
+  height: 9px;
+}
+.AeroWindow .table-rm {
+  background: url(../images/rm.png);
+}
+.AeroWindow .table-bl {
+  background: url(../images/bl.png);
+  width: 9px;
+  height: 9px;
+}
+.AeroWindow .table-bm {
+  background: url(../images/bm.png);
+}
+.AeroWindow .table-br {
+  background: url(../images/br.png);
+  width: 9px;
+  height: 9px;
+}
+.AeroWindow .table-lm {
+  background: url(../images/lm.png);
+}
+.AeroWindow .table-mm {
+  background: url(../images/mm.png);  
+}
+/*-------------------------------AeroWindow Style - Active----------------------------*/
+.AeroWindow.active {
+  position: absolute;
+  background: url(../images/lines.png) 0px -400px;
+  z-index: 100;
+}
+.AeroWindow.active .table-tl {
+  background: url(../images/tl.png);
+  width: 9px;
+  height: 9px;
+}
+.AeroWindow.active .table-tm {
+  background: url(../images/tm.png);
+}
+.AeroWindow.active .table-tr {
+  background: url(../images/tr.png);
+  width: 9px;
+  height: 9px;
+}
+.AeroWindow.active .table-rm {
+  background: url(../images/rm.png);
+}
+.AeroWindow.active .table-bl {
+  background: url(../images/bl.png);
+  width: 9px;
+  height: 9px;
+}
+.AeroWindow.active .table-bm {
+  background: url(../images/bm.png);
+}
+.AeroWindow.active .table-br {
+  background: url(../images/br.png);
+  width: 9px;
+  height: 9px;
+}
+.AeroWindow.active .table-lm {
+  background: url(../images/lm.png);
+}
+.AeroWindow.active .table-mm {
+  background: url(../images/mm.png);
+}     
+.AeroWindow .table-mm-container {
+  margin-top: 40px;
+  border: 1px solid #b0c6e4;
+}
+.AeroWindow .table-mm-content {
+  font-family: arial;
+  padding: 5px;
+  border: 1px solid #000;
+  background-color: #fff;
+  overflow: auto;
+}  
+.AeroWindow .title {
+  position: absolute; 
+  margin: 10px 0px 0px 5px;
+  text-shadow: #fff 0px 0px 5px; 
+  color: #333;
+  font-family: arial;
+  padding-right: 5px;
+  font-size: 14px;
+  left: 5px;
+  cursor: default;
+}
+/*-------------------------------Button Area----------------------------*/
+.buttons  {
+  position: relative;
+  float: right;
+  top: -6px;
+}        
+.buttons  a{
+  text-decoration: none;
+  cursor: default;  
+}  
+/*---------------------------Buttons Regular Window--------------------------*/
+.AeroWindow .buttons .win-min-btn {
+  width: 27px;
+  height: 19px;
+  display: block;
+  float: left;
+  background: url(../images/btn-min1.png);
+}      
+.AeroWindow .buttons .win-max-btn {
+  width: 26px;
+  height: 19px;
+  display: block;
+  float: left;
+  background: url(../images/btn-max1.png);
+}      
+.AeroWindow .buttons .win-reg-btn {
+  width: 26px;
+  height: 19px;
+  display: block;
+  float: left;
+  background: url(../images/btn-reg1.png);
+}      
+.AeroWindow .buttons .win-close-btn {
+  width: 46px;
+  height: 19px;
+  float: left;
+  display: block;
+  background: url(../images/btn-close1.png);
+}  
+.AeroWindow .buttons .win-btn-leftedge {
+  width: 2px;
+  height: 19px;
+  float: left;
+  background: url(../images/left.png);
+}            
+.AeroWindow .buttons .win-btn-rightedge {
+  width: 2px;
+  height: 19px;
+  float: left;
+  background: url(../images/right.png);
+}            
+.AeroWindow .buttons .win-btn-spacer {
+  width: 1px;
+  height: 19px;
+  float: left;
+  background: url(../images/spacer.png);
+}            
+.AeroWindow .buttons .WinBtnSet {
+  float: left;
+}
+
+/*---------------------------Buttons Active Window---------------------------*/
+.AeroWindow.active .buttons .win-min-btn {
+  background: url(../images/btn-min1.png);
+}      
+.AeroWindow.active .buttons .win-max-btn {
+  background: url(../images/btn-max1.png);
+}      
+.AeroWindow.active .buttons .win-reg-btn {
+  background: url(../images/btn-reg1.png);
+}      
+.AeroWindow.active .buttons .win-close-btn {
+  background: url(../images/btn-close1.png);
+}            
+
+/*----------------------------Buttons Hover Effects-------------------------*/
+.AeroWindow .buttons .win-min-btn:hover {
+  background: url(../images/btn-min.png);
+}      
+.AeroWindow .buttons .win-max-btn:hover {
+  background: url(../images/btn-max.png);
+}      
+.AeroWindow .buttons .win-reg-btn:hover {
+  background: url(../images/btn-reg.png);
+}      
+.AeroWindow .buttons .win-close-btn:hover {
+  background: url(../images/btn-close.png);
+}
