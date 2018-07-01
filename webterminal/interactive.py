@@ -210,7 +210,7 @@ class SshTerminalThread(threading.Thread):
                             command.append(data[1])
                         else:
                             #fix command record duplicate
-                            if data[2] == 'command':
+                            if len(data) >= 3 and data[2] == 'command':
                                 CommandLog.objects.create(log=logobj,command=data[1].strip('r'))
                         self.chan.send(data[1])
                         
@@ -248,4 +248,3 @@ class InterActiveShellThread(threading.Thread):
     
     def run(self):
         interactive_shell(self.chan, self.channel,log_name=self.log_name,width=self.width,height=self.height,elementid=self.elementid)
-        
