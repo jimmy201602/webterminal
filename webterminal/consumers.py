@@ -301,11 +301,11 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                     self.openterminal(ip,id,channel,width,height,elementid=elementid)
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'command':
                     command = data[1].strip('\n')
-                    self.queue.publish(data[2], json.dumps(['stdin','{0}\r'.format(command)]))
+                    self.queue.publish(data[2], ['stdin','{0}\r'.format(command)])
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'stdin':
-                    self.queue.publish(data[2], json.dumps(['stdin',data[1]]))
+                    self.queue.publish(data[2], ['stdin',data[1]])
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'close':
-                    self.queue.publish(data[2], json.dumps(['close']))
+                    self.queue.publish(data[2], ['close'])
         except Exception,e:
             logger.info(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
@@ -370,7 +370,6 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         directory_date_time = now()
         log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}'.format(audit_log.log))
 
-        #interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
         interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height,elementid=elementid)
         interactivessh.setDaemon = True
         interactivessh.start()
