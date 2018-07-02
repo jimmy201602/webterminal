@@ -155,15 +155,17 @@
                         text: "{{ server_group.name }}",
                         children: [
                             {% for server in server_group.servers.all %}
-                                {
-                                text: "{{ server.name }}  {{ server.ip }}  {{ server.hostname }}",
-                                ip: "{{ server.ip }}",
-                                icon: "fa fa-server", 
-                                state: {selected: !0},
-                                elementid: "{{ server.gethostname }}",
-                                id: "{{ server.gethostname }}",
-                                serverid: "{{ server.id }}"
-                                },
+                                {% if server.credential.protocol == 'ssh-password' or server.credential.protocol == 'ssh-key' %}
+                                    {
+                                    text: "{{ server.name }}  {{ server.ip }}  {{ server.hostname }}",
+                                    ip: "{{ server.ip }}",
+                                    icon: "fa fa-server",
+                                    state: {selected: !0},
+                                    elementid: "{{ server.gethostname }}",
+                                    id: "{{ server.gethostname }}",
+                                    serverid: "{{ server.id }}"
+                                    },
+                                {% endif %}
                             {% endfor %}
                         ],
                     },
