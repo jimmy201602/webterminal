@@ -162,6 +162,7 @@
             cursorBlink: true,  // Blink the terminal's cursor
         });
         term.open(element, false);
+        term.focus();
         var ws = new WebSocket(ws_url);
         ws.onopen = function (event) {
             //set terminal width and height
