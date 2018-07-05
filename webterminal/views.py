@@ -103,31 +103,28 @@ class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateVie
                     continue
             return JsonResponse({'status':True,'message':list(set(commandmatch))})
 
-class SshTerminalKill(LoginRequiredMixin,View):
+class SshTerminalKill(LoginRequiredMixin,PermissionRequiredMixin,View):
     raise_exception = True
+    permission_required = 'common.can_kill_serverinfo'
 
     def post(self,request):
         if request.is_ajax():
             channel_name = request.POST.get('channel_name',None)
             try:
                 data = Log.objects.get(channel=channel_name)
-                if request.user.username == data.user.username or request.user.has_perm('common.can_kill_serverinfo'):
-                    if data.is_finished:
-                        return JsonResponse({'status':False,'message':'Ssh terminal does not exist!'})
-                    else:
-                        data.end_time = now()
-                        data.is_finished = True
-                        data.save()
-
-                        queue = get_redis_instance()
-                        redis_channel = queue.pubsub()
-                        if '_' in channel_name:
-                            queue.publish(channel_name.rsplit('_')[0], json.dumps(['close']))
-                        else:
-                            queue.publish(channel_name, json.dumps(['close']))
-
-                        return JsonResponse({'status':True,'message':'Terminal has been killed !'})
+                if data.is_finished:
+                    return JsonResponse({'status':False,'message':'Ssh terminal does not exist!'})
                 else:
-                    return JsonResponse({'status':False,'message':'You do not have permission to kill active user action !'})
+                    data.end_time = now()
+                    data.is_finished = True
+                    data.save()
+
+                    queue = get_redis_instance()
+                    redis_channel = queue.pubsub()
+                    if '_' in channel_name:
+                        queue.publish(channel_name.rsplit('_')[0], json.dumps(['close']))
+                    else:
+                        queue.publish(channel_name, json.dumps(['close']))
+                    return JsonResponse({'status':True,'message':'Terminal has been killed !'})
             except ObjectDoesNotExist:
                 return JsonResponse({'status':False,'message':'Request object does not exist!'})
