@@ -143,6 +143,9 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                     self.queue.publish(self.message.reply_channel.name, json.loads(text)[1])
                 elif data[0] == u'set_size':
                     self.queue.publish(self.message.reply_channel.name, text)
+                elif data[0] == u'close':
+                    self.disconnect(self.message)
+                    return
                 else:
                     self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mUnknow command found!\033[0m'])},immediately=True)
             elif bytes:
