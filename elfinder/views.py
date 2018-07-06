@@ -1,8 +1,6 @@
 import json
-
 import copy
 import uuid
-
 from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
@@ -19,6 +17,8 @@ from common.views import LoginRequiredMixin
 from django.conf import settings
 from common.utils import mkdir_p
 import os
+import StringIO
+import paramiko
 
 class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
     """
@@ -167,10 +167,20 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
                                                              'root_path':'/','interactive':False,
                                                                    'key_label': key_label}
             else:
+                private_key = StringIO.StringIO(server_object.credential.key)
+                key = server_object.credential.key
+                if 'RSA' in key:
+                    private_key = paramiko.RSAKey.from_private_key(private_key)
+                elif 'DSA' in key:
+                    private_key = paramiko.DSSKey.from_private_key(private_key)
+                elif 'EC' in key:
+                    private_key = paramiko.ECDSAKey.from_private_key(private_key)
+                elif 'OPENSSH' in key:
+                    private_key = paramiko.Ed25519Key.from_private_key(private_key)
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host':server_object.ip,
                                                                          'params':{'port':server_object.credential.port,
                                                                                    'username':server_object.credential.username,
-                                                                        'key_filename':server_object.credential.key,
+                                                                        'pkey':private_key,
                                                                         'timeout':30},
                                                                          'root_path':'/','interactive':False,
                                                                    'key_label': key_label}
@@ -205,10 +215,20 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
                                                              'root_path':'/','interactive':False,
                                                             'key_label': key_label}
             else:
+                private_key = StringIO.StringIO(server_object.credential.key)
+                key = server_object.credential.key
+                if 'RSA' in key:
+                    private_key = paramiko.RSAKey.from_private_key(private_key)
+                elif 'DSA' in key:
+                    private_key = paramiko.DSSKey.from_private_key(private_key)
+                elif 'EC' in key:
+                    private_key = paramiko.ECDSAKey.from_private_key(private_key)
+                elif 'OPENSSH' in key:
+                    private_key = paramiko.Ed25519Key.from_private_key(private_key)
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host':server_object.ip,
                                                                          'params':{'port':server_object.credential.port,
                                                                                    'username':server_object.credential.username,
-                                                                        'key_filename':server_object.credential.key,
+                                                                        'pkey':private_key,
                                                                         'timeout':30},
                                                                          'root_path':'/','interactive':False,
                                                                    'key_label': key_label}
