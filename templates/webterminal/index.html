@@ -101,9 +101,12 @@
         $(".closeTab").click(function () {
 
             //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
-            var tabContentId = $(this).parent().attr("href");
-            var ws = terminals[tabContentId.substr(1)];
-            ws.send(JSON.stringify(['close']))
+            if (protocol == 'ssh') {
+                var tabContentId = $(this).parent().attr("href");
+                var ws = terminals[tabContentId.substr(1)];
+                ws.send(JSON.stringify(['close']))
+                delete terminals[tabContentId.substr(1)];
+            }
             $(this).parent().parent().remove(); //remove li of tab
             $('#myTab a:last').tab('show'); // Select first tab
             $(tabContentId).remove(); //remove respective tab content
