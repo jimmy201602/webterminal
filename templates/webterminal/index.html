@@ -99,10 +99,9 @@
     function registerCloseEvent(protocol) {
 
         $(".closeTab").click(function () {
-
+            var tabContentId = $(this).parent().attr("href");
             //there are multiple elements which has .closeTab icon so close the tab whose close icon is clicked
             if (protocol == 'ssh') {
-                var tabContentId = $(this).parent().attr("href");
                 var ws = terminals[tabContentId.substr(1)];
                 ws.send(JSON.stringify(['close']))
                 delete terminals[tabContentId.substr(1)];
