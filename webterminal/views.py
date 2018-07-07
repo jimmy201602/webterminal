@@ -28,6 +28,8 @@ from common.views import LoginRequiredMixin
 import traceback
 import re
 import commands
+import logging
+logger = logging.getLogger(__name__)
 
 class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
     template_name = 'webterminal/index.html'
@@ -40,6 +42,7 @@ class Index(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
         try:
             groups = Permission.objects.get(user__username=self.request.user.username)
         except ObjectDoesNotExist:
+            logger.error('user:{0} have not permission to visit webterminal!'.format(self.request.user.username))
             return context
         context['server_groups'] = ServerGroup.objects.filter(name__in=[group.name for group in groups.groups.all()])
         return context
@@ -72,6 +75,7 @@ class CommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateView):
         try:
             groups = Permission.objects.get(user__username=self.request.user.username)
         except ObjectDoesNotExist:
+            logger.error('user:{0} have not permission to visit command execute page!'.format(self.request.user.username))
             return context
         context['commands'] = CommandsSequence.objects.filter(group__name__in=[group.name for group in groups.groups.all()])
         return context
@@ -86,6 +90,7 @@ class BatchCommandExecute(LoginRequiredMixin,PermissionRequiredMixin,TemplateVie
         try:
             groups = Permission.objects.get(user__username=self.request.user.username)
         except ObjectDoesNotExist:
+            logger.error('user:{0} have not permission to visit batch command execute page!'.format(self.request.user.username))
             return context
         context['server_groups'] = ServerGroup.objects.filter(name__in=[group.name for group in groups.groups.all()])
         return context
