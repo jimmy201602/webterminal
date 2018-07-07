@@ -212,6 +212,12 @@ LOGGING = {
             'formatter': 'main',
             'filename': os.path.join(BASE_DIR, 'log', 'webterminal.log')
         },
+        'sshconsumer': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'formatter': 'main',
+            'filename': os.path.join(BASE_DIR, 'log', 'sshconsumer.log')
+        },
     },
     'loggers': {
         'django': {
@@ -231,6 +237,16 @@ LOGGING = {
         },
         'webterminal.views': {
             'handlers': ['console', 'file'],
+            'level': LOG_LEVEL,
+            'propagate': False,
+        },
+        'webterminal.consumers': {
+            'handlers': ['console', 'sshconsumer'],
+            'level': LOG_LEVEL,
+            'propagate': False,
+        },
+        'webterminal.interactive': {
+            'handlers': ['console', 'sshconsumer'],
             'level': LOG_LEVEL,
             'propagate': False,
         },

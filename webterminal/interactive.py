@@ -31,6 +31,8 @@ import ast
 import traceback
 from common.utils import get_redis_instance,mkdir_p
 from webterminal.commandextract import CommandDeal
+import logging
+logger = logging.getLogger(__name__)
 
 def interactive_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
     if has_termios:
@@ -75,14 +77,14 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                 else:
                     if vim_flag:
                         vim_data += x
-                    # print('raw data',command)
+                    logger.debug('raw data',command)
                     if '\r\n' not in x:
                         command.append(x)
                     else:
                         command = CommandDeal().deal_command(''.join(command))
                         if len(command) != 0:
                             #vim command record patch
-                            #print('command',command)
+                            logger.debug('command',command)
                             if command.strip().startswith('vi') or command.strip().startswith('fg'):
                                 CommandLog.objects.create(log=logobj,command=command)
                                 vim_flag = True
@@ -115,7 +117,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
             except socket.timeout:
                 pass
             except Exception,e:
-                print(traceback.print_exc())
+                logger.error(traceback.print_exc())
                 if elementid:
                     channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e),elementid.rsplit('_')[0]]) })
                 else:
@@ -199,7 +201,7 @@ class SshTerminalThread(threading.Thread):
                     data = text['data']
                 if isinstance(data,(list,tuple)):
                     if data[0] == 'close':
-                        print('close threading')
+                        logger.debug('close threading')
                         self.chan.close()
                         self.stop()
                     elif data[0] == 'set_size':
@@ -227,12 +229,12 @@ class SshTerminalThread(threading.Thread):
                         else:
                             record_command = CommandDeal().deal_command(''.join(command))
                             if len(record_command) != 0:
-                                print('command input',record_command)
+                                logger.debug('command input',record_command)
                                 command = list()
                         #vi bug need to be fixed
                         self.chan.send(str(data))
                     except socket.error:
-                        print('close threading error')
+                        logger.error('close threading error')
                         self.stop()
 
 class InterActiveShellThread(threading.Thread):
