@@ -8,6 +8,10 @@ from django.utils.encoding import smart_unicode
 import threading
 from common.models import ServerInfor
 import StringIO
+import socket
+import traceback
+import logging
+logger = logging.getLogger(__name__)
 
 class ShellHandler(object):
 
@@ -16,6 +20,7 @@ class ShellHandler(object):
             raise Exception('Authication must be key or password')
         self.ssh = paramiko.SSHClient()
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        from webterminal.asgi import channel_layer
         if method == 'password':
             self.ssh.connect(ip, port=port, username=username, password=credential, timeout=timeout)
         else:
@@ -29,15 +34,22 @@ class ShellHandler(object):
             elif 'OPENSSH' in credential:
                 private_key = paramiko.Ed25519Key.from_private_key(private_key)
             else:
-                self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])},immediately=True)
-                self.message.reply_channel.send({"accept":False})
-            self.ssh.connect(ip, port=port, username=username, pkey=private_key, timeout=timeout)
-
-
+                logger.error("Unknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type!")
+            try:
+                self.ssh.connect(ip, port=port, username=username, pkey=private_key, timeout=timeout)
+            except socket.timeout:
+                logger.error('Connect to server {0} time out!'.format(ip))
+                self.is_connect = False
+                return
+            except Exception as e:
+                logger.error(traceback.print_exc())
+                self.is_connect = False
+                return
         channel = self.ssh.invoke_shell()
         self.stdin = channel.makefile('wb')
         self.stdout = channel.makefile('r')
         self.channel_name = channel_name
+        self.is_connect = True
         
 
     def __del__(self):
@@ -47,25 +59,25 @@ class ShellHandler(object):
     def _print_exec_out(cmd, out_buf, err_buf, exit_status, channel_name=None ):
         from webterminal.asgi import channel_layer
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('command executed: {}'.format(cmd))])})
-        print('command executed: {}'.format(cmd))
-        print('STDOUT:')
+        logger.debug('command executed: {}'.format(cmd))
+        logger.debug('STDOUT:')
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDOUT:')])})
         for line in out_buf:
-            print(line, "end=")
+            logger.debug(line, "end=")
             channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line.strip('\n'))])})
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDOUT')])})
-        print('end of STDOUT')
+        logger.debug('end of STDOUT')
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDERR:')])})
-        print('STDERR:')
+        logger.debug('STDERR:')
         for line in err_buf:
-            print(line, "end=")
+            logger.debug(line, "end=")
             channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line, "end=")])})
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDERR')])})
-        print('end of STDERR')
+        logger.debug('end of STDERR')
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('finished with exit status: {}'.format(exit_status))])})
-        print('finished with exit status: {}'.format(exit_status))
+        logger.debug('finished with exit status: {}'.format(exit_status))
         channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('------------------------------------')])})
-        print('------------------------------------')
+        logger.debug('------------------------------------')
 
     def execute(self, cmd):
         """
@@ -127,7 +139,7 @@ class ShellHandlerThread(threading.Thread):
     
     def run(self):
         for server_ip in self.server_list:
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mExecute task on server:%s \033[0m' %(smart_unicode(server_ip)) ] )},immediately=True)
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mExecute task on server:{0} \033[0m'.format(server_ip) ] )},immediately=True)
 
             #get server credential info
             serverdata = ServerInfor.objects.get(ip=server_ip,credential__protocol__in=['ssh-password','ssh-key'])
@@ -143,5 +155,9 @@ class ShellHandlerThread(threading.Thread):
             #do actual job    
             ssh = ShellHandler(server_ip,username,port,method,credential,channel_name=self.message.reply_channel.name)
             for command in self.commands:
-                ssh.execute(command)
+                if ssh.is_connect:
+                    ssh.execute(command)
+                else:
+                    self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server {0}! \033[0m'.format(server_ip)] )},immediately=True)
+                    break
             del ssh

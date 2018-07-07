@@ -250,6 +250,11 @@ LOGGING = {
             'level': LOG_LEVEL,
             'propagate': False,
         },
+        'webterminal.sudoterminal': {
+            'handlers': ['console', 'sshconsumer'],
+            'level': LOG_LEVEL,
+            'propagate': False,
+        },
         'django.db': {
             'handlers': ['console', 'file'],
             'level': 'INFO'
