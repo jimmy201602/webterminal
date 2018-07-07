@@ -175,4 +175,7 @@
         }
     });
 </script>
+<script>
+  $("[href='{% url 'serverlist' %}']").parent("li").addClass('active')
+</script>
 {% endblock %}
