@@ -81,6 +81,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                     except ObjectDoesNotExist:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
+                        logger.error("{0} have not permission to connect server {1}!".format(self.message.user.username,ip))
                         return
                     except MultipleObjectsReturned:
                         pass
@@ -97,7 +98,8 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                             key = data.credential.key
                     except ObjectDoesNotExist:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])},immediately=True)
-                        self.message.reply_channel.send({"accept":False})                        
+                        self.message.reply_channel.send({"accept":False})
+                        logger.error("Connect to server! Server ip {0} doesn\'t exist!".format(ip))
                     try:
                         if method == 'password':
                             self.ssh.connect(ip, port=port, username=username, password=password, timeout=3)
@@ -114,14 +116,17 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                             else:
                                 self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])},immediately=True)
                                 self.message.reply_channel.send({"accept":False})
+                                logger.error("unknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type!")
                             self.ssh.connect(ip, port=port, username=username, pkey=private_key, timeout=3)
                     except socket.timeout:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])},immediately=True)
+                        logger.error("Connect to server {0} time out!".format(ip))
                         self.message.reply_channel.send({"accept":False})
                         return
                     except Exception as e:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])},immediately=True)
                         self.message.reply_channel.send({"accept":False})
+                        logger.error("Can not connect to server {0}: {1}".format(ip,e))
                         return
                     
                     chan = self.ssh.invoke_shell(width=width, height=height,)
@@ -148,6 +153,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                     return
                 else:
                     self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mUnknow command found!\033[0m'])},immediately=True)
+                    logger.error("Unknow command found!")
             elif bytes:
                 self.queue.publish(self.message.reply_channel.name, json.loads(bytes)[1])
         except socket.error:
@@ -157,7 +163,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
             audit_log.save()
             self.closessh()
             self.close()
-        except Exception,e:
+        except Exception as e:
             logger.error(traceback.print_exc())
             self.closessh()
             self.close()
@@ -209,12 +215,14 @@ class CommandExecute(WebsocketConsumer,WebsocketAuth):
                 else:
                     #illegal
                     self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mIllegal parameter passed to the server!\033[0m'])},immediately=True)
+                    logger.error("Illegal parameter passed to the server!")
                     self.close()
             if bytes:
                 data = json.loads(bytes)
-        except Exception,e:
+        except Exception as e:
             logger.error(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
+            logger.error("Some error happend, Please report it to the administrator! Error info:{0}".format(e))
             
 class SshTerminalMonitor(WebsocketConsumer,WebsocketAuth):
     
