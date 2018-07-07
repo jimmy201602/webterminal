@@ -77,14 +77,14 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                 else:
                     if vim_flag:
                         vim_data += x
-                    logger.debug('raw data',command)
+                    logger.debug('raw data {0}'.format(command))
                     if '\r\n' not in x:
                         command.append(x)
                     else:
                         command = CommandDeal().deal_command(''.join(command))
                         if len(command) != 0:
                             #vim command record patch
-                            logger.debug('command',command)
+                            logger.debug('command {0}'.format(command))
                             if command.strip().startswith('vi') or command.strip().startswith('fg'):
                                 CommandLog.objects.create(log=logobj,command=command)
                                 vim_flag = True
@@ -229,7 +229,7 @@ class SshTerminalThread(threading.Thread):
                         else:
                             record_command = CommandDeal().deal_command(''.join(command))
                             if len(record_command) != 0:
-                                logger.debug('command input',record_command)
+                                logger.debug('command input {0}'.format(record_command))
                                 command = list()
                         #vi bug need to be fixed
                         self.chan.send(str(data))
