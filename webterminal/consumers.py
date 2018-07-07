@@ -133,8 +133,8 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                     
                     directory_date_time = now()
                     log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day),'{0}'.format(audit_log.log))
-                    
-                    #interactive_shell(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
+
+                    #open ssh terminal
                     interactivessh = InterActiveShellThread(chan,self.message.reply_channel.name,log_name=log_name,width=width,height=height)
                     interactivessh.setDaemon = True
                     interactivessh.start()
@@ -158,7 +158,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
             self.closessh()
             self.close()
         except Exception,e:
-            logger.info(traceback.print_exc())
+            logger.error(traceback.print_exc())
             self.closessh()
             self.close()
 
@@ -213,7 +213,7 @@ class CommandExecute(WebsocketConsumer,WebsocketAuth):
             if bytes:
                 data = json.loads(bytes)
         except Exception,e:
-            logger.info(traceback.print_exc())
+            logger.error(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
             
 class SshTerminalMonitor(WebsocketConsumer,WebsocketAuth):
@@ -292,7 +292,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
         try:
             if text:
                 data = json.loads(text)
-                #print(data)
+                logger.debug('receive data {0}'.format(data))
                 if len(data) >0 and isinstance(data,list) and data[0] == 'register':
                     ip = data[1]
                     id = data[4]
@@ -310,7 +310,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'close':
                     self.queue.publish(data[2], ['close'])
         except Exception,e:
-            logger.info(traceback.print_exc())
+            logger.error(traceback.print_exc())
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
 
     def openterminal(self,ip,id,channel,width,height,elementid=None):
