@@ -167,4 +167,7 @@
         }
     });
 </script>
+<script>
+  $("[href='{% url 'grouplist' %}']").parent("li").addClass('active')
+</script>
 {% endblock %}

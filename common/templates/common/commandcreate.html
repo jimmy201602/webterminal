@@ -151,4 +151,7 @@
         }
     });
 </script>
+<script>
+  $("[href='{% url 'commandslist' %}']").parent("li").addClass('active')
+</script>
 {% endblock %}
