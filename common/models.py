@@ -65,6 +65,7 @@ class Credential(models.Model):
     protocol_choices = (
             ('ssh-password',_('ssh-password')),
             ('ssh-key',_('ssh-key')),
+            ('ssh-key-with-password',_('ssh-key-with-password')),
             ('vnc',_('vnc')),
             ('rdp',_('rdp')),
             ('telnet',_('telnet'))
