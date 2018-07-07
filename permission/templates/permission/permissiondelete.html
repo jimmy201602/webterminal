@@ -12,7 +12,6 @@
                     <div class="caption">
                         <button class="btn btn-primary" onclick="window.location.href = '{% url 'permissionlist' %}'">
                             {% trans 'Return Permission list' %}
-                            <i class="fa fa-plus"></i>
                         </button>
                     </div>
 
@@ -65,4 +64,9 @@
 
     </div>
 </section>
+{% endblock %}
+{% block js %}
+<script>
+  $("[href='{% url 'permissionlist' %}']").parent("li").addClass('active')
+</script>
 {% endblock %}

@@ -13,7 +13,6 @@
                     <div class="caption">
                         <button class="btn btn-primary" onclick="window.location.href = '{% url 'userlist' %}'">
                             {% trans 'Return user list' %}
-                            <i class="fa fa-plus"></i>
                         </button>
                     </div>
 
@@ -57,4 +56,9 @@
 
     </div>
 </section>
+{% endblock %}
+{% block js %}
+<script>
+  $("[href='{% url 'userlist' %}']").parent("li").addClass('active')
+</script>
 {% endblock %}

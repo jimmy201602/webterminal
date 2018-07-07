@@ -58,3 +58,8 @@
     </div>
 </section>
 {% endblock %}
+{% block js %}
+<script>
+  $("[href='{% url 'userlist' %}']").parent("li").addClass('active')
+</script>
+{% endblock %}
