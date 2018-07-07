@@ -1,0 +1,260 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-07 14:52+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: permission/forms.py:30
+#: permission/templates/permission/permissionlist.html:47
+#: permission/templates/permission/userlist.html:47
+msgid "user name"
+msgstr ""
+
+#: permission/forms.py:31
+msgid "Please input a valid user."
+msgstr ""
+
+#: permission/forms.py:41
+msgid "your password"
+msgstr ""
+
+#: permission/forms.py:42
+msgid "Please input your password"
+msgstr ""
+
+#: permission/forms.py:45
+msgid "new password"
+msgstr ""
+
+#: permission/forms.py:52 permission/forms.py:56
+msgid "verify your password"
+msgstr ""
+
+#: permission/forms.py:53
+msgid "please input your  password again"
+msgstr ""
+
+#: permission/forms.py:63 permission/templates/permission/userlist.html:48
+msgid "email"
+msgstr ""
+
+#: permission/forms.py:64
+msgid "Please input a valid email address."
+msgstr ""
+
+#: permission/forms.py:74
+msgid "every filed required"
+msgstr ""
+
+#: permission/forms.py:76
+msgid "your password does't the same"
+msgstr ""
+
+#: permission/forms.py:80
+msgid "User name has been registered!"
+msgstr ""
+
+#: permission/models.py:12
+msgid "User"
+msgstr ""
+
+#: permission/models.py:13
+msgid "Permissions"
+msgstr ""
+
+#: permission/models.py:14
+msgid "Server group"
+msgstr ""
+
+#: permission/models.py:15
+msgid "Create time"
+msgstr ""
+
+#: permission/models.py:16
+msgid "Update time"
+msgstr ""
+
+#: permission/models.py:23
+msgid "Can add user"
+msgstr ""
+
+#: permission/models.py:24
+msgid "Can change user info"
+msgstr ""
+
+#: permission/models.py:25
+msgid "Can delete user info"
+msgstr ""
+
+#: permission/models.py:26
+msgid "Can view user info"
+msgstr ""
+
+#: permission/models.py:27
+msgid "Can view user permissions"
+msgstr ""
+
+#: permission/models.py:28
+msgid "Can change user permissions"
+msgstr ""
+
+#: permission/models.py:29
+msgid "Can revoke user permissions"
+msgstr ""
+
+#: permission/models.py:30
+msgid "Can add user permissions"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:19
+msgid "Return Permission List"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:31
+#: permission/templates/permission/permissiondelete.html:26
+#: permission/templates/permission/permissionlist.html:31
+#: permission/templates/permission/userdelete.html:26
+#: permission/templates/permission/userlist.html:31
+#: permission/templates/permission/userregister.html:27
+#: permission/templates/permission/userupdate.html:27
+msgid "Action"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:32
+#: permission/templates/permission/permissiondelete.html:27
+#: permission/templates/permission/permissionlist.html:32
+#: permission/templates/permission/userdelete.html:27
+#: permission/templates/permission/userlist.html:32
+#: permission/templates/permission/userregister.html:28
+#: permission/templates/permission/userupdate.html:28
+msgid "Another action"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:33
+#: permission/templates/permission/permissiondelete.html:28
+#: permission/templates/permission/permissionlist.html:33
+#: permission/templates/permission/userdelete.html:28
+#: permission/templates/permission/userlist.html:33
+#: permission/templates/permission/userregister.html:29
+#: permission/templates/permission/userupdate.html:29
+msgid "Something else here"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:35
+#: permission/templates/permission/permissiondelete.html:30
+#: permission/templates/permission/permissionlist.html:35
+#: permission/templates/permission/userdelete.html:30
+#: permission/templates/permission/userlist.html:35
+#: permission/templates/permission/userregister.html:31
+#: permission/templates/permission/userupdate.html:31
+msgid "Separated link"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:52
+#: permission/templates/permission/permissiondelete.html:50
+#: permission/templates/permission/userdelete.html:50
+#: permission/templates/permission/userregister.html:48
+msgid "submit"
+msgstr ""
+
+#: permission/templates/permission/permissioncreate.html:53
+#: permission/templates/permission/userregister.html:49
+msgid "cancel"
+msgstr ""
+
+#: permission/templates/permission/permissiondelete.html:3
+msgid "Permission delete"
+msgstr ""
+
+#: permission/templates/permission/permissiondelete.html:14
+msgid "Return Permission list"
+msgstr ""
+
+#: permission/templates/permission/permissiondelete.html:47
+msgid "Are you sure you want to delete user permission"
+msgstr ""
+
+#: permission/templates/permission/permissionlist.html:3
+msgid "Permission list"
+msgstr ""
+
+#: permission/templates/permission/permissionlist.html:18
+#: permission/templates/permission/userlist.html:18
+msgid "Add New"
+msgstr ""
+
+#: permission/templates/permission/permissionlist.html:48
+msgid "permissions"
+msgstr ""
+
+#: permission/templates/permission/permissionlist.html:49
+msgid "groups"
+msgstr ""
+
+#: permission/templates/permission/permissionlist.html:50
+#: permission/templates/permission/userlist.html:49
+msgid "action"
+msgstr ""
+
+#: permission/templates/permission/permissionlist.html:68
+msgid "edit"
+msgstr ""
+
+#: permission/templates/permission/permissionlist.html:69
+#: permission/templates/permission/userlist.html:59
+msgid "delete"
+msgstr ""
+
+#: permission/templates/permission/userdelete.html:3
+msgid "User delete"
+msgstr ""
+
+#: permission/templates/permission/userdelete.html:14
+#: permission/templates/permission/userupdate.html:15
+msgid "Return user list"
+msgstr ""
+
+#: permission/templates/permission/userdelete.html:47
+msgid "Are you sure you want to delete user"
+msgstr ""
+
+#: permission/templates/permission/userlist.html:3
+msgid "User list"
+msgstr ""
+
+#: permission/templates/permission/userlist.html:58
+msgid "update"
+msgstr ""
+
+#: permission/templates/permission/userregister.html:3
+msgid "Add new user"
+msgstr ""
+
+#: permission/templates/permission/userregister.html:15
+msgid "Return user List"
+msgstr ""
+
+#: permission/templates/permission/userupdate.html:3
+msgid "User update"
+msgstr ""
+
+#: permission/views.py:86
+msgid "Create Permission"
+msgstr ""
+
+#: permission/views.py:119
+msgid "Update Permission"
+msgstr ""
