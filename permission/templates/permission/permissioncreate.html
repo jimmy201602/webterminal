@@ -69,4 +69,7 @@
         theme: "bootstrap"
     });
 </script>
+<script>
+  $("[href='{% url 'permissionlist' %}']").parent("li").addClass('active')
+</script>
 {% endblock %}
