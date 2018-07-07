@@ -178,7 +178,7 @@ LOCALE_PATHS = [
                 os.path.join(BASE_DIR,'locale')
         ]
 
-LOG_LEVEL = 'DEBUG'
+LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
 
 # Logging setting
 LOGGING = {
@@ -234,10 +234,10 @@ LOGGING = {
             'level': LOG_LEVEL,
             'propagate': False,
         },
-        # 'django.db': {
-        #     'handlers': ['console', 'file'],
-        #     'level': 'DEBUG'
-        # }
+        'django.db': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO'
+        }
     }
 }
 
