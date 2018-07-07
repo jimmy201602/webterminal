@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-01 10:14+0000\n"
+"POT-Creation-Date: 2018-07-07 06:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -133,10 +133,10 @@ msgstr "认证用户名"
 msgid "Port"
 msgstr "端口"
 
-#: common/models.py:76 common/templates/common/credentialcreate.html:211
-#: common/templates/common/credentialcreate.html:246
-#: common/templates/common/credentialcreate.html:290
-#: common/templates/common/credentialcreate.html:335
+#: common/models.py:76 common/templates/common/credentialcreate.html:218
+#: common/templates/common/credentialcreate.html:253
+#: common/templates/common/credentialcreate.html:298
+#: common/templates/common/credentialcreate.html:343
 #: common/templates/common/credentiallist.html:485
 #: common/templates/common/credentiallist.html:495
 msgid "password"
@@ -178,34 +178,34 @@ msgstr "代理密码"
 msgid "Protocol"
 msgstr "协议"
 
-#: common/models.py:84 common/templates/common/credentialcreate.html:253
-#: common/templates/common/credentialcreate.html:254
-#: common/templates/common/credentialcreate.html:297
-#: common/templates/common/credentialcreate.html:298
-#: common/templates/common/credentialcreate.html:342
-#: common/templates/common/credentialcreate.html:343
+#: common/models.py:84 common/templates/common/credentialcreate.html:260
+#: common/templates/common/credentialcreate.html:261
+#: common/templates/common/credentialcreate.html:305
+#: common/templates/common/credentialcreate.html:306
+#: common/templates/common/credentialcreate.html:350
+#: common/templates/common/credentialcreate.html:351
 #: common/templates/common/credentiallist.html:502
 #: common/templates/common/credentiallist.html:503
 msgid "width"
 msgstr "宽度"
 
-#: common/models.py:85 common/templates/common/credentialcreate.html:261
-#: common/templates/common/credentialcreate.html:262
-#: common/templates/common/credentialcreate.html:305
-#: common/templates/common/credentialcreate.html:306
-#: common/templates/common/credentialcreate.html:350
-#: common/templates/common/credentialcreate.html:351
+#: common/models.py:85 common/templates/common/credentialcreate.html:268
+#: common/templates/common/credentialcreate.html:269
+#: common/templates/common/credentialcreate.html:313
+#: common/templates/common/credentialcreate.html:314
+#: common/templates/common/credentialcreate.html:358
+#: common/templates/common/credentialcreate.html:359
 #: common/templates/common/credentiallist.html:511
 #: common/templates/common/credentiallist.html:512
 msgid "height"
 msgstr "高度"
 
-#: common/models.py:86 common/templates/common/credentialcreate.html:269
-#: common/templates/common/credentialcreate.html:270
-#: common/templates/common/credentialcreate.html:313
-#: common/templates/common/credentialcreate.html:314
-#: common/templates/common/credentialcreate.html:358
-#: common/templates/common/credentialcreate.html:359
+#: common/models.py:86 common/templates/common/credentialcreate.html:276
+#: common/templates/common/credentialcreate.html:277
+#: common/templates/common/credentialcreate.html:321
+#: common/templates/common/credentialcreate.html:322
+#: common/templates/common/credentialcreate.html:366
+#: common/templates/common/credentialcreate.html:367
 #: common/templates/common/credentiallist.html:520
 #: common/templates/common/credentiallist.html:521
 msgid "dpi"
@@ -529,7 +529,7 @@ msgstr "详情"
 #: common/templates/common/grouplist.html:65
 #: common/templates/common/serverlist.html:63
 #: permission/templates/permission/permissionlist.html:68
-#: templates/webterminal/index.html:433
+#: templates/webterminal/index.html:424
 msgid "edit"
 msgstr "编辑"
 
@@ -629,6 +629,7 @@ msgid "protocol"
 msgstr "协议"
 
 #: common/templates/common/credentialcreate.html:108
+#: common/templates/common/credentialcreate.html:197
 #: common/templates/common/credentiallist.html:51
 #: common/templates/common/credentiallist.html:271
 #: common/templates/common/credentiallist.html:388
@@ -636,6 +637,7 @@ msgid "port"
 msgstr "端口"
 
 #: common/templates/common/credentialcreate.html:109
+#: common/templates/common/credentialcreate.html:198
 #: common/templates/common/credentiallist.html:272
 #: common/templates/common/credentiallist.html:389
 msgid "port number"
@@ -672,16 +674,16 @@ msgstr "开启代理"
 msgid "Enabled"
 msgstr "开启"
 
-#: common/templates/common/credentialcreate.html:199
-#: common/templates/common/credentialcreate.html:200
-#: common/templates/common/credentialcreate.html:224
-#: common/templates/common/credentialcreate.html:225
-#: common/templates/common/credentialcreate.html:277
-#: common/templates/common/credentialcreate.html:278
-#: common/templates/common/credentialcreate.html:321
-#: common/templates/common/credentialcreate.html:322
-#: common/templates/common/credentialcreate.html:366
-#: common/templates/common/credentialcreate.html:367
+#: common/templates/common/credentialcreate.html:206
+#: common/templates/common/credentialcreate.html:207
+#: common/templates/common/credentialcreate.html:231
+#: common/templates/common/credentialcreate.html:232
+#: common/templates/common/credentialcreate.html:284
+#: common/templates/common/credentialcreate.html:285
+#: common/templates/common/credentialcreate.html:329
+#: common/templates/common/credentialcreate.html:330
+#: common/templates/common/credentialcreate.html:374
+#: common/templates/common/credentialcreate.html:375
 #: common/templates/common/credentiallist.html:279
 #: common/templates/common/credentiallist.html:280
 #: common/templates/common/credentiallist.html:395
@@ -689,17 +691,17 @@ msgstr "开启"
 msgid "method"
 msgstr "方式"
 
-#: common/templates/common/credentialcreate.html:382
+#: common/templates/common/credentialcreate.html:389
 #: common/templates/common/credentiallist.html:533
 msgid "proxy server ip"
 msgstr "代理服务器ip"
 
-#: common/templates/common/credentialcreate.html:387
+#: common/templates/common/credentialcreate.html:394
 #: common/templates/common/credentiallist.html:538
 msgid "proxy port"
 msgstr "代理端口"
 
-#: common/templates/common/credentialcreate.html:391
+#: common/templates/common/credentialcreate.html:398
 #: common/templates/common/credentiallist.html:542
 msgid "proxy password"
 msgstr "代理密码"
@@ -1156,8 +1158,10 @@ msgid "logout"
 msgstr "注销"
 
 #: templates/base.html:188
-msgid "Dashboard"
-msgstr "仪表盘"
+#, fuzzy
+#| msgid "webterminal"
+msgid "Webterminal"
+msgstr "webterminal"
 
 #: templates/base.html:194 templates/base.html:238
 #: templates/webterminal/index.html:3
@@ -1228,7 +1232,7 @@ msgstr "执行"
 
 #: templates/webterminal/batchcommandexecute.html:111
 #: templates/webterminal/commandexecute.html:188
-#: templates/webterminal/index.html:190
+#: templates/webterminal/index.html:181
 #: templates/webterminal/sshlogmonitor.html:57
 msgid "\\r\\n\\r\\n[Finished...]\\r\\n"
 msgstr "\\r\\n\\r\\n[已结束...]\\r\\n"
@@ -1243,39 +1247,39 @@ msgstr "任务列表"
 msgid "help info"
 msgstr "帮助信息"
 
-#: templates/webterminal/index.html:253
+#: templates/webterminal/index.html:244
 msgid "connect"
 msgstr "连接"
 
-#: templates/webterminal/index.html:296
+#: templates/webterminal/index.html:287
 msgid "disconnect"
 msgstr "断开"
 
-#: templates/webterminal/index.html:319 templates/webterminal/index.html:358
+#: templates/webterminal/index.html:310 templates/webterminal/index.html:349
 msgid "This function hasn\\"
 msgstr "此功能还未"
 
-#: templates/webterminal/index.html:328
+#: templates/webterminal/index.html:319
 msgid "file manager"
 msgstr "文件管理"
 
-#: templates/webterminal/index.html:498 templates/webterminal/index.html:511
+#: templates/webterminal/index.html:489 templates/webterminal/index.html:502
 msgid "TextArea"
 msgstr "文本编辑"
 
-#: templates/webterminal/index.html:505
+#: templates/webterminal/index.html:496
 msgid "AceEditor"
 msgstr "Ace编辑器"
 
-#: templates/webterminal/index.html:516
+#: templates/webterminal/index.html:507
 msgid "Ace editor setting"
 msgstr "Ace编辑器设置"
 
-#: templates/webterminal/index.html:549
+#: templates/webterminal/index.html:540
 msgid "saveFile"
 msgstr "保存文件"
 
-#: templates/webterminal/index.html:559
+#: templates/webterminal/index.html:550
 msgid "closeEditor"
 msgstr "关闭编辑器"
 
@@ -1286,6 +1290,9 @@ msgstr "简体中文"
 #: webterminal/settings.py:195
 msgid "English"
 msgstr "英语"
+
+#~ msgid "Dashboard"
+#~ msgstr "仪表盘"
 
 #~ msgid "group list"
 #~ msgstr "组列表"
