@@ -89,8 +89,8 @@ class GuacamoleWebsocket(WebsocketConsumer,WebsocketAuth):
                                  ignore_cert='true',
                                  enable_drive='true',
                                  drive_path=drive_path,
-                                 create_drive_path='true')
-                                 #security='tls',)
+                                 create_drive_path='true',
+                                 security=data.credential.security)
             except Exception:
                 self.message.reply_channel.send({"accept":False})
                 return
