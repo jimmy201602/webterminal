@@ -70,7 +70,12 @@ class Credential(models.Model):
             ('rdp',_('rdp')),
             ('telnet',_('telnet'))
         )
-
+    security_choices = (
+            ('rdp',_('Standard RDP encryption')),
+            ('nla',_('Network Level Authentication')),
+            ('tls',_('TLS encryption')),
+            ('any',_('Allow the server to choose the type of security')),
+    )
     name = models.CharField(max_length=40,verbose_name=_('Credential name'),blank=False,unique=True)
     username = models.CharField(max_length=40,verbose_name=_('Auth user name'),blank=False)
     port = models.PositiveIntegerField(default=22,blank=False,verbose_name=_('Port'))
@@ -85,6 +90,7 @@ class Credential(models.Model):
     width = models.PositiveIntegerField(verbose_name=_('width'),default=1024)
     height = models.PositiveIntegerField(verbose_name=_('height'),default=768)
     dpi = models.PositiveIntegerField(verbose_name=_('dpi'),default=96)
+    security = models.CharField(max_length=40,default='any', choices=security_choices,verbose_name=_('Security'))
 
     def __unicode__(self):
         return self.name    
