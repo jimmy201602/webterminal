@@ -116,9 +116,9 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                                 self.message.reply_channel.send({"accept":False})
                                 logger.error("unknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type!")
                             self.ssh.connect(ip, port=port, username=username, pkey=private_key, timeout=3)
-                            #when connect server sucess record log
-                            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=width,height=height)
-                            audit_log.save()
+                        #when connect server sucess record log
+                        audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=self.message.reply_channel.name,width=width,height=height)
+                        audit_log.save()
                     except socket.timeout:
                         self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m'])},immediately=True)
                         logger.error("Connect to server {0} time out!".format(ip))
@@ -361,9 +361,9 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                     self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m',elementid.rsplit('_')[0]])},immediately=True)
                     self.message.reply_channel.send({"accept":False})
                 self.ssh.connect(ip, port=port, username=username, pkey=private_key, timeout=3)
-                #record log
-                audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=elementid,width=width,height=height)
-                audit_log.save()
+            #record log
+            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user),server=data,channel=elementid,width=width,height=height)
+            audit_log.save()
         except socket.timeout:
             self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mConnect to server time out\033[0m',elementid.rsplit('_')[0]])},immediately=True)
             self.message.reply_channel.send({"accept":False})
