@@ -52,25 +52,28 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
             kwargs['content_type'] = 'application/json'
             
         if 'pointer' in context: #return file
-            # context['pointer'].seek(0)
-            # kwargs['content'] = context['pointer'].read()
-            # context['volume'].close(context['pointer'], context['info']['hash'])
-            #stream file download
-            def file_iterator(file_name, chunk_size=32768):
-                while True:
-                    c = file_name.read(chunk_size)
-                    if c:
-                        yield c
-                    else:
-                        context['volume'].close(context['pointer'], context['info']['hash'])
-                        if context['volume']._options.has_key('storage') and isinstance(context['volume']._options['storage'],SFTPStorage):
-                            context['volume']._options['storage'].sftp.close()
-                        break
-            the_file_name = additional_headers["Content-Location"]
-            response = StreamingHttpResponse(file_iterator(context['pointer']))
-            response['Content-Type'] = 'application/octet-stream'
-            response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
-            return response
+            if context['volume']._options.has_key('storage') and isinstance(context['volume']._options['storage'],SFTPStorage):
+                #stream sftp file download
+                def file_iterator(file_name, chunk_size=32768):
+                    while True:
+                        c = file_name.read(chunk_size)
+                        if c:
+                            yield c
+                        else:
+                            context['volume'].close(context['pointer'], context['info']['hash'])
+                            #fix sftp open transfer not close session bug
+                            if context['volume']._options.has_key('storage') and isinstance(context['volume']._options['storage'],SFTPStorage):
+                                context['volume']._options['storage'].sftp.close()
+                            break
+                the_file_name = additional_headers["Content-Location"]
+                response = StreamingHttpResponse(file_iterator(context['pointer']))
+                response['Content-Type'] = 'application/octet-stream'
+                response['Content-Disposition'] = 'attachment;filename="{0}"'.format(the_file_name)
+                return response
+            else:
+                context['pointer'].seek(0)
+                kwargs['content'] = context['pointer'].read()
+                context['volume'].close(context['pointer'], context['info']['hash'])
         elif 'raw' in context and context['raw'] and 'error' in context and context['error']: #raw error, return only the error list
             kwargs['content'] = context['error']
         elif kwargs['content_type'] == 'application/json': #return json
