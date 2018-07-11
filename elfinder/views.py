@@ -19,6 +19,7 @@ from common.utils import mkdir_p
 import os
 import StringIO
 import paramiko
+from elfinder.sftpstoragedriver.sftpstorage import SFTPStorage
 
 class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
     """
@@ -53,6 +54,9 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
             context['pointer'].seek(0)
             kwargs['content'] = context['pointer'].read()
             context['volume'].close(context['pointer'], context['info']['hash'])
+            #fix sftp open transfer not close session bug
+            if isinstance(context['volume']._options['storage'],SFTPStorage):
+                context['volume']._options['storage'].sftp.close()
         elif 'raw' in context and context['raw'] and 'error' in context and context['error']: #raw error, return only the error list
             kwargs['content'] = context['error']
         elif kwargs['content_type'] == 'application/json': #return json
