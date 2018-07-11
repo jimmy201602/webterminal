@@ -55,7 +55,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
             kwargs['content'] = context['pointer'].read()
             context['volume'].close(context['pointer'], context['info']['hash'])
             #fix sftp open transfer not close session bug
-            if isinstance(context['volume']._options['storage'],SFTPStorage):
+            if context['volume']._options.has_key('storage') and isinstance(context['volume']._options['storage'],SFTPStorage):
                 context['volume']._options['storage'].sftp.close()
         elif 'raw' in context and context['raw'] and 'error' in context and context['error']: #raw error, return only the error list
             kwargs['content'] = context['error']
