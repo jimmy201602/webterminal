@@ -339,6 +339,10 @@
                 }
             }
         },
+    }).on('select_node.jstree', function (e, data) {
+        setTimeout(function() {
+            data.instance.show_contextmenu(data.node)
+        }, 100);
     });
     
     $("#search").submit(function(e) {
