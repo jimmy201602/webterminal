@@ -20,7 +20,7 @@ incremental==17.5.0
 ipaddress==1.0.18
 msgpack-python==0.4.8
 olefile==0.44
-paramiko==2.4.0
+paramiko==2.4.1
 Pillow==4.3.0
 pyasn1==0.3.7
 pycparser==2.18
