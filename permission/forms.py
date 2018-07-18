@@ -1,3 +1,5 @@
+from builtins import str
+from builtins import object
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission as AuthPermission
@@ -20,7 +22,7 @@ class RegisterForm(forms.Form):
         self.helper.layout = Layout(*[Div(field,css_class='form-group') 
                                       for field in ['user','newpassword1','newpassword2','email'] ])
         self.instance = False
-        if kwargs.has_key('instance'):
+        if 'instance' in kwargs:
             kwargs.pop('instance')
             self.instance = True
         super(RegisterForm, self).__init__(*args, **kwargs)
@@ -72,11 +74,11 @@ class RegisterForm(forms.Form):
     def clean(self):
         if not self.is_valid():
             raise forms.ValidationError({'user':_(u"every filed required")})
-        elif self.cleaned_data['newpassword1'] <> self.cleaned_data['newpassword2']:
+        elif self.cleaned_data['newpassword1'] != self.cleaned_data['newpassword2']:
             raise forms.ValidationError({'newpassword1':_(u"your password does't the same"),'newpassword2':_(u"your password does't the same")})
         elif self.cleaned_data['user']:
             if not self.instance:
-                if User.objects.filter(username = unicode(self.cleaned_data['user'])):
+                if User.objects.filter(username = str(self.cleaned_data['user'])):
                     raise forms.ValidationError({'user':_(u"User name has been registered!")})
         cleaned_data = super(RegisterForm, self).clean()
         return cleaned_data
@@ -99,6 +101,6 @@ class PermissionForm(forms.ModelForm):
         self.helper.layout = Layout(*[Div(field,css_class='form-group')
                                       for field in ['user', 'permissions', 'groups'] ])
 
-    class Meta:
+    class Meta(object):
         model = Permission
         fields = ['user', 'permissions', 'groups']

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from builtins import str
 import os, re, time, shutil, magic
 try:
     from PIL import Image
@@ -6,7 +8,7 @@ except ImportError:
 from hashlib import md5
 from django.conf import settings
 from elfinder.exceptions import ElfinderErrorMessages, NotAnImageError, DirNotFoundError
-from base import ElfinderVolumeDriver
+from .base import ElfinderVolumeDriver
 
 class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
     """
@@ -26,8 +28,8 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         #Required to count total archive files size
         self._archiveSize = 0
         
-        self._options['dirMode']  = 0755 #new dirs mode
-        self._options['fileMode'] = 0644 #new files mode
+        self._options['dirMode']  = 0o755 #new dirs mode
+        self._options['fileMode'] = 0o644 #new files mode
         
     #*********************************************************************#
     #*                        INIT AND CONFIGURE                         *#
@@ -198,7 +200,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         Return files list in directory.
         The '.' and '..' special directories are omitted.
         """
-        return map(lambda x: self._join_path(path, x), os.listdir(path))
+        return [self._join_path(path, x) for x in os.listdir(path)]
 
     def _fopen(self, path, mode='rb'):
         """

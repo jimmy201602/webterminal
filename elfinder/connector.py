@@ -1,13 +1,19 @@
-import os, re, time, urllib
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import object
+import os, re, time, urllib.request, urllib.parse, urllib.error
 from django.utils.translation import ugettext_lazy as _
-from exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
-from utils.volumes import instantiate_driver
+from .exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
+from .utils.volumes import instantiate_driver
 import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+if sys.version[0] == '2':
+    reload(sys)
+    sys.setdefaultencoding("utf-8")
 from collections import defaultdict
 
-class ElfinderConnector:
+class ElfinderConnector(object):
     """
     A python implementation of the 
     `elfinder connector api v2.1  <https://github.com/Studio-42/elFinder/wiki/Client-Server-API-2.1>`_. At the moment, it supports all elfinder commands except from ``netDrivers``.
@@ -120,7 +126,7 @@ class ElfinderConnector:
         """
         errors = []
         for msg in args:
-            if not isinstance(msg, basestring):
+            if not isinstance(msg, str):
                 errors += msg
             else:
                 errors.append(msg)
@@ -140,7 +146,7 @@ class ElfinderConnector:
             return { 'error' : self.error(ElfinderErrorMessages.ERROR_UNKNOWN_CMD, cmd)}
         
         #check all required arguments are provided
-        for arg, req in self.commandArgsList(cmd).items():
+        for arg, req in list(self.commandArgsList(cmd).items()):
             if req and (not arg in kwargs or not kwargs[arg]):
                 return {'error' : self.error(ElfinderErrorMessages.ERROR_INV_PARAMS, cmd)}
         
@@ -172,12 +178,12 @@ class ElfinderConnector:
                 'connector' : 'yawd-elfinder',
                 'time' : time.time() - self._time,
                 'upload' : self._uploadDebug,
-                'volumes' : [v.debug() for v in self._volumes.values()],
+                'volumes' : [v.debug() for v in list(self._volumes.values())],
                 'mountErrors' : self._mountErrors
             }
 
         #fix sftp open transfer not close session bug
-        if self._volumes.has_key('spdfid_'):
+        if 'spdfid_' in self._volumes:
             self._volumes['spdfid_']._options['storage'].sftp.close()
         return result
 
@@ -199,10 +205,10 @@ class ElfinderConnector:
         method must be used.
         """
 
-        if isinstance(init, basestring):
+        if isinstance(init, str):
             init = int(init)
             
-        if isinstance(tree, basestring):
+        if isinstance(tree, str):
             tree = int(tree)
 
         if not init and not target:
@@ -263,7 +269,7 @@ class ElfinderConnector:
 
         if init:
             result['api'] = self._version
-            result['netDrivers'] = self._netDrivers.keys()
+            result['netDrivers'] = list(self._netDrivers.keys())
             result['uplMaxSize'] = volume.upload_max_size()
         
         return result
@@ -333,7 +339,7 @@ class ElfinderConnector:
         method must be used.
         """
         
-        if isinstance(download, basestring):
+        if isinstance(download, str):
             download = int(download)
         
         try:
@@ -357,7 +363,7 @@ class ElfinderConnector:
             disp  = 'inline' if re.match('(image|text)', file_['mime'], re.IGNORECASE) or file_['mime'] == 'application/x-shockwave-flash' else 'attachment'  
             mime = file_['mime']
 
-        filenameEncoded = urllib.quote(file_['name'].encode('utf-8')) #unicode filename support
+        filenameEncoded = urllib.parse.quote(file_['name'].encode('utf-8')) #unicode filename support
         if not '%' in filenameEncoded: #ASCII only
             filename = 'filename="%s"' % file_['name']
         elif request and hasattr(request, 'META') and 'HTTP_USER_AGENT' in request.META:
@@ -429,7 +435,7 @@ class ElfinderConnector:
                         dirs = dirs[1:]
                     dir_ = volume.mkdir(target, dirs)
                     result['added'].append(dir_)
-                except Exception, e:
+                except Exception as e:
                     result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, dirs, e)
             return result
         except NamedError as e:
@@ -531,7 +537,7 @@ class ElfinderConnector:
         directly, the :meth:`elfinder.connector.ElfinderConnector.execute`
         method must be used.
         """
-        if isinstance(html, basestring):
+        if isinstance(html, str):
             html = int(html)
         
         header = { 'Content-Type' : 'text/html; charset=utf-8' } if html else {}
@@ -552,7 +558,7 @@ class ElfinderConnector:
                 try:
                     file_ = volume.upload(uploaded_file, target, chunk_name, is_first_chunk)
                     result['added'].append(file_)
-                except Exception, e:
+                except Exception as e:
                     result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
                     self._uploadDebug = 'Upload error: Django handler error'
         else:  # directory
@@ -564,7 +570,7 @@ class ElfinderConnector:
                     all_[key].append(value)
             except Exception as e:
                 return {'error': 'get directory error, %s' % e, 'header': header}
-            for item in all_.keys():
+            for item in list(all_.keys()):
                 real_path = "%s/%s" % (volume.decode(target), item)  # get real path
                 new_target = volume.encode(real_path)  # get new target
                 try:
@@ -577,7 +583,7 @@ class ElfinderConnector:
                     try:
                         file_ = volume.upload(files[file_index], new_target, chunk_name, is_first_chunk)
                         result['added'].append(file_)
-                    except Exception, e:
+                    except Exception as e:
                         result['warning'] = self.error(ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
                         self._uploadDebug = 'Upload error: Django handler error'
         return result
@@ -592,7 +598,7 @@ class ElfinderConnector:
         method must be used.
         """
         
-        if isinstance(cut, basestring):
+        if isinstance(cut, str):
             cut = int(cut)
 
         error = ElfinderErrorMessages.ERROR_MOVE if cut else ElfinderErrorMessages.ERROR_COPY
@@ -709,7 +715,7 @@ class ElfinderConnector:
         """
         q = q.strip()
         result = []
-        for volume in self._volumes.values():
+        for volume in list(self._volumes.values()):
             result += volume.search(q)
         return {'files' : result}
 
@@ -720,7 +726,7 @@ class ElfinderConnector:
         method must be used.
         """
         
-        if isinstance(options, basestring):
+        if isinstance(options, str):
             options = int(options)
         
         files = []
@@ -774,7 +780,7 @@ class ElfinderConnector:
         Return root - file's owner
         """
         if hash_:
-            for id_, v in self._volumes.items():
+            for id_, v in list(self._volumes.items()):
                 if hash_.find(id_) == 0:
                     return v
         raise VolumeNotFoundError()

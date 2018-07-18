@@ -1,6 +1,7 @@
+from builtins import object
 from django.utils.translation import ugettext_lazy as _
 
-class ElfinderErrorMessages:
+class ElfinderErrorMessages(object):
     """
     Standard error message codes, the text message of which is handled by the 
     elFinder client

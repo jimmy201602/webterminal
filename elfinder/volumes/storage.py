@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from builtins import str
 import os, re, magic, time, tempfile, shutil, mimetypes
 try:
     from PIL import Image
@@ -9,7 +11,7 @@ from django.core.files import File as DjangoFile
 #from django.utils.importlib import import_module
 from importlib import import_module
 from elfinder.exceptions import NotAnImageError, ElfinderErrorMessages
-from base import ElfinderVolumeDriver
+from .base import ElfinderVolumeDriver
 
 class ElfinderVolumeStorage(ElfinderVolumeDriver):
     """
@@ -60,7 +62,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         and `url() <https://docs.djangoproject.com/en/dev/ref/files/storage/#django.core.files.storage.Storage.url>`_
         methods to be valid.
         """
-        if "key_label" in opts['storageKwArgs'].keys():
+        if "key_label" in list(opts['storageKwArgs'].keys()):
             self._key_label = opts['storageKwArgs']['key_label']
             del opts['storageKwArgs']['key_label']
         if not 'storage' in opts:
@@ -69,7 +71,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
             else:
                 
                 #load the class if string
-                if isinstance(opts['storageClass'], basestring):
+                if isinstance(opts['storageClass'], str):
                     split = opts['storageClass'].split('.')
                     storage_module = import_module('.'.join(split[:-1]))
                     opts['storageClass'] = getattr(storage_module, split[-1])
@@ -293,7 +295,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         try:
             all_ = self._options['storage'].listdir(path)
             self._files = all_[2]
-            return map(lambda x: self._join_path(path, x), all_[0]+all_[1])
+            return [self._join_path(path, x) for x in all_[0]+all_[1]]
         except NotImplementedError:
             return []
         
@@ -566,7 +568,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         Get the size of items in the ``path`` directory.
         """
         size = 0
-        ls = map(lambda x:os.path.join(path, x), os.listdir(path))
+        ls = [os.path.join(path, x) for x in os.listdir(path)]
         for p in ls:
             if os.path.isdir(p):
                 size += self._local_dir_size(p)
@@ -580,7 +582,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         and return the final number or files in the directory.
         """
         ls = []
-        for p in map(lambda x:os.path.join(path, x), os.listdir(path)):
+        for p in [os.path.join(path, x) for x in os.listdir(path)]:
             if os.path.islink(p):
                 raise Exception(ElfinderErrorMessages.ERROR_ARC_SYMLINKS)
             mime = self._local_file_mimetype(p)
@@ -598,7 +600,7 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         Move from local file to storage file.
         """
         if os.path.isdir(path):
-            for p in map(lambda x:os.path.join(path, x), os.listdir(path)):
+            for p in [os.path.join(path, x) for x in os.listdir(path)]:
                 self._move_from_local(p, self._join_path(dst, name), os.path.basename(p))
             shutil.rmtree(path)
         else:

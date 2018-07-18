@@ -1,3 +1,4 @@
+from __future__ import print_function
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "webterminal.settings")
 import django

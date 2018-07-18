@@ -1,3 +1,5 @@
+from future import standard_library
+standard_library.install_aliases()
 from django.conf.urls import url
 
 from permission.views import UserRegister,UserUpdate,UserList,UserDelete,PermissionCreate,PermissionList,PermissionUpdate,PermissionDelete

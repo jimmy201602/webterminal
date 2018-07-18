@@ -4,6 +4,8 @@ The MIT License (MIT)
 Copyright (c)   2014 rescale
                 2014 - 2016 Mohab Usama
 """
+from builtins import str
+from builtins import object
 
 import socket
 import logging

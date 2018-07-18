@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from builtins import range
+from builtins import object
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -31,7 +33,7 @@ class ServerInfor(models.Model):
     def getrandomid(self):
         return '{0}{1}'.format(self.pk,''.join(random.choice(string.ascii_letters) for _ in range(15)).lower())
 
-    class Meta:
+    class Meta(object):
         unique_together = (("ip", "credential"),)
         permissions = (
             ("can_add_serverinfo", _("Can add server")),
@@ -53,7 +55,7 @@ class ServerGroup(models.Model):
     def __unicode__(self):
         return self.name
 
-    class Meta:
+    class Meta(object):
         permissions = (
             ("can_add_servergroup", _("Can add group")),
             ("can_change_servergroup", _("Can change group info")),
@@ -103,7 +105,7 @@ class Credential(models.Model):
                 if self.proxyserverip is None or self.proxyport is None:
                     raise ValidationError(_('If you choose auth proxy,You must fill in proxyserverip and proxyport field !'))
 
-    class Meta:
+    class Meta(object):
         permissions = (
             ("can_add_credential", _("Can add credential")),
             ("can_change_credential", _("Can change credential info")),
@@ -130,7 +132,7 @@ class CommandsSequence(models.Model):
             self.commands = json.dumps(self.commands)
         super(CommandsSequence,self).save(*args, **kwargs)
 
-    class Meta:
+    class Meta(object):
         permissions = (
             ("can_add_commandssequence", _("Can add commands")),
             ("can_change_commandssequence", _("Can change commands info")),
@@ -154,7 +156,7 @@ class Log(models.Model):
     def __unicode__(self):
         return self.server.name
     
-    class Meta:
+    class Meta(object):
         permissions = (
             ("can_delete_log", _("Can delete log info")),
             ("can_view_log", _("Can view log info")),
@@ -169,7 +171,7 @@ class CommandLog(models.Model):
     datetime = models.DateTimeField(auto_now=True,verbose_name=_('date time'))
     command = models.CharField(max_length=255,verbose_name=_('command'))
 
-    class Meta:
+    class Meta(object):
         permissions = (
             ("can_view_command_log", _("Can view command log info")),
         )

@@ -4,6 +4,9 @@
 #
 # Modeled on the FTP storage by Rafal Jonca <jonca.rafal@gmail.com>
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 
 import getpass
 import os

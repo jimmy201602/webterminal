@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from __future__ import print_function
 
 from django.shortcuts import render
 from django.contrib.auth.mixins import AccessMixin
@@ -109,7 +110,7 @@ class Commands(LoginRequiredMixin,TemplateView):
                 return JsonResponse({'status':False,'message':'Task name:%s already exist,Please use another name instead!' %(data['name']) })
             except KeyError:
                 return JsonResponse({'status':False,'message':"Invalid parameter,Please report it to the adminstrator!" })
-            except Exception,e:
+            except Exception as e:
                 print(traceback.print_exc())
                 return JsonResponse({'status':False,'message':'Some error happend! Please report it to the adminstrator! Error info:%s' %(smart_str(e)) })
         else:
@@ -152,7 +153,7 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                 id = data.get('id',None)
                 action = data.get('action',None)                
                 fields = [field.name for field in Credential._meta.get_fields()]
-                [ data.pop(field) for field in data.keys() if field not in fields]
+                [ data.pop(field) for field in list(data.keys()) if field not in fields]
                 if action == 'create':
                     if not request.user.has_perm('common.can_add_credential'):
                         raise PermissionDenied(_('403 Forbidden'))
@@ -182,7 +183,7 @@ class CredentialCreate(LoginRequiredMixin,TemplateView):
                     return JsonResponse({'status':False,'message':'Illegal action.'}) 
             except IntegrityError:
                 return JsonResponse({'status':False,'message':'Credential %s already exist! Please use another name instead!' %(smart_str(json.loads(request.body).get('name',None)))})
-            except Exception,e:
+            except Exception as e:
                 print(traceback.print_exc())
                 return JsonResponse({'status':False,'message':'Error happend! Please report it to adminstrator! Error:%s' %(smart_str(e))})
             

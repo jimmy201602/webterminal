@@ -1,3 +1,6 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 # -*- coding: utf-8 -*-
 import paramiko
 import socket
@@ -8,7 +11,7 @@ except ImportError:
     import json
 from webterminal.interactive import interactive_shell,SshTerminalThread,InterActiveShellThread
 import sys
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 from django.core.exceptions import ObjectDoesNotExist,MultipleObjectsReturned
 from common.models import ServerInfor,ServerGroup,CommandsSequence,Log
 from webterminal.sudoterminal import ShellHandlerThread
@@ -22,7 +25,7 @@ import traceback
 from common.utils import WebsocketAuth,get_redis_instance
 from permission.models import Permission
 import logging
-import StringIO
+import io
 logger = logging.getLogger(__name__)
 import uuid
 
@@ -104,7 +107,7 @@ class webterminal(WebsocketConsumer,WebsocketAuth):
                         if method == 'password':
                             self.ssh.connect(ip, port=port, username=username, password=password, timeout=3)
                         else:
-                            private_key = StringIO.StringIO(key)
+                            private_key = io.StringIO(key)
                             if 'RSA' in key:
                                 private_key = paramiko.RSAKey.from_private_key(private_key)
                             elif 'DSA' in key:
@@ -191,7 +194,7 @@ class CommandExecute(WebsocketConsumer,WebsocketAuth):
                 data = json.loads(text)
                 if isinstance(data,list):
                     return
-                if data.has_key('parameter'):
+                if 'parameter' in data:
                     parameter = data['parameter']
                     taskname = parameter.get('taskname',None)
                     groupname = parameter.get('groupname',None)
@@ -204,7 +207,7 @@ class CommandExecute(WebsocketConsumer,WebsocketAuth):
                     elif taskname and groupname and not ip:
                         server_list = [ server.ip for server in ServerGroup.objects.get(name=groupname).servers.all() ]
                     commands = json.loads(CommandsSequence.objects.get(name = taskname).commands)
-                    if isinstance(commands,(basestring,str,unicode)):
+                    if isinstance(commands,str):
                         commands = ast.literal_eval(commands)
 
                     #Run commands 
@@ -221,7 +224,7 @@ class CommandExecute(WebsocketConsumer,WebsocketAuth):
                 data = json.loads(bytes)
         except Exception as e:
             logger.error(traceback.print_exc())
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_text(e)) ] )},immediately=True)
             logger.error("Some error happend, Please report it to the administrator! Error info:{0}".format(e))
             
 class SshTerminalMonitor(WebsocketConsumer,WebsocketAuth):
@@ -317,9 +320,9 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
                     self.queue.publish(data[2], ['stdin',data[1]])
                 elif len(data) >0 and isinstance(data,list) and data[0] == 'close':
                     self.queue.publish(data[2], ['close'])
-        except Exception,e:
+        except Exception as e:
             logger.error(traceback.print_exc())
-            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_unicode(e)) ] )},immediately=True)
+            self.message.reply_channel.send({"text":json.dumps(['stdout','\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' %(smart_text(e)) ] )},immediately=True)
 
     def openterminal(self,ip,id,channel,width,height,elementid=None):
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -349,7 +352,7 @@ class BatchCommandExecute(WebsocketConsumer,WebsocketAuth):
             if method == 'password':
                 self.ssh.connect(ip, port=port, username=username, password=password, timeout=3)
             else:
-                private_key = StringIO.StringIO(key)
+                private_key = io.StringIO(key)
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(private_key)
                 elif 'DSA' in key:

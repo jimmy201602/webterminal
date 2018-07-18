@@ -1,3 +1,4 @@
+from builtins import str
 # -*- coding: utf-8 -*-
 import threading
 try:
@@ -71,10 +72,10 @@ class GuacamoleThreadWrite(GuacamoleThread):
             text = self.queue.get_message()
             try:
                 data = ast.literal_eval(text['data'])
-            except Exception,e:
-                if isinstance(text,dict) and text.has_key('data'):
+            except Exception as e:
+                if isinstance(text,dict) and 'data' in text:
                     data = text['data']
-                elif isinstance(text,(unicode,basestring)):
+                elif isinstance(text,str):
                     data = text
                 else:
                     data = text
@@ -83,7 +84,7 @@ class GuacamoleThreadWrite(GuacamoleThread):
                 if isinstance(data,(list,tuple)):
                     if data[0] == 'close':
                         self.stop()
-                if isinstance(data,(long,int)) and data == 1:
+                if isinstance(data,int) and data == 1:
                     pass
                 else:
                     #print('write',data)

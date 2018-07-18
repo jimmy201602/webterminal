@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import str
 # -*- coding: utf-8 -*-
 from channels.generic.websockets import WebsocketConsumer
 try:
@@ -5,7 +7,7 @@ try:
 except ImportError:
     import json
 import sys
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 from common.utils import get_redis_instance,mkdir_p,WebsocketAuth
 from guacamole.client import GuacamoleClient
 import uuid

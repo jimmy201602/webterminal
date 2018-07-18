@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
 import json
 import copy
 import uuid
@@ -5,7 +9,7 @@ from django.http import HttpResponse, Http404
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.views.decorators.csrf import csrf_exempt
-from exceptions import ElfinderErrorMessages
+from .exceptions import ElfinderErrorMessages
 from elfinder.connector import ElfinderConnector
 from elfinder.conf import settings as ls
 from django.shortcuts import render_to_response
@@ -17,7 +21,7 @@ from common.views import LoginRequiredMixin
 from django.conf import settings
 from common.utils import mkdir_p
 import os
-import StringIO
+import io
 import paramiko
 
 class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
@@ -61,7 +65,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
             kwargs['content'] = context
         
         response = HttpResponse(**kwargs)
-        for key, value in additional_headers.items():
+        for key, value in list(additional_headers.items()):
             response[key] = value
 
         return response
@@ -167,7 +171,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
                                                              'root_path':'/','interactive':False,
                                                                    'key_label': key_label}
             else:
-                private_key = StringIO.StringIO(server_object.credential.key)
+                private_key = io.StringIO(server_object.credential.key)
                 key = server_object.credential.key
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(private_key)
@@ -215,7 +219,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
                                                              'root_path':'/','interactive':False,
                                                             'key_label': key_label}
             else:
-                private_key = StringIO.StringIO(server_object.credential.key)
+                private_key = io.StringIO(server_object.credential.key)
                 key = server_object.credential.key
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(private_key)

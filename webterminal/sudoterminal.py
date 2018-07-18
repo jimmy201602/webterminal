@@ -1,13 +1,17 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import object
 import paramiko
 import re
 try:
     import simplejson as json
 except ImportError:
     import json
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 import threading
 from common.models import ServerInfor
-import StringIO
+import io
 import socket
 import traceback
 import logging
@@ -24,7 +28,7 @@ class ShellHandler(object):
         if method == 'password':
             self.ssh.connect(ip, port=port, username=username, password=credential, timeout=timeout)
         else:
-            private_key = StringIO.StringIO(credential)
+            private_key = io.StringIO(credential)
             if 'RSA' in credential:
                 private_key = paramiko.RSAKey.from_private_key(private_key)
             elif 'DSA' in credential:
@@ -58,25 +62,25 @@ class ShellHandler(object):
     @staticmethod
     def _print_exec_out(cmd, out_buf, err_buf, exit_status, channel_name=None ):
         from webterminal.asgi import channel_layer
-        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('command executed: {}'.format(cmd))])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text('command executed: {}'.format(cmd))])})
         logger.debug('command executed: {}'.format(cmd))
         logger.debug('STDOUT:')
-        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDOUT:')])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text('STDOUT:')])})
         for line in out_buf:
             logger.debug(line, "end=")
-            channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line.strip('\n'))])})
-        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDOUT')])})
+            channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text(line.strip('\n'))])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text('end of STDOUT')])})
         logger.debug('end of STDOUT')
-        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('STDERR:')])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text('STDERR:')])})
         logger.debug('STDERR:')
         for line in err_buf:
             logger.debug(line, "end=")
-            channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode(line, "end=")])})
-        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('end of STDERR')])})
+            channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text(line, "end=")])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text('end of STDERR')])})
         logger.debug('end of STDERR')
-        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('finished with exit status: {}'.format(exit_status))])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text('finished with exit status: {}'.format(exit_status))])})
         logger.debug('finished with exit status: {}'.format(exit_status))
-        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_unicode('------------------------------------')])})
+        channel_layer.send(channel_name, {'text': json.dumps(['stdout',smart_text('------------------------------------')])})
         logger.debug('------------------------------------')
 
     def execute(self, cmd):

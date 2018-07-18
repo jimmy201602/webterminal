@@ -1,8 +1,9 @@
+from builtins import str
 # -*- coding: utf-8 -*-
 import socket
 import sys
 from paramiko.py3compat import u
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 import os
 
 try:
@@ -65,9 +66,9 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                 x = u(chan.recv(1024))
                 if len(x) == 0:
                     if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n'),elementid.rsplit('_')[0]]) })
+                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_text('\r\n*** EOF\r\n'),elementid.rsplit('_')[0]]) })
                     else:
-                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_unicode('\r\n*** EOF\r\n')]) })
+                        channel_layer.send(channel, {'text': json.dumps(['disconnect',smart_text('\r\n*** EOF\r\n')]) })
                     break             
                 now = time.time()
                 delay = now - last_write_time['last_activity_time']
@@ -97,31 +98,31 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                                     CommandLog.objects.create(log=logobj,command=command)
                         command = list()
 
-                    if isinstance(x,unicode):
+                    if isinstance(x,str):
                         stdout.append([delay,x])
                     else:
                         stdout.append([delay,codecs.getincrementaldecoder('UTF-8')('replace').decode(x)])
-                if isinstance(x,unicode):
+                if isinstance(x,str):
                     if elementid:
                         channel_layer.send(channel, {'text': json.dumps(['stdout',x,elementid.rsplit('_')[0]]) })
                     else:
                         channel_layer.send(channel, {'text': json.dumps(['stdout',x]) })
                 else:
                     if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x),elementid.rsplit('_')[0]]) })
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_text(x),elementid.rsplit('_')[0]]) })
                     else:
-                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_unicode(x)]) })
+                        channel_layer.send(channel, {'text': json.dumps(['stdout',smart_text(x)]) })
                 #send message to monitor group
                 if log_name:
-                    channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {'text': json.dumps(['stdout',smart_unicode(x)]) })
+                    channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {'text': json.dumps(['stdout',smart_text(x)]) })
             except socket.timeout:
                 pass
-            except Exception,e:
+            except Exception as e:
                 logger.error(traceback.print_exc())
                 if elementid:
-                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e),elementid.rsplit('_')[0]]) })
+                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_text(e),elementid.rsplit('_')[0]]) })
                 else:
-                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_unicode(e)]) })
+                    channel_layer.send(channel, {'text': json.dumps(['stdout','A bug find,You can report it to me' + smart_text(e)]) })
 
     finally:
         attrs = {
@@ -135,7 +136,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                 "TERM": os.environ.get('TERM'),
                 "SHELL": os.environ.get('SHELL','sh')
                 },
-            'stdout':list(map(lambda frame: [round(frame[0], 6), frame[1]], stdout))
+            'stdout':list([[round(frame[0], 6), frame[1]] for frame in stdout])
             }
         mkdir_p('/'.join(os.path.join(MEDIA_ROOT,log_name).rsplit('/')[0:-1]))
         with open(os.path.join(MEDIA_ROOT,log_name), "a") as f:
@@ -192,10 +193,10 @@ class SshTerminalThread(threading.Thread):
             text = self.queue.get_message()
             if text:
                 #deserialize data
-                if isinstance(text['data'],(str,basestring,unicode)):
+                if isinstance(text['data'],str):
                     try:
                         data = ast.literal_eval(text['data'])
-                    except Exception,e:
+                    except Exception as e:
                         data = text['data']
                 else:
                     data = text['data']
@@ -216,7 +217,7 @@ class SshTerminalThread(threading.Thread):
                                 CommandLog.objects.create(log=logobj,command=data[1].strip('r'))
                         self.chan.send(data[1])
                         
-                elif isinstance(data,(int,long)):
+                elif isinstance(data,int):
                     if data == 1 and first_flag:
                         first_flag = False
                     else:

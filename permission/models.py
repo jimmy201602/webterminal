@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from builtins import object
 
 from django.db import models
 from common.models import ServerGroup
@@ -18,7 +19,7 @@ class Permission(models.Model):
     def __unicode__(self):
         return self.user.username
     
-    class Meta:
+    class Meta(object):
         permissions = (
             ("can_add_user", _("Can add user")),
             ("can_change_user", _("Can change user info")),
