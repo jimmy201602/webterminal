@@ -183,7 +183,12 @@ class ElfinderConnector(object):
             }
 
         #fix sftp open transfer not close session bug
+<<<<<<< HEAD
         if 'spdfid_' in self._volumes:
+=======
+        #if cmd is file then not close file descriptor
+        if cmd != u'file' and self._volumes.has_key('spdfid_'):
+>>>>>>> 60206d199ee35ffa43c222ef9eb10459b122cccd
             self._volumes['spdfid_']._options['storage'].sftp.close()
         return result
 
