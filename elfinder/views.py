@@ -56,7 +56,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
             kwargs['content_type'] = 'application/json'
             
         if 'pointer' in context: #return file
-            if context['volume']._options.has_key('storage') and isinstance(context['volume']._options['storage'],SFTPStorage):
+            if 'storage' in context['volume']._options and isinstance(context['volume']._options['storage'],SFTPStorage):
                 #stream sftp file download
                 def file_iterator(file_name, chunk_size=32768):
                     while True:
@@ -66,7 +66,7 @@ class ElfinderConnectorView(LoginRequiredMixin,PermissionRequiredMixin,View):
                         else:
                             context['volume'].close(context['pointer'], context['info']['hash'])
                             #fix sftp open transfer not close session bug
-                            if context['volume']._options.has_key('storage') and isinstance(context['volume']._options['storage'],SFTPStorage):
+                            if 'storage' in context['volume']._options and isinstance(context['volume']._options['storage'],SFTPStorage):
                                 context['volume']._options['storage'].sftp.close()
                             break
                 the_file_name = additional_headers["Content-Location"]

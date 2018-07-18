@@ -2,15 +2,15 @@ from __future__ import absolute_import
 from future import standard_library
 standard_library.install_aliases()
 from builtins import str
+from past.builtins import basestring
 from builtins import object
 import os, re, time, urllib.request, urllib.parse, urllib.error
 from django.utils.translation import ugettext_lazy as _
 from .exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
 from .utils.volumes import instantiate_driver
 import sys
-if sys.version[0] == '2':
-    reload(sys)
-    sys.setdefaultencoding("utf-8")
+reload(sys)
+sys.setdefaultencoding("utf-8")
 from collections import defaultdict
 
 class ElfinderConnector(object):
@@ -126,7 +126,7 @@ class ElfinderConnector(object):
         """
         errors = []
         for msg in args:
-            if not isinstance(msg, str):
+            if not isinstance(msg, basestring):
                 errors += msg
             else:
                 errors.append(msg)
@@ -183,12 +183,8 @@ class ElfinderConnector(object):
             }
 
         #fix sftp open transfer not close session bug
-<<<<<<< HEAD
-        if 'spdfid_' in self._volumes:
-=======
         #if cmd is file then not close file descriptor
-        if cmd != u'file' and self._volumes.has_key('spdfid_'):
->>>>>>> 60206d199ee35ffa43c222ef9eb10459b122cccd
+        if cmd != u'file' and 'spdfid_' in self._volumes:
             self._volumes['spdfid_']._options['storage'].sftp.close()
         return result
 
@@ -210,10 +206,10 @@ class ElfinderConnector(object):
         method must be used.
         """
 
-        if isinstance(init, str):
+        if isinstance(init, basestring):
             init = int(init)
             
-        if isinstance(tree, str):
+        if isinstance(tree, basestring):
             tree = int(tree)
 
         if not init and not target:
@@ -344,7 +340,7 @@ class ElfinderConnector(object):
         method must be used.
         """
         
-        if isinstance(download, str):
+        if isinstance(download, basestring):
             download = int(download)
         
         try:
@@ -542,7 +538,7 @@ class ElfinderConnector(object):
         directly, the :meth:`elfinder.connector.ElfinderConnector.execute`
         method must be used.
         """
-        if isinstance(html, str):
+        if isinstance(html, basestring):
             html = int(html)
         
         header = { 'Content-Type' : 'text/html; charset=utf-8' } if html else {}
@@ -603,7 +599,7 @@ class ElfinderConnector(object):
         method must be used.
         """
         
-        if isinstance(cut, str):
+        if isinstance(cut, basestring):
             cut = int(cut)
 
         error = ElfinderErrorMessages.ERROR_MOVE if cut else ElfinderErrorMessages.ERROR_COPY
@@ -731,7 +727,7 @@ class ElfinderConnector(object):
         method must be used.
         """
         
-        if isinstance(options, str):
+        if isinstance(options, basestring):
             options = int(options)
         
         files = []
