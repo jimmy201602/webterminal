@@ -68,30 +68,14 @@
     {% endblock %}
 {% block content %}
 <div class="row tab1">
-    <div class="col-md-3 split split-horizontal" id="tab1">
-        <div class="portlet box box-success"  style="overflow:scroll;height: 700px;">
-            <div class="portlet-title">
-                <div class="caption">
-                    <a class="text-danger">{% trans 'Server List' %}</a>
-                </div>
-                <div class="tools">
-                    <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-                    <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-                    <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
-                    <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
-                </div>
-            </div>
-            <div class="portlet-body">
-                <form id="search">
-                    <input type="search" id="q" placeholder="{% trans 'search' %}"/>
-                    <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
-                <div id="server_list" class="tree-demo" role="tree"></div>
-            </div>
-        </div>
+    <div class="col-md-2 split split-horizontal" id="tab1">
+        <form id="search">
+            <input type="search" id="q" placeholder="{% trans 'search' %}"/>
+            <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+        <div id="server_list" role="tree"></div>
     </div>
-    <div class="col-md-9 split split-horizontal" id="tab2">
-
+    <div class="col-md-10 split split-horizontal" id="tab2">
         <div class="span2 leftMenu">
             <ul class="nav nav-tabs marginBottom" id="myTab">
                 <li class="active ">
@@ -194,8 +178,8 @@
 </script>
 <script>
     Split(['#tab1', '#tab2'], {
-        sizes: [29, 71],
-        minSize: 200
+        sizes: [15, 85],
+        minSize: 150
     });
 </script>
 <script type="application/javascript">
