@@ -11,14 +11,64 @@
     /* make text editor to the front */
     z-index: 9999 !important;
 }
+
+ .tab1 {
+    height: 800px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  #tab1, #tab2 {
+    padding: 20px;
+  }
+
+  #tab1 p {
+    padding: 0;
+  }
+
+
+  .split p, .split-flex p {
+    padding: 20px;
+  }
+
+  .split, .split-flex {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .gutter {
+    background-color: #eee;
+
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+
+  .gutter.gutter-horizontal {
+    background-image: url('{% static "plugins/split.js/img/vertical.png"%}');
+    cursor: ew-resize;
+  }
+
+  .gutter.gutter-vertical {
+    background-image: url('{% static "plugins/split.js/img/horizontal.png"%}');
+    cursor: ns-resize;
+  }
+
+  .split.split-horizontal, .gutter.gutter-horizontal {
+    height: 100%;
+    float: left;
+  }
 </style>
 <link rel="stylesheet" type="text/css" href="{% static "plugins/jquery-ui/jquery-ui.min.css"%}">
 <!-- elFinder CSS (REQUIRED) -->
 <link rel="stylesheet" type="text/css" href="{% static "plugins/elfinder/css/elfinder.min.css"%}">
     {% endblock %}
 {% block content %}
-<div class="row ">
-    <div class="col-md-3" id="tab1">
+<div class="row tab1">
+    <div class="col-md-3 split split-horizontal" id="tab1">
         <div class="portlet box box-success"  style="overflow:scroll;height: 800px;">
             <div class="portlet-title">
                 <div class="caption">
@@ -40,7 +90,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-9" id="tab2">
+    <div class="col-md-9 split split-horizontal" id="tab2">
 
         <div class="span2 leftMenu">
             <ul class="nav nav-tabs marginBottom" id="myTab">
@@ -72,6 +122,8 @@
 <script type="text/javascript" src="{% static "plugins/ace/ext-modelist.js" %}"></script>
 <script type="text/javascript" src="{% static "plugins/ace/ext-settings_menu.js" %}"></script>
 <script type="text/javascript" src="{% static "plugins/ace/ext-language_tools.js" %}"></script>
+<!--split.js-->
+<script type="text/javascript" src="{% static "plugins/split.js/split.min.js" %}"></script>
 
 <script type="application/javascript">
 
@@ -139,6 +191,12 @@
         $(tabContentId).remove(); //remove respective tab content
     }
 
+</script>
+<script>
+    Split(['#tab1', '#tab2'], {
+        sizes: [29, 71],
+        minSize: 200
+    });
 </script>
 <script type="application/javascript">
     var terminals = new Object;
@@ -592,6 +650,5 @@
                 }
             });
     }
-    $("#tab1,#tab2").resizable();
 </script>
 {% endblock %}
