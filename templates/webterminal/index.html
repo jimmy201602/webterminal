@@ -270,7 +270,11 @@
                         {% for server in server_group.servers.all %}
                             {
                                 text: "{{ server.name }} {{ server.ip }} {{ server.hostname }}",
-                                icon: "fa fa-server",
+                                {% if server.credential.protocol == 'rdp' %}
+                                icon: "fa fa-windows",
+                                {% else %}
+                                icon: "fa fa-linux",
+                                {% endif %}
                                 ip: "{{ server.ip }}",
                                 id: "{{ server.getrandomid }}",
                                 oid: "{{ server.id }}",
