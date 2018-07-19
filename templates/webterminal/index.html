@@ -317,7 +317,7 @@
                                     registerCloseEvent('ssh');
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                    make_terminal(document.getElementById(tabId), {rows: 38, cols: 90}, ws_path, ip, id);
+                                    make_terminal(document.getElementById(tabId), {rows: 37, cols: 90}, ws_path, ip, id);
                                 }else {
                                     showTab(tabId);
                                 }
