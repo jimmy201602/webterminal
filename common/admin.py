@@ -17,7 +17,13 @@ class CredentialInline(admin.TabularInline):
 class CredentialAdmin(admin.ModelAdmin):
     inlines = [CredentialInline]
 
-admin.site.register(ServerInfor)
+class LogInline(admin.TabularInline):
+    model = Log
+
+class ServerInforAdmin(admin.ModelAdmin):
+    inlines = [LogInline]
+
+admin.site.register(ServerInfor,ServerInforAdmin)
 admin.site.register(ServerGroup)
 admin.site.register(Credential,CredentialAdmin)
 admin.site.register(CommandsSequence)
