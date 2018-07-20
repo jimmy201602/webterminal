@@ -11,9 +11,15 @@ from common.models import ServerInfor,ServerGroup,Credential,CommandsSequence,Lo
 class LogAdmin(admin.ModelAdmin):
     list_display = ('user',)
 
+class CredentialInline(admin.TabularInline):
+    model = ServerInfor
+
+class CredentialAdmin(admin.ModelAdmin):
+    inlines = [CredentialInline]
+
 admin.site.register(ServerInfor)
 admin.site.register(ServerGroup)
-admin.site.register(Credential)
+admin.site.register(Credential,CredentialAdmin)
 admin.site.register(CommandsSequence)
 admin.site.register(Log,LogAdmin)
 
