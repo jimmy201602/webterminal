@@ -81,12 +81,12 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                     if '\r\n' not in x:
                         command.append(x)
                     else:
-                        command = CommandDeal().deal_command(''.join(command))
-                        if len(command) != 0:
+                        command_result = CommandDeal().deal_command(''.join(command))
+                        if len(command_result) != 0:
                             #vim command record patch
-                            logger.debug('command {0}'.format(command))
-                            if command.strip().startswith('vi') or command.strip().startswith('fg'):
-                                CommandLog.objects.create(log=logobj,command=command)
+                            logger.debug('command {0}'.format(command_result))
+                            if command_result.strip().startswith('vi') or command_result.strip().startswith('fg'):
+                                CommandLog.objects.create(log=logobj,command=command_result)
                                 vim_flag = True
                             else:
                                 if vim_flag:
@@ -94,7 +94,7 @@ def posix_shell(chan,channel,log_name=None,width=90,height=40,elementid=None):
                                         vim_flag = False
                                         vim_data = ''
                                 else:
-                                    CommandLog.objects.create(log=logobj,command=command)
+                                    CommandLog.objects.create(log=logobj,command=command_result)
                         command = list()
 
                     if isinstance(x,unicode):
