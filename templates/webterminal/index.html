@@ -73,8 +73,10 @@
 <div class="row tab1">
     <div class="col-md-2 split split-horizontal" id="tab1">
         <form id="search">
-            <input type="search" id="q" placeholder="{% trans 'search' %}"/>
-            <button type="submit"><i class="fa fa-search"></i></button>
+        <div class="input-group">
+            <input type="search" id="q" placeholder="{% trans 'search' %}" class="form-control">
+            <span class="input-group-addon"><button type="submit"><i class="fa fa-search"></i></button></span>
+        </div>
         </form>
         <div id="server_list" role="tree"></div>
     </div>
