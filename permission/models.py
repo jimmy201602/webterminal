@@ -8,16 +8,22 @@ from django.contrib.auth.models import Permission as AuthPermission
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 
+
 class Permission(models.Model):
-    user = models.OneToOneField(User,verbose_name=_('User'),related_name='permissionuser')
-    permissions = models.ManyToManyField(AuthPermission,verbose_name=_('Permissions'),related_name='permission')
-    groups = models.ManyToManyField(ServerGroup,verbose_name=_('Server group'))
-    createdatetime = models.DateTimeField(auto_now_add=True,verbose_name=_('Create time'))
-    updatedatetime = models.DateTimeField(auto_created=True,auto_now=True,verbose_name=_('Update time'))
-    
+    user = models.OneToOneField(User, verbose_name=_(
+        'User'), related_name='permissionuser')
+    permissions = models.ManyToManyField(
+        AuthPermission, verbose_name=_('Permissions'), related_name='permission')
+    groups = models.ManyToManyField(
+        ServerGroup, verbose_name=_('Server group'))
+    createdatetime = models.DateTimeField(
+        auto_now_add=True, verbose_name=_('Create time'))
+    updatedatetime = models.DateTimeField(
+        auto_created=True, auto_now=True, verbose_name=_('Update time'))
+
     def __unicode__(self):
         return self.user.username
-    
+
     class Meta:
         permissions = (
             ("can_add_user", _("Can add user")),

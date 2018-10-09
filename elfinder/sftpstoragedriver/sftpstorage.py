@@ -21,6 +21,7 @@ from django.utils.six.moves.urllib import parse as urlparse
 from elfinder.sftpstoragedriver.utils import setting
 import traceback
 
+
 @deconstructible
 class SFTPStorage(Storage):
 
@@ -44,7 +45,8 @@ class SFTPStorage(Storage):
 
         self._root_path = setting('SFTP_STORAGE_ROOT', '') \
             if root_path is None else root_path
-        self._base_url = setting('MEDIA_URL') if base_url is None else base_url
+        self._base_url = setting(
+            'MEDIA_URL') if base_url is None else base_url
 
         # for now it's all posix paths.  Maybe someday we'll support figuring
         # out if the remote host is windows.

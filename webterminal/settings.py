@@ -44,10 +44,10 @@ INSTALLED_APPS = [
     'permission',
     'common',
     'guardian',
-    #'django_otp',
-    #'django_otp.plugins.otp_totp',
-    #'django_otp.plugins.otp_hotp',
-    #'django_otp.plugins.otp_static',
+    # 'django_otp',
+    # 'django_otp.plugins.otp_totp',
+    # 'django_otp.plugins.otp_hotp',
+    # 'django_otp.plugins.otp_static',
     'crispy_forms'
 ]
 
@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django_otp.middleware.OTPMiddleware',
+    # 'django_otp.middleware.OTPMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -69,7 +69,7 @@ OTP_TOTP_ISSUER = 'webterminal'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'debug': True,
@@ -143,20 +143,21 @@ STATICFILES_DIRS = [
 # Channels settings
 CHANNEL_LAYERS = {
     "default": {
-       "BACKEND": "asgi_redis.RedisChannelLayer",  # use redis backend
-       "CONFIG": {
-           "hosts": [("localhost", 6379)],  # set redis address
-           "channel_capacity": {
-                                   "http.request": 1000,
-                                   "websocket.send*": 10000,
-                                },
-           "capacity": 10000,
-           },
-       "ROUTING": "webterminal.routing.channel_routing",  # load routing from our routing.py file
-       },
+        "BACKEND": "asgi_redis.RedisChannelLayer",  # use redis backend
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],  # set redis address
+            "channel_capacity": {
+                "http.request": 1000,
+                "websocket.send*": 10000,
+            },
+            "capacity": 10000,
+        },
+        # load routing from our routing.py file
+        "ROUTING": "webterminal.routing.channel_routing",
+    },
 }
 
-#Rest framework api auth config
+# Rest framework api auth config
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
@@ -171,12 +172,12 @@ REST_FRAMEWORK = {
     ),
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 LOCALE_PATHS = [
-                os.path.join(BASE_DIR,'locale')
-        ]
+    os.path.join(BASE_DIR, 'locale')
+]
 
 LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
 

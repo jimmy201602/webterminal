@@ -2,26 +2,29 @@
 import os
 import errno
 
+
 class WebsocketAuth(object):
 
     @property
     def authenticate(self):
-        #user auth
+        # user auth
         if self.message.user.is_authenticated():
             return True
         else:
             return False
 
-    def haspermission(self,perm):
-        #permission auth
+    def haspermission(self, perm):
+        # permission auth
         if self.message.user.has_perm(perm):
             return True
         else:
             return False
 
+
 def get_redis_instance():
     from webterminal.asgi import channel_layer
     return channel_layer._connection_list[0]
+
 
 def mkdir_p(path):
     """
@@ -39,4 +42,4 @@ def mkdir_p(path):
         if exc.errno == errno.EEXIST:
             pass
         else:
-            raise # The original exception
+            raise  # The original exception

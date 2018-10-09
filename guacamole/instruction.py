@@ -155,7 +155,8 @@ class GuacamoleInstruction(object):
         """
         instruction_iter = itertools.chain([self.opcode], self.args)
 
-        elems = ARG_SEP.join(self.encode_arg(arg) for arg in instruction_iter)
+        elems = ARG_SEP.join(self.encode_arg(arg)
+                             for arg in instruction_iter)
 
         return elems + INST_TERM
 
