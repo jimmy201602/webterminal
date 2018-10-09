@@ -14,11 +14,12 @@ from webterminal.settings import MEDIA_ROOT
 import os
 from common.utils import get_redis_instance
 
+
 class GuacamoleThread(threading.Thread):
     """Thread class with a stop() method. The thread itself has to check
     regularly for the stopped() condition."""
-    
-    def __init__(self,message,client):
+
+    def __init__(self, message, client):
         super(GuacamoleThread, self).__init__()
         self._stop_event = threading.Event()
         self.message = message
@@ -28,20 +29,21 @@ class GuacamoleThread(threading.Thread):
         self.write_lock = threading.RLock()
         self.pending_read_request = threading.Event()
         directory_date_time = now()
-        self.recording_path = os.path.join(MEDIA_ROOT,'{0}-{1}-{2}'.format(directory_date_time.year,directory_date_time.month,directory_date_time.day))
-        
+        self.recording_path = os.path.join(MEDIA_ROOT, '{0}-{1}-{2}'.format(
+            directory_date_time.year, directory_date_time.month, directory_date_time.day))
+
     def stop(self):
         self._stop_event.set()
 
     def stopped(self):
         return self._stop_event.is_set()
-    
+
     def redis_queue(self):
         redis_instance = get_redis_instance()
         redis_sub = redis_instance.pubsub()
         redis_sub.subscribe(self.message.reply_channel.name)
         return redis_sub
-            
+
     def run(self):
         from webterminal.asgi import channel_layer
         with self.read_lock:
@@ -50,46 +52,49 @@ class GuacamoleThread(threading.Thread):
                 try:
                     instruction = self.client.receive()
                     if instruction:
-                        channel_layer.send(self.message.reply_channel.name,{"text":instruction})
-                        #with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
-                            #f.write(instruction)
+                        channel_layer.send(self.message.reply_channel.name, {
+                                           "text": instruction})
+                        # with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
+                        # f.write(instruction)
                     else:
                         break
                 except timeout:
                     queue = get_redis_instance()
                     queue.pubsub()
-                    queue.publish(self.message.reply_channel.name, '10.disconnect;')
+                    queue.publish(
+                        self.message.reply_channel.name, '10.disconnect;')
 
             # End-of-instruction marker
-            channel_layer.send(self.message.reply_channel.name,{"text":'0.;'})
+            channel_layer.send(
+                self.message.reply_channel.name, {"text": '0.;'})
 
 
 class GuacamoleThreadWrite(GuacamoleThread):
-    
+
     def run(self):
         while True:
             text = self.queue.get_message()
             try:
                 data = ast.literal_eval(text['data'])
-            except Exception,e:
-                if isinstance(text,dict) and text.has_key('data'):
+            except Exception, e:
+                if isinstance(text, dict) and text.has_key('data'):
                     data = text['data']
-                elif isinstance(text,(unicode,basestring)):
+                elif isinstance(text, (unicode, basestring)):
                     data = text
                 else:
                     data = text
 
             if data:
-                if isinstance(data,(list,tuple)):
+                if isinstance(data, (list, tuple)):
                     if data[0] == 'close':
                         self.stop()
-                if isinstance(data,(long,int)) and data == 1:
+                if isinstance(data, (long, int)) and data == 1:
                     pass
                 else:
-                    #print('write',data)
+                    # print('write',data)
                     with self.write_lock:
                         self.client.send(str(data))
-                        #with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
-                            #f.write(data)
+                        # with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
+                        # f.write(data)
             else:
                 time.sleep(0.001)

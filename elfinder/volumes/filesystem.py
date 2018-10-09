@@ -1,4 +1,8 @@
-import os, re, time, shutil, magic
+import os
+import re
+import time
+import shutil
+import magic
 try:
     from PIL import Image
 except ImportError:
@@ -8,31 +12,32 @@ from django.conf import settings
 from elfinder.exceptions import ElfinderErrorMessages, NotAnImageError, DirNotFoundError
 from base import ElfinderVolumeDriver
 
+
 class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
     """
     elFinder driver for local filesystem. It implements the
     :class:`elfinder.volumes.base.ElfinderVolumeDriver` API.
     """
-    
+
     _driver_id = 'l'
-    
+
     def __init__(self):
         """
         Override the original __init__ method to define some 
         ElfinderVolumeLocalFileSystem-specific options.
         """
         super(ElfinderVolumeLocalFileSystem, self).__init__()
-        
-        #Required to count total archive files size
+
+        # Required to count total archive files size
         self._archiveSize = 0
-        
-        self._options['dirMode']  = 0755 #new dirs mode
-        self._options['fileMode'] = 0644 #new files mode
-        
+
+        self._options['dirMode'] = 0755  # new dirs mode
+        self._options['fileMode'] = 0644  # new files mode
+
     #*********************************************************************#
     #*                        INIT AND CONFIGURE                         *#
     #*********************************************************************#
-    
+
     def mount(self, opts):
         """
         Override the original mount method so that
@@ -45,19 +50,19 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         except KeyError:
             self._options['path'] = settings.MEDIA_ROOT
             rootpath = settings.MEDIA_ROOT
-        
-        #attempt to create root if it does not exist
+
+        # attempt to create root if it does not exist
         if not os.path.exists(rootpath):
             try:
                 os.makedirs(rootpath)
             except:
                 raise DirNotFoundError
-            
+
         if not 'URL' in opts or not opts['URL']:
             self._options['URL'] = settings.MEDIA_URL
 
         return super(ElfinderVolumeLocalFileSystem, self).mount(opts)
-    
+
     def _configure(self):
         """
         Configure after successful mount.
@@ -66,11 +71,12 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
 
         super(ElfinderVolumeLocalFileSystem, self)._configure()
 
-        #if no thumbnails url - try to detect it
+        # if no thumbnails url - try to detect it
         if not self._options['tmbURL'] and self._options['URL']:
             if self._options['tmbPath'].startswith(self._root):
-                self._options['tmbURL'] = self._urlize(self._options['URL'] + self._options['tmbPath'][len(self._root)+1:].replace(self._separator, '/'))
-            
+                self._options['tmbURL'] = self._urlize(
+                    self._options['URL'] + self._options['tmbPath'][len(self._root) + 1:].replace(self._separator, '/'))
+
     #*********************************************************************#
     #*                  API TO BE IMPLEMENTED IN SUB-CLASSES             *#
     #*********************************************************************#
@@ -91,18 +97,18 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         Join two paths and return full path. If the latter path is
         absolute, return it.
-        
+
         See :func:`elfinder.volumes.base.ElfinderVolumeDriver._join_path`.
         """
-        
+
         return os.path.join(path1, path2)
-    
+
     def _normpath(self, path):
         """
         Return normalized path. See :func:`elfinder.volumes.base.ElfinderVolumeDriver._normpath`.
         """
         return os.path.normpath(path)
-    
+
     def _get_available_name(self, dir_, name, ext, i):
         """
         Get an available name for this file name.
@@ -112,9 +118,9 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
             n = '%s%s%s' % (name, (i if i > 0 else ''), ext)
             if not os.path.exists(self._join_path(dir_, n)):
                 return n
-            i+=1
+            i += 1
 
-        return name+md5(dir_)+ext
+        return name + md5(dir_) + ext
 
     #************************* file/dir info *********************#
 
@@ -127,28 +133,28 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         if path != self._root and os.path.islink(path):
             target = self._readlink(path)
             if not target or target == path:
-                stat['mime']  = 'symlink-broken'
-                stat['read']  = False
+                stat['mime'] = 'symlink-broken'
+                stat['read'] = False
                 stat['write'] = False
-                stat['size']  = 0
+                stat['size'] = 0
                 return stat
-            stat['alias']  = self._path(target)
+            stat['alias'] = self._path(target)
             stat['target'] = target
-            path  = target
-            size  = os.lstat(path).st_size
-        else: #raise os.error on fail
+            path = target
+            size = os.lstat(path).st_size
+        else:  # raise os.error on fail
             size = os.path.getsize(path)
-        
+
         dir_ = os.path.isdir(path)
-        
-        stat['mime']  = 'directory' if dir_ else self.mimetype(path)
+
+        stat['mime'] = 'directory' if dir_ else self.mimetype(path)
         stat['ts'] = os.path.getmtime(path)
-        stat['read']  = os.access(path, os.R_OK)
+        stat['read'] = os.access(path, os.R_OK)
         stat['write'] = os.access(path, os.W_OK)
         if stat['read']:
             stat['size'] = 0 if dir_ else size
         return stat
-   
+
     def _subdirs(self, path):
         """
         Return True if path is dir and has at least one childs directory
@@ -157,7 +163,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
             p = self._join_path(path, entry)
             if os.path.isdir(p) and not self._attr(p, 'hidden'):
                 return True
-    
+
     def _dimensions(self, path):
         """
         Return object width and height
@@ -169,15 +175,15 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
             return '%sx%s' % im.size
         except:
             raise NotAnImageError
-    
+
     #******************** file/dir content *********************#
 
     def _mimetype(self, path):
         """
         Attempt to read the file's mimetype
         """
-        return magic.Magic(mime=True).from_file(path.encode('utf-8')) #unicode filename support
-    
+        return magic.Magic(mime=True).from_file(path.encode('utf-8'))  # unicode filename support
+
     def _readlink(self, path):
         """
         Return symlink target file
@@ -188,10 +194,10 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
                 target = self._join_path(self._dirname(path), target)
         except TypeError:
             return None
-        
+
         atarget = os.path.realpath(target)
         if self._inpath(atarget, self._aroot):
-            return self._normpath(self._join_path(self._root, atarget[len(self._aroot)+1:]))      
+            return self._normpath(self._join_path(self._root, atarget[len(self._aroot) + 1:]))
 
     def _scandir(self, path):
         """
@@ -205,32 +211,33 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         Open file and return file pointer
         """
         return open(path, mode)
-    
+
     def _fclose(self, fp, **kwargs):
         """
         Close opened file
         """
         return fp.close()
-    
+
     def _openimage(self, path):
         """
         Open an image file.
         """
         return Image.open(path)
-    
+
     def _saveimage(self, im, path, form):
         """
         Save an image file
         """
         im.save(path, form)
-    
+
     #********************  file/dir manipulations *************************#
-    
+
     def _mkdir(self, path, mode=None):
         """
         Create dir and return created dir path or raise an os.error
         """
-        os.mkdir(path, mode) if mode else os.mkdir(path, self._options['dirMode']) 
+        os.mkdir(path, mode) if mode else os.mkdir(
+            path, self._options['dirMode'])
         return path
 
     def _mkfile(self, path, name):
@@ -263,7 +270,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         target = self._join_path(target_dir, name)
         os.rename(source, target)
         return target
-        
+
     def _unlink(self, path):
         """
         Remove file
@@ -283,7 +290,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         path = self._join_path(dir_, name)
         target = open(path, 'wb')
-        
+
         read = fp.read(8192)
         while read:
             target.write(read)
@@ -291,7 +298,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
 
         target.close()
         os.chmod(path, self._options['fileMode'])
-        
+
         return path
 
     def _save_uploaded(self, uploaded_file, dir_, name, chunk_name, is_first_chunk, **kwargs):
@@ -312,7 +319,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         target.close()
         os.chmod(path, self._options['fileMode'])
         return path
-    
+
     def _get_contents(self, path):
         """
         Get file contents
@@ -335,10 +342,10 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
             archiver = arc['archiver']
         except KeyError:
             raise Exception('Invalid archiver')
-        
+
         cwd = os.getcwd()
         os.chdir(dir_)
-        
+
         try:
             archive = archiver.open(name, "w")
             for file_ in files:
@@ -349,7 +356,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
 
         os.chdir(cwd)
         path = u'%s%s%s' % (dir_, self._separator, name)
-        
+
         if not os.path.isfile(path):
             raise Exception('Could not create archive')
 
@@ -361,7 +368,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         if os.path.islink(path):
             return True
-        
+
         if os.path.isdir(path):
             for p in self._scandir(path):
                 if os.path.islink(p):
@@ -370,7 +377,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
                     return True
                 elif os.path.isfile(p):
                     self._archiveSize += os.path.getsize(p)
-        else:    
+        else:
             self._archiveSize += os.path.getsize(path)
 
         return False
@@ -394,51 +401,54 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         Extract files from archive.
         """
-                
+
         archive_name = self._basename(path)
         archive_dir = self._dirname(path)
-        quarantine_dir = self._join_path(self._quarantine, u'%s%s' % (str(time.time()).replace(' ', '_'), archive_name))
+        quarantine_dir = self._join_path(self._quarantine, u'%s%s' % (
+            str(time.time()).replace(' ', '_'), archive_name))
         archive_copy = self._join_path(quarantine_dir, archive_name)
-        
+
         self._mkdir(quarantine_dir)
 
-        #copy archive file in quarantine
+        # copy archive file in quarantine
         self._copy(path, quarantine_dir, archive_name)
-        
+
         #extract in quarantine
         self._unpack(archive_copy, archiver)
         self._unlink(archive_copy)
-        
+
         ls = self._remove_unaccepted_files(quarantine_dir)
         self._archiveSize = 0
-        
-        #find symlinks            
+
+        # find symlinks
         if self._find_symlinks(quarantine_dir):
             raise Exception(ElfinderErrorMessages.ERROR_ARC_SYMLINKS)
 
-        #check max files size
+        # check max files size
         if self._options['archiveMaxSize'] > 0 and self._options['archiveMaxSize'] < self._archiveSize:
             raise Exception(ElfinderErrorMessages.ERROR_ARC_MAXSIZE)
 
-        #for several files - create new directory
-        #create unique name for directory
-        if len(ls) >= 1:    
+        # for several files - create new directory
+        # create unique name for directory
+        if len(ls) >= 1:
             name = archive_name
-            m =re.search(r'\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$', name, re.IGNORECASE) 
+            m = re.search(
+                r'\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$', name, re.IGNORECASE)
             if m and m.group(0):
-                name = name[0:len(name)-len(m.group(0))]
+                name = name[0:len(name) - len(m.group(0))]
 
             test = self._join_path(archive_dir, name)
             if os.path.exists(test) or os.path.islink(test):
-                name = self._unique_name(archive_dir, name, ' extracted', False)
+                name = self._unique_name(
+                    archive_dir, name, ' extracted', False)
 
             self._move(quarantine_dir, archive_dir, name)
-            result  = self._join_path(archive_dir, name)
+            result = self._join_path(archive_dir, name)
         else:
             os.rmdir(quarantine_dir)
             raise Exception('No valid files in archive')
-        
+
         if not os.path.exists(result):
             raise Exception('Could not extract archive')
-        
+
         return result

@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render,render_to_response,HttpResponseRedirect
-from django.views.generic import FormView,DetailView,DeleteView,ListView,UpdateView,CreateView
+from django.shortcuts import render, render_to_response, HttpResponseRedirect
+from django.views.generic import FormView, DetailView, DeleteView, ListView, UpdateView, CreateView
 from django.contrib.auth.models import User
-from permission.forms import RegisterForm,PermissionForm
+from permission.forms import RegisterForm, PermissionForm
 from django.core.urlresolvers import reverse_lazy
 from permission.models import Permission
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from common.views import LoginRequiredMixin
 
-class UserRegister(LoginRequiredMixin,PermissionRequiredMixin,FormView):
+
+class UserRegister(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'permission/userregister.html'
     form_class = RegisterForm
     success_url = reverse_lazy('userlist')
@@ -18,28 +19,32 @@ class UserRegister(LoginRequiredMixin,PermissionRequiredMixin,FormView):
     raise_exception = True
 
     def form_valid(self, form):
-        username=form.cleaned_data['user']
-        password=form.cleaned_data['newpassword1']
-        email=form.cleaned_data['email']
-        User.objects.create_user(username=username,email=email,password=password,is_active=True,is_staff=True)
+        username = form.cleaned_data['user']
+        password = form.cleaned_data['newpassword1']
+        email = form.cleaned_data['email']
+        User.objects.create_user(
+            username=username, email=email, password=password, is_active=True, is_staff=True)
         return HttpResponseRedirect(self.get_success_url())
 
-class UserList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-    template_name='permission/userlist.html'
-    model=User
+
+class UserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    template_name = 'permission/userlist.html'
+    model = User
     permission_required = 'permission.can_view_user'
     raise_exception = True
 
-class UserDelete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
-    template_name='permission/userdelete.html'
-    model=User
+
+class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    template_name = 'permission/userdelete.html'
+    model = User
     success_url = reverse_lazy('userlist')
     permission_required = 'permission.can_delete_user'
     raise_exception = True
 
-class UserUpdate(LoginRequiredMixin,PermissionRequiredMixin,FormView,UpdateView):
-    template_name='permission/userupdate.html'
-    model=User
+
+class UserUpdate(LoginRequiredMixin, PermissionRequiredMixin, FormView, UpdateView):
+    template_name = 'permission/userupdate.html'
+    model = User
     form_class = RegisterForm
     success_url = reverse_lazy('userlist')
     permission_required = 'permission.can_change_user'
@@ -50,15 +55,15 @@ class UserUpdate(LoginRequiredMixin,PermissionRequiredMixin,FormView,UpdateView)
         Returns the initial data to use for forms on this view.
         """
         data = self.get_object()
-        initial = super(UserUpdate,self).get_initial()
+        initial = super(UserUpdate, self).get_initial()
         initial['user'] = data.username
         initial['email'] = data.email
         return initial
 
     def form_valid(self, form):
-        username=form.cleaned_data['user']
-        password=form.cleaned_data['newpassword1']
-        email=form.cleaned_data['email']
+        username = form.cleaned_data['user']
+        password = form.cleaned_data['newpassword1']
+        email = form.cleaned_data['email']
         data = self.get_object()
         if len(password) != 0:
             data.set_password(password)
@@ -68,12 +73,13 @@ class UserUpdate(LoginRequiredMixin,PermissionRequiredMixin,FormView,UpdateView)
 
     def get_form(self, form_class=None):
         form = super(UserUpdate, self).get_form(form_class)
-        form.fields['user'].widget.attrs.update({'readonly' : True})
+        form.fields['user'].widget.attrs.update({'readonly': True})
         form.fields['newpassword1'].required = False
         form.fields['newpassword2'].required = False
         return form
 
-class PermissionCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+
+class PermissionCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Permission
     form_class = PermissionForm
     success_url = reverse_lazy('permissionlist')
@@ -97,16 +103,19 @@ class PermissionCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
 
     def get_form(self, form_class=None):
         form = super(PermissionCreate, self).get_form(form_class)
-        form.fields['permissions'].widget.attrs.update({'checked' : 'checked'})
+        form.fields['permissions'].widget.attrs.update(
+            {'checked': 'checked'})
         return form
 
-class PermissionList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+
+class PermissionList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Permission
     template_name = 'permission/permissionlist.html'
     permission_required = 'permission.can_view_permissions'
     raise_exception = True
 
-class PermissionUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+
+class PermissionUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Permission
     form_class = PermissionForm
     success_url = reverse_lazy('permissionlist')
@@ -128,7 +137,8 @@ class PermissionUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
         self.object = form.save()
         return super(PermissionUpdate, self).form_valid(form)
 
-class PermissionDelete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
+
+class PermissionDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Permission
     success_url = reverse_lazy('permissionlist')
     template_name = 'permission/permissiondelete.html'

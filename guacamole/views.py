@@ -6,8 +6,8 @@ import threading
 import uuid
 
 from django.conf import settings
-from django.http import HttpResponse, StreamingHttpResponse,JsonResponse
-from django.shortcuts import render,render_to_response
+from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
+from django.shortcuts import render, render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 from guacamole.client import GuacamoleClient
@@ -31,13 +31,14 @@ write_lock = threading.RLock()
 pending_read_request = threading.Event()
 
 
-class Index(LoginRequiredMixin,PermissionRequiredMixin,View):
+class Index(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'common.can_connect_serverinfo'
 
-    def get(self,request,id):
-        return render_to_response('guacamole/index.html',locals())
+    def get(self, request, id):
+        return render_to_response('guacamole/index.html', locals())
 
-class LogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
+
+class LogPlay(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Log
     template_name = 'guacamole/logplay.html'
     permission_required = 'common.can_play_log'
@@ -46,16 +47,18 @@ class LogPlay(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
     def get_context_data(self, **kwargs):
         context = super(LogPlay, self).get_context_data(**kwargs)
         objects = kwargs['object']
-        context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(MEDIA_URL,objects.start_time.year,objects.start_time.month,objects.start_time.day,objects.log)
+        context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(
+            MEDIA_URL, objects.start_time.year, objects.start_time.month, objects.start_time.day, objects.log)
         return context
 
-class GuacamoleKill(LoginRequiredMixin,PermissionRequiredMixin,View):
+
+class GuacamoleKill(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'common.can_kill_serverinfo'
     raise_exception = True
 
-    def post(self,request):
+    def post(self, request):
         if request.is_ajax():
-            id = request.POST.get('id',None)
+            id = request.POST.get('id', None)
             try:
                 log_object = Log.objects.get(id=id)
                 queue = get_redis_instance()
@@ -65,18 +68,19 @@ class GuacamoleKill(LoginRequiredMixin,PermissionRequiredMixin,View):
                 log_object.end_time = now()
                 log_object.is_finished = True
                 log_object.save()
-                return JsonResponse({'status':True,'message':'Session has been killed !'})
+                return JsonResponse({'status': True, 'message': 'Session has been killed !'})
             except ObjectDoesNotExist:
-                return JsonResponse({'status':False,'message':'Request object does not exist!'})
-            except Exception ,e:
+                return JsonResponse({'status': False, 'message': 'Request object does not exist!'})
+            except Exception, e:
                 log_object = Log.objects.get(id=id)
 
                 log_object.end_time = now()
                 log_object.is_finished = True
                 log_object.save()
-                return JsonResponse({'status':False,'message':str(e)})
+                return JsonResponse({'status': False, 'message': str(e)})
 
-class GuacmoleMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
+
+class GuacmoleMonitor(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Log
     template_name = 'guacamole/guacamolemonitor.html'
     permission_required = 'common.can_play_log'
@@ -86,6 +90,7 @@ class GuacmoleMonitor(LoginRequiredMixin,PermissionRequiredMixin,DetailView):
         context = super(GuacmoleMonitor, self).get_context_data(**kwargs)
         objects = kwargs['object']
         return context
+
 
 @csrf_exempt
 def tunnel(request):

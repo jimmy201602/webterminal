@@ -8,7 +8,7 @@ username = 'admin'
 password = 'password!23456'
 email = 'admin@admin.com'
 
-if User.objects.filter(username=username).count()==0:
+if User.objects.filter(username=username).count() == 0:
     User.objects.create_superuser(username, email, password)
     try:
         User.objects.get(username='AnonymousUser').delete()
