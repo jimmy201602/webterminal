@@ -50,7 +50,7 @@ class ShellHandler(object):
                 logger.error(traceback.print_exc())
                 self.is_connect = False
                 return
-        channel = self.ssh.invoke_shell()
+        channel = self.ssh.invoke_shell(term='xterm')
         self.stdin = channel.makefile('wb')
         self.stdout = channel.makefile('r')
         self.channel_name = channel_name
