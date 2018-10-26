@@ -156,7 +156,7 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                             "Can not connect to server {0}: {1}".format(ip, e))
                         return
 
-                    chan = self.ssh.invoke_shell(width=width, height=height,)
+                    chan = self.ssh.invoke_shell(width=width, height=height,term='xterm')
 
                     # open a new threading to handle ssh to avoid global variable bug
                     sshterminal = SshTerminalThread(self.message, chan)
@@ -434,7 +434,7 @@ class BatchCommandExecute(WebsocketConsumer, WebsocketAuth):
             self.message.reply_channel.send({"accept": False})
             return
 
-        chan = self.ssh.invoke_shell(width=width, height=height,)
+        chan = self.ssh.invoke_shell(width=width, height=height,term='xterm')
 
         # open a new threading to handle ssh to avoid global variable bug
         sshterminal = SshTerminalThread(

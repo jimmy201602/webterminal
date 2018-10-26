@@ -34,8 +34,7 @@ password: password!23456
 ```
 # Demo server 
 
-[demo server 1](http://demo.ugeeke.com:8000/)
-[demo server 2](http://ssh.yygzs.cn/)
+[demo server](http://ssh.yygzs.cn/)
 
 user/password: demo/demo12345678
 
