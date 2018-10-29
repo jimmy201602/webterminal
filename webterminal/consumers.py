@@ -434,6 +434,7 @@ class BatchCommandExecute(WebsocketConsumer, WebsocketAuth):
             self.message.reply_channel.send({"accept": False})
             return
 
+        self.ssh.get_pty()
         chan = self.ssh.invoke_shell(width=width, height=height,term='xterm')
 
         # open a new threading to handle ssh to avoid global variable bug
