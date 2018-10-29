@@ -203,8 +203,8 @@
             terminals[element.id] = ws;
             //set terminal width and height
             term.fit();
-            <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols,-->
-                <!--term.cols, term.rows]));-->
+            ws.send(JSON.stringify(["set_size", size.rows, size.cols,
+                term.cols, term.rows]));
             term.resize(term.cols, term.rows);
             ws.send(JSON.stringify(["ip", ip,term.cols, term.rows, id]));
             term.on('data', function (data) {
