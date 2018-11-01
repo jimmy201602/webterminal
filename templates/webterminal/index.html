@@ -101,6 +101,7 @@
 <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/zmodem/zmodem.js' %}"></script>
 <script src="{% static 'plugins/jstree/jstree.js' %}"></script>
 <script src="{% static "plugins/jquery-ui/jquery-ui.js"%}"></script>
 <!-- elFinder JS (REQUIRED) -->
@@ -190,6 +191,7 @@
     var terminals = new Object;
     Terminal.applyAddon(fit);
     Terminal.applyAddon(fullscreen);
+    Terminal.applyAddon(zmodem);
     function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
             cols: size.cols,
@@ -213,6 +215,11 @@
                 <!--console.log(data);-->
                 ws.send(JSON.stringify(['stdin', data]));
             });
+
+            //set terminal fit resize function
+            <!--term.on('resize', function (size) {-->
+              <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols]));-->
+            <!--});-->
 
             term.on('title', function (title) {
                 document.title = title;
