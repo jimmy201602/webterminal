@@ -218,7 +218,7 @@
                 document.title = title;
             });
 
-            term.toggleFullScreen();
+            term.toggleFullScreen(true);
             ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
                 switch (json_msg[0]) {
