@@ -188,6 +188,8 @@
 </script>
 <script type="application/javascript">
     var terminals = new Object;
+    Terminal.applyAddon(fit);
+    Terminal.applyAddon(fullscreen);
     function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
             cols: size.cols,
@@ -216,7 +218,7 @@
                 document.title = title;
             });
 
-            term.toggleFullscreen(true);
+            term.toggleFullScreen();
             ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
                 switch (json_msg[0]) {
@@ -309,7 +311,7 @@
                                     registerCloseEvent('ssh');
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/ws/';
-                                    make_terminal(document.getElementById(tabId), {rows: 37, cols: 90}, ws_path, ip, id);
+                                    make_terminal(document.getElementById(tabId), {rows: 43, cols: 90}, ws_path, ip, id);
                                 }else {
                                     showTab(tabId);
                                 }
