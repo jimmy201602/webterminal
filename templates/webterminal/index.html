@@ -99,6 +99,7 @@
 {% block js %}
 <script src="{% static 'plugins/xterm/xterm.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/attach/attach.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
 <script src="{% static 'plugins/zmodem/zmodem.js' %}"></script>
@@ -190,8 +191,9 @@
 </script>
 <script type="application/javascript">
     var terminals = new Object;
-    Terminal.applyAddon(fit);
     Terminal.applyAddon(fullscreen);
+    Terminal.applyAddon(fit);
+    Terminal.applyAddon(attach);
     Terminal.applyAddon(zmodem);
     function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
@@ -203,11 +205,78 @@
         });
         term.open(element, false);
         term.focus();
+
+        function _handle_receive_session(zsession) {
+            zsession.on("offer", function(xfer) {
+                current_receive_xfer = xfer;
+
+                function on_form_submit() {
+
+                    if (_auto_zmodem()) {
+
+                        var FILE_BUFFER = [];
+                        xfer.on("input", (payload) => {
+                            _update_progress(xfer);
+                            FILE_BUFFER.push( new Uint8Array(payload) );
+                        });
+                        xfer.accept().then(
+                            () => {
+                                _save_to_disk(xfer, FILE_BUFFER);
+                            },
+                            console.error.bind(console)
+                        );
+                    }
+                    else {
+                        xfer.skip();
+                    }
+                    //END
+                }
+
+                on_form_submit();
+
+            } );
+
+            var promise = new Promise( (res) => {
+                zsession.on("session_end", () => {
+                    res();
+                } );
+            } );
+
+            zsession.start();
+
+            return promise;
+        };
+
         var ws = new WebSocket(ws_url);
         ws.onopen = function (event) {
             terminals[element.id] = ws;
             //set terminal width and height
             term.fit();
+            //zmodem attach
+            //term.attach(ws);
+            <!--term._initialized = true;-->
+
+
+            term.on("zmodemDetect", (detection) => {
+                function do_zmodem() {
+                    term.detach();
+                    let zsession = detection.confirm();
+
+                    var promise;
+
+                    if (zsession.type === "receive") {
+                        promise = _handle_receive_session(zsession);
+                    }
+
+                    promise.catch( console.error.bind(console) ).then( () => {
+                        term.attach(ws);
+                    } );
+                }
+
+                do_zmodem();
+
+            });
+
             ws.send(JSON.stringify(["set_size", size.rows, size.cols,
                 term.cols, term.rows]));
             term.resize(term.cols, term.rows);
@@ -218,9 +287,9 @@
             });
 
             //set terminal fit resize function
-            <!--term.on('resize', function (size) {-->
-              <!--ws.send(JSON.stringify(["set_size", size.rows, size.cols]));-->
-            <!--});-->
+            term.on('resize', function (size) {
+              ws.send(JSON.stringify(["set_size", size.rows, size.cols]));
+            });
 
             term.on('title', function (title) {
                 document.title = title;
@@ -228,21 +297,28 @@
 
             term.toggleFullScreen(true);
             ws.onmessage = function (event) {
-                json_msg = JSON.parse(event.data);
-                switch (json_msg[0]) {
-                    case "stdout":
-                        term.write(json_msg[1]);
-                        break;
-                    case "disconnect":
-                        term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
-                        break;
-                    case "channel_name":
-                        <!--console.log(json_msg[1]);-->
-                        var channel_name_attribute = document.createAttribute('channel_name')
-                        channel_name_attribute.value = json_msg[1];
-                        element.setAttributeNode(channel_name_attribute)
-                        break;
+                try{
+                    json_msg = JSON.parse(event.data);
+                    switch (json_msg[0]) {
+                        case "stdout":
+                            term.write(json_msg[1]);
+                            break;
+                        case "disconnect":
+                            term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
+                            break;
+                        case "channel_name":
+                            <!--console.log(json_msg[1]);-->
+                            var channel_name_attribute = document.createAttribute('channel_name')
+                            channel_name_attribute.value = json_msg[1];
+                            element.setAttributeNode(channel_name_attribute)
+                            break;
+                    }
+                }catch(error){
+                    console.log(event.data);
+                    term.write(event.data)
+                    console.log(error);
                 }
+
             };
         };
         return {socket: ws, term: term};
