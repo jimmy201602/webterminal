@@ -207,30 +207,23 @@
         term.focus();
 
         function _handle_receive_session(zsession) {
+            console.log('receive');
             zsession.on("offer", function(xfer) {
                 current_receive_xfer = xfer;
 
                 function on_form_submit() {
-
-                    if (_auto_zmodem()) {
-
-                        var FILE_BUFFER = [];
-                        xfer.on("input", (payload) => {
-                            _update_progress(xfer);
-                            FILE_BUFFER.push( new Uint8Array(payload) );
-                        });
-                        xfer.accept().then(
-                            () => {
-                                _save_to_disk(xfer, FILE_BUFFER);
-                            },
-                            console.error.bind(console)
-                        );
-                    }
-                    else {
-                        xfer.skip();
-                    }
-                    //END
-                }
+                    var FILE_BUFFER = [];
+                    xfer.on("input", (payload) => {
+                        _update_progress(xfer);
+                        FILE_BUFFER.push( new Uint8Array(payload) );
+                    });
+                    xfer.accept().then(
+                        () => {
+                            _save_to_disk(xfer, FILE_BUFFER);
+                        },
+                        console.error.bind(console)
+                    );
+                };
 
                 on_form_submit();
 
@@ -315,7 +308,7 @@
                     }
                 }catch(error){
                     console.log(event.data);
-                    term.write(event.data)
+                    //term.write(event.data)
                     console.log(error);
                 }
 
