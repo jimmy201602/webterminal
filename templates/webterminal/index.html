@@ -211,7 +211,6 @@
         };
 
         function _handle_receive_session(zsession) {
-            console.log('receive');
             zsession.on("offer", function(xfer) {
                 current_receive_xfer = xfer;
 
