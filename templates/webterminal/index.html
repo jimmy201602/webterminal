@@ -206,6 +206,10 @@
         term.open(element, false);
         term.focus();
 
+        function _save_to_disk(xfer, buffer) {
+            return Zmodem.Browser.save_to_disk(buffer, xfer.get_details().name);
+        };
+
         function _handle_receive_session(zsession) {
             console.log('receive');
             zsession.on("offer", function(xfer) {
@@ -214,7 +218,7 @@
                 function on_form_submit() {
                     var FILE_BUFFER = [];
                     xfer.on("input", (payload) => {
-                        _update_progress(xfer);
+                        //_update_progress(xfer);
                         FILE_BUFFER.push( new Uint8Array(payload) );
                     });
                     xfer.accept().then(
@@ -241,14 +245,18 @@
         };
 
         var ws = new WebSocket(ws_url);
+
         ws.onopen = function (event) {
             terminals[element.id] = ws;
             //set terminal width and height
             term.fit();
             //zmodem attach
-            //term.attach(ws);
-            <!--term._initialized = true;-->
+            <!--term.attach(ws);-->
+            //term._initialized = true;
 
+            term.zmodemAttach(ws, {
+                noTerminalWriteOutsideSession: true,
+            } );
 
             term.on("zmodemDetect", (detection) => {
                 function do_zmodem() {
@@ -307,7 +315,7 @@
                             break;
                     }
                 }catch(error){
-                    console.log(event.data);
+                    //console.log(event.data);
                     //term.write(event.data)
                     console.log(error);
                 }

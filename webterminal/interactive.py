@@ -141,8 +141,9 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                     channel_layer.send(channel, {'text': json.dumps(
                         ['stdout', 'A bug find,You can report it to me' + smart_unicode(e), elementid.rsplit('_')[0]])})
                 else:
-                    channel_layer.send(channel, {'text': json.dumps(
-                        ['stdout', 'A bug find,You can report it to me' + smart_unicode(e)])})
+                    #channel_layer.send(channel, {'text': json.dumps(
+                        #['stdout', 'A bug find,You can report it to me' + smart_unicode(e)])})
+                    channel_layer.send(channel, {'bytes': data})
 
     finally:
         attrs = {

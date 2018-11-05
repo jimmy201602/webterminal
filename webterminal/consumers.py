@@ -187,7 +187,7 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                     logger.error("Unknow command found!")
             elif bytes:
                 self.queue.publish(
-                    self.message.reply_channel.name, json.loads(bytes)[1])
+                    self.message.reply_channel.name, bytes)
         except socket.error:
             audit_log = Log.objects.get(user=User.objects.get(
                 username=self.message.user), channel=self.message.reply_channel.name)
