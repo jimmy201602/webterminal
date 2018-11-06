@@ -204,7 +204,10 @@
             cursorBlink: true,  // Blink the terminal's cursor
         });
         term.open(element, false);
+        term.fit();
         term.focus();
+        term.toggleFullScreen(true);
+
 
         function _save_to_disk(xfer, buffer) {
             return Zmodem.Browser.save_to_disk(buffer, xfer.get_details().name);
@@ -245,37 +248,29 @@
 
         var ws = new WebSocket(ws_url);
 
+        term.on("zmodemDetect", (detection) => {
+                term.detach();
+                let zsession = detection.confirm();
+
+                var promise;
+
+                if (zsession.type === "receive") {
+                    promise = _handle_receive_session(zsession);
+                }
+
+                promise.catch( console.error.bind(console) ).then( () => {
+                    term.attach(ws);
+                } );
+        });
+
         ws.onopen = function (event) {
             terminals[element.id] = ws;
             //set terminal width and height
-            term.fit();
             //zmodem attach
-            <!--term.attach(ws);-->
-            //term._initialized = true;
+            // term.attach(ws);
+            term._initialized = true;
 
-            term.zmodemAttach(ws, {
-                noTerminalWriteOutsideSession: true,
-            } );
 
-            term.on("zmodemDetect", (detection) => {
-                function do_zmodem() {
-                    term.detach();
-                    let zsession = detection.confirm();
-
-                    var promise;
-
-                    if (zsession.type === "receive") {
-                        promise = _handle_receive_session(zsession);
-                    }
-
-                    promise.catch( console.error.bind(console) ).then( () => {
-                        term.attach(ws);
-                    } );
-                }
-
-                do_zmodem();
-
-            });
 
             ws.send(JSON.stringify(["set_size", size.rows, size.cols,
                 term.cols, term.rows]));
@@ -295,13 +290,13 @@
                 document.title = title;
             });
 
-            term.toggleFullScreen(true);
             ws.onmessage = function (event) {
                 try{
                     json_msg = JSON.parse(event.data);
                     switch (json_msg[0]) {
                         case "stdout":
                             term.write(json_msg[1]);
+                            console.log(json_msg);
                             break;
                         case "disconnect":
                             term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
@@ -321,6 +316,9 @@
 
             };
         };
+        term.zmodemAttach(ws, {
+            noTerminalWriteOutsideSession: true,
+        } );
         return {socket: ws, term: term};
     }
 
