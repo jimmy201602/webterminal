@@ -41,6 +41,10 @@ user/password: demo/demo12345678
 
 # Author Email
 zhengge2012@gmail.com
+# Discussion (For china)
+QQ群号 531612760
+
+![screenshots](./screenshots/qqgroupqr.png  "screenshots")
 
 # screenshots
 ![screenshots](./screenshots/screenshots1.png  "screenshots")
