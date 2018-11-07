@@ -296,7 +296,7 @@
                 if (zsession.type === "receive") {
                     promise = _handle_receive_session(zsession);
                 }else {
-                    uploadfile();
+                    promise = uploadfile();
                 }
 
                 promise.catch( console.error.bind(console) ).then( () => {
