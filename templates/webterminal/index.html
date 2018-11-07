@@ -116,6 +116,7 @@
 <!--split.js-->
 <script type="text/javascript" src="{% static "plugins/split.js/split.min.js" %}"></script>
 <script type="text/javascript" src="{% static "plugins/jquery.fullscreen/jquery.fullscreen.min.js" %}"></script>
+<script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
 <script type="application/javascript">
 
 
@@ -195,6 +196,44 @@
     Terminal.applyAddon(fit);
     Terminal.applyAddon(attach);
     Terminal.applyAddon(zmodem);
+
+    function uploadfile() {
+        var uploadHtml = "<div>" +
+            "<label class='upload-area' style='width:100%;text-align:center;' for='fupload'>" +
+            "<input id='fupload' name='fupload' type='file' style='display:none;' multiple='true'>" +
+            "<i class='fa fa-cloud-upload fa-3x'></i>" +
+            "<br />" +
+            "Upload" +
+            "</label>" +
+            "<br />" +
+            "<span style='margin-left:5px !important;' id='fileList'></span>" +
+            "</div><div class='clearfix'></div>";
+
+        bootbox.dialog({
+            message: uploadHtml,
+            title: "File Upload",
+            buttons: {
+                success: {
+                    label: "Upload",
+                    className: "btn-default",
+                    callback: function () {
+                        // what you wanna do here ...
+                    }
+                }
+            }
+        });
+
+        var fileList = document.getElementById("fupload");
+        fileList.addEventListener("change", function (e) {
+            var list = "";
+            for (var i = 0; i < this.files.length; i++) {
+                list += this.files[i].name
+            }
+
+            $("#fileList").text(list);
+        }, false);
+    }
+
     function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
             cols: size.cols,
@@ -256,6 +295,8 @@
 
                 if (zsession.type === "receive") {
                     promise = _handle_receive_session(zsession);
+                }else {
+                    uploadfile();
                 }
 
                 promise.catch( console.error.bind(console) ).then( () => {
