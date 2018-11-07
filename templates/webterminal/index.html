@@ -296,7 +296,7 @@
                     switch (json_msg[0]) {
                         case "stdout":
                             term.write(json_msg[1]);
-                            console.log(json_msg);
+                            //console.log(json_msg);
                             break;
                         case "disconnect":
                             term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
