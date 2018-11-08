@@ -196,6 +196,8 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
             audit_log.save()
             self.closessh()
             self.close()
+        except ValueError:
+            self.queue.publish(self.message.reply_channel.name, smart_unicode(text))
         except Exception as e:
             logger.error(traceback.print_exc())
             self.closessh()
