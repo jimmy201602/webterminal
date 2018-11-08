@@ -133,6 +133,8 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                                              'text': json.dumps(['stdout', smart_unicode(x)])})
             except socket.timeout:
                 pass
+            except UnicodeDecodeError:
+                channel_layer.send(channel, {'bytes': data})
             except Exception, e:
                 print(type(data))
                 print(repr(data))
