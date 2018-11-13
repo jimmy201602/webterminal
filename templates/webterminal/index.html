@@ -197,7 +197,7 @@
     Terminal.applyAddon(attach);
     Terminal.applyAddon(zmodem);
 
-    function uploadfile() {
+    function uploadfile(zsession) {
         var uploadHtml = "<div>" +
             "<label class='upload-area' style='width:100%;text-align:center;' for='fupload'>" +
             "<input id='fupload' name='fupload' type='file' style='display:none;' multiple='true'>" +
@@ -223,16 +223,64 @@
             }
         });
 
-        var fileList = document.getElementById("fupload");
-        fileList.addEventListener("change", function (e) {
-            var list = "";
-            for (var i = 0; i < this.files.length; i++) {
-                list += this.files[i].name
-            }
+        // var fileList = ;
+        // fileList.addEventListener("change", function (e) {
+        //     var list = "";
+        //     for (var i = 0; i < this.files.length; i++) {
+        //         list += this.files[i].name
+        //     }
+        //
+        //     $("#fileList").text(list);
+        // }, false);
+        var file_el = document.getElementById("fupload");
 
-            $("#fileList").text(list);
-        }, false);
-    }
+        function _hide_progress(){
+            console.log(11);
+        }
+
+        function _show_progress(){
+            console.log(222);
+        }
+
+        function _update_progress(xfer){
+            console.log(333,xfer);
+        }
+
+
+        var promise = new Promise( (res) => {
+            file_el.onchange = function(e) {
+                var files_obj = file_el.files;
+
+                Zmodem.Browser.send_files(
+                    zsession,
+                    files_obj,
+                    {
+                        on_offer_response(obj, xfer) {
+                            if (xfer) _show_progress();
+                            console.log("offer", xfer ? "accepted" : "skipped");
+                        },
+                        on_progress(obj, xfer) {
+                            _update_progress(xfer);
+                        },
+                        on_file_complete(obj) {
+                            console.log("COMPLETE", obj);
+                           // _hide_progress();
+                        },
+                    }
+                ).then(_hide_progress).then(
+                    zsession.close.bind(zsession),
+                    console.error.bind(console)
+                )
+                    .then( () => {
+                    //_hide_file_info();
+                    //_hide_progress();
+                    res();
+                } );
+            };
+        } );
+
+        return promise;
+    };
 
     function make_terminal(element, size, ws_url, ip, id) {
         var term = new Terminal({
@@ -277,6 +325,7 @@
             var promise = new Promise( (res) => {
                 zsession.on("session_end", () => {
                     res();
+                    console.log('session end');
                 } );
             } );
 
@@ -296,7 +345,7 @@
                 if (zsession.type === "receive") {
                     promise = _handle_receive_session(zsession);
                 }else {
-                    promise = uploadfile();
+                    promise = uploadfile(zsession);
                 }
 
                 promise.catch( console.error.bind(console) ).then( () => {
@@ -308,19 +357,12 @@
             terminals[element.id] = ws;
             //set terminal width and height
             //zmodem attach
-            // term.attach(ws);
-            term._initialized = true;
-
-
 
             ws.send(JSON.stringify(["set_size", size.rows, size.cols,
                 term.cols, term.rows]));
             term.resize(term.cols, term.rows);
             ws.send(JSON.stringify(["ip", ip,term.cols, term.rows, id]));
-            term.on('data', function (data) {
-                <!--console.log(data);-->
-                ws.send(JSON.stringify(['stdin', data]));
-            });
+
 
             //set terminal fit resize function
             term.on('resize', function (size) {
@@ -331,35 +373,15 @@
                 document.title = title;
             });
 
-            ws.onmessage = function (event) {
-                try{
-                    json_msg = JSON.parse(event.data);
-                    switch (json_msg[0]) {
-                        case "stdout":
-                            term.write(json_msg[1]);
-                            //console.log(json_msg);
-                            break;
-                        case "disconnect":
-                            term.write("{% trans '\r\n\r\n[Finished...]\r\n' %}");
-                            break;
-                        case "channel_name":
-                            <!--console.log(json_msg[1]);-->
-                            var channel_name_attribute = document.createAttribute('channel_name')
-                            channel_name_attribute.value = json_msg[1];
-                            element.setAttributeNode(channel_name_attribute)
-                            break;
-                    }
-                }catch(error){
-                    //console.log(event.data);
-                    //term.write(event.data)
-                    console.log(error);
-                }
+            //attach websocket to terminal
+            term.attach(ws);
+            term._initialized = true;
 
-            };
+            term.zmodemAttach(ws, {
+                noTerminalWriteOutsideSession: true,
+            } );
         };
-        term.zmodemAttach(ws, {
-            noTerminalWriteOutsideSession: true,
-        } );
+
         return {socket: ws, term: term};
     }
 
