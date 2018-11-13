@@ -41,10 +41,10 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
             self.message.reply_channel.send({"text": json.dumps(
                 {'status': False, 'message': 'You must login to the system!'})}, immediately=True)
             self.message.reply_channel.send({"accept": False})
-        else:
-            # permission auth
-            self.message.reply_channel.send({"text": json.dumps(
-                ['channel_name', self.message.reply_channel.name])}, immediately=True)
+        #else:
+            ## permission auth
+            #self.message.reply_channel.send({"text": json.dumps(
+                #['channel_name', self.message.reply_channel.name])}, immediately=True)
 
     def disconnect(self, message):
         # close threading
@@ -86,8 +86,9 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                         Permission.objects.get(user__username=self.message.user.username, groups__servers__ip=ip,
                                                groups__servers__id=id, groups__servers__credential__protocol__contains='ssh')
                     except ObjectDoesNotExist:
-                        self.message.reply_channel.send({"text": json.dumps(
-                            ['stdout', '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])}, immediately=True)
+                        #self.message.reply_channel.send({"text": json.dumps(
+                            #['stdout', '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])}, immediately=True)
+                        self.message.reply_channel.send({"bytes": '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error("{0} have not permission to connect server {1}!".format(
                             self.message.user.username, ip))
@@ -105,8 +106,9 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                         else:
                             key = data.credential.key
                     except ObjectDoesNotExist:
-                        self.message.reply_channel.send({"text": json.dumps(
-                            ['stdout', '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])}, immediately=True)
+                        #self.message.reply_channel.send({"text": json.dumps(
+                            #['stdout', '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])}, immediately=True)
+                        self.message.reply_channel.send({"bytes": '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error(
                             "Connect to server! Server ip {0} doesn\'t exist!".format(ip))
@@ -129,8 +131,10 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                                 private_key = paramiko.Ed25519Key.from_private_key(
                                     private_key)
                             else:
-                                self.message.reply_channel.send({"text": json.dumps(
-                                    ['stdout', '\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])}, immediately=True)
+                                #self.message.reply_channel.send({"text": json.dumps(
+                                    #['stdout', '\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])}, immediately=True)
+                                self.message.reply_channel.send({"bytes":
+                                    '\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'}, immediately=True)
                                 self.message.reply_channel.send(
                                     {"accept": False})
                                 logger.error(
@@ -142,15 +146,17 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                             username=self.message.user), server=data, channel=self.message.reply_channel.name, width=width, height=height)
                         audit_log.save()
                     except socket.timeout:
-                        self.message.reply_channel.send({"text": json.dumps(
-                            ['stdout', '\033[1;3;31mConnect to server time out\033[0m'])}, immediately=True)
+                        #self.message.reply_channel.send({"text": json.dumps(
+                            #['stdout', '\033[1;3;31mConnect to server time out\033[0m'])}, immediately=True)
+                        self.message.reply_channel.send({"bytes": '\033[1;3;31mConnect to server time out\033[0m'}, immediately=True)
                         logger.error(
                             "Connect to server {0} time out!".format(ip))
                         self.message.reply_channel.send({"accept": False})
                         return
                     except Exception as e:
-                        self.message.reply_channel.send({"text": json.dumps(
-                            ['stdout', '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])}, immediately=True)
+                        #self.message.reply_channel.send({"text": json.dumps(
+                            #['stdout', '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])}, immediately=True)
+                        self.message.reply_channel.send({"bytes": '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error(
                             "Can not connect to server {0}: {1}".format(ip, e))
@@ -182,8 +188,9 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                     self.disconnect(self.message)
                     return
                 else:
-                    self.message.reply_channel.send({"text": json.dumps(
-                        ['stdout', '\033[1;3;31mUnknow command found!\033[0m'])}, immediately=True)
+                    #self.message.reply_channel.send({"text": json.dumps(
+                        #['stdout', '\033[1;3;31mUnknow command found!\033[0m'])}, immediately=True)
+                    self.message.reply_channel.send({"bytes": '\033[1;3;31mUnknow command found!\033[0m'}, immediately=True)
                     logger.error("Unknow command found!")
             elif bytes:
                 self.queue.publish(

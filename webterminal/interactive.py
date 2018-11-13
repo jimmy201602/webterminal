@@ -74,8 +74,9 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                         channel_layer.send(channel, {'text': json.dumps(
                             ['disconnect', smart_unicode('\r\n*** EOF\r\n'), elementid.rsplit('_')[0]])})
                     else:
-                        channel_layer.send(channel, {'text': json.dumps(
-                            ['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
+                        #channel_layer.send(channel, {'text': json.dumps(
+                            #['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
+                        channel_layer.send(channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
                     break
                 now = time.time()
                 delay = now - last_write_time['last_activity_time']
@@ -118,15 +119,17 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                         channel_layer.send(channel, {'text': json.dumps(
                             ['stdout', x, elementid.rsplit('_')[0]])})
                     else:
-                        channel_layer.send(
-                            channel, {'text': json.dumps(['stdout', x])})
+                        #channel_layer.send(
+                            #channel, {'text': json.dumps(['stdout', x])})
+                        channel_layer.send(channel, {'bytes': data})
                 else:
                     if elementid:
                         channel_layer.send(channel, {'text': json.dumps(
                             ['stdout', smart_unicode(x), elementid.rsplit('_')[0]])})
                     else:
-                        channel_layer.send(
-                            channel, {'text': json.dumps(['stdout', smart_unicode(x)])})
+                        #channel_layer.send(
+                            #channel, {'text': json.dumps(['stdout', smart_unicode(x)])})
+                        channel_layer.send(channel, {'bytes': data})
                 # send message to monitor group
                 if log_name:
                     channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {
