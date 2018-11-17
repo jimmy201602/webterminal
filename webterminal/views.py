@@ -151,3 +151,10 @@ class SshTerminalKill(LoginRequiredMixin, PermissionRequiredMixin, View):
                     return JsonResponse({'status': True, 'message': 'Terminal has been killed !'})
             except ObjectDoesNotExist:
                 return JsonResponse({'status': False, 'message': 'Request object does not exist!'})
+
+
+class SshConnect(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    template_name = 'webterminal/ssh.html'
+    permission_required = 'common.can_connect_serverinfo'
+    raise_exception = False
+    login_url = reverse_lazy('admin:login')

@@ -239,8 +239,10 @@ class SshTerminalThread(threading.Thread):
                         self.chan.close()
                         self.stop()
                     elif data[0] == 'set_size':
-                        self.chan.resize_pty(width=data[3], height=data[4],width_pixels=data[1], height_pixels=data[2])
-                        break
+                        try:
+                            self.chan.resize_pty(width=data[3], height=data[4],width_pixels=data[1], height_pixels=data[2])
+                        except Exception as e:
+                            print(e)
                     elif data[0] in ['stdin', 'stdout']:
                         if '\r' not in str(data[1]):
                             command.append(data[1])

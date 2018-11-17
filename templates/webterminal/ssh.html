@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <title> WebSSH </title>
+    <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
+    <link rel="stylesheet" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}"/>
+      <!-- Bootstrap 3.3.6 -->
+      <link rel="stylesheet" href="{% static "plugins/bootstrap/css/bootstrap.min.css" %}">
+  </head>
+  <body>
+
+    <div class="container">
+      <div id="terminal"></div>
+    </div>
+
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+    <script src="{% static 'plugins/xterm/xterm.js' %}"></script>
+    <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
+    <script src="{% static 'plugins/xterm/addons/attach/attach.js' %}"></script>
+    <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
+    <script src="{% static 'plugins/zmodem/zmodem.js' %}"></script>
+    <script src="{% static 'plugins/xterm/addons/zmodem/zmodem.js' %}"></script>
+    <script src="{% static 'plugins/xterm/sshconnect.js' %}"></script>
+    <script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="{% static "plugins/bootstrap/js/bootstrap.min.js" %}"></script>
+  </body>
+</html>
