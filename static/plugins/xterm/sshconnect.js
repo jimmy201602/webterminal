@@ -141,8 +141,10 @@ jQuery(function($){
         term.on_resize = function(cols, rows) {
             if (cols !== geometry['cols'] || rows !== geometry['rows']) {
                 console.log('Resizing terminal to geometry: ' + format_geometry(cols, rows));
-                term.resize(cols,rows);
-                ws.send(JSON.stringify(['set_size',rows, cols, cols, rows]));
+                if (term){
+                    term.resize(cols,rows);
+                    ws.send(JSON.stringify(['set_size',rows, cols, cols, rows]));
+                }
             }
         };
 
@@ -235,9 +237,9 @@ jQuery(function($){
 
         };
 
-        ws.onclose = function(e) {
-            term.destroy();
-        };
+        // ws.onclose = function(e) {
+        //     term.destroy();
+        // };
 
         return {socket: ws, term: term};
     }
