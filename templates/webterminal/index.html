@@ -216,7 +216,7 @@
                 success: {
                     label: "Upload",
                     className: "btn-default",
-                    callback: function () {
+                    callback: function (res) {
                         // what you wanna do here ...
                     }
                 }
@@ -251,31 +251,36 @@
             file_el.onchange = function(e) {
                 var files_obj = file_el.files;
 
-                Zmodem.Browser.send_files(
-                    zsession,
-                    files_obj,
-                    {
-                        on_offer_response(obj, xfer) {
-                            if (xfer) _show_progress();
-                            console.log("offer", xfer ? "accepted" : "skipped");
-                        },
-                        on_progress(obj, xfer) {
-                            _update_progress(xfer);
-                        },
-                        on_file_complete(obj) {
-                            console.log("COMPLETE", obj);
-                           // _hide_progress();
-                        },
-                    }
-                ).then(_hide_progress).then(
-                    zsession.close.bind(zsession),
-                    console.error.bind(console)
-                )
-                    .then( () => {
-                    //_hide_file_info();
-                    //_hide_progress();
-                    res();
-                } );
+                try{
+                    Zmodem.Browser.send_files(
+                        zsession,
+                        files_obj,
+                        {
+                            on_offer_response(obj, xfer) {
+                                if (xfer) _show_progress();
+                                console.log("offer", xfer ? "accepted" : "skipped");
+                            },
+                            on_progress(obj, xfer) {
+                                _update_progress(xfer);
+                            },
+                            on_file_complete(obj) {
+                                console.log("COMPLETE", obj);
+                               // _hide_progress();
+                            },
+                        }
+                    ).then(_hide_progress).then(
+                        zsession.close.bind(zsession),
+                        console.error.bind(console)
+                    ).then( () => {
+                        //_hide_file_info();
+                        //_hide_progress();
+                        res();
+                    } );
+                }catch(err){
+                    console.log(err)
+                    zsession.close.bind(zsession)
+                    res()
+                }
             };
         } );
 
