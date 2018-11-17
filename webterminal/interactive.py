@@ -31,6 +31,8 @@ import ast
 import traceback
 from common.utils import get_redis_instance, mkdir_p
 from webterminal.commandextract import CommandDeal
+import struct
+import paramiko
 import logging
 logger = logging.getLogger(__name__)
 
@@ -241,8 +243,8 @@ class SshTerminalThread(threading.Thread):
                     elif data[0] == 'set_size':
                         try:
                             self.chan.resize_pty(width=data[3], height=data[4],width_pixels=data[1], height_pixels=data[2])
-                        except Exception as e:
-                            print(e)
+                        except (TypeError,struct.error,paramiko.SSHException):
+                            pass
                     elif data[0] in ['stdin', 'stdout']:
                         if '\r' not in str(data[1]):
                             command.append(data[1])
