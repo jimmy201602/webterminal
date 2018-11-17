@@ -274,7 +274,7 @@
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 43, cols: 90}, ws_path, {'taskname':taskname});
+                                    make_terminal(document.getElementById(tabId), {rows: 45, cols: 90}, ws_path, {'taskname':taskname});
                                 }else {
                                     showTab(tabId);
                                 }
@@ -303,7 +303,7 @@
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 43, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname});
+                                    make_terminal(document.getElementById(tabId), {rows: 45, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname});
                                 }else {
                                     showTab(tabId);
                                 }
@@ -333,7 +333,7 @@
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 43, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname,'ip':ip});
+                                    make_terminal(document.getElementById(tabId), {rows: 45, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname,'ip':ip});
                                 }else {
                                     showTab(tabId);
                                 }

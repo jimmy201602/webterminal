@@ -4,6 +4,7 @@
 {% load staticfiles %}
     {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
+    <link rel="stylesheet" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}"/>
     <link rel="stylesheet" href="{% static 'plugins/jstree/themes/proton/style.min.css' %}"/>
     <link rel="stylesheet" href="{% static 'plugins/font-awesome/css/font-awesome.min.css' %}"/>
 <style>
@@ -251,7 +252,6 @@
             file_el.onchange = function(e) {
                 var files_obj = file_el.files;
 
-                try{
                     Zmodem.Browser.send_files(
                         zsession,
                         files_obj,
@@ -276,11 +276,6 @@
                         //_hide_progress();
                         res();
                     } );
-                }catch(err){
-                    console.log(err)
-                    zsession.close.bind(zsession)
-                    res()
-                }
             };
         } );
 
