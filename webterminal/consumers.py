@@ -75,7 +75,7 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
             if text:
                 data = json.loads(text)
                 begin_time = time.time()
-                if data[0] == 'ip' and len(data) == 5:
+                if isinstance(data,list) and data[0] == 'ip' and len(data) == 5:
                     ip = data[1]
                     width = data[2]
                     height = data[3]
@@ -179,19 +179,20 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                     interactivessh.setDaemon = True
                     interactivessh.start()
 
-                elif data[0] in ['stdin', 'stdout']:
+                elif isinstance(data,list) and data[0] in ['stdin', 'stdout']:
                     self.queue.publish(
                         self.message.reply_channel.name, json.loads(text)[1])
-                elif data[0] == u'set_size':
+                elif isinstance(data,list) and data[0] == u'set_size':
                     self.queue.publish(self.message.reply_channel.name, text)
-                elif data[0] == u'close':
+                elif isinstance(data,list) and data[0] == u'close':
                     self.disconnect(self.message)
                     return
                 else:
                     #self.message.reply_channel.send({"text": json.dumps(
                         #['stdout', '\033[1;3;31mUnknow command found!\033[0m'])}, immediately=True)
-                    self.message.reply_channel.send({"bytes": '\033[1;3;31mUnknow command found!\033[0m'}, immediately=True)
-                    logger.error("Unknow command found!")
+                    #self.message.reply_channel.send({"bytes": '\033[1;3;31mUnknow command found!\033[0m'}, immediately=True)
+                    self.queue.publish(self.message.reply_channel.name, text)
+                    #logger.error("Unknow command found!")
             elif bytes:
                 self.queue.publish(
                     self.message.reply_channel.name, bytes)
