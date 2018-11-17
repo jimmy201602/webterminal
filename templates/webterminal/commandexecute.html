@@ -81,6 +81,7 @@
 {% block js %}
 <script src="{% static 'plugins/xterm/xterm.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fit/fit.js' %}"></script>
+<script src="{% static 'plugins/xterm/addons/attach/attach.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/terminado/terminado.js' %}"></script>
 <script src="{% static 'plugins/xterm/addons/fullscreen/fullscreen.js' %}"></script>
 <script src="{% static 'plugins/jstree/jstree.js' %}"></script>
@@ -158,6 +159,9 @@
             useStyle: true,
             cursorBlink: true,  // Blink the terminal's cursor
         });
+        Terminal.applyAddon(fullscreen);
+        Terminal.applyAddon(fit);
+        Terminal.applyAddon(attach);
         term.open(element, false);
         var ws = new WebSocket(ws_url);
         //console.log('paramter',paramter);
@@ -175,8 +179,8 @@
             });
 
 
-            <!--term.fit();-->
-            term.toggleFullscreen(true);
+            term.fit();
+            term.toggleFullScreen(true);
             ws.onmessage = function (event) {
                 json_msg = JSON.parse(event.data);
                 //console.log(json_msg);
@@ -270,7 +274,7 @@
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname});
+                                    make_terminal(document.getElementById(tabId), {rows: 43, cols: 90}, ws_path, {'taskname':taskname});
                                 }else {
                                     showTab(tabId);
                                 }
@@ -299,7 +303,7 @@
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname});
+                                    make_terminal(document.getElementById(tabId), {rows: 43, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname});
                                 }else {
                                     showTab(tabId);
                                 }
@@ -329,7 +333,7 @@
                                     registerCloseEvent();
                                     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
                                     var ws_path = ws_scheme + '://' + window.location.host + '/execute/';
-                                    make_terminal(document.getElementById(tabId), {rows: 40, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname,'ip':ip});
+                                    make_terminal(document.getElementById(tabId), {rows: 43, cols: 90}, ws_path, {'taskname':taskname,'groupname':groupname,'ip':ip});
                                 }else {
                                     showTab(tabId);
                                 }
