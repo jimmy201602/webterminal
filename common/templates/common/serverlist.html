@@ -70,6 +70,15 @@
                                 {% ifequal element.credential.protocol 'ssh-key-with-password'%}
                                     {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'sshconnect' element.ip  element.id%}">{%trans 'connect' %}</a>{% endif %}
                                 {% endifequal %}
+                                {% ifequal element.credential.protocol 'vnc'%}
+                                    {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'guacamole' element.id%}">{%trans 'connect' %}</a>{% endif %}
+                                {% endifequal %}
+                                {% ifequal element.credential.protocol 'rdp'%}
+                                    {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'guacamole' element.id%}">{%trans 'connect' %}</a>{% endif %}
+                                {% endifequal %}
+                                {% ifequal element.credential.protocol 'telnet'%}
+                                    {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'guacamole' element.id%}">{%trans 'connect' %}</a>{% endif %}
+                                {% endifequal %}
                                 {% if perms.common.can_delete_serverinfo %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
                             </td>
                         </tr>
