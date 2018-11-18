@@ -245,6 +245,6 @@ jQuery(function($){
     }
 
     $(document).ready(function () {
-        make_terminal(document.getElementById("terminal"), {"cols":146,"rows":43}, "192.168.2.6", 1);
+        make_terminal(document.getElementById("terminal"), {"cols":146,"rows":43}, $("#terminal").attr("ip"), $("#terminal").attr("server_id"));
     })
 });
