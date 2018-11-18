@@ -158,3 +158,9 @@ class SshConnect(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     permission_required = 'common.can_connect_serverinfo'
     raise_exception = False
     login_url = reverse_lazy('admin:login')
+
+    def get_context_data(self, **kwargs):
+        context = super(SshConnect, self).get_context_data(**kwargs)
+        context['ip'] = self.kwargs.get('ip')
+        context['serverid'] = self.kwargs.get('serverid')
+        return context
