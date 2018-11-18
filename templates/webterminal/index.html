@@ -353,21 +353,47 @@
                 } );
         });
 
+        function resize_terminal(term) {
+            if (term) {
+
+                if ((document.documentElement.clientHeight - ($(".split-horizontal").height() - $("#"+element.id).height() + $(".leftMenu").height() + $(".navbar-static-top").height() -2 )) >= $(".split-horizontal").height()){
+                    var rows = parseInt($(".split-horizontal").height()/17)-2;
+                }else {
+                    var rows = parseInt((document.documentElement.clientHeight - 27 - $(".leftMenu").height() - $(".navbar-static-top").height() -2)/17)-2;
+                }
+
+                //var rows = parseInt((document.documentElement.clientHeight - ($(".split-horizontal").height() - $("#"+element.id).height()) - $(".leftMenu").height() - $(".navbar-static-top").height() -2)/17);
+                var cols = parseInt($(".xterm-cursor-layer").width()/9);
+                // console.log(rows,cols,size)
+                console.log(rows,cols,(document.documentElement.clientHeight - ($(".split-horizontal").height() - $("#"+element.id).height() + $(".leftMenu").height() + $(".navbar-static-top").height() -2 )),$(".split-horizontal").height())
+                term.resize(cols, rows);
+                ws.send(JSON.stringify(["set_size",rows, cols, cols, rows]));
+            }
+        }
+
         ws.onopen = function (event) {
             terminals[element.id] = ws;
             //set terminal width and height
             //zmodem attach
 
-            ws.send(JSON.stringify(["set_size", size.rows, size.cols,
-                term.cols, term.rows]));
-            term.resize(term.cols, term.rows);
-            ws.send(JSON.stringify(["ip", ip,term.cols, term.rows, id]));
+            //calculate terminal size
 
+            if ((document.documentElement.clientHeight - ($(".split-horizontal").height() - $("#"+element.id).height() + $(".leftMenu").height() + $(".navbar-static-top").height() -2 )) >= $(".split-horizontal").height()){
+                var rows = parseInt($(".split-horizontal").height()/17)-2;
+            }else {
+                var rows = parseInt((document.documentElement.clientHeight - 27 - $(".leftMenu").height() - $(".navbar-static-top").height() -2)/17)-2;
+            }
+            var cols = parseInt($(".xterm-cursor-layer").width()/9);
+
+            term.resize(cols, rows);
+            ws.send(JSON.stringify(["ip", ip,cols, rows, id]));
+            ws.send(JSON.stringify(["set_size",rows, cols,
+                cols, rows]));
 
             //set terminal fit resize function
-            term.on('resize', function (size) {
-              ws.send(JSON.stringify(["set_size", size.rows, size.cols]));
-            });
+            // term.on('resize', function (size) {
+            //   ws.send(JSON.stringify(["set_size", size.rows, size.cols]));
+            // });
 
             term.on('title', function (title) {
                 document.title = title;
@@ -380,6 +406,12 @@
             term.zmodemAttach(ws, {
                 noTerminalWriteOutsideSession: true,
             } );
+
+            $(window).resize(function(){
+                if (term) {
+                    resize_terminal(term);
+                }
+            });
         };
 
         return {socket: ws, term: term};
