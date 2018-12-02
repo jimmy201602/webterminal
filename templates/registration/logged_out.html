@@ -3,14 +3,14 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" >
 {% load staticfiles %}
+{%load i18n%}
 <head>
-    <title>退出站点</title>
+    <title>{% trans 'logout webterminal' %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 
 
     <link rel="stylesheet" href="{% static "plugins/bootstrap/css/bootstrap.min.css" %}">
-    <link rel="stylesheet" type="text/css" href="/static/admin/css/overrides.css" />
     
 
     <script type="text/javascript">
@@ -20,7 +20,6 @@
     //]]>
     </script>
     <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
-    <script src="{% static "admin/js/jquery-migrate-1.2.1.min.js" %}"></script>
     <script src="{% static "plugins/bootstrap/js/bootstrap.min.js" %}"></script>
 
     
@@ -72,7 +71,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     
-<a class="navbar-brand" href="/">信息管理系统</a>
+<a class="navbar-brand" href="/">{% trans 'webterminal' %}</a>
 
                 </div>
                 <div id="header-navbar-collapse" class="navbar-collapse collapse navbar-right">
@@ -110,7 +109,7 @@
                         
                     
                     
-                        <span class="navbar-brand">退出</span>
+                        <span class="navbar-brand">{% trans 'logout' %}</span>
                     
                     
                     </div>
@@ -125,9 +124,9 @@
 
         
 
-<p>感谢你在本站点花费了一些时间！</p>
+<p>{%trans 'Thanks for your visit!' %}！</p>
 
-<p><a href="/" class="btn btn-default">重新登录</a></p>
+<p><a href="/" class="btn btn-default">{% trans 'Login again' %}</a></p>
 
 
         
