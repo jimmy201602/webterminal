@@ -96,7 +96,14 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
                                  enable_drive='true',
                                  drive_path=drive_path,
                                  create_drive_path='true',
-                                 security=data.credential.security)
+                                 security=data.credential.security,
+                                 # console_audio='true',
+                                 # enable_audio_input='true',
+                                 # disable_audio='false',
+                                 # console='true',
+                                 enable_full_window_drag='true',
+                                 resize_method="reconnect"  # display-update
+                                 )
             except Exception:
                 self.message.reply_channel.send({"accept": False})
                 return

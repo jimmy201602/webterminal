@@ -58,9 +58,10 @@
     //http://guacamole.apache.org/doc/guacamole-common-js/Guacamole.WebSocketTunnel.html
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/{{id}}/';
+    var tunnel = new Guacamole.WebSocketTunnel(ws_path);
     var guac = new Guacamole.Client(
        // new Guacamole.HTTPTunnel("tunnel")
-        new Guacamole.WebSocketTunnel(ws_path)
+        tunnel
     );
 
     // Add client to display div
@@ -78,6 +79,9 @@
     window.onunload = function() {
         guac.disconnect();
     }
+
+    <!--console.log(guac);-->
+    <!--console.log(tunnel);-->
     guac.onclipboard = function(stream, mimetype){
         var f;
         if (/^text\//.exec(mimetype)) {
@@ -91,6 +95,18 @@
             }
         }
     }
+    <!--function rescale(browserDisp, guacDisp) {-->
+        <!--var scale = Math.min(browserDisp.offsetWidth / Math.max(guacDisp.getWidth(), 1),-->
+        <!--browserDisp.offsetHeight / Math.max(guacDisp.getHeight(), 1));-->
+        <!--guacDisp.scale(scale);-->
+    <!--}-->
+    <!--guac.onresize = function(width,height){-->
+        <!--console.log(width,height);-->
+    <!--}-->
+    <!--var guacDisplay = guac.getDisplay();-->
+    <!--window.onresize = function(event) {-->
+        <!--rescale(display, guacDisplay);-->
+    <!--};-->
     //state change
     guac.onstatechange = function(state){
         if (state == 5){
@@ -118,9 +134,13 @@
             })
 
         }else if (state == 3){
-            guac.sendSize(window.innerWidth-10, window.innerHeight-20);
+            console.log(guac.getDisplay.size);
+            guac.sendSize(window.innerWidth-10, window.innerHeight-60);
             $(window).resize(function(){
-                guac.sendSize(window.innerWidth-10, window.innerHeight-40);
+                guac.sendSize(window.innerWidth-10, window.innerHeight-60);
+                <!--var guacDisplay = guac.getDisplay() -->
+                <!--guacDisplay.resize(guacDisplay.getDefaultLayer(), window.innerWidth-10, window.innerHeight-40) -->
+                <!--rescale(display, guacDisplay);-->
             });
         }
     }
