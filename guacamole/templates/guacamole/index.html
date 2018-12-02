@@ -8,6 +8,8 @@
 </head>
 <body>
 <!--<h1>Guacamole Remote Desktop</h1>-->
+<!-- jQuery 2.2.3 -->
+<script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
 <!-- Guacamole -->
 <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'plugins/sweetalert/sweetalert2.all.min.js' %}"></script>
@@ -58,7 +60,7 @@
     var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/{{id}}/';
     var guac = new Guacamole.Client(
        // new Guacamole.HTTPTunnel("tunnel")
-        new Guacamole.WebSocketTunnel(ws_path)
+        new Guacamole.WebSocketTunnel(ws_path);
     );
 
     // Add client to display div
@@ -115,6 +117,11 @@
               }
             })
 
+        }else if (state == 3){
+            guac.sendSize(window.innerWidth-10, window.innerHeight-20);
+            $(window).resize(function(){
+                guac.sendSize(window.innerWidth-10, window.innerHeight-20);
+            });
         }
     }
 
