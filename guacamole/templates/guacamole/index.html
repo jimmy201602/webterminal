@@ -60,7 +60,7 @@
     var ws_path = ws_scheme + '://' + window.location.host + '/guacamole/{{id}}/';
     var guac = new Guacamole.Client(
        // new Guacamole.HTTPTunnel("tunnel")
-        new Guacamole.WebSocketTunnel(ws_path);
+        new Guacamole.WebSocketTunnel(ws_path)
     );
 
     // Add client to display div
