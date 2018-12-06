@@ -25,7 +25,7 @@
 ![Configure new user permission](./img/configureuserpermissioncn.png  "Configure new user permission")
 # 使用webterminal连接远程主机
 点击webterminal，选择要远程的主机，点击连接即可
-文件管理功能可操作远程主机文件，（目前Windows主机尚不支持文件管理功能）
+文件管理功能可操作远程主机文件
 
 ![Webterminal](./img/webterminal1cn.png  "Webterminal")
 ![Webterminal](./img/webterminal2cn.png  "Webterminal")
