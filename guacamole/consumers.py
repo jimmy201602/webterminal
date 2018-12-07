@@ -27,29 +27,30 @@ from permission.models import Permission
 
 class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
 
-    http_user = True
+    http_user = False
     #http_user_and_session = True
-    channel_session = True
-    channel_session_user = True
+    channel_session = False
+    channel_session_user = False
 
-    @property
-    def authenticate(self):
-        if self.message.user.is_authenticated():
+    def authenticate(self, id):
+        if get_redis_instance().get(id) != None:
             return True
         else:
             return False
 
     def connect(self, message, id):
         self.message.reply_channel.send({"accept": True})
-        if not self.authenticate:
+        user = get_redis_instance().get(id)
+        if not self.authenticate(id):
             self.message.reply_channel.send({"text": json.dumps(
                 {'status': False, 'message': 'You must login to the system!'})}, immediately=True)
             self.message.reply_channel.send({"accept": False})
         else:
             # permission auth
+            username = get_redis_instance().get(id)
             try:
                 Permission.objects.get(
-                    user__username=self.message.user.username, groups__servers__id=id)
+                    user__username=username, groups__servers__id=int(id[-1]))
             except ObjectDoesNotExist:
                 self.message.reply_channel.send({"text": json.dumps(
                     '\033[1;3;31mYou have not permission to connect server !\033[0m')}, immediately=True)
@@ -60,7 +61,7 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
             client = GuacamoleClient(
                 settings.GUACD_HOST, settings.GUACD_PORT)
             try:
-                data = ServerInfor.objects.get(id=id)
+                data = ServerInfor.objects.get(id=int(id[-1]))
                 if data.credential.protocol in ['vnc', 'rdp', 'telnet']:
                     pass
                 else:
@@ -73,7 +74,7 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
             directory_date_time = now()
             recording_path = os.path.join(MEDIA_ROOT, '{0}-{1}-{2}'.format(
                 directory_date_time.year, directory_date_time.month, directory_date_time.day))
-            drive_path = os.path.join(MEDIA_ROOT, self.message.user.username)
+            drive_path = os.path.join(MEDIA_ROOT, username)
             """
             Create recording media file and drive path
             """
@@ -111,7 +112,7 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
             self.message.reply_channel.send(
                 {"text": '0.,{0}.{1};'.format(len(cache_key), cache_key)}, immediately=True)
 
-            audit_log = Log.objects.create(user=User.objects.get(username=self.message.user), server=data, channel=self.message.reply_channel.name,
+            audit_log = Log.objects.create(user=User.objects.get(username=username), server=data, channel=self.message.reply_channel.name,
                                            width=data.credential.width, height=data.credential.height, log=cache_key, gucamole_client_id=client._id)
             audit_log.save()
             guacamolethread = GuacamoleThread(self.message, client)
