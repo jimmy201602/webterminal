@@ -151,6 +151,7 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
         except:
             pass
         finally:
+            get_redis_instance().delete(id)
             self.message.reply_channel.send({"accept": False})
 
     def queue(self):
