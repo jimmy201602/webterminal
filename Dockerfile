@@ -19,8 +19,11 @@ RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /us
 WORKDIR /tmp
 #RUN wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
 #RUN tar -xvpf pypy2-v6.0.0-linux64.tar.bz2
-#RUN mv pypy2-v6.0.0-linux64.tar.bz2
-#wget https://bootstrap.pypa.io/get-pip.py
+#RUN mv pypy2-v6.0.0-linux64 pypy
+#RUN mv pypy /usr/local/
+#RUN ln -s /usr/local/pypy/bin/pypy /usr/bin/pypy
+#RUN wget https://bootstrap.pypa.io/get-pip.py
+#RUN /usr/bin/pypy get-pip.py
 RUN wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
 RUN tar -xvpf guacamole-server-0.9.14.tar.gz
 WORKDIR /tmp/guacamole-server-0.9.14
@@ -34,6 +37,7 @@ RUN git clone https://github.com/jimmy201602/webterminal.git
 WORKDIR /opt/webterminal
 RUN mkdir media
 RUN pip install -r requirements.txt
+#RUN /usr/local/pypy/bin/pip install -r requirements.txt
 RUN python manage.py makemigrations
 RUN python manage.py migrate
 RUN python createsuperuser.py
