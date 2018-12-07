@@ -17,6 +17,10 @@ RUN apt-get update
 RUN apt-get install gcc-6 g++-6 -y
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 60 --slave /usr/bin/g++ g++ /usr/bin/g++-6
 WORKDIR /tmp
+#RUN wget https://bitbucket.org/pypy/pypy/downloads/pypy2-v6.0.0-linux64.tar.bz2
+#RUN tar -xvpf pypy2-v6.0.0-linux64.tar.bz2
+#RUN mv pypy2-v6.0.0-linux64.tar.bz2
+#wget https://bootstrap.pypa.io/get-pip.py
 RUN wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
 RUN tar -xvpf guacamole-server-0.9.14.tar.gz
 WORKDIR /tmp/guacamole-server-0.9.14
