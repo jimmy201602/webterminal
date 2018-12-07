@@ -22,6 +22,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 import traceback
 from common.utils import get_redis_instance
+import uuid
 
 logger = logging.getLogger(__name__)
 sockets = {}
@@ -35,6 +36,9 @@ class Index(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'common.can_connect_serverinfo'
 
     def get(self, request, id):
+        token = '{0}{1}'.format(''.join(str(uuid.uuid4()).rsplit('-')), id)
+        conn = get_redis_instance()
+        conn.set(token, request.user.username)
         return render_to_response('guacamole/index.html', locals())
 
 
