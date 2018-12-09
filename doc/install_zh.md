@@ -50,3 +50,21 @@ make && make install
 ```sh
 pip install Twisted==17.5.0
 ```
+若出现以下异常，通常为安装了相冲突的组件，按照以下解决方法解决即可
+AttributeError: 'module' object has no attribute 'GSSException'
+
+组件冲突：
+```sh
+pip uninstall python-gssapi
+```
+
+# RDP无法查看到文件共享上传目录G盘
+
+文件上传无G盘，日志出现：
+guacd[13088]: Failed to load guacdr plugin. Drive redirection and printing will not work. Sound MAY not work.
+guacd[13088]: Failed to load guacsnd alongside guacdr plugin. Sound will not work. Drive redirection and printing MAY not work.
+
+这个问题是freerdp的库默认安装在/usr/local/lib/freerdp下了，copy到centos默认的路径就行。
+```sh
+cp /usr/local/lib/freerdp/* /usr/lib64/freerdp/
+```
