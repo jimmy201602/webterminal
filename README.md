@@ -36,8 +36,6 @@ user/password: demo/demo12345678
 # Author Email
 zhengge2012@gmail.com
 
-![screenshots](./screenshots/qqgroupqr.png  "screenshots")
-
 # screenshots
 ![screenshots](./screenshots/screenshots1.png  "screenshots")
 ![screenshots](./screenshots/screenshots2.gif  "screenshots")
