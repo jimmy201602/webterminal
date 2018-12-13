@@ -8,15 +8,15 @@
 
 # 使用文档
 
-[中文使用文档](./doc/manual_zh.md)
+[中文使用文档](./manual_zh.md)
 
 # 安装文档
 
-[中文安装部署文档](./doc/Centos7_install_zh.md)
+[中文安装部署文档](./Centos7_install_zh.md)
 
 # 以docker方式运行本项目
 
-[Centos7 Docker安装部署 webterminal](./doc/Centos7_docker_deploy_zh.md)
+[Centos7 Docker安装部署 webterminal](./Centos7_docker_deploy_zh.md)
 
 ```sh
 docker pull webterminal/webterminal(国内请使用阿里云镜像 docker pull registry.cn-hangzhou.aliyuncs.com/webterminal/webterminal)
