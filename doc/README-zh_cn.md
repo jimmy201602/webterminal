@@ -39,6 +39,7 @@ docker run -itd -p 80:80 webterminal/webterminal
 # QQ讨论群
 QQ群号 531612760
 
+![screenshots](../screenshots/qqgroupqr.png  "screenshots")
 # 开源协议
 
 [开源协议(GPL v3)](../LICENSE) 
