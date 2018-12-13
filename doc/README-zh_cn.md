@@ -18,6 +18,7 @@
 
 [Centos7 Docker安装部署 webterminal](./Centos7_docker_deploy_zh.md)
 
+
 ```sh
 docker pull webterminal/webterminal(国内请使用阿里云镜像 docker pull registry.cn-hangzhou.aliyuncs.com/webterminal/webterminal)
 
@@ -28,7 +29,7 @@ docker run -itd -p 80:80 webterminal/webterminal
 账户名: admin
 
 密码: password!23456
- ```
+```
 
 # demo/试用 
 
@@ -37,9 +38,27 @@ docker run -itd -p 80:80 webterminal/webterminal
 账户/密码: demo/demo12345678
 
 # QQ讨论群
-QQ群号 531612760
+### QQ群号 531612760
 
 ![screenshots](../screenshots/qqgroupqr.png  "screenshots")
+
+# 预览
+![screenshots](../screenshots/screenshots1.png  "screenshots")
+![screenshots](../screenshots/screenshots2.gif  "screenshots")
+![screenshots](../screenshots/screenshots3.gif  "screenshots")
+![screenshots](../screenshots/screenshots4.gif  "screenshots")
+![screenshots](../screenshots/screenshots2.png  "screenshots")
+![screenshots](../screenshots/screenshots5.gif  "screenshots")
+![screenshots](../screenshots/screenshots3.png  "screenshots")
+![screenshots](../screenshots/screenshots4.png  "screenshots")
+![screenshots](../screenshots/screenshots5.png  "screenshots")
+![screenshots](../screenshots/screenshots6.png  "screenshots")
+![screenshots](../screenshots/screenshots7.png  "screenshots")
+![screenshots](../screenshots/screenshots8.png  "screenshots")
+![screenshots](../screenshots/screenshots6.gif  "screenshots")
+![screenshots](../screenshots/screenshots7.gif  "screenshots")
+![screenshots](../screenshots/screenshots8.gif  "screenshots")
+
 # 开源协议
 
 [开源协议(GPL v3)](../LICENSE) 
