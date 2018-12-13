@@ -60,4 +60,4 @@ zhengge2012@gmail.com
 [GPL V3 License](LICENSE)
 
 # Reporting Issues
-If you're experiencing a problem, we encourage you to open an issue[an issue](https://github.com/jimmy201602/webterminal/issues/new) , and share your feedback.
+If you're experiencing a problem, we encourage you to open an issue[an issue](https://github.com/jimmy201602/webterminal/issues/new), and share your feedback.
