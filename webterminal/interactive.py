@@ -76,8 +76,8 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                         channel_layer.send(channel, {'text': json.dumps(
                             ['disconnect', smart_unicode('\r\n*** EOF\r\n'), elementid.rsplit('_')[0]])})
                     else:
-                        #channel_layer.send(channel, {'text': json.dumps(
-                            #['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
+                        # channel_layer.send(channel, {'text': json.dumps(
+                            # ['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
                         channel_layer.send(channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
                     break
                 now = time.time()
@@ -88,7 +88,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                 else:
                     if vim_flag:
                         vim_data += x
-                    logger.debug('raw data {0}'.format(command))
+                    #logger.debug('raw data {0}'.format(command))
                     if '\r\n' not in x:
                         command.append(x)
                     else:
@@ -121,16 +121,16 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                         channel_layer.send(channel, {'text': json.dumps(
                             ['stdout', x, elementid.rsplit('_')[0]])})
                     else:
-                        #channel_layer.send(
-                            #channel, {'text': json.dumps(['stdout', x])})
+                        # channel_layer.send(
+                            # channel, {'text': json.dumps(['stdout', x])})
                         channel_layer.send(channel, {'bytes': data})
                 else:
                     if elementid:
                         channel_layer.send(channel, {'text': json.dumps(
                             ['stdout', smart_unicode(x), elementid.rsplit('_')[0]])})
                     else:
-                        #channel_layer.send(
-                            #channel, {'text': json.dumps(['stdout', smart_unicode(x)])})
+                        # channel_layer.send(
+                            # channel, {'text': json.dumps(['stdout', smart_unicode(x)])})
                         channel_layer.send(channel, {'bytes': data})
                 # send message to monitor group
                 if log_name:
@@ -141,15 +141,15 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
             except UnicodeDecodeError:
                 channel_layer.send(channel, {'bytes': data})
             except Exception, e:
-                print(type(data))
-                print(repr(data))
+                # print(type(data))
+                # print(repr(data))
                 logger.error(traceback.print_exc())
                 if elementid:
                     channel_layer.send(channel, {'text': json.dumps(
                         ['stdout', 'A bug find,You can report it to me' + smart_unicode(e), elementid.rsplit('_')[0]])})
                 else:
-                    #channel_layer.send(channel, {'text': json.dumps(
-                        #['stdout', 'A bug find,You can report it to me' + smart_unicode(e)])})
+                    # channel_layer.send(channel, {'text': json.dumps(
+                        # ['stdout', 'A bug find,You can report it to me' + smart_unicode(e)])})
                     channel_layer.send(channel, {'bytes': data})
 
     finally:
@@ -242,8 +242,8 @@ class SshTerminalThread(threading.Thread):
                         self.stop()
                     elif data[0] == 'set_size':
                         try:
-                            self.chan.resize_pty(width=data[3], height=data[4],width_pixels=data[1], height_pixels=data[2])
-                        except (TypeError,struct.error,paramiko.SSHException):
+                            self.chan.resize_pty(width=data[3], height=data[4], width_pixels=data[1], height_pixels=data[2])
+                        except (TypeError, struct.error, paramiko.SSHException):
                             pass
                     elif data[0] in ['stdin', 'stdout']:
                         if '\r' not in str(data[1]):

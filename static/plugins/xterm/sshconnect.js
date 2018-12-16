@@ -22,24 +22,17 @@ jQuery(function($){
             "<span style='margin-left:5px !important;' id='fileList'></span>" +
             "</div><div class='clearfix'></div>";
 
-        bootbox.dialog({
+        var dialog = bootbox.dialog({
             message: uploadHtml,
             title: "File Upload",
             buttons: {
-                success: {
-                    label: "Upload",
-                    className: "btn-success",
-                    callback: function (res) {
-                        // what you wanna do here ...
-                        console.log('success')
-                    }
-                },
                 cancel: {
                     label: 'Cancel',
                     className: 'btn-default',
                     callback: function (res) {
                         // what you wanna do here ...
-                        console.log('cancel')
+                        console.log('cancel');
+                        //console.log(zsession)
                     }
                 }
             },
@@ -55,18 +48,20 @@ jQuery(function($){
         //
         //     $("#fileList").text(list);
         // }, false);
+
+        $('.btn-default').attr('disabled',true)
         var file_el = document.getElementById("fupload");
 
         function _hide_progress(){
-            console.log(11);
+            console.log('hide progress');
         }
 
         function _show_progress(){
-            console.log(222);
+            console.log('show progress');
         }
 
         function _update_progress(xfer){
-            console.log(333,xfer);
+            console.log('update progress',xfer);
         }
 
 
@@ -84,6 +79,15 @@ jQuery(function($){
                         },
                         on_progress(obj, xfer) {
                             _update_progress(xfer);
+                            //dialog.modal('hide');
+                            // console.log(xfer._file_info.name);
+                            // console.log(xfer._file_info._file_offset);
+                            // $('.bootbox-body').append("<div class=\"progress\">\n" +
+                            //     "    <div class=\"progress-bar progress-bar-info\" role=\"progressbar\"\n" +
+                            //     "         aria-valuenow=\"60\" aria-valuemin=\"0\" aria-valuemax=\"100\"\n" +
+                            //     "         style=\"width: 30%;\">\n" +
+                            //     "    </div>\n" +
+                            //     "</div>")
                         },
                         on_file_complete(obj) {
                             console.log("COMPLETE", obj);
@@ -92,12 +96,15 @@ jQuery(function($){
                     }
                 ).then(_hide_progress).then(
                     zsession.close.bind(zsession),
-                    console.error.bind(console)
+                    console.error.bind(console),
+                    console.log('hide progress')
                 ).then( () => {
                     //_hide_file_info();
                     //_hide_progress();
+                    console.log('finally');
+                    //zsession.close.bind(zsession);
+                    dialog.modal('hide');
                     res();
-                    console.log('finally')
                 } );
             };
         } );
@@ -196,6 +203,7 @@ jQuery(function($){
         var ws = new WebSocket(ws_url);
 
         term.on("zmodemDetect", (detection) => {
+
             term.detach();
             let zsession = detection.confirm();
 
@@ -209,6 +217,7 @@ jQuery(function($){
 
             promise.catch( console.error.bind(console) ).then( () => {
                 term.attach(ws);
+                console.log('error');
             } );
         });
 
