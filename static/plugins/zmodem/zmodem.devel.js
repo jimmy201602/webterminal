@@ -1192,7 +1192,11 @@ Zmodem.Sentry = class ZmodemSentry {
         if (this._zsession) {
             var session_before_consume = this._zsession;
 
-            session_before_consume.consume(input);
+            try {
+                session_before_consume.consume(input);
+            }catch (e) {
+                console.log(e);
+            }
 
             if (session_before_consume.has_ended()) {
                 if (session_before_consume.type === "receive") {
