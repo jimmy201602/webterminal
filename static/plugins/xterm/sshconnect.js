@@ -28,12 +28,22 @@ jQuery(function($){
             buttons: {
                 success: {
                     label: "Upload",
-                    className: "btn-default",
+                    className: "btn-success",
                     callback: function (res) {
                         // what you wanna do here ...
+                        console.log('success')
+                    }
+                },
+                cancel: {
+                    label: 'Cancel',
+                    className: 'btn-default',
+                    callback: function (res) {
+                        // what you wanna do here ...
+                        console.log('cancel')
                     }
                 }
-            }
+            },
+            closeButton: false
         });
 
         // var fileList = ;
@@ -87,6 +97,7 @@ jQuery(function($){
                     //_hide_file_info();
                     //_hide_progress();
                     res();
+                    console.log('finally')
                 } );
             };
         } );
