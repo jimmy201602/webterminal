@@ -79,6 +79,7 @@ jQuery(function($){
                         },
                         on_progress(obj, xfer) {
                             _update_progress(xfer);
+                            
                             //dialog.modal('hide');
                             // console.log(xfer._file_info.name);
                             // console.log(xfer._file_info._file_offset);
