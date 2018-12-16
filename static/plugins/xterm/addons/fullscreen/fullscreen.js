@@ -4,16 +4,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 function toggleFullScreen(term, fullscreen) {
     var fn;
     if (typeof fullscreen === 'undefined') {
-        fn = (term.element.classList.contains('fullscreen')) ?
-            term.element.classList.remove : term.element.classList.add;
+        fn = (term.element.classList.contains('fullscreen')) ? 'remove' : 'add';
     }
     else if (!fullscreen) {
-        fn = term.element.classList.remove;
+        fn = 'remove';
     }
     else {
-        fn = term.element.classList.add;
+        fn = 'add';
     }
-    fn('fullscreen');
+    term.element.classList[fn]('fullscreen');
 }
 exports.toggleFullScreen = toggleFullScreen;
 function apply(terminalConstructor) {

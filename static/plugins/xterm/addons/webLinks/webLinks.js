@@ -10,7 +10,7 @@ var ipClause = '((\\d{1,3}\\.){3}\\d{1,3})';
 var localHostClause = '(localhost)';
 var portClause = '(:\\d{1,5})';
 var hostClause = '((' + domainBodyClause + '\\.' + tldClause + ')|' + ipClause + '|' + localHostClause + ')' + portClause + '?';
-var pathClause = '(\\/[\\/\\w\\.\\-%~:]*)*([^:\\s])';
+var pathClause = '(\\/[\\/\\w\\.\\-%~]*)*';
 var queryStringHashFragmentCharacterSet = '[0-9\\w\\[\\]\\(\\)\\/\\?\\!#@$%&\'*+,:;~\\=\\.\\-]*';
 var queryStringClause = '(\\?' + queryStringHashFragmentCharacterSet + ')?';
 var hashFragmentClause = '(#' + queryStringHashFragmentCharacterSet + ')?';
