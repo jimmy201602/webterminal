@@ -139,7 +139,7 @@
     cursor: pointer;
 }
 
-.xterm.column-select.focus {
+.xterm.xterm-cursor-crosshair {
     /* Column selection mode */
     cursor: crosshair;
 }
