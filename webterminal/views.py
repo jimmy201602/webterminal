@@ -63,6 +63,8 @@ class SshLogPlay(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
         objects = kwargs['object']
         context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(
             MEDIA_URL, objects.start_time.year, objects.start_time.month, objects.start_time.day, objects.log)
+        token = '{0}'.format(''.join(str(uuid.uuid4()).rsplit('-')))
+        context['token'] = token
         return context
 
 
