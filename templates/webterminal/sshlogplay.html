@@ -7,7 +7,10 @@
   <link rel="stylesheet" type="text/css" href="{% static 'plugins/asciinema/asciinema-player.css' %}" />
 </head>
 <body>
-  <asciinema-player src="{{logpath}}"></asciinema-player>
+  <asciinema-player-{{ token }} src="{{logpath}}"></asciinema-player-{{ token }}>
+  <script>
+      window.count = "{{ token }}";
+  </script>
   <script src="{% static 'plugins/asciinema/asciinema-player.js' %}"></script>
     <!-- Matomo -->
   <script type="text/javascript">
