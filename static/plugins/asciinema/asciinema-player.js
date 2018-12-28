@@ -305,7 +305,7 @@ function registerAsciinemaPlayerElement() {
     }
   });
 
-  document.registerElement('asciinema-player', { prototype: AsciinemaPlayerProto });
+  document.registerElement('asciinema-player-' + window.count, { prototype: AsciinemaPlayerProto });
 };
 
 ;(function(){
