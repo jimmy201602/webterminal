@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 import uuid
 
 
-class webterminal(WebsocketConsumer, WebsocketAuth):
+class Webterminal(WebsocketConsumer, WebsocketAuth):
 
     ssh = paramiko.SSHClient()
     http_user = True
@@ -88,7 +88,8 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                     except ObjectDoesNotExist:
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])}, immediately=True)
-                        self.message.reply_channel.send({"bytes": '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)}, immediately=True)
+                        self.message.reply_channel.send(
+                            {"bytes": '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error("{0} have not permission to connect server {1}!".format(
                             self.message.user.username, ip))
@@ -108,7 +109,8 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                     except ObjectDoesNotExist:
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])}, immediately=True)
-                        self.message.reply_channel.send({"bytes": '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'}, immediately=True)
+                        self.message.reply_channel.send(
+                            {"bytes": '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error(
                             "Connect to server! Server ip {0} doesn\'t exist!".format(ip))
@@ -148,7 +150,8 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                     except socket.timeout:
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mConnect to server time out\033[0m'])}, immediately=True)
-                        self.message.reply_channel.send({"bytes": '\033[1;3;31mConnect to server time out\033[0m'}, immediately=True)
+                        self.message.reply_channel.send(
+                            {"bytes": '\033[1;3;31mConnect to server time out\033[0m'}, immediately=True)
                         logger.error(
                             "Connect to server {0} time out!".format(ip))
                         self.message.reply_channel.send({"accept": False})
@@ -156,13 +159,15 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
                     except Exception as e:
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])}, immediately=True)
-                        self.message.reply_channel.send({"bytes": '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)}, immediately=True)
+                        self.message.reply_channel.send(
+                            {"bytes": '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error(
                             "Can not connect to server {0}: {1}".format(ip, e))
                         return
 
-                    chan = self.ssh.invoke_shell(width=width, height=height, term='xterm')
+                    chan = self.ssh.invoke_shell(
+                        width=width, height=height, term='xterm')
 
                     # open a new threading to handle ssh to avoid global variable bug
                     sshterminal = SshTerminalThread(self.message, chan)
@@ -205,7 +210,8 @@ class webterminal(WebsocketConsumer, WebsocketAuth):
             self.closessh()
             self.close()
         except ValueError:
-            self.queue.publish(self.message.reply_channel.name, smart_unicode(text))
+            self.queue.publish(
+                self.message.reply_channel.name, smart_unicode(text))
         except Exception as e:
             logger.error(traceback.print_exc())
             self.closessh()
@@ -445,7 +451,8 @@ class BatchCommandExecute(WebsocketConsumer, WebsocketAuth):
             return
 
         # self.ssh.get_pty()
-        chan = self.ssh.invoke_shell(width=width, height=height, term='xterm')
+        chan = self.ssh.invoke_shell(
+            width=width, height=height, term='xterm')
 
         # open a new threading to handle ssh to avoid global variable bug
         sshterminal = SshTerminalThread(
