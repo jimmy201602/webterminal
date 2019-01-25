@@ -38,6 +38,14 @@ import struct
 import paramiko
 import logging
 logger = logging.getLogger(__name__)
+try:
+    unicode
+except NameError:
+    unicode = str
+try:
+    basestring
+except NameError:
+    basestring = str
 
 
 def interactive_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):
