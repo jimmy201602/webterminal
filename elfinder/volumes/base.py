@@ -4,7 +4,10 @@ try:
 except ImportError:
     import Image
 from base64 import b64encode, b64decode
-from string import maketrans
+try:
+    from string import maketrans
+except ImportError:
+    from bytes import maketrans
 from tarfile import TarFile
 from django.core.cache import cache
 from django.utils.translation import ugettext_lazy as _
