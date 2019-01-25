@@ -27,7 +27,10 @@ from django.urls import reverse_lazy
 from common.views import LoginRequiredMixin
 import traceback
 import re
-import commands
+try:
+    import commands
+except ImportError:
+    import subprocess as commands
 import logging
 logger = logging.getLogger(__name__)
 

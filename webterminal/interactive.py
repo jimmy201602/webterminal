@@ -2,7 +2,10 @@
 import socket
 import sys
 from paramiko.py3compat import u
-from django.utils.encoding import smart_unicode
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
 import os
 
 try:
@@ -78,7 +81,8 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                     else:
                         # channel_layer.send(channel, {'text': json.dumps(
                             # ['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
-                        channel_layer.send(channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
+                        channel_layer.send(
+                            channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
                     break
                 now = time.time()
                 delay = now - last_write_time['last_activity_time']
@@ -140,7 +144,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                 pass
             except UnicodeDecodeError:
                 channel_layer.send(channel, {'bytes': data})
-            except Exception, e:
+            except Exception as e:
                 # print(type(data))
                 # print(repr(data))
                 logger.error(traceback.print_exc())
@@ -231,7 +235,7 @@ class SshTerminalThread(threading.Thread):
                 if isinstance(text['data'], (str, basestring, unicode)):
                     try:
                         data = ast.literal_eval(text['data'])
-                    except Exception, e:
+                    except Exception as e:
                         data = text['data']
                 else:
                     data = text['data']
@@ -242,7 +246,8 @@ class SshTerminalThread(threading.Thread):
                         self.stop()
                     elif data[0] == 'set_size':
                         try:
-                            self.chan.resize_pty(width=data[3], height=data[4], width_pixels=data[1], height_pixels=data[2])
+                            self.chan.resize_pty(
+                                width=data[3], height=data[4], width_pixels=data[1], height_pixels=data[2])
                         except (TypeError, struct.error, paramiko.SSHException):
                             pass
                     elif data[0] in ['stdin', 'stdout']:
