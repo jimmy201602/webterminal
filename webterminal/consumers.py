@@ -8,7 +8,10 @@ except ImportError:
     import json
 from webterminal.interactive import interactive_shell, SshTerminalThread, InterActiveShellThread
 import sys
-from django.utils.encoding import smart_unicode
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from common.models import ServerInfor, ServerGroup, CommandsSequence, Log
 from webterminal.sudoterminal import ShellHandlerThread
@@ -22,7 +25,10 @@ import traceback
 from common.utils import WebsocketAuth, get_redis_instance
 from permission.models import Permission
 import logging
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 logger = logging.getLogger(__name__)
 import uuid
 
@@ -380,7 +386,7 @@ class BatchCommandExecute(WebsocketConsumer, WebsocketAuth):
                     self.queue.publish(data[2], ['stdin', data[1]])
                 elif len(data) > 0 and isinstance(data, list) and data[0] == 'close':
                     self.queue.publish(data[2], ['close'])
-        except Exception, e:
+        except Exception as e:
             logger.error(traceback.print_exc())
             self.message.reply_channel.send({"text": json.dumps(
                 ['stdout', '\033[1;3;31mSome error happend, Please report it to the administrator! Error info:%s \033[0m' % (smart_unicode(e))])}, immediately=True)

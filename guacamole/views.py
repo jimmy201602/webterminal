@@ -75,7 +75,7 @@ class GuacamoleKill(LoginRequiredMixin, PermissionRequiredMixin, View):
                 return JsonResponse({'status': True, 'message': 'Session has been killed !'})
             except ObjectDoesNotExist:
                 return JsonResponse({'status': False, 'message': 'Request object does not exist!'})
-            except Exception, e:
+            except Exception as e:
                 log_object = Log.objects.get(id=id)
 
                 log_object.end_time = now()

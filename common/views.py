@@ -117,7 +117,7 @@ class Commands(LoginRequiredMixin, TemplateView):
                 return JsonResponse({'status': False, 'message': 'Task name:%s already exist,Please use another name instead!' % (data['name'])})
             except KeyError:
                 return JsonResponse({'status': False, 'message': "Invalid parameter,Please report it to the adminstrator!"})
-            except Exception, e:
+            except Exception as e:
                 print(traceback.print_exc())
                 return JsonResponse({'status': False, 'message': 'Some error happend! Please report it to the adminstrator! Error info:%s' % (smart_str(e))})
         else:
@@ -194,7 +194,7 @@ class CredentialCreate(LoginRequiredMixin, TemplateView):
                     return JsonResponse({'status': False, 'message': 'Illegal action.'})
             except IntegrityError:
                 return JsonResponse({'status': False, 'message': 'Credential %s already exist! Please use another name instead!' % (smart_str(json.loads(request.body).get('name', None)))})
-            except Exception, e:
+            except Exception as e:
                 print(traceback.print_exc())
                 return JsonResponse({'status': False, 'message': 'Error happend! Please report it to adminstrator! Error:%s' % (smart_str(e))})
 

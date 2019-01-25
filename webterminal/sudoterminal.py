@@ -4,10 +4,16 @@ try:
     import simplejson as json
 except ImportError:
     import json
-from django.utils.encoding import smart_unicode
+    try:
+        from django.utils.encoding import smart_unicode
+    except ImportError:
+        from django.utils.encoding import smart_text as smart_unicode
 import threading
 from common.models import ServerInfor
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import socket
 import traceback
 import logging
@@ -26,7 +32,7 @@ class ShellHandler(object):
             self.ssh.connect(ip, port=port, username=username,
                              password=credential, timeout=timeout)
         else:
-            private_key = StringIO.StringIO(credential)
+            private_key = StringIO(credential)
             if 'RSA' in credential:
                 private_key = paramiko.RSAKey.from_private_key(private_key)
             elif 'DSA' in credential:
