@@ -17,7 +17,10 @@ from common.views import LoginRequiredMixin
 from django.conf import settings
 from common.utils import mkdir_p
 import os
-import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import paramiko
 from elfinder.sftpstoragedriver.sftpstorage import SFTPStorage
 from django.http import StreamingHttpResponse
@@ -201,7 +204,7 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
                                                                    'root_path': '/', 'interactive': False,
                                                                    'key_label': key_label}
             else:
-                private_key = StringIO.StringIO(server_object.credential.key)
+                private_key = StringIO(server_object.credential.key)
                 key = server_object.credential.key
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(
@@ -261,7 +264,7 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
                                                                    'root_path': '/', 'interactive': False,
                                                                    'key_label': key_label}
             else:
-                private_key = StringIO.StringIO(server_object.credential.key)
+                private_key = StringIO(server_object.credential.key)
                 key = server_object.credential.key
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(

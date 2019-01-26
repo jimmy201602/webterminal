@@ -15,7 +15,7 @@ from django.core.files import File as DjangoFile
 #from django.utils.importlib import import_module
 from importlib import import_module
 from elfinder.exceptions import NotAnImageError, ElfinderErrorMessages
-from base import ElfinderVolumeDriver
+from elfinder.volumes.base import ElfinderVolumeDriver
 
 
 class ElfinderVolumeStorage(ElfinderVolumeDriver):
