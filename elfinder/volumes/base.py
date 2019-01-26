@@ -1559,7 +1559,10 @@ class ElfinderVolumeDriver(object):
         """
         Return True if thumnbnail for required file can be created.
         """
-        return self._tmb_path_writable and not path.startswith(self._options['tmbPath']) and stat['mime'].decode().startswith('image')
+        if isinstance(stat['mime'],bytes):
+            return self._tmb_path_writable and not path.startswith(self._options['tmbPath']) and stat['mime'].decode().startswith('image')
+        else:
+            return self._tmb_path_writable and not path.startswith(self._options['tmbPath']) and stat['mime'].startswith('image')
 
     def _img_resize(self, im, target, width, height, keepProportions = False, resizeByBiggerSide = True, destformat = None):
         """
