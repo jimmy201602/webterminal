@@ -244,11 +244,18 @@ class SshTerminalThread(threading.Thread):
             text = self.queue.get_message()
             if text:
                 # deserialize data
-                if isinstance(text['data'], (str, basestring, unicode)):
-                    try:
-                        data = ast.literal_eval(text['data'])
-                    except Exception as e:
-                        data = text['data']
+                if isinstance(text['data'], (str, basestring, unicode, bytes)):
+                    if isinstance(text['data'], bytes):
+                        try:
+                            data = ast.literal_eval(
+                                text['data'].decode('utf8'))
+                        except Exception as e:
+                            data = text['data']
+                    else:
+                        try:
+                            data = ast.literal_eval(text['data'])
+                        except Exception as e:
+                            data = text['data']
                 else:
                     data = text['data']
                 if isinstance(data, (list, tuple)):
