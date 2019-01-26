@@ -74,7 +74,7 @@ class RegisterForm(forms.Form):
     def clean(self):
         if not self.is_valid():
             raise forms.ValidationError({'user': _(u"every filed required")})
-        elif self.cleaned_data['newpassword1'] <> self.cleaned_data['newpassword2']:
+        elif self.cleaned_data['newpassword1'] != self.cleaned_data['newpassword2']:
             raise forms.ValidationError({'newpassword1': _(
                 u"your password does't the same"), 'newpassword2': _(u"your password does't the same")})
         elif self.cleaned_data['user']:

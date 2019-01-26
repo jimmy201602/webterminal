@@ -2,7 +2,10 @@
 import socket
 import sys
 from paramiko.py3compat import u
-from django.utils.encoding import smart_unicode
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
 import os
 
 try:
@@ -35,6 +38,18 @@ import struct
 import paramiko
 import logging
 logger = logging.getLogger(__name__)
+try:
+    unicode
+except NameError:
+    unicode = str
+try:
+    basestring
+except NameError:
+    basestring = str
+try:
+    long
+except NameError:
+    long = int
 
 
 def interactive_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):
@@ -78,7 +93,8 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                     else:
                         # channel_layer.send(channel, {'text': json.dumps(
                             # ['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
-                        channel_layer.send(channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
+                        channel_layer.send(
+                            channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
                     break
                 now = time.time()
                 delay = now - last_write_time['last_activity_time']
@@ -140,7 +156,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                 pass
             except UnicodeDecodeError:
                 channel_layer.send(channel, {'bytes': data})
-            except Exception, e:
+            except Exception as e:
                 # print(type(data))
                 # print(repr(data))
                 logger.error(traceback.print_exc())
@@ -231,7 +247,7 @@ class SshTerminalThread(threading.Thread):
                 if isinstance(text['data'], (str, basestring, unicode)):
                     try:
                         data = ast.literal_eval(text['data'])
-                    except Exception, e:
+                    except Exception as e:
                         data = text['data']
                 else:
                     data = text['data']
@@ -242,7 +258,8 @@ class SshTerminalThread(threading.Thread):
                         self.stop()
                     elif data[0] == 'set_size':
                         try:
-                            self.chan.resize_pty(width=data[3], height=data[4], width_pixels=data[1], height_pixels=data[2])
+                            self.chan.resize_pty(
+                                width=data[3], height=data[4], width_pixels=data[1], height_pixels=data[2])
                         except (TypeError, struct.error, paramiko.SSHException):
                             pass
                     elif data[0] in ['stdin', 'stdout']:
@@ -259,7 +276,10 @@ class SshTerminalThread(threading.Thread):
                     if data == 1 and first_flag:
                         first_flag = False
                     else:
-                        self.chan.send(str(data))
+                        if isinstance(data, bytes):
+                            self.chan.send(data)
+                        else:
+                            self.chan.send(str(data))
                 else:
                     try:
                         # get user command and block user action in the future
@@ -272,7 +292,10 @@ class SshTerminalThread(threading.Thread):
                                     'command input {0}'.format(record_command))
                                 command = list()
                         # vi bug need to be fixed
-                        self.chan.send(str(data))
+                        if isinstance(data, bytes):
+                            self.chan.send(data)
+                        else:
+                            self.chan.send(str(data))
                     except socket.error:
                         logger.error('close threading error')
                         self.stop()

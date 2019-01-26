@@ -1,6 +1,14 @@
 #from django.utils.importlib import import_module
 from importlib import import_module
 from elfinder.conf import settings as ls
+try:
+    basestring
+except NameError:
+    basestring = str
+try:
+    unicode
+except NameError:
+    unicode = str
 
 
 def get_path_driver(hash_, optionset):

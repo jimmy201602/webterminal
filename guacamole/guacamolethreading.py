@@ -76,7 +76,7 @@ class GuacamoleThreadWrite(GuacamoleThread):
             text = self.queue.get_message()
             try:
                 data = ast.literal_eval(text['data'])
-            except Exception, e:
+            except Exception as e:
                 if isinstance(text, dict) and text.has_key('data'):
                     data = text['data']
                 elif isinstance(text, (unicode, basestring)):
