@@ -136,7 +136,7 @@ class ElfinderConnector:
         errors = []
         for msg in args:
             if not isinstance(msg, basestring):
-                errors += msg
+                errors.append(str(msg))
             else:
                 errors.append(msg)
 
