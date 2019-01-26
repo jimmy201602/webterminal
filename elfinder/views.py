@@ -86,7 +86,6 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
         elif 'raw' in context and context['raw'] and 'error' in context and context['error']:
             kwargs['content'] = context['error']
         elif kwargs['content_type'] == 'application/json':  # return json
-            print(context)
             kwargs['content'] = json.dumps(context)
         else:  # return context as is!
             kwargs['content'] = context
