@@ -1,10 +1,7 @@
 #from django.utils.importlib import import_module
 from importlib import import_module
 from elfinder.conf import settings as ls
-try:
-    basestring
-except NameError:
-    basestring = str
+from six import string_types as basestring
 try:
     unicode
 except NameError:
