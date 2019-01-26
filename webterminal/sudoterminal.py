@@ -4,10 +4,10 @@ try:
     import simplejson as json
 except ImportError:
     import json
-    try:
-        from django.utils.encoding import smart_unicode
-    except ImportError:
-        from django.utils.encoding import smart_text as smart_unicode
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
 import threading
 from common.models import ServerInfor
 try:

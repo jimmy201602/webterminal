@@ -188,7 +188,8 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         Attempt to read the file's mimetype
         """
-        return magic.Magic(mime=True).from_file(path.encode('utf-8'))  # unicode filename support
+        # unicode filename support
+        return magic.Magic(mime=True).from_file(path.encode('utf-8'))
 
     def _readlink(self, path):
         """
@@ -210,7 +211,7 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         Return files list in directory.
         The '.' and '..' special directories are omitted.
         """
-        return map(lambda x: self._join_path(path, x), os.listdir(path))
+        return list(map(lambda x: self._join_path(path, x), os.listdir(path)))
 
     def _fopen(self, path, mode='rb'):
         """
