@@ -158,13 +158,15 @@ class CredentialCreate(LoginRequiredMixin, TemplateView):
     def post(self, request):
         if request.is_ajax():
             try:
-                data = json.loads(request.body)
+                if isinstance(request.body, bytes):
+                    data = json.loads(request.body.decode())
+                else:
+                    data = json.loads(request.body)
                 id = data.get('id', None)
                 action = data.get('action', None)
                 fields = [
                     field.name for field in Credential._meta.get_fields()]
-                [data.pop(field)
-                 for field in data.keys() if field not in fields]
+                data = {k: v for k, v in data.items() if k in fields}
                 if action == 'create':
                     if not request.user.has_perm('common.can_add_credential'):
                         raise PermissionDenied(_('403 Forbidden'))
