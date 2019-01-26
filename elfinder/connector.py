@@ -11,7 +11,10 @@ try:
     sys.setdefaultencoding("utf-8")
 except:
     pass
-
+try:
+    basestring
+except NameError:
+    basestring = str
 from collections import defaultdict
 
 
@@ -75,7 +78,10 @@ class ElfinderConnector:
             try:
                 volume = instantiate_driver(o)
             except Exception as e:
-                self._mountErrors.append(e.__unicode__())
+                try:
+                    self._mountErrors.append(e.__unicode__())
+                except AttributeError:
+                    self._mountErrors.append(e)
                 continue
 
             id_ = volume.id()
