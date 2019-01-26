@@ -10,7 +10,7 @@ except ImportError:
 from hashlib import md5
 from django.conf import settings
 from elfinder.exceptions import ElfinderErrorMessages, NotAnImageError, DirNotFoundError
-from base import ElfinderVolumeDriver
+from elfinder.volumes.base import ElfinderVolumeDriver
 
 
 class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
@@ -31,8 +31,14 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         # Required to count total archive files size
         self._archiveSize = 0
 
-        self._options['dirMode'] = 0755  # new dirs mode
-        self._options['fileMode'] = 0644  # new files mode
+        # try:
+        # self._options['dirMode'] = 0755  # new dirs mode
+        # except Exception:
+        self._options['dirMode'] = 0o755  # new dirs mode
+        # try:
+        # self._options['fileMode'] = 0644  # new files mode
+        # except Exception:
+        self._options['fileMode'] = 0o644  # new files mode
 
     #*********************************************************************#
     #*                        INIT AND CONFIGURE                         *#

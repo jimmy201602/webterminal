@@ -5,7 +5,10 @@ try:
 except ImportError:
     import json
 import sys
-from django.utils.encoding import smart_unicode
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
 from common.utils import get_redis_instance, mkdir_p, WebsocketAuth
 from guacamole.client import GuacamoleClient
 import uuid
