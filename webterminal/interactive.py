@@ -46,6 +46,10 @@ try:
     basestring
 except NameError:
     basestring = str
+try:
+    long
+except NameError:
+    long = int
 
 
 def interactive_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):

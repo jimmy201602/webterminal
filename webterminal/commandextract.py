@@ -131,4 +131,7 @@ class CommandDeal(object):
                                           [\x80-\x9f] | (?:\x1b\]0.*) | \[.*@.*\][\$#] | (.*mysql>.*)      #enter every special key
                                           """, re.X)
         result_command = control_char.sub('', result_command.strip())
-        return result_command.decode('utf8', "ignore")
+        try:
+            return result_command.decode('utf8', "ignore")
+        except:
+            return result_command
