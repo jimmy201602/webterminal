@@ -31,6 +31,14 @@ except ImportError:
     from io import StringIO
 logger = logging.getLogger(__name__)
 import uuid
+try:
+    basestring
+except NameError:
+    basestring = str
+try:
+    unicode
+except NameError:
+    unicode = str
 
 
 class Webterminal(WebsocketConsumer, WebsocketAuth):
@@ -247,7 +255,7 @@ class CommandExecute(WebsocketConsumer, WebsocketAuth):
                 data = json.loads(text)
                 if isinstance(data, list):
                     return
-                if data.has_key('parameter'):
+                if 'parameter' in data.keys():
                     parameter = data['parameter']
                     taskname = parameter.get('taskname', None)
                     groupname = parameter.get('groupname', None)
