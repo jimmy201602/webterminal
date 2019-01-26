@@ -42,10 +42,7 @@ try:
     unicode
 except NameError:
     unicode = str
-try:
-    basestring
-except NameError:
-    basestring = str
+from six import string_types as basestring
 try:
     long
 except NameError:

@@ -16,10 +16,7 @@ from django.core.files import File as DjangoFile
 from importlib import import_module
 from elfinder.exceptions import NotAnImageError, ElfinderErrorMessages
 from elfinder.volumes.base import ElfinderVolumeDriver
-try:
-    basestring
-except NameError:
-    basestring = str
+from six import string_types as basestring
 
 
 class ElfinderVolumeStorage(ElfinderVolumeDriver):
@@ -302,6 +299,9 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         mime = magic.Magic(mime=True).from_buffer(
             fp.read(10))  # read 10 bytes
         fp.close()
+        # if mime == b'application/x-empty':
+        # mime = 'application/x-empty'
+        # print(mime)
         return mime
 
     def _scandir(self, path):
