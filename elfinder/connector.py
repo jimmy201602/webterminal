@@ -1,7 +1,10 @@
 import os
 import re
 import time
-import urllib
+try:
+    from urllib import parse as urllib
+except:
+    import urllib
 from django.utils.translation import ugettext_lazy as _
 from elfinder.exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
 from .utils.volumes import instantiate_driver
@@ -11,11 +14,9 @@ try:
     sys.setdefaultencoding("utf-8")
 except:
     pass
-try:
-    basestring
-except NameError:
-    basestring = str
+from six import string_types as basestring
 from collections import defaultdict
+import traceback
 
 
 class ElfinderConnector:
@@ -193,7 +194,7 @@ class ElfinderConnector:
 
         # fix sftp open transfer not close session bug
         # if cmd is file then not close file descriptor
-        if cmd != u'file' and self._volumes.has_key('spdfid_'):
+        if cmd != u'file' and 'spdfid_' in self._volumes.keys():
             self._volumes['spdfid_']._options['storage'].sftp.close()
         return result
 
@@ -281,7 +282,7 @@ class ElfinderConnector:
 
         if init:
             result['api'] = self._version
-            result['netDrivers'] = self._netDrivers.keys()
+            result['netDrivers'] = list(self._netDrivers.keys())
             result['uplMaxSize'] = volume.upload_max_size()
 
         return result

@@ -31,10 +31,7 @@ except ImportError:
     from io import StringIO
 logger = logging.getLogger(__name__)
 import uuid
-try:
-    basestring
-except NameError:
-    basestring = str
+from six import string_types as basestring
 try:
     unicode
 except NameError:
