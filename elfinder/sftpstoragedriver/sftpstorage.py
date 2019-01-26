@@ -237,7 +237,10 @@ class SFTPStorageFile(File):
     def write(self, content):
         if 'w' not in self._mode and 'a' not in self._mode:
             raise AttributeError("File was opened for read-only access.")
-        self.file = BytesIO(content)
+        if isinstance(content, str):
+            self.file = BytesIO(content.encode())
+        else:
+            self.file = BytesIO(bytes(content))
         self._is_dirty = True
         self._is_read = True
 

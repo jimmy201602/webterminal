@@ -1206,6 +1206,8 @@ class ElfinderVolumeDriver(object):
                 else: #file
                     if not 'tmb' in stat and self._can_create_tmb(path, stat):
                         stat['tmb'] = self._get_tmb(stat['target'] if 'target' in stat else path, stat)
+                    if isinstance(stat['mime'],str):
+                        stat['mime'] = stat['mime'].encode()
                     if not 'dim' in stat and stat['mime'].decode().startswith('image'):
                         try:
                             stat['dim'] = self._dimensions(path)
