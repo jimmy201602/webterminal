@@ -1,7 +1,10 @@
 import os
 import re
 import time
-import urllib
+try:
+    from urllib import parse as urllib
+except:
+    import urllib
 from django.utils.translation import ugettext_lazy as _
 from elfinder.exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
 from .utils.volumes import instantiate_driver
