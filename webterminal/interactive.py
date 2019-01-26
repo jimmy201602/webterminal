@@ -276,7 +276,10 @@ class SshTerminalThread(threading.Thread):
                     if data == 1 and first_flag:
                         first_flag = False
                     else:
-                        self.chan.send(str(data))
+                        if isinstance(data, bytes):
+                            self.chan.send(data)
+                        else:
+                            self.chan.send(str(data))
                 else:
                     try:
                         # get user command and block user action in the future
@@ -289,7 +292,10 @@ class SshTerminalThread(threading.Thread):
                                     'command input {0}'.format(record_command))
                                 command = list()
                         # vi bug need to be fixed
-                        self.chan.send(str(data))
+                        if isinstance(data, bytes):
+                            self.chan.send(data)
+                        else:
+                            self.chan.send(str(data))
                     except socket.error:
                         logger.error('close threading error')
                         self.stop()
