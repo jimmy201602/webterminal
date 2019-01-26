@@ -671,10 +671,12 @@ class ElfinderConnector:
 
         # the content will be returned as json, so try to json encode it
         # throw an error if it cannot be properly serialized
+        if isinstance(content, bytes):
+            content = content.decode()
         try:
             import json
             json.dumps(content)
-        except:
+        except Exception as e:
             return {'error': self.error(ElfinderErrorMessages.ERROR_NOT_UTF8_CONTENT, volume.path(target))}
 
         return {'content': content}
