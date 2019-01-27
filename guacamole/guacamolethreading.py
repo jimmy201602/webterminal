@@ -13,6 +13,15 @@ from django.utils.timezone import now
 from webterminal.settings import MEDIA_ROOT
 import os
 from common.utils import get_redis_instance
+try:
+    long
+except NameError:
+    long = int
+try:
+    unicode
+except NameError:
+    unicode = str
+from six import string_types as basestring
 
 
 class GuacamoleThread(threading.Thread):
@@ -52,6 +61,9 @@ class GuacamoleThread(threading.Thread):
                 try:
                     instruction = self.client.receive()
                     if instruction:
+                        if instruction.startswith('bytearray(b'):
+                            instruction = instruction.rsplit(
+                                "bytearray(b'")[1].rsplit("')")[0]
                         channel_layer.send(self.message.reply_channel.name, {
                                            "text": instruction})
                         # with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
@@ -77,7 +89,7 @@ class GuacamoleThreadWrite(GuacamoleThread):
             try:
                 data = ast.literal_eval(text['data'])
             except Exception as e:
-                if isinstance(text, dict) and text.has_key('data'):
+                if isinstance(text, dict) and 'data' in text.keys():
                     data = text['data']
                 elif isinstance(text, (unicode, basestring)):
                     data = text
@@ -93,7 +105,7 @@ class GuacamoleThreadWrite(GuacamoleThread):
                 else:
                     # print('write',data)
                     with self.write_lock:
-                        self.client.send(str(data))
+                        self.client.send(data)
                         # with open(os.path.join(self.recording_path,self.message.reply_channel.name),'ab+') as f:
                         # f.write(data)
             else:

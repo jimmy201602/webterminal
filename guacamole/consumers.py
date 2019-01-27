@@ -14,10 +14,6 @@ from guacamole.client import GuacamoleClient
 import uuid
 from django.conf import settings
 from guacamole.guacamolethreading import GuacamoleThread, GuacamoleThreadWrite
-try:
-    import simplejson as json
-except ImportError:
-    import json
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from common.models import ServerInfor, Log
 from django.utils.timezone import now
@@ -26,6 +22,7 @@ from webterminal.settings import MEDIA_ROOT
 import os
 from guacamole.instruction import GuacamoleInstruction as Instruction
 from permission.models import Permission
+import traceback
 
 
 class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
@@ -73,11 +70,11 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
                 # server info not exist
                 self.message.reply_channel.send({"accept": False})
             cache_key = str(uuid.uuid4())
-
             directory_date_time = now()
             recording_path = os.path.join(MEDIA_ROOT, '{0}-{1}-{2}'.format(
                 directory_date_time.year, directory_date_time.month, directory_date_time.day))
-            drive_path = os.path.join(MEDIA_ROOT, username)
+
+            drive_path = os.path.join(MEDIA_ROOT, str(username))
             """
             Create recording media file and drive path
             """
@@ -108,10 +105,11 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
                                  enable_full_window_drag='true',
                                  resize_method="reconnect"  # display-update
                                  )
-            except Exception:
+            except Exception as e:
+                print(e)
+                print(traceback.print_exc())
                 self.message.reply_channel.send({"accept": False})
                 return
-
             self.message.reply_channel.send(
                 {"text": '0.,{0}.{1};'.format(len(cache_key), cache_key)}, immediately=True)
 
