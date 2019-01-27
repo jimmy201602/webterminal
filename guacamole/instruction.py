@@ -66,6 +66,11 @@ class GuacamoleInstruction(object):
 
         :return: GuacamoleInstruction()
         """
+        if instruction.startswith('bytearray(b'):
+            # bytearray(b'4.args,8.hostname,4.port,6.domain,8.username,8.password,5.width,6.height,3.dpi,15.initial-program,11.color-depth,13.disable-audio,15.enable-printing,12.printer-name,12.enable-drive,10.drive-name,10.drive-path,17.create-drive-path,7.console,13.console-audio,13.server-layout,8.security,11.ignore-cert,12.disable-auth,10.remote-app,14.remote-app-dir,15.remote-app-args,15.static-channels,11.client-name,16.enable-wallpaper,14.enable-theming,21.enable-font-smoothing,23.enable-full-window-drag,26.enable-desktop-composition,22.enable-menu-animations,22.disable-bitmap-caching,25.disable-offscreen-caching,21.disable-glyph-caching,16.preconnection-id,18.preconnection-blob,11.enable-sftp,13.sftp-hostname,13.sftp-host-key,9.sftp-port,13.sftp-username,13.sftp-password,16.sftp-private-key,15.sftp-passphrase,14.sftp-directory,19.sftp-root-directory,26.sftp-server-alive-interval,14.recording-path,14.recording-name,24.recording-exclude-output,23.recording-exclude-mouse,22.recording-include-keys,21.create-recording-path,13.resize-method,18.enable-audio-input,9.read-only,16.gateway-hostname,12.gateway-port,14.gateway-domain,16.gateway-username,16.gateway-password,17.load-balance-info;')
+            instruction = instruction.rsplit(
+                "bytearray(b'")[1].rsplit("')")[0]
+        # print(instruction)
         if not instruction.endswith(INST_TERM):
             raise InvalidInstruction('Instruction termination not found.')
 
