@@ -70,7 +70,10 @@ class Commands(LoginRequiredMixin, TemplateView):
     def post(self, request):
         if request.is_ajax():
             try:
-                data = json.loads(request.body)
+                if isinstance(request.body, bytes):
+                    data = json.loads(request.body.decode())
+                else:
+                    data = json.loads(request.body)
                 if data['action'] == 'create':
                     if not request.user.has_perm('common.can_add_commandssequence'):
                         raise PermissionDenied(_('403 Forbidden'))
