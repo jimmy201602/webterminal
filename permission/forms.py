@@ -21,7 +21,7 @@ class RegisterForm(forms.Form):
         self.helper.layout = Layout(*[Div(field, css_class='form-group')
                                       for field in ['user', 'newpassword1', 'newpassword2', 'email']])
         self.instance = False
-        if kwargs.has_key('instance'):
+        if 'instance' in kwargs.keys():
             kwargs.pop('instance')
             self.instance = True
         super(RegisterForm, self).__init__(*args, **kwargs)
@@ -79,7 +79,7 @@ class RegisterForm(forms.Form):
                 u"your password does't the same"), 'newpassword2': _(u"your password does't the same")})
         elif self.cleaned_data['user']:
             if not self.instance:
-                if User.objects.filter(username=unicode(self.cleaned_data['user'])):
+                if User.objects.filter(username=self.cleaned_data['user']):
                     raise forms.ValidationError(
                         {'user': _(u"User name has been registered!")})
         cleaned_data = super(RegisterForm, self).clean()

@@ -31,6 +31,9 @@ class ServerInfor(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     def gethostname(self):
         return slugify('{0} {1} {2} {3}'.format(self.name, self.ip, self.hostname, ''.join(random.choice(string.ascii_letters) for _ in range(15)).lower()))
 
@@ -62,6 +65,9 @@ class ServerGroup(models.Model):
         auto_created=True, auto_now=True, verbose_name=_('Update time'))
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -119,6 +125,9 @@ class Credential(models.Model):
     def __unicode__(self):
         return self.name
 
+    def __str__(self):
+        return self.name
+
     def clean(self):
         if self.protocol == 'ssh-password' or self.protocol == 'ssh-key':
             if self.method == 'password' and len(self.password) == 0:
@@ -155,6 +164,9 @@ class CommandsSequence(models.Model):
         ServerGroup, verbose_name=_('Server group you want to execute'))
 
     def __unicode__(self):
+        return self.name
+
+    def __str__(self):
         return self.name
 
     def clean(self):
@@ -202,6 +214,9 @@ class Log(models.Model):
     def __unicode__(self):
         return self.server.name
 
+    def __str__(self):
+        return self.server.name
+
     class Meta:
         permissions = (
             ("can_delete_log", _("Can delete log info")),
@@ -228,6 +243,9 @@ class CommandLog(models.Model):
         ]
 
     def __unicode__(self):
+        return self.log.user.username
+
+    def __str__(self):
         return self.log.user.username
 
 # Create your models here.

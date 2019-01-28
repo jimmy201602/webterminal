@@ -24,6 +24,9 @@ class Permission(models.Model):
     def __unicode__(self):
         return self.user.username
 
+    def __str__(self):
+        return self.user.username
+
     class Meta:
         permissions = (
             ("can_add_user", _("Can add user")),
