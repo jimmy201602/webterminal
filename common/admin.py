@@ -5,7 +5,7 @@ from django import forms
 from django.contrib.admin.forms import AdminAuthenticationForm
 from django.contrib.admin.sites import AdminSite
 from django.contrib import admin
-from common.models import ServerInfor, ServerGroup, Credential, CommandsSequence, Log
+from common.models import ServerInfor, ServerGroup, Credential, CommandsSequence, Log, CommandLog
 #from django_otp.forms import OTPAuthenticationFormMixin
 
 
@@ -33,6 +33,7 @@ admin.site.register(ServerInfor, ServerInforAdmin)
 admin.site.register(ServerGroup)
 admin.site.register(Credential, CredentialAdmin)
 admin.site.register(CommandsSequence)
+admin.site.register(CommandLog)
 admin.site.register(Log, LogAdmin)
 
 # class OTPAdminAuthenticationForm(AdminAuthenticationForm, OTPAuthenticationFormMixin):
