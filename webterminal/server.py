@@ -28,7 +28,10 @@ import traceback
 import select
 import paramiko
 from paramiko.py3compat import b, u, decodebytes, string_types
-
+try:
+    import SocketServer
+except ImportError:
+    import socketserver as SocketServer
 
 # setup logging
 paramiko.util.log_to_file("demo_server.log")
@@ -36,7 +39,7 @@ paramiko.util.log_to_file("demo_server.log")
 host_key = paramiko.RSAKey(filename="test_rsa.key")
 # host_key = paramiko.DSSKey(filename='test_dss.key')
 
-print("Read key: " + u(hexlify(host_key.get_fingerprint())))
+# print("Read key: " + u(hexlify(host_key.get_fingerprint())))
 
 
 class Server(paramiko.ServerInterface):
@@ -124,30 +127,6 @@ class Server(paramiko.ServerInterface):
         return True
 
 
-DoGSSAPIKeyExchange = True
-
-# now connect
-try:
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(("", 2100))
-except Exception as e:
-    print("*** Bind failed: " + str(e))
-    traceback.print_exc()
-    sys.exit(1)
-
-try:
-    sock.listen(100)
-    print("Listening for connection ...")
-    client, addr = sock.accept()
-except Exception as e:
-    print("*** Listen/accept failed: " + str(e))
-    traceback.print_exc()
-    sys.exit(1)
-
-print("Got a connection!")
-
-
 def posix_shell(chan, channel):
     try:
         while True:
@@ -158,11 +137,8 @@ def posix_shell(chan, channel):
                     channel.send('\r\n*** EOF\r\n')
                     print('posix_shell', x)
                     break
-                if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
+                if data == "exit\r\n" or data == "logout\r\n" or data == 'logout':
                     chan.close()
-                else:
-                    print('posix_shell not exit', x)
-                    channel.send(x)
                 channel.send(data)
             else:
                 print('else')
@@ -171,63 +147,79 @@ def posix_shell(chan, channel):
         channel.close()
 
 
-try:
-    t = paramiko.Transport(client, gss_kex=False)
-    # t.local_version = "webterminal ssh server"
-    t.set_gss_host(socket.getfqdn(""))
-    try:
-        t.load_server_moduli()
-    except:
-        print("(Failed to load moduli -- gex will be unsupported.)")
-        raise
-    t.add_server_key(host_key)
-    server = Server()
-    try:
-        t.start_server(server=server)
-    except paramiko.SSHException:
-        print("*** SSH negotiation failed.")
-        sys.exit(1)
+class SshServer(SocketServer.BaseRequestHandler):
+    def handle(self):
+        try:
+            # self.request
+            t = paramiko.Transport(self.request, gss_kex=False)
+            # t.local_version = "webterminal ssh server"
+            t.set_gss_host(socket.getfqdn(""))
+            try:
+                t.load_server_moduli()
+            except:
+                print("(Failed to load moduli -- gex will be unsupported.)")
+                raise
+            t.add_server_key(host_key)
+            server = Server()
+            try:
+                t.start_server(server=server)
+            except paramiko.SSHException:
+                print("*** SSH negotiation failed.")
+                sys.exit(1)
 
-    # wait for auth
-    chan = t.accept(20)
-    if chan is None:
-        print("*** No channel.")
-        sys.exit(1)
-    print("Authenticated!")
+            # wait for auth
+            chan = t.accept(20)
+            if chan is None:
+                print("*** No channel.")
+                sys.exit(1)
+            print("Authenticated!")
 
-    server.event.wait(10)
-    if not server.event.is_set():
-        print("*** Client never asked for a shell.")
-        sys.exit(1)
+            server.event.wait(10)
+            if not server.event.is_set():
+                print("*** Client never asked for a shell.")
+                sys.exit(1)
 
-    chan.send("Welcome to webterminal ssh server!\r\n\r\n")
+            chan.send("Welcome to webterminal ssh server!\r\n\r\n")
 
-    # forward chan
-    ssh = paramiko.SSHClient()
-    ssh.set_missing_host_key_policy(
-        paramiko.AutoAddPolicy())
-    ssh.connect(
-        '127.0.0.1', port=2200, username='root', password='root', timeout=3)
-    sendchan = ssh.invoke_shell()
-    t = threading.Thread(target=posix_shell, args=(chan, sendchan))
-    t.setDaemon(True)
-    t.start()
+            # forward chan
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(
+                paramiko.AutoAddPolicy())
+            ssh.connect(
+                '127.0.0.1', port=2200, username='root', password='root', timeout=3)
+            sendchan = ssh.invoke_shell()
+            t = threading.Thread(target=posix_shell, args=(chan, sendchan))
+            t.setDaemon(True)
+            t.start()
 
-    while True:
-        r, w, x = select.select([sendchan], [], [])
-        if sendchan in r:
-            byte = sendchan.recv(1024 * 24)
-            chan.send(byte)
-            if byte == '':
-                break
-    chan.close()
-    sendchan.close()
+            while True:
+                r, w, x = select.select([sendchan], [], [])
+                if sendchan in r:
+                    byte = sendchan.recv(1024 * 24)
+                    chan.send(byte)
+                    if byte == '':
+                        break
+            chan.close()
+            sendchan.close()
 
-except Exception as e:
-    print("*** Caught exception: " + str(e.__class__) + ": " + str(e))
-    traceback.print_exc()
-    try:
-        t.close()
-    except:
-        pass
-sys.exit(1)
+        except Exception as e:
+            print("*** Caught exception: " +
+                  str(e.__class__) + ": " + str(e))
+            traceback.print_exc()
+            try:
+                t.close()
+            except:
+                pass
+
+
+class ForwardServer(SocketServer.ThreadingTCPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+
+
+def main():
+    ForwardServer(("", 2100), SshServer).serve_forever()
+
+
+if __name__ == '__main__':
+    main()
