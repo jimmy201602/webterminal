@@ -234,7 +234,7 @@ class ForwardServer(SocketServer.ThreadingTCPServer):
 
 
 def main():
-    ForwardServer(("", 2100), SshServer).serve_forever()
+    ForwardServer(("0.0.0.0", 2100), SshServer).serve_forever()
 
 
 if __name__ == '__main__':
