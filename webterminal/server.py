@@ -205,7 +205,13 @@ class SshServer(SocketServer.BaseRequestHandler):
                 r, w, x = select.select([sendchan], [], [])
                 if sendchan in r:
                     byte = sendchan.recv(1024 * 24)
-                    chan.send(byte)
+                    if byte == b'' or byte == '':
+                        break
+                    try:
+                        chan.send(byte)
+                    except socket.error:
+                        print('return')
+                        return
                     if byte == '':
                         break
             print('Session closed')
