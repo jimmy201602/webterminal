@@ -121,8 +121,6 @@ class Server(paramiko.ServerInterface):
 
     def check_channel_window_change_request(self, channel, width, height,
                                             pixelwidth, pixelheight):
-        # # print channel, width, height, pixelwidth, pixelheight, 88888888
-        # self.chan_ser.resize_pty(width=width, height=height)
         print(width, height)
         return True
 
