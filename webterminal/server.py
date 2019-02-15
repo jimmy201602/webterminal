@@ -118,7 +118,7 @@ class Server(paramiko.ServerInterface):
         return True
 
     def get_banner(self):
-        return ('test', 'test')
+        return ('Webterminal', 'version 1.0')
 
     def check_channel_window_change_request(self, channel, width, height,
                                             pixelwidth, pixelheight):
