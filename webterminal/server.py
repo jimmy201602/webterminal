@@ -201,6 +201,7 @@ class SshServer(SocketServer.BaseRequestHandler):
                     chan.send(byte)
                     if byte == '':
                         break
+            print('Session closed')
             chan.close()
             sendchan.close()
 
