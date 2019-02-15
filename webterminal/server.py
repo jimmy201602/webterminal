@@ -52,6 +52,7 @@ class Server(paramiko.ServerInterface):
         b"UWT10hcuO4Ks8="
     )
     good_pub_key = paramiko.RSAKey(data=decodebytes(data))
+    channel = None
 
     def __init__(self):
         self.event = threading.Event()
@@ -121,7 +122,9 @@ class Server(paramiko.ServerInterface):
 
     def check_channel_window_change_request(self, channel, width, height,
                                             pixelwidth, pixelheight):
-        print(width, height)
+        print("Change window size to {0}*{1})".format(width, height))
+        if self.channel is not None:
+            self.channel.resize_pty(width=width, height=height)
         return True
 
 
@@ -190,6 +193,7 @@ class SshServer(SocketServer.BaseRequestHandler):
             t.setDaemon(True)
             t.start()
 
+            server.channel = sendchan
             while True:
                 r, w, x = select.select([sendchan], [], [])
                 if sendchan in r:
