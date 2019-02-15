@@ -39,6 +39,7 @@ try:
     import SocketServer
 except ImportError:
     import socketserver as SocketServer
+from common.utils import get_redis_instance
 
 # setup logging
 paramiko.util.log_to_file("demo_server.log")
@@ -70,7 +71,8 @@ class Server(paramiko.ServerInterface):
         return paramiko.OPEN_FAILED_ADMINISTRATIVELY_PROHIBITED
 
     def check_auth_password(self, username, password):
-        if (username == "robey") and (password == "foo"):
+        conn = get_redis_instance()
+        if conn.get(username) == conn.get(password):
             return paramiko.AUTH_SUCCESSFUL
         return paramiko.AUTH_FAILED
 

@@ -27,6 +27,7 @@ from django.urls import reverse_lazy
 from common.views import LoginRequiredMixin
 import traceback
 import re
+import uuid
 try:
     import commands
 except ImportError:
@@ -167,3 +168,21 @@ class SshConnect(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
         context['ip'] = self.kwargs.get('ip')
         context['serverid'] = self.kwargs.get('serverid')
         return context
+
+
+class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    raise_exception = True
+    permission_required = 'common.can_kill_serverinfo'
+
+    def post(self, request):
+        if request.is_ajax():
+            serverid = request.POST.get('serverid', None)
+            try:
+                ServerInfor.objects.get(id=serverid)
+                username = uuid.uuid4().hex[0:5]
+                password = uuid.uuid4().hex
+                conn = get_redis_instance()
+                conn.set(username, password)
+                return JsonResponse({'status': True, 'message': {'username': username, 'password': password}})
+            except ObjectDoesNotExist:
+                return JsonResponse({'status': False, 'message': 'Request object does not exist!'})

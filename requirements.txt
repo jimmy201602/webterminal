@@ -40,3 +40,5 @@ django-otp==0.4.3
 qrcode==4.0.4 
 mock
 #MySQL-python==1.2.5
+crypto
+pycrypto
