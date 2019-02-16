@@ -7,6 +7,7 @@ if sys.version_info[0] == 3:
     python3 = True
 else:
     python3 = False
+import random
 
 
 class PyCrypt(object):

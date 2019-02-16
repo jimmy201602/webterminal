@@ -44,11 +44,18 @@ from common.models import Credential, ServerInfor, Log
 from django.contrib.auth.models import User
 from webterminal.encrypt import PyCrypt
 from django.core.exceptions import ObjectDoesNotExist
-import uuid
 try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
+try:
+    from django.utils.encoding import smart_unicode
+except ImportError:
+    from django.utils.encoding import smart_text as smart_unicode
+try:
+    import simplejson as json
+except ImportError:
+    import json
 # setup logging
 paramiko.util.log_to_file("demo_server.log")
 
@@ -206,8 +213,9 @@ class Server(paramiko.ServerInterface):
         return True
 
 
-def posix_shell(chan, channel):
+def posix_shell(chan, channel, channelid):
     try:
+        from webterminal.asgi import channel_layer
         while True:
             r, w, x = select.select([chan], [], [])
             if chan in r:
@@ -218,6 +226,8 @@ def posix_shell(chan, channel):
                     break
                 if data == "exit\r\n" or data == "logout\r\n" or data == 'logout':
                     chan.close()
+                channel_layer.send_group(
+                    channelid, {'text': json.dumps(['stdout', smart_unicode(data)])})
                 channel.send(data)
             else:
                 print('else')
@@ -296,7 +306,7 @@ class SshServer(SocketServer.BaseRequestHandler):
                     ssh.connect(
                         ip, port=port, username=username, pkey=private_key, timeout=3)
                 # record log
-                channelid = uuid.uuid4().hex
+                channelid = smart_unicode(PyCrypt.random_pass(32))
                 server.channelid = channelid
                 audit_log = Log.objects.create(user=User.objects.get(
                     username=server.request_http_username), server=data, channel=channelid, width=80, height=24)
@@ -306,11 +316,13 @@ class SshServer(SocketServer.BaseRequestHandler):
                 return
 
             sendchan = ssh.invoke_shell()
-            t = threading.Thread(target=posix_shell, args=(chan, sendchan))
+            t = threading.Thread(target=posix_shell, args=(
+                chan, sendchan, server.channelid))
             t.setDaemon(True)
             t.start()
 
             server.channel = sendchan
+            from webterminal.asgi import channel_layer
             while True:
                 r, w, x = select.select([sendchan], [], [])
                 if sendchan in r:
@@ -318,6 +330,8 @@ class SshServer(SocketServer.BaseRequestHandler):
                     if byte == b'' or byte == '':
                         break
                     try:
+                        channel_layer.send_group(
+                            server.channelid, {'text': json.dumps(['stdout', smart_unicode(byte)])})
                         chan.send(byte)
                     except socket.error:
                         print('return')
