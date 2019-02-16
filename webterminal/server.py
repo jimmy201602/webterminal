@@ -239,15 +239,15 @@ def posix_shell(chan, channel, channelid):
                                                      directory_date_time.month, directory_date_time.day), '{0}'.format(channelid))
         from webterminal.asgi import channel_layer
         while True:
-            r, w, x = select.select([chan], [], [])
-            if chan in r:
-                data = chan.recv(1024 * 24)
+            r, w, x = select.select([channel], [], [])
+            if channel in r:
+                data = channel.recv(1024 * 24)
                 if len(data) == 0:
-                    channel.send('\r\n*** EOF\r\n')
-                    print('posix_shell', x)
+                    if not channel.closed:
+                        channel.send('\r\n*** EOF\r\n')
                     break
                 if data == "exit\r\n" or data == "logout\r\n" or data == 'logout':
-                    chan.close()
+                    channel.close()
 
                 now = time.time()
                 delay = now - last_write_time['last_activity_time']
@@ -257,7 +257,6 @@ def posix_shell(chan, channel, channelid):
                     vim_data += data
 
                 if '\r' not in smart_unicode(data):
-                    print('append', data)
                     command.append(smart_unicode(data))
                 else:
                     command_result = CommandDeal().deal_command(''.join(command))
@@ -277,7 +276,6 @@ def posix_shell(chan, channel, channelid):
                                     log=logobj, command=command_result[0:255])
                     command = list()
 
-                print('data', data, command)
                 if isinstance(data, unicode):
                     stdout.append([delay, data])
                 else:
@@ -286,7 +284,7 @@ def posix_shell(chan, channel, channelid):
 
                 channel_layer.send_group(
                     smart_unicode('monitor-{0}'.format(channelid)), {'text': json.dumps(['stdout', smart_unicode(data)])})
-                channel.send(data)
+                chan.send(data)
             else:
                 print('else')
     finally:
@@ -405,23 +403,20 @@ class SshServer(SocketServer.BaseRequestHandler):
             server.channel = sendchan
             from webterminal.asgi import channel_layer
             while True:
-                r, w, x = select.select([sendchan], [], [])
-                if sendchan in r:
-                    byte = sendchan.recv(1024 * 24)
+                r, w, x = select.select([chan], [], [])
+                if chan in r:
+                    byte = chan.recv(1024 * 24)
                     if byte == b'' or byte == '':
                         break
                     try:
                         channel_layer.send_group(
                             smart_unicode('monitor-{0}'.format(server.channelid)), {'text': json.dumps(['stdout', smart_unicode(byte)])})
-                        chan.send(byte)
+                        sendchan.send(byte)
                     except socket.error:
                         print('return')
                         return
                     if byte == '':
                         break
-            print('Session closed')
-            chan.close()
-            sendchan.close()
 
         except Exception as e:
             print("*** Caught exception: " +
