@@ -41,8 +41,10 @@ except ImportError:
     import socketserver as SocketServer
 from common.utils import get_redis_instance
 from common.models import Credential, ServerInfor, Log
+from django.contrib.auth.models import User
 from webterminal.encrypt import PyCrypt
 from django.core.exceptions import ObjectDoesNotExist
+import uuid
 try:
     from StringIO import StringIO
 except ImportError:
@@ -66,6 +68,8 @@ class Server(paramiko.ServerInterface):
     good_pub_key = paramiko.RSAKey(data=decodebytes(data))
     channel = None
     serverid = None
+    request_http_username = None
+    channelid = None
 
     def __init__(self):
         self.event = threading.Event()
@@ -96,7 +100,20 @@ class Server(paramiko.ServerInterface):
             return paramiko.AUTH_FAILED
         else:
             try:
+                if isinstance(serverid, bytes):
+                    serverid = serverid.decode(
+                        'utf8', 'ignore')
+                serverid, request_username = serverid.rsplit('_')
                 serverid = encrypt.decrypt(serverid)
+                request_username = encrypt.decrypt(request_username)
+                self.request_http_username = request_username
+                try:
+                    User.objects.get(username=request_username)
+                except ObjectDoesNotExist:
+                    print('request user name not exist')
+                    conn.delete(username)
+                    conn.delete(key)
+                    return paramiko.AUTH_FAILED
             except:
                 print('user {0} auth failed'.format(username))
                 conn.delete(username)
@@ -279,9 +296,11 @@ class SshServer(SocketServer.BaseRequestHandler):
                     ssh.connect(
                         ip, port=port, username=username, pkey=private_key, timeout=3)
                 # record log
-                # audit_log = Log.objects.create(user=User.objects.get(
-                    # username=self.message.user), server=data, channel=elementid, width=width, height=height)
-                # audit_log.save()
+                channelid = uuid.uuid4().hex
+                server.channelid = channelid
+                audit_log = Log.objects.create(user=User.objects.get(
+                    username=server.request_http_username), server=data, channel=channelid, width=80, height=24)
+                audit_log.save()
             except socket.timeout:
                 print('socket timeout')
                 return
