@@ -33,6 +33,7 @@ try:
 except ImportError:
     import subprocess as commands
 import logging
+from webterminal.encrypt import PyCrypt
 logger = logging.getLogger(__name__)
 
 
@@ -182,6 +183,10 @@ class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView)
                 username = uuid.uuid4().hex[0:5]
                 password = uuid.uuid4().hex
                 conn = get_redis_instance()
+                encrypt = PyCrypt('88aaaf7ffe3c6c0488aaaf7ffe3c6c04')
+                key = encrypt.encrypt(content=username + password)
+                serverid = encrypt.encrypt(content=serverid)
+                conn.set(key, serverid)
                 conn.set(username, password)
                 return JsonResponse({'status': True, 'message': {'username': username, 'password': password}})
             except ObjectDoesNotExist:
