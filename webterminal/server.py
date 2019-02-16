@@ -111,8 +111,14 @@ class Server(paramiko.ServerInterface):
             conn.delete(key)
             return paramiko.AUTH_FAILED
 
+        if isinstance(conn.get(username), bytes) and isinstance(password, str):
+            password = password.encode('utf8', 'ignore')
+
         try:
             if conn.get(username) is not None and password == conn.get(username) and serverid != None:
+                print('success connect to webterminal server')
+                conn.delete(username)
+                conn.delete(key)
                 return paramiko.AUTH_SUCCESSFUL
         except:
             conn.delete(username)
@@ -245,6 +251,7 @@ class SshServer(SocketServer.BaseRequestHandler):
             port = data.credential.port
             method = data.credential.method
             username = data.credential.username
+            ip = data.ip
             if method == 'password':
                 password = data.credential.password
             else:
