@@ -40,6 +40,9 @@ try:
 except ImportError:
     import socketserver as SocketServer
 from common.utils import get_redis_instance
+from common.models import Credential, ServerInfor, Log
+from webterminal.encrypt import PyCrypt
+from django.core.exceptions import ObjectDoesNotExist
 
 # setup logging
 paramiko.util.log_to_file("demo_server.log")
@@ -61,6 +64,7 @@ class Server(paramiko.ServerInterface):
     )
     good_pub_key = paramiko.RSAKey(data=decodebytes(data))
     channel = None
+    serverid = None
 
     def __init__(self):
         self.event = threading.Event()
@@ -72,8 +76,49 @@ class Server(paramiko.ServerInterface):
 
     def check_auth_password(self, username, password):
         conn = get_redis_instance()
-        if conn.get(username) == conn.get(password):
-            return paramiko.AUTH_SUCCESSFUL
+
+        encrypt = PyCrypt('88aaaf7ffe3c6c0488aaaf7ffe3c6c04')
+        if password == '' or password == u'':
+            return paramiko.AUTH_FAILED
+        try:
+            key = encrypt.encrypt(
+                content=username + encrypt.decrypt(password))
+            key = encrypt.md5_crypt(key)
+        except:
+            conn.delete(username)
+            return paramiko.AUTH_FAILED
+
+        serverid = conn.get(key)
+        if serverid is None:
+            conn.delete(username)
+            conn.delete(key)
+            return paramiko.AUTH_FAILED
+        else:
+            try:
+                serverid = encrypt.decrypt(serverid)
+            except:
+                print('user {0} auth failed'.format(username))
+                conn.delete(username)
+                conn.delete(key)
+                return paramiko.AUTH_FAILED
+
+        try:
+            ServerInfor.objects.get(id=serverid)
+            self.serverid = int(serverid)
+        except ObjectDoesNotExist:
+            conn.delete(username)
+            conn.delete(key)
+            return paramiko.AUTH_FAILED
+
+        try:
+            if conn.get(username) is not None and password == conn.get(username) and serverid != None:
+                return paramiko.AUTH_SUCCESSFUL
+        except:
+            conn.delete(username)
+            conn.delete(key)
+            return paramiko.AUTH_FAILED
+        conn.delete(username)
+        conn.delete(key)
         return paramiko.AUTH_FAILED
 
     def check_auth_publickey(self, username, key):
@@ -175,19 +220,18 @@ class SshServer(SocketServer.BaseRequestHandler):
                 t.start_server(server=server)
             except paramiko.SSHException:
                 print("*** SSH negotiation failed.")
-                sys.exit(1)
+                return
 
             # wait for auth
             chan = t.accept(20)
             if chan is None:
                 print("*** No channel.")
-                sys.exit(1)
+                return
             print("Authenticated!")
 
             server.event.wait(10)
             if not server.event.is_set():
                 print("*** Client never asked for a shell.")
-                sys.exit(1)
 
             chan.send("Welcome to webterminal ssh server!\r\n\r\n")
 
