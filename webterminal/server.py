@@ -241,7 +241,7 @@ class SshServer(SocketServer.BaseRequestHandler):
         try:
             # self.request
             t = paramiko.Transport(self.request, gss_kex=False)
-            # t.local_version = "webterminal ssh server"
+            t.local_version = "webterminal ssh server"
             t.set_gss_host(socket.getfqdn(""))
             try:
                 t.load_server_moduli()
