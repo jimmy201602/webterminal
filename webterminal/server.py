@@ -73,42 +73,6 @@ host_key = paramiko.RSAKey(filename="test_rsa.key")
 # host_key = paramiko.DSSKey(filename='test_dss.key')
 
 
-class SshTerminateThreading(threading.Thread):
-    def __init__(self, channel_name, chan):
-        super(SshTerminateThreading, self).__init__()
-        self._stop_event = threading.Event()
-        self.chan = chan
-        self.channel_name = smart_unicode(channel_name)
-        self.queue = self.redis_queue()
-
-    def stop(self):
-        self._stop_event.set()
-
-    def stopped(self):
-        return self._stop_event.is_set()
-
-    def redis_queue(self):
-        redis_instance = get_redis_instance()
-        redis_sub = redis_instance.pubsub()
-        redis_sub.subscribe(self.channel_name)
-        return redis_sub
-
-    def run(self):
-        while (not self._stop_event.is_set()):
-            text = self.queue.get_message()
-            if text:
-                try:
-                    if isinstance(text['data'], bytes):
-                        text['data'] = smart_unicode(text['data'])
-                    data = json.loads(text['data'])
-                except:
-                    data = []
-                if len(data) >= 1 and data[0] == 'close':
-                    if not self.chan.closed:
-                        self.chan.close()
-                    self.stop()
-
-
 class Server(paramiko.ServerInterface):
     # 'data' is the output of base64.b64encode(key)
     # (using the "user_rsa_key" files)
@@ -274,7 +238,24 @@ def posix_shell(chan, channel, channelid):
         log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,
                                                      directory_date_time.month, directory_date_time.day), '{0}'.format(channelid))
         from webterminal.asgi import channel_layer
+        # terminate ssh session control
+        redis_instance = get_redis_instance()
+        redis_sub = redis_instance.pubsub()
+        redis_sub.subscribe(logobj.channel)
         while True:
+
+            text = redis_sub.get_message()
+            if text:
+                try:
+                    if isinstance(text['data'], bytes):
+                        text['data'] = smart_unicode(text['data'])
+                    data = json.loads(text['data'])
+                except:
+                    data = []
+                if len(data) >= 1 and str(data[0]) == 'close':
+                    if not channel.closed:
+                        channel.close()
+
             r, w, x = select.select([channel], [], [])
             if channel in r:
                 data = channel.recv(1024 * 24)
@@ -435,11 +416,6 @@ class SshServer(SocketServer.BaseRequestHandler):
                 chan, sendchan, server.channelid))
             t.setDaemon(True)
             t.start()
-
-            # open a new threading to handle terminate ssh action
-            # sshterminal = SshTerminateThreading(channelid, sendchan)
-            # sshterminal.setDaemon = True
-            # sshterminal.start()
 
             server.channel = sendchan
             while True:
