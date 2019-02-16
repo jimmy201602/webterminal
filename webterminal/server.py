@@ -401,7 +401,6 @@ class SshServer(SocketServer.BaseRequestHandler):
             t.start()
 
             server.channel = sendchan
-            from webterminal.asgi import channel_layer
             while True:
                 r, w, x = select.select([chan], [], [])
                 if chan in r:
@@ -409,8 +408,6 @@ class SshServer(SocketServer.BaseRequestHandler):
                     if byte == b'' or byte == '':
                         break
                     try:
-                        channel_layer.send_group(
-                            smart_unicode('monitor-{0}'.format(server.channelid)), {'text': json.dumps(['stdout', smart_unicode(byte)])})
                         sendchan.send(byte)
                     except socket.error:
                         print('return')
