@@ -62,7 +62,7 @@ class PyCrypt(object):
         try:
             count = len(content)
         except TypeError:
-            raise ServerError('Encrypt password error, TYpe error.')
+            raise Exception('Encrypt password error, TYpe error.')
 
         add = (length - (count % length))
         if python3:
