@@ -43,14 +43,15 @@ from common.utils import get_redis_instance
 from common.models import Credential, ServerInfor, Log
 from webterminal.encrypt import PyCrypt
 from django.core.exceptions import ObjectDoesNotExist
-
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 # setup logging
 paramiko.util.log_to_file("demo_server.log")
 
 host_key = paramiko.RSAKey(filename="test_rsa.key")
 # host_key = paramiko.DSSKey(filename='test_dss.key')
-
-# print("Read key: " + u(hexlify(host_key.get_fingerprint())))
 
 
 class Server(paramiko.ServerInterface):
@@ -123,8 +124,8 @@ class Server(paramiko.ServerInterface):
 
     def check_auth_publickey(self, username, key):
         print("Auth attempt with key: " + u(hexlify(key.get_fingerprint())))
-        print (username, u(hexlify(key.get_fingerprint())
-                           ), u(hexlify(self.good_pub_key.get_fingerprint())))
+        # print (username, u(hexlify(key.get_fingerprint())
+        # ), u(hexlify(self.good_pub_key.get_fingerprint())))
         if (username == "robey") and (key == self.good_pub_key):
             return paramiko.AUTH_SUCCESSFUL
         return paramiko.AUTH_FAILED
@@ -239,8 +240,45 @@ class SshServer(SocketServer.BaseRequestHandler):
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(
                 paramiko.AutoAddPolicy())
-            ssh.connect(
-                '127.0.0.1', port=2200, username='root', password='root', timeout=3)
+
+            data = ServerInfor.objects.get(id=server.serverid)
+            port = data.credential.port
+            method = data.credential.method
+            username = data.credential.username
+            if method == 'password':
+                password = data.credential.password
+            else:
+                key = data.credential.key
+            try:
+                if method == 'password':
+                    ssh.connect(ip, port=port, username=username,
+                                password=password, timeout=3)
+                else:
+                    private_key = StringIO.StringIO(key)
+                    if 'RSA' in key:
+                        private_key = paramiko.RSAKey.from_private_key(
+                            private_key)
+                    elif 'DSA' in key:
+                        private_key = paramiko.DSSKey.from_private_key(
+                            private_key)
+                    elif 'EC' in key:
+                        private_key = paramiko.ECDSAKey.from_private_key(
+                            private_key)
+                    elif 'OPENSSH' in key:
+                        private_key = paramiko.Ed25519Key.from_private_key(
+                            private_key)
+                    else:
+                        print('unsupported key')
+                    ssh.connect(
+                        ip, port=port, username=username, pkey=private_key, timeout=3)
+                # record log
+                # audit_log = Log.objects.create(user=User.objects.get(
+                    # username=self.message.user), server=data, channel=elementid, width=width, height=height)
+                # audit_log.save()
+            except socket.timeout:
+                print('socket timeout')
+                return
+
             sendchan = ssh.invoke_shell()
             t = threading.Thread(target=posix_shell, args=(chan, sendchan))
             t.setDaemon(True)
