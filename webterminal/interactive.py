@@ -32,7 +32,7 @@ from webterminal.settings import MEDIA_ROOT
 import threading
 import ast
 import traceback
-from common.utils import get_redis_instance, mkdir_p
+from common.utils import get_redis_instance, mkdir_p, CustomeFloatEncoder
 from webterminal.commandextract import CommandDeal
 import struct
 import paramiko
@@ -55,13 +55,6 @@ def interactive_shell(chan, channel, log_name=None, width=90, height=40, element
                     width=width, height=height, elementid=elementid)
     else:
         sys.exit(1)
-
-
-class CustomeFloatEncoder(json.JSONEncoder):
-    def encode(self, obj):
-        if isinstance(obj, float):
-            return format(obj, '.6f')
-        return json.JSONEncoder.encode(self, obj)
 
 
 def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):

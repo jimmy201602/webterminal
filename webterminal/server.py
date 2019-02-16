@@ -34,16 +34,19 @@ import threading
 import traceback
 import select
 import paramiko
+import time
 from paramiko.py3compat import b, u, decodebytes, string_types
 try:
     import SocketServer
 except ImportError:
     import socketserver as SocketServer
-from common.utils import get_redis_instance
-from common.models import Credential, ServerInfor, Log
+from common.utils import get_redis_instance, mkdir_p, CustomeFloatEncoder
+from webterminal.commandextract import CommandDeal
+from common.models import Credential, ServerInfor, Log, CommandLog
 from django.contrib.auth.models import User
 from webterminal.encrypt import PyCrypt
 from django.core.exceptions import ObjectDoesNotExist
+import re
 try:
     from StringIO import StringIO
 except ImportError:
@@ -52,10 +55,17 @@ try:
     from django.utils.encoding import smart_unicode
 except ImportError:
     from django.utils.encoding import smart_text as smart_unicode
+from webterminal.settings import MEDIA_ROOT
+import codecs
 try:
     import simplejson as json
 except ImportError:
     import json
+from django.utils import timezone
+try:
+    unicode
+except NameError:
+    unicode = str
 # setup logging
 paramiko.util.log_to_file("demo_server.log")
 
@@ -214,7 +224,19 @@ class Server(paramiko.ServerInterface):
 
 
 def posix_shell(chan, channel, channelid):
+
+    stdout = list()
+    begin_time = time.time()
+    last_write_time = {'last_activity_time': begin_time}
+    command = list()
+    logobj = Log.objects.get(log=channelid)
+    vim_flag = False
+    vim_data = ''
+
     try:
+        directory_date_time = timezone.now()
+        log_name = os.path.join('{0}-{1}-{2}'.format(directory_date_time.year,
+                                                     directory_date_time.month, directory_date_time.day), '{0}'.format(channelid))
         from webterminal.asgi import channel_layer
         while True:
             r, w, x = select.select([chan], [], [])
@@ -226,12 +248,71 @@ def posix_shell(chan, channel, channelid):
                     break
                 if data == "exit\r\n" or data == "logout\r\n" or data == 'logout':
                     chan.close()
+
+                now = time.time()
+                delay = now - last_write_time['last_activity_time']
+                last_write_time['last_activity_time'] = now
+
+                if vim_flag:
+                    vim_data += data
+
+                if '\r' not in smart_unicode(data):
+                    print('append', data)
+                    command.append(smart_unicode(data))
+                else:
+                    command_result = CommandDeal().deal_command(''.join(command))
+                    if len(command_result) != 0:
+                        # vim command record patch
+                        if command_result.strip().startswith('vi') or command_result.strip().startswith('fg'):
+                            CommandLog.objects.create(
+                                log=logobj, command=command_result[0:255])
+                            vim_flag = True
+                        else:
+                            if vim_flag:
+                                if re.compile('\[.*@.*\][\$#]').search(vim_data):
+                                    vim_flag = False
+                                    vim_data = ''
+                            else:
+                                CommandLog.objects.create(
+                                    log=logobj, command=command_result[0:255])
+                    command = list()
+
+                print('data', data, command)
+                if isinstance(data, unicode):
+                    stdout.append([delay, data])
+                else:
+                    stdout.append([delay, codecs.getincrementaldecoder(
+                        'UTF-8')('replace').decode(data)])
+
                 channel_layer.send_group(
-                    'monitor-{0}'.format(channelid), {'text': json.dumps(['stdout', smart_unicode(data)])})
+                    smart_unicode('monitor-{0}'.format(channelid)), {'text': json.dumps(['stdout', smart_unicode(data)])})
                 channel.send(data)
             else:
                 print('else')
     finally:
+        attrs = {
+            "version": 1,
+            "width": 80,
+            "height": 24,
+            "duration": round(time.time() - begin_time, 6),
+            "command": os.environ.get('SHELL', None),
+            'title': None,
+            "env": {
+                "TERM": os.environ.get('TERM'),
+                "SHELL": os.environ.get('SHELL', 'sh')
+            },
+            'stdout': list(map(lambda frame: [round(frame[0], 6), frame[1]], stdout))
+        }
+        mkdir_p(
+            '/'.join(os.path.join(MEDIA_ROOT, log_name).rsplit('/')[0:-1]))
+        with open(os.path.join(MEDIA_ROOT, log_name), "a") as f:
+            f.write(json.dumps(attrs, ensure_ascii=True,
+                               cls=CustomeFloatEncoder, indent=2))
+
+        logobj.is_finished = True
+        logobj.end_time = timezone.now()
+        logobj.save()
+
         chan.close()
         channel.close()
 
@@ -331,7 +412,7 @@ class SshServer(SocketServer.BaseRequestHandler):
                         break
                     try:
                         channel_layer.send_group(
-                            'monitor-{0}'.format(server.channelid), {'text': json.dumps(['stdout', smart_unicode(byte)])})
+                            smart_unicode('monitor-{0}'.format(server.channelid)), {'text': json.dumps(['stdout', smart_unicode(byte)])})
                         chan.send(byte)
                     except socket.error:
                         print('return')
