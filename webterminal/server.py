@@ -227,7 +227,7 @@ def posix_shell(chan, channel, channelid):
                 if data == "exit\r\n" or data == "logout\r\n" or data == 'logout':
                     chan.close()
                 channel_layer.send_group(
-                    channelid, {'text': json.dumps(['stdout', smart_unicode(data)])})
+                    'monitor-{0}'.format(channelid), {'text': json.dumps(['stdout', smart_unicode(data)])})
                 channel.send(data)
             else:
                 print('else')
@@ -241,7 +241,7 @@ class SshServer(SocketServer.BaseRequestHandler):
         try:
             # self.request
             t = paramiko.Transport(self.request, gss_kex=False)
-            t.local_version = "webterminal ssh server"
+            # t.local_version = "webterminal ssh server"
             t.set_gss_host(socket.getfqdn(""))
             try:
                 t.load_server_moduli()
@@ -307,9 +307,9 @@ class SshServer(SocketServer.BaseRequestHandler):
                         ip, port=port, username=username, pkey=private_key, timeout=3)
                 # record log
                 channelid = smart_unicode(PyCrypt.random_pass(32))
-                server.channelid = channelid
                 audit_log = Log.objects.create(user=User.objects.get(
                     username=server.request_http_username), server=data, channel=channelid, width=80, height=24)
+                server.channelid = str(audit_log.log)
                 audit_log.save()
             except socket.timeout:
                 print('socket timeout')
@@ -331,7 +331,7 @@ class SshServer(SocketServer.BaseRequestHandler):
                         break
                     try:
                         channel_layer.send_group(
-                            server.channelid, {'text': json.dumps(['stdout', smart_unicode(byte)])})
+                            'monitor-{0}'.format(server.channelid), {'text': json.dumps(['stdout', smart_unicode(byte)])})
                         chan.send(byte)
                     except socket.error:
                         print('return')
