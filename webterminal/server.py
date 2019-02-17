@@ -301,7 +301,8 @@ def posix_shell(chan, channel, channelid):
 
                 channel_layer.send_group(
                     smart_unicode('monitor-{0}'.format(channelid)), {'text': json.dumps(['stdout', smart_unicode(data)])})
-                chan.send(data)
+                if not chan.closed:
+                    chan.send(data)
             else:
                 print('else')
     finally:
