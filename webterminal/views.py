@@ -194,6 +194,8 @@ class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView)
                 conn.set(username, password)
                 conn.expire(key, 60)
                 conn.expire(username, 60)
+                if isinstance(password, bytes):
+                    password = password.decode('utf8')
                 return JsonResponse({'status': True, 'message': {'username': username, 'password': password}})
             except ObjectDoesNotExist:
                 return JsonResponse({'status': False, 'message': 'Request object does not exist!'})
