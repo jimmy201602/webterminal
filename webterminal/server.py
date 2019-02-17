@@ -307,8 +307,8 @@ def posix_shell(chan, channel, channelid):
     finally:
         attrs = {
             "version": 1,
-            "width": 80,
-            "height": 24,
+            "width": 180,
+            "height": 40,
             "duration": round(time.time() - begin_time, 6),
             "command": os.environ.get('SHELL', None),
             'title': None,
@@ -404,7 +404,7 @@ class SshServer(SocketServer.BaseRequestHandler):
                 # record log
                 channelid = smart_unicode(PyCrypt.random_pass(32))
                 audit_log = Log.objects.create(user=User.objects.get(
-                    username=server.request_http_username), server=data, channel=channelid, width=80, height=24)
+                    username=server.request_http_username), server=data, channel=channelid, width=180, height=40)
                 server.channelid = str(audit_log.log)
                 audit_log.save()
             except socket.timeout:
