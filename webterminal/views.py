@@ -190,6 +190,10 @@ class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView)
                 password = encrypt.encrypt(content=password)
                 request_username = encrypt.encrypt(
                     content=self.request.user.username)
+                if isinstance(serverid, bytes):
+                    serverid = serverid.decode('utf8')
+                if isinstance(request_username, bytes):
+                    request_username = request_username.decode('utf8')
                 conn.set(key, '{0}_{1}'.format(serverid, request_username))
                 conn.set(username, password)
                 conn.expire(key, 60)
