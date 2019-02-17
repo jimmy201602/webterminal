@@ -15,7 +15,7 @@ Including another URLconf
 from __future__ import absolute_import
 from django.conf.urls import url, include
 from django.contrib import admin
-from webterminal.views import Index, SshLogPlay, SshTerminalKill, SshTerminalMonitor, CommandExecute, BatchCommandExecute, SshConnect
+from webterminal.views import Index, SshLogPlay, SshTerminalKill, SshTerminalMonitor, CommandExecute, BatchCommandExecute, SshConnect, DynamicPassword
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.static import serve
 from django.conf import settings
@@ -43,6 +43,7 @@ urlpatterns = [
     url(r'^permission/', include('permission.urls')),
     url(r'^common/', include('common.urls')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^dynamicpassword/$', DynamicPassword.as_view(), name='dynamicpassword'),
 ]
 
 

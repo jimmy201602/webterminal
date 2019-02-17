@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 import errno
+try:
+    import simplejson as json
+except ImportError:
+    import json
 
 
 class WebsocketAuth(object):
@@ -43,3 +47,10 @@ def mkdir_p(path):
             pass
         else:
             raise  # The original exception
+
+
+class CustomeFloatEncoder(json.JSONEncoder):
+    def encode(self, obj):
+        if isinstance(obj, float):
+            return format(obj, '.6f')
+        return json.JSONEncoder.encode(self, obj)

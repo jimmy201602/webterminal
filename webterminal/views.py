@@ -27,11 +27,13 @@ from django.urls import reverse_lazy
 from common.views import LoginRequiredMixin
 import traceback
 import re
+import uuid
 try:
     import commands
 except ImportError:
     import subprocess as commands
 import logging
+from webterminal.encrypt import PyCrypt
 logger = logging.getLogger(__name__)
 
 
@@ -167,3 +169,31 @@ class SshConnect(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
         context['ip'] = self.kwargs.get('ip')
         context['serverid'] = self.kwargs.get('serverid')
         return context
+
+
+class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
+    raise_exception = True
+    permission_required = 'common.can_kill_serverinfo'
+
+    def post(self, request):
+        if request.is_ajax():
+            serverid = request.POST.get('serverid', None)
+            try:
+                ServerInfor.objects.get(id=serverid)
+                username = uuid.uuid4().hex[0:5]
+                password = uuid.uuid4().hex
+                conn = get_redis_instance()
+                encrypt = PyCrypt('88aaaf7ffe3c6c0488aaaf7ffe3c6c04')
+                key = encrypt.encrypt(content=username + password)
+                key = encrypt.md5_crypt(key)
+                serverid = encrypt.encrypt(content=serverid)
+                password = encrypt.encrypt(content=password)
+                request_username = encrypt.encrypt(
+                    content=self.request.user.username)
+                conn.set(key, '{0}_{1}'.format(serverid, request_username))
+                conn.set(username, password)
+                conn.expire(key, 60)
+                conn.expire(username, 60)
+                return JsonResponse({'status': True, 'message': {'username': username, 'password': password}})
+            except ObjectDoesNotExist:
+                return JsonResponse({'status': False, 'message': 'Request object does not exist!'})
