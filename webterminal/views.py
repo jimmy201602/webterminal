@@ -190,10 +190,16 @@ class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView)
                 password = encrypt.encrypt(content=password)
                 request_username = encrypt.encrypt(
                     content=self.request.user.username)
+                if isinstance(serverid, bytes):
+                    serverid = serverid.decode('utf8')
+                if isinstance(request_username, bytes):
+                    request_username = request_username.decode('utf8')
                 conn.set(key, '{0}_{1}'.format(serverid, request_username))
                 conn.set(username, password)
                 conn.expire(key, 60)
                 conn.expire(username, 60)
+                if isinstance(password, bytes):
+                    password = password.decode('utf8')
                 return JsonResponse({'status': True, 'message': {'username': username, 'password': password}})
             except ObjectDoesNotExist:
                 return JsonResponse({'status': False, 'message': 'Request object does not exist!'})
