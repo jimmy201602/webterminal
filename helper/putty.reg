@@ -1,0 +1,16 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\ssh]
+@="Webterminal Ssh Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\ssh\DefaultIcon]
+@=""
+
+[HKEY_CLASSES_ROOT\ssh\shell]
+@="open"
+
+[HKEY_CLASSES_ROOT\ssh\shell\open]
+
+[HKEY_CLASSES_ROOT\ssh\shell\open\command]
+@="\"C:\\puttyinvoke.exe\" \"%1\""
