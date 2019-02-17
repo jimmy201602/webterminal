@@ -63,12 +63,15 @@
                                 {% if perms.common.can_change_serverinfo %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
                                 {% ifequal element.credential.protocol 'ssh-password'%}
                                     {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'sshconnect' element.ip  element.id%}" target="_blank">{%trans 'connect' %}</a>{% endif %}
+                                    <a class="btn btn-xs btn-warning" onclick="connecttosshserver({{element.id}})">{%trans 'putty'%}<a>
                                 {% endifequal %}
                                 {% ifequal element.credential.protocol 'ssh-key'%}
                                     {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'sshconnect' element.ip  element.id%}" target="_blank">{%trans 'connect' %}</a>{% endif %}
+                                    <a class="btn btn-xs btn-warning" onclick="connecttosshserver({{element.id}})">{%trans 'putty'%}<a>
                                 {% endifequal %}
                                 {% ifequal element.credential.protocol 'ssh-key-with-password'%}
                                     {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'sshconnect' element.ip  element.id%}" target="_blank">{%trans 'connect' %}</a>{% endif %}
+                                    <a class="btn btn-xs btn-warning" onclick="connecttosshserver({{element.id}})">{%trans 'putty'%}<a>
                                 {% endifequal %}
                                 {% ifequal element.credential.protocol 'vnc'%}
                                     {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'guacamole' element.id%}" target="_blank">{%trans 'connect' %}</a>{% endif %}
@@ -373,6 +376,28 @@
                 }
             }
         });
+    }
+    function connecttosshserver(serverid){
+        $.ajax({
+         type: "POST",
+         url: "{% url 'dynamicpassword' %}",
+         data: {"serverid":serverid},
+         dataType: "json",
+         success: function (data) {
+                if (data.status){
+                    var sshserver_address = window.location.hostname;
+                    var user_pass_dict = data.message;
+                    var sshserver_remote_port = 2100;
+                    var username = user_pass_dict.username;
+                    var temp_pass = user_pass_dict.password;
+                    var ssh_protocol_path = "ssh://"+sshserver_address+"#"+sshserver_remote_port+"#"+username+"#"+temp_pass;
+                    window.location.href = ssh_protocol_path
+                }
+         },
+         failure: function (errMsg) {
+             toastr["error"](errMsg);
+         }
+     });
     }
 </script>
 {% endblock %}
