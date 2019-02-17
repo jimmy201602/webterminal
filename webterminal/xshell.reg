@@ -1,7 +1,7 @@
 Windows Registry Editor Version 5.00
 
 [HKEY_CLASSES_ROOT\ssh]
-@="URL:CMDB Loader Protocol"
+@="Webterminal Ssh Protocol"
 "URL Protocol"=""
 
 [HKEY_CLASSES_ROOT\ssh\DefaultIcon]
@@ -13,4 +13,4 @@ Windows Registry Editor Version 5.00
 [HKEY_CLASSES_ROOT\ssh\shell\open]
 
 [HKEY_CLASSES_ROOT\ssh\shell\open\command]
-@="\"C:\\Program Files (x86)\\NetSarang\\Xshell Plus 6 Evaluation\\Xshell 6\\Xshell.exe\" \"%1\""
+@="\"C:\\puttyinvoke.exe\" \"%1\""
