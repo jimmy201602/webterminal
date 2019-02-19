@@ -28,7 +28,7 @@ systemctl enable docker
 1.拉取项目，阿里云镜像时间取决于网络环境请耐心等待
 docker pull registry.cn-hangzhou.aliyuncs.com/webterminal/webterminal
 2.运行项目
-docker run -itd -p 80:80 webterminal/webterminal
+docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 ```
 
 ## 三、访问项目
