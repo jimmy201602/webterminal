@@ -20,7 +20,7 @@ Hope you enjoy it.
 
 ```sh
 docker pull webterminal/webterminal
-docker run -itd -p 80:80 webterminal/webterminal
+docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 Login user & password
 username: admin
 password: password!23456
