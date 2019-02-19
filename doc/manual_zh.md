@@ -127,7 +127,7 @@
 
 # ssh调用助手使用
 注册ssh调用助手以便于在用户windows电脑上调用putty软件连接至服务器,使用方法如下
-将软件目录helper下所有文件拷贝至客户端c盘根目录下,将putty.reg导入至windows注册表中
+将软件目录helper下webterminal ssh helper.exe安装包文件安装至需要连接至服务器的客户端上。
 在服务器列表页面点击putty按钮即可连接至需要连接的服务器
 
 # 日志列表为连接实时查看与录像回放
