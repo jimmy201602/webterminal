@@ -87,6 +87,8 @@ class Server(paramiko.ServerInterface):
     serverid = None
     request_http_username = None
     channelid = None
+    chanwidth = None
+    chanheight = None
 
     def __init__(self):
         self.event = threading.Event()
@@ -210,6 +212,8 @@ class Server(paramiko.ServerInterface):
     def check_channel_pty_request(
         self, channel, term, width, height, pixelwidth, pixelheight, modes
     ):
+        self.chanheight = height
+        self.chanwidth = width
         return True
 
     def get_banner(self):
@@ -412,7 +416,8 @@ class SshServer(SocketServer.BaseRequestHandler):
                 print('socket timeout')
                 return
 
-            sendchan = ssh.invoke_shell()
+            sendchan = ssh.invoke_shell(
+                term="xterm", width=server.chanwidth, height=server.chanheight)
             t = threading.Thread(target=posix_shell, args=(
                 chan, sendchan, server.channelid))
             t.setDaemon(True)
