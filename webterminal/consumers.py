@@ -130,7 +130,7 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
                             self.ssh.connect(
                                 ip, port=port, username=username, password=password, timeout=3)
                         else:
-                            private_key = StringIO.StringIO(key)
+                            private_key = StringIO(key)
                             if 'RSA' in key:
                                 private_key = paramiko.RSAKey.from_private_key(
                                     private_key)
@@ -427,7 +427,7 @@ class BatchCommandExecute(WebsocketConsumer, WebsocketAuth):
                 self.ssh.connect(ip, port=port, username=username,
                                  password=password, timeout=3)
             else:
-                private_key = StringIO.StringIO(key)
+                private_key = StringIO(key)
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(
                         private_key)
