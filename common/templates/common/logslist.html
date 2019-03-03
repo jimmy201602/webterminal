@@ -1,6 +1,8 @@
 {% extends 'base.html'%}
 {% load staticfiles %}
 {%load i18n%}
+{% load tz %}
+{% get_current_language as LANGUAGE_CODE %}
 {%block title%}{%trans 'Log list' %}{%endblock%}
 {% block css %}
 <link rel="stylesheet" href="{% static 'plugins/bootstrap-select/css/bootstrap-select.css' %} ">
@@ -64,7 +66,7 @@
                             <td>{{ element.user.username }}</td>
                             <td>{{ element.server.name }}</td>
                             <td>{{ element.server.ip }}</td>
-                            <td>{{ element.start_time }}</td>
+                            <td>{% ifequal LANGUAGE_CODE 'zh-hans' %}{{ element.start_time|timezone:"Asia/Shanghai" }}{%else%}{{element.start_time|localtime}}{%endifequal%}</td>
                             <td>{{ element.is_finished }}</td>
                             <td data-editable="false" class="text-center pull-left">
                                 {% if element.is_finished %}
