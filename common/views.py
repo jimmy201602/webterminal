@@ -32,6 +32,7 @@ from django.urls import reverse_lazy
 import traceback
 from django.contrib.auth.views import redirect_to_login
 from django.utils.translation import ugettext, ugettext_lazy as _
+import pytz
 
 
 class LoginRequiredMixin(AccessMixin):
@@ -291,6 +292,9 @@ class CommandLogList(LoginRequiredMixin, PermissionRequiredMixin, View):
             data = CommandLog.objects.filter(log__id=id)
             if data.count() == 0:
                 return JsonResponse({'status': False, 'message': 'Request object not exist!'})
-            return JsonResponse({'status': True, 'message': [{'datetime': i.datetime.strftime('%Y-%m-%d %H:%M:%S'), 'command': i.command} for i in data]})
+            if request.LANGUAGE_CODE == 'zh-hans':
+                return JsonResponse({'status': True, 'message': [{'datetime': i.datetime.astimezone(pytz.timezone("Asia/Shanghai")).strftime('%Y-%m-%d %H:%M:%S'), 'command': i.command} for i in data]})
+            else:
+                return JsonResponse({'status': True, 'message': [{'datetime': i.datetime.strftime('%Y-%m-%d %H:%M:%S'), 'command': i.command} for i in data]})
         else:
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
