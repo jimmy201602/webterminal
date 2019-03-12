@@ -345,7 +345,7 @@ toastr.options = {
 <!-- End Matomo Code -->
 <script type="application/javascript">
   $(document).ready(function () {
-    window.protocolCheck("ssh:test",
+    window.protocolCheck("ssh://test",
             function () {
               $('body').prepend('  <div class="container text-center protocoldetection" style="background-color:#8aa4af;width:100%;height: auto">\n' +
                       '  <div>\n' +
@@ -353,7 +353,8 @@ toastr.options = {
                       '\t</h2>\n' +
                       '  </div>\n' +
                       '   </div>')
-            });
+            }
+    );
   })
 
 </script>
