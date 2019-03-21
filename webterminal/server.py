@@ -71,6 +71,7 @@ paramiko.util.log_to_file("demo_server.log")
 
 host_key = paramiko.RSAKey(filename="test_rsa.key")
 # host_key = paramiko.DSSKey(filename='test_dss.key')
+from webterminal.sftphandle import SftpHandle
 
 
 class Server(paramiko.ServerInterface):
@@ -350,6 +351,9 @@ class SshServer(SocketServer.BaseRequestHandler):
                 print("(Failed to load moduli -- gex will be unsupported.)")
                 raise
             t.add_server_key(host_key)
+            t.set_subsystem_handler(
+                'sftp', paramiko.SFTPServer, SftpHandle
+            )
             server = Server()
             try:
                 t.start_server(server=server)
