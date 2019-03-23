@@ -6,6 +6,7 @@ import sys
 
 
 class SftpHandle(paramiko.SFTPServerInterface):
+
     def __init__(self, server, *largs, **kwargs):
         """
         Create a new SFTPServerInterface object.  This method does nothing by
