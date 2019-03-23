@@ -227,6 +227,15 @@ class Server(paramiko.ServerInterface):
             self.channel.resize_pty(width=width, height=height)
         return True
 
+    def check_channel_subsystem_request(self, channel, name):
+        transport = channel.get_transport()
+        handler_class, larg, kwarg = transport._get_subsystem_handler(name)
+        if handler_class is None:
+            return False
+        handler = handler_class(channel, name, self, *larg, **kwarg)
+        handler.start()
+        return True
+
 
 def posix_shell(chan, channel, channelid):
 
@@ -368,11 +377,10 @@ class SshServer(SocketServer.BaseRequestHandler):
                 return
             print("Authenticated!")
 
+            chan.send("Welcome to webterminal ssh server!\r\n\r\n")
             server.event.wait(10)
             if not server.event.is_set():
                 print("*** Client never asked for a shell.")
-
-            chan.send("Welcome to webterminal ssh server!\r\n\r\n")
 
             # forward chan
             ssh = paramiko.SSHClient()
