@@ -436,7 +436,6 @@ class SshServer(SocketServer.BaseRequestHandler):
             if server.session_type and server.session_type == 'sftp':
                 while t.is_active():
                     time.sleep(1)
-                    print(1)
                 t.close()
                 return
 
