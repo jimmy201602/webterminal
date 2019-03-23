@@ -231,6 +231,7 @@ class Server(paramiko.ServerInterface):
     def check_channel_subsystem_request(self, channel, name):
         # set session type to handle subsystem protocol
         self.session_type = name
+        self.event.set()
         transport = channel.get_transport()
         handler_class, larg, kwarg = transport._get_subsystem_handler(name)
         if handler_class is None:
@@ -373,26 +374,19 @@ class SshServer(SocketServer.BaseRequestHandler):
                 print("*** SSH negotiation failed.")
                 return
 
-            # wait for auth
+            # wait for auth in 20 seconds
             chan = t.accept(20)
+            # ssh auth wait for 10 seconds
+            server.event.wait(10)
             if chan is None:
                 print("*** No channel.")
-                return
-            print("Authenticated!")
-            t.set_keepalive(1)
-            server.event.wait(10)
-            # handle sftp protocol
-            if server.session_type and server.session_type == 'sftp':
-                while t.is_active():
-                    time.sleep(1)
                 t.close()
                 return
+            print("Authenticated!")
+            # set keep alive check
+            t.set_keepalive(1)
 
-            if not server.event.is_set():
-                print("*** Client never asked for a shell.")
-
-            # handle ssh protocol
-            # forward chan
+            # ssh auth
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(
                 paramiko.AutoAddPolicy())
@@ -437,6 +431,19 @@ class SshServer(SocketServer.BaseRequestHandler):
             except socket.timeout:
                 print('socket timeout')
                 return
+
+            # handle sftp protocol
+            if server.session_type and server.session_type == 'sftp':
+                while t.is_active():
+                    time.sleep(1)
+                    print(1)
+                t.close()
+                return
+
+            # handle ssh protocol
+            # forward chan
+            if not server.event.is_set():
+                print("*** Client never asked for a shell.")
 
             sendchan = ssh.invoke_shell(
                 term="xterm", width=server.chanwidth, height=server.chanheight)
