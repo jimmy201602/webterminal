@@ -90,6 +90,7 @@ class Server(paramiko.ServerInterface):
     channelid = None
     chanwidth = None
     chanheight = None
+    session_type = None
 
     def __init__(self):
         self.event = threading.Event()
@@ -228,6 +229,8 @@ class Server(paramiko.ServerInterface):
         return True
 
     def check_channel_subsystem_request(self, channel, name):
+        # set session type to handle subsystem protocol
+        self.session_type = name
         transport = channel.get_transport()
         handler_class, larg, kwarg = transport._get_subsystem_handler(name)
         if handler_class is None:
@@ -376,12 +379,19 @@ class SshServer(SocketServer.BaseRequestHandler):
                 print("*** No channel.")
                 return
             print("Authenticated!")
-
-            chan.send("Welcome to webterminal ssh server!\r\n\r\n")
+            t.set_keepalive(1)
             server.event.wait(10)
+            # handle sftp protocol
+            if server.session_type and server.session_type == 'sftp':
+                while t.is_active():
+                    time.sleep(1)
+                t.close()
+                return
+
             if not server.event.is_set():
                 print("*** Client never asked for a shell.")
 
+            # handle ssh protocol
             # forward chan
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(
