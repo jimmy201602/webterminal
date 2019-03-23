@@ -2,6 +2,7 @@ import errno
 import os
 import paramiko
 from paramiko.sftp import SFTP_OP_UNSUPPORTED
+import sys
 
 
 class SftpHandle(paramiko.SFTPServerInterface):
@@ -13,7 +14,7 @@ class SftpHandle(paramiko.SFTPServerInterface):
         :param .ServerInterface server:
             the server object associated with this channel and SFTP subsystem
         """
-        super(SFTPServerInterface, self).__init__(*largs, **kwargs)
+        super(SftpHandle, self).__init__(server, *largs, **kwargs)
 
     def session_started(self):
         """
