@@ -386,6 +386,14 @@ class SshServer(SocketServer.BaseRequestHandler):
             # set keep alive check
             t.set_keepalive(1)
 
+            # handle sftp protocol
+            if server.session_type and server.session_type == 'sftp':
+                print('subsystem table', t.subsystem_table)
+                while t.is_active():
+                    time.sleep(1)
+                t.close()
+                return
+
             # ssh auth
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(
@@ -430,13 +438,6 @@ class SshServer(SocketServer.BaseRequestHandler):
                 audit_log.save()
             except socket.timeout:
                 print('socket timeout')
-                return
-
-            # handle sftp protocol
-            if server.session_type and server.session_type == 'sftp':
-                while t.is_active():
-                    time.sleep(1)
-                t.close()
                 return
 
             # handle ssh protocol
