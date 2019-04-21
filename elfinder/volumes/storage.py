@@ -223,8 +223,14 @@ class ElfinderVolumeStorage(ElfinderVolumeDriver):
         """
         stat = {}
 
+        # fix sftp link not exist can not open bug
         if not self._options['storage'].exists(path):
-            raise os.error
+            stat['size'] = 'unknown'
+            stat['mime'] = 'symlink-broken'
+            stat['read'] = False
+            stat['write'] = False
+            return stat
+            # raise os.error
 
         try:
             stat['mime'] = self.mimetype(path)

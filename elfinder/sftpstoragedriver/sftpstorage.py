@@ -231,7 +231,6 @@ class SFTPStorageFile(File):
         if not self._is_read:
             self.file = self._storage._read(self._name)
             self._is_read = True
-
         return self.file.read(num_bytes)
 
     def write(self, content):
