@@ -47,6 +47,7 @@ try:
     long
 except NameError:
     long = int
+import select
 
 
 def interactive_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):
@@ -74,74 +75,76 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
         data = None
         while True:
             try:
-                data = chan.recv(1024)
-                x = u(data)
-                if len(x) == 0:
-                    if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(
-                            ['disconnect', smart_unicode('\r\n*** EOF\r\n'), elementid.rsplit('_')[0]])})
+                r, w, x = select.select([chan], [], [])
+                if chan in r:
+                    data = chan.recv(1024)
+                    x = u(data)
+                    if len(x) == 0:
+                        if elementid:
+                            channel_layer.send(channel, {'text': json.dumps(
+                                ['disconnect', smart_unicode('\r\n*** EOF\r\n'), elementid.rsplit('_')[0]])})
+                        else:
+                            # channel_layer.send(channel, {'text': json.dumps(
+                                # ['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
+                            channel_layer.send(
+                                channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
+                        break
+                    now = time.time()
+                    delay = now - last_write_time['last_activity_time']
+                    last_write_time['last_activity_time'] = now
+                    if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
+                        chan.close()
                     else:
-                        # channel_layer.send(channel, {'text': json.dumps(
-                            # ['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
-                        channel_layer.send(
-                            channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
-                    break
-                now = time.time()
-                delay = now - last_write_time['last_activity_time']
-                last_write_time['last_activity_time'] = now
-                if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
-                    chan.close()
-                else:
-                    if vim_flag:
-                        vim_data += x
-                    #logger.debug('raw data {0}'.format(command))
-                    if '\r\n' not in x:
-                        command.append(x)
-                    else:
-                        command_result = CommandDeal().deal_command(''.join(command))
-                        if len(command_result) != 0:
-                            # vim command record patch
-                            logger.debug(
-                                'command {0}'.format(command_result))
-                            if command_result.strip().startswith('vi') or command_result.strip().startswith('fg'):
-                                CommandLog.objects.create(
-                                    log=logobj, command=command_result[0:255])
-                                vim_flag = True
-                            else:
-                                if vim_flag:
-                                    if re.compile('\[.*@.*\][\$#]').search(vim_data):
-                                        vim_flag = False
-                                        vim_data = ''
-                                else:
+                        if vim_flag:
+                            vim_data += x
+                        #logger.debug('raw data {0}'.format(command))
+                        if '\r\n' not in x:
+                            command.append(x)
+                        else:
+                            command_result = CommandDeal().deal_command(''.join(command))
+                            if len(command_result) != 0:
+                                # vim command record patch
+                                logger.debug(
+                                    'command {0}'.format(command_result))
+                                if command_result.strip().startswith('vi') or command_result.strip().startswith('fg'):
                                     CommandLog.objects.create(
                                         log=logobj, command=command_result[0:255])
-                        command = list()
+                                    vim_flag = True
+                                else:
+                                    if vim_flag:
+                                        if re.compile('\[.*@.*\][\$#]').search(vim_data):
+                                            vim_flag = False
+                                            vim_data = ''
+                                    else:
+                                        CommandLog.objects.create(
+                                            log=logobj, command=command_result[0:255])
+                            command = list()
 
+                        if isinstance(x, unicode):
+                            stdout.append([delay, x])
+                        else:
+                            stdout.append([delay, codecs.getincrementaldecoder(
+                                'UTF-8')('replace').decode(x)])
                     if isinstance(x, unicode):
-                        stdout.append([delay, x])
+                        if elementid:
+                            channel_layer.send(channel, {'text': json.dumps(
+                                ['stdout', x, elementid.rsplit('_')[0]])})
+                        else:
+                            # channel_layer.send(
+                                # channel, {'text': json.dumps(['stdout', x])})
+                            channel_layer.send(channel, {'bytes': data})
                     else:
-                        stdout.append([delay, codecs.getincrementaldecoder(
-                            'UTF-8')('replace').decode(x)])
-                if isinstance(x, unicode):
-                    if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(
-                            ['stdout', x, elementid.rsplit('_')[0]])})
-                    else:
-                        # channel_layer.send(
-                            # channel, {'text': json.dumps(['stdout', x])})
-                        channel_layer.send(channel, {'bytes': data})
-                else:
-                    if elementid:
-                        channel_layer.send(channel, {'text': json.dumps(
-                            ['stdout', smart_unicode(x), elementid.rsplit('_')[0]])})
-                    else:
-                        # channel_layer.send(
-                            # channel, {'text': json.dumps(['stdout', smart_unicode(x)])})
-                        channel_layer.send(channel, {'bytes': data})
-                # send message to monitor group
-                if log_name:
-                    channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {
-                                             'text': json.dumps(['stdout', smart_unicode(x)])})
+                        if elementid:
+                            channel_layer.send(channel, {'text': json.dumps(
+                                ['stdout', smart_unicode(x), elementid.rsplit('_')[0]])})
+                        else:
+                            # channel_layer.send(
+                                # channel, {'text': json.dumps(['stdout', smart_unicode(x)])})
+                            channel_layer.send(channel, {'bytes': data})
+                    # send message to monitor group
+                    if log_name:
+                        channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {
+                                                 'text': json.dumps(['stdout', smart_unicode(x)])})
             except socket.timeout:
                 pass
             except UnicodeDecodeError:
@@ -296,6 +299,8 @@ class SshTerminalThread(threading.Thread):
                     except socket.error:
                         logger.error('close threading error')
                         self.stop()
+            # avoid cpu usage always 100%
+            time.sleep(0.001)
 
 
 class InterActiveShellThread(threading.Thread):
