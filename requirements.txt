@@ -42,3 +42,4 @@ mock
 #MySQL-python==1.2.5
 crypto
 pycrypto
+python-gssapi
