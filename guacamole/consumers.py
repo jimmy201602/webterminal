@@ -74,6 +74,8 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
             recording_path = os.path.join(MEDIA_ROOT, '{0}-{1}-{2}'.format(
                 directory_date_time.year, directory_date_time.month, directory_date_time.day))
 
+            if isinstance(username, bytes):
+                username = username.decode()
             drive_path = os.path.join(MEDIA_ROOT, str(username), 'Download')
             """
             Create recording media file and drive path
