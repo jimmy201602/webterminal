@@ -298,3 +298,17 @@ class CommandLogList(LoginRequiredMixin, PermissionRequiredMixin, View):
                 return JsonResponse({'status': True, 'message': [{'datetime': i.datetime.strftime('%Y-%m-%d %H:%M:%S'), 'command': i.command} for i in data]})
         else:
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
+
+
+class WebterminalHelperDetectApi(LoginRequiredMixin, View):
+
+    def post(self, request):
+        if request.is_ajax():
+            version = request.POST.get('version', None)
+            protocol = request.POST.get('protocol', None)
+            if version and protocol in ["rdp", "ssh", "sftp"]:
+                return JsonResponse({'status': True, 'message': 'Ok'})
+            else:
+                return JsonResponse({'status': False, 'message': 'Method not allowed!'})
+        else:
+            return JsonResponse({'status': False, 'message': 'Method not allowed!'})
