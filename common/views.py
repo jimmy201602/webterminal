@@ -33,6 +33,8 @@ import traceback
 from django.contrib.auth.views import redirect_to_login
 from django.utils.translation import ugettext, ugettext_lazy as _
 import pytz
+import uuid
+from common.utils import get_redis_instance
 
 
 class LoginRequiredMixin(AccessMixin):
@@ -304,10 +306,23 @@ class WebterminalHelperDetectApi(LoginRequiredMixin, View):
 
     def post(self, request):
         if request.is_ajax():
+            conn = get_redis_instance()
             version = request.POST.get('version', None)
             protocol = request.POST.get('protocol', None)
-            if version and protocol in ["rdp", "ssh", "sftp"]:
-                return JsonResponse({'status': True, 'message': 'Ok'})
+            identify = request.POST.get('identify', None)
+            if identify is not None and version is None and protocol is None:
+                # get identify id
+                id = str(uuid.uuid4())
+                conn.set(id, 'ok')
+                return JsonResponse({'status': False, 'message': id})
+            elif version and protocol in ["rdp", "ssh", "sftp"] and identify:
+                if conn.get(identify) == 'ok':
+                    conn.delete(id)
+                    return JsonResponse({'status': True, 'message': 'ok'})
+                else:
+                    conn.delete(id)
+                    # not install webterminal helper
+                    return JsonResponse({'status': False, 'message': 'no'})
             else:
                 return JsonResponse({'status': False, 'message': 'Method not allowed!'})
         else:
