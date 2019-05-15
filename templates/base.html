@@ -383,7 +383,8 @@ toastr.options = {
       success: function(data, textStatus, jqXHR) {
         if(data.status){
           var id = data.message;
-          var ssh_protocol_test_path = "ssh://test#"+data.message;
+          var server_host = window.location.host;
+          var ssh_protocol_test_path = "ssh://test/" + server_host + '/' + data.message + '/';
           window.location.href = ssh_protocol_test_path
           //after 3 second then check ssh helper is installed
           setTimeout(function () {
