@@ -5,10 +5,11 @@ from common.views import (Commands,
                           CommandExecuteList, CommandExecuteDetailApi,
                           CredentialCreate, CredentialList, CredentialDetailApi,
                           ServerCreate, ServerlList, GroupList, GroupCreate,
-                          LogList, CommandLogList, WebterminalHelperDetectApi)
+                          LogList, CommandLogList, WebterminalHelperDetectApi, WebterminalHelperDetectCallbackApi)
 from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet
 from rest_framework import routers
 from django.contrib import admin
+from django.views.decorators.csrf import csrf_exempt
 
 #from common.admin import OTPAdminSite
 #admin.site.__class__ = OTPAdminSite
@@ -38,4 +39,6 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^webterminalhelperdetect/$', WebterminalHelperDetectApi.as_view(),
         name='webterminalhelperdetectapi'),
+    url(r'^webterminalhelperdetectcallback/$', csrf_exempt(WebterminalHelperDetectCallbackApi.as_view()),
+        name='webterminalhelperdetectcallbackapi'),
 ]

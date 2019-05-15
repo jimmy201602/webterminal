@@ -316,12 +316,34 @@ class WebterminalHelperDetectApi(LoginRequiredMixin, View):
                 conn.set(id, 'ok')
                 conn.expire(id, 15)
                 return JsonResponse({'status': True, 'message': id})
-            elif version and protocol in ["rdp", "ssh", "sftp"] and identify:
-                if conn.get(identify) == 'ok':
-                    conn.delete(id)
+            elif protocol in ["rdp", "ssh", "sftp"] and identify:
+                if conn.get(identify) == 'set':
+                    conn.delete(identify)
                     return JsonResponse({'status': True, 'message': 'ok'})
                 else:
-                    conn.delete(id)
+                    conn.delete(identify)
+                    # not install webterminal helper
+                    return JsonResponse({'status': False, 'message': 'no'})
+            else:
+                return JsonResponse({'status': False, 'message': 'Method not allowed!'})
+        else:
+            return JsonResponse({'status': False, 'message': 'Method not allowed!'})
+
+
+class WebterminalHelperDetectCallbackApi(View):
+
+    def post(self, request):
+        if not request.is_ajax():
+            conn = get_redis_instance()
+            version = request.POST.get('version', None)
+            protocol = request.POST.get('protocol', None)
+            identify = request.POST.get('identify', None)
+            if version and protocol in ["rdp", "ssh", "sftp"] and identify:
+                if conn.get(identify) == 'ok':
+                    conn.set(identify, 'set')
+                    return JsonResponse({'status': True, 'message': 'ok'})
+                else:
+                    conn.delete(identify)
                     # not install webterminal helper
                     return JsonResponse({'status': False, 'message': 'no'})
             else:

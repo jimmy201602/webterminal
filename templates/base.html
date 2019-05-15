@@ -358,8 +358,8 @@ toastr.options = {
       type: 'POST',
       data: {'identify':id,'protocol':'rdp'},
       success: function(data, textStatus, jqXHR) {
-        if(!data.status){
-          var id = data.message;
+        // console.log(data)
+        if(data.status != true){
           $('body').prepend('  <div class="container text-center protocoldetection" style="background-color:#8aa4af;width:100%;height: auto">\n' +
                   '  <div>\n' +
                   '  <h1>You haven\'t install webterminal ssh helper,please download and install it. <a class="download" target="_blank" href="https://github.com/jimmy201602/webterminal/raw/master/helper/webterminal%20ssh%20helper.exe">Download</a>  <button type="button" class="close" aria-label="Close" onclick="$(\'.protocoldetection\').remove()"><span aria-hidden="true">×</span></button>\n' +
@@ -367,7 +367,9 @@ toastr.options = {
                   '  </div>\n' +
                   '   </div>')
         } else {
-          toastr['error'](data.message);
+          if (data.message != 'ok'){
+            toastr['error'](data.message);
+          }
         }
       },
       error: function(data, textStatus, jqXHR) {
@@ -383,8 +385,10 @@ toastr.options = {
       success: function(data, textStatus, jqXHR) {
         if(data.status){
           var id = data.message;
+          var server_protocol = window.location.protocol;
           var server_host = window.location.host;
-          var ssh_protocol_test_path = "ssh://test/" + server_host + '/' + data.message + '/';
+          var api_path = '{% url 'webterminalhelperdetectcallbackapi' %}';
+          var ssh_protocol_test_path = "ssh://test#" + server_protocol + "//" + server_host + api_path + '#' + data.message;
           window.location.href = ssh_protocol_test_path
           //after 3 second then check ssh helper is installed
           setTimeout(function () {
