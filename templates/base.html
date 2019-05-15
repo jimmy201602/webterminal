@@ -249,7 +249,7 @@
     <div class="pull-right hidden-xs">
       <b>{%trans 'Version' %}</b> 0.1
     </div>
-    <strong>{%trans 'Copyright &copy; 2014-2018' %} <a href="https://github.com/jimmy201602/webterminal">{%trans 'webterminal' %}</a></strong> {%trans 'All rights reserved.' %}
+    <strong>{%trans 'Copyright &copy; 2014-2019' %} <a href="https://github.com/jimmy201602/webterminal">{%trans 'webterminal' %}</a></strong> {%trans 'All rights reserved.' %}
   </footer>
 
 
@@ -367,6 +367,25 @@ toastr.options = {
   <!--})-->
 
 <!--</script>-->
+<script type="application/javascript">
+  $(document).ready(function () {
+    $.ajax({
+      url: '{% url 'webterminalhelperdetectapi' %}',
+      type: 'POST',
+      data: {'identify':'get'},
+      success: function(data, textStatus, jqXHR) {
+        if(data.status){
+          console.log(data)
+        } else {
+          toastr['error'](data.message);
+        }
+      },
+      error: function(data, textStatus, jqXHR) {
+        toastr['error'](data.message);
+      }
+    });
+  })
+</script>
 {%block js%}{%endblock%}
 <script>
 </script>
