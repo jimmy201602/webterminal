@@ -314,7 +314,8 @@ class WebterminalHelperDetectApi(LoginRequiredMixin, View):
                 # get identify id
                 id = str(uuid.uuid4())
                 conn.set(id, 'ok')
-                return JsonResponse({'status': False, 'message': id})
+                conn.expire(id, 15)
+                return JsonResponse({'status': True, 'message': id})
             elif version and protocol in ["rdp", "ssh", "sftp"] and identify:
                 if conn.get(identify) == 'ok':
                     conn.delete(id)
