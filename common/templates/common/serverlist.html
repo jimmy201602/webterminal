@@ -50,6 +50,7 @@
                             <th>{%trans 'host name' %}</th>
                             <th>{%trans 'ip' %}</th>
                             <th>{%trans 'action' %}</th>
+                            <th>{%trans 'connection' %}</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -83,6 +84,53 @@
                                     {% if perms.common.can_connect_serverinfo %}<a class="btn btn-xs btn-success" href="{% url 'guacamole' element.id%}" target="_blank">{%trans 'connect' %}</a>{% endif %}
                                 {% endifequal %}
                                 {% if perms.common.can_delete_serverinfo %}<a class="btn btn-xs btn-danger" onclick="del({{element.id}},'{{element.name}}')">{%trans 'delete' %}</a>{% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-default" type="button" data-toggle="collapse" data-target="#expand{{element.id}}">
+                                    {%trans 'connection'%}
+                            </button>
+                            </td>
+                        </tr>
+                        <tr id="expand{{element.id}}" class="collapse" aria-expanded="false" style="height: 0px;">
+                            <td colspan="7">
+                                <ul class="list-inline">
+                                    {% ifequal element.credential.protocol 'ssh-password'%}
+                                    {% if perms.common.can_connect_serverinfo %}
+                                    <li><span><a href="#"><img src="{% static "images/securecrt.gif" %}" width="60px" onclick="connecttosshserver({{element.id}})"></a></span><p class="text-center">ssh</p></li>
+                                    <li><span><a href="#"><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="alert(2)"></a></span><p class="text-center">sftp</p></li>
+                                    <!--<li><span><a href="#"><img src="{% static "images/xmanager.gif" %}" width="60px"></a></span><p class="text-center">X11</p></li>-->
+                                    {% endif %}
+                                    {% endifequal %}
+                                    {% ifequal element.credential.protocol 'ssh-key'%}
+                                    {% if perms.common.can_connect_serverinfo %}
+                                    <li><span><a href="#"><img src="{% static "images/securecrt.gif" %}" width="60px" onclick="connecttosshserver({{element.id}})"></a></span><p class="text-center">ssh</p></li>
+                                    <li><span><a href="#"><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="alert(2)"></a></span><p class="text-center">sftp</p></li>
+                                    <!--<li><span><a href="#"><img src="{% static "images/xmanager.gif" %}" width="60px"></a></span><p class="text-center">X11</p></li>-->
+                                    {% endif %}
+                                    {% endifequal %}
+                                    {% ifequal element.credential.protocol 'ssh-key-with-password'%}
+                                    {% if perms.common.can_connect_serverinfo %}
+                                    <li><span><a href="#"><img src="{% static "images/securecrt.gif" %}" width="60px" onclick="connecttosshserver({{element.id}})"></a></span><p class="text-center">ssh</p></li>
+                                    <li><span><a href="#"><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="alert(2)"></a></span><p class="text-center">sftp</p></li>
+                                    <!--<li><span><a href="#"><img src="{% static "images/xmanager.gif" %}" width="60px"></a></span><p class="text-center">X11</p></li>-->
+                                    {% endif %}
+                                    {% endifequal %}
+                                    {% ifequal element.credential.protocol 'telnet'%}
+                                    {% if perms.common.can_connect_serverinfo %}
+                                    <li><span><a href="#"><img src="{% static "images/securecrt.gif" %}" width="60px" onclick="connecttosshserver({{element.id}})"></a></span><p class="text-center">ssh</p></li>
+                                    {% endif %}
+                                    {% endifequal %}
+                                    {% ifequal element.credential.protocol 'vnc'%}
+                                    {% if perms.common.can_connect_serverinfo %}
+                                    <li><span><a href="#"><img src="{% static "images/mstsc.gif" %}" width="60px" onclick="connecttosshserver({{element.id}})"></a></span><p class="text-center">rdp</p></li>
+                                    {% endif %}
+                                    {% endifequal %}
+                                    {% ifequal element.credential.protocol 'rdp'%}
+                                    {% if perms.common.can_connect_serverinfo %}
+                                    <li><span><a href="#"><img src="{% static "images/mstsc.gif" %}" width="60px" onclick="connecttosshserver({{element.id}})"></a></span><p class="text-center">rdp</p></li>
+                                    {% endif %}
+                                    {% endifequal %}
+                                </ul>
                             </td>
                         </tr>
                         {% endfor %}
