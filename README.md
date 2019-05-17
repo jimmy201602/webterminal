@@ -39,7 +39,7 @@ zhengge2012@gmail.com
 ![screenshots](./screenshots/screenshots1.png  "screenshots")
 ![screenshots](./screenshots/screenshots2.gif  "screenshots")
 ![screenshots](./screenshots/screenshots9.gif  "screenshots")
-# commercial version only
+# commercial version provide mstsc helper
 ![screenshots](./screenshots/screenshotmstsc.gif  "screenshots")
 ![screenshots](./screenshots/screenshots3.gif  "screenshots")
 ![screenshots](./screenshots/screenshots4.gif  "screenshots")
