@@ -43,7 +43,7 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 ![screenshots](../screenshots/qqgroupqr.png  "screenshots")
 
 # 开源版本提供ssh调用putty、xshell、securecrt、sftp功能
-![screenshots](./screenshots/screenshots9.gif  "screenshots")
+![screenshots](../screenshots/screenshots9.gif  "screenshots")
 
 # 商业版本提供rdp本地调用mstsc功能
 ![screenshots](../screenshots/screenshotmstsc.gif  "screenshots")
