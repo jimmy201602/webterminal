@@ -42,6 +42,9 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 ![screenshots](../screenshots/qqgroupqr.png  "screenshots")
 
+# 商业版本提供rdp本地调用mstsc功能
+![screenshots](../screenshots/screenshotmstsc.gif  "screenshots")
+
 # 预览
 ![screenshots](../screenshots/screenshots1.png  "screenshots")
 ![screenshots](../screenshots/screenshots2.gif  "screenshots")
