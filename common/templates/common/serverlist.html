@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <table id="commands_list" class="table table-hover table-striped">
+                    <table id="server_list" class="table table-hover table-striped">
                         <thead>
                         <tr>
                             <th>{%trans 'server name' %}</th>
@@ -151,13 +151,13 @@
 <script src="{% static 'plugins/json-forms/js/brutusin-json-forms.js' %} "></script>
 <script src="{% static 'plugins/json-forms/js//brutusin-json-forms-bootstrap.js' %} "></script>
 <!-- DataTables -->
-<script src="{% static "plugins/datatables/jquery.dataTables.min.js" %}"></script>
-<script src="{% static "plugins/datatables/dataTables.bootstrap.min.js" %}"></script>
-<script src="{% static "plugins/json-view/jquery.jsonview.min.js" %}"></script>
-<script src="{% static "plugins/bootbox/bootbox.js" %}"></script>
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables/dataTables.bootstrap.min.js' %}"></script>
+<script src="{% static 'plugins/json-view/jquery.jsonview.min.js' %}"></script>
+<script src="{% static 'plugins/bootbox/bootbox.js' %}"></script>
 <script type="application/javascript">
     $(function () {
-        $('#commands_list').DataTable({
+        $('#server_list').DataTable({
             "paging": true,
             "lengthChange": false,
             "searching": true,
