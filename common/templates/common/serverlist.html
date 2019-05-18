@@ -50,15 +50,15 @@
                             <th>{%trans 'host name' %}</th>
                             <th>{%trans 'ip' %}</th>
                             <th>{%trans 'action' %}</th>
-                            <th>{%trans 'connection' %}</th>
+                            <th>{%trans 'connect' %}</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for element in object_list %}
                         <tr>
-                            <td>{{ element.name }}</td>
-                            <td>{{ element.hostname }}</td>
-                            <td>{{ element.ip }}</td>
+                            <td data-toggle="collapse" data-target="#expand{{element.id}}">{{ element.name }}</td>
+                            <td data-toggle="collapse" data-target="#expand{{element.id}}">{{ element.hostname }}</td>
+                            <td data-toggle="collapse" data-target="#expand{{element.id}}">{{ element.ip }}</td>
                             <td data-editable="false" class="text-center pull-left">
                                 {% if perms.common.can_view_serverinfo %}<a class="btn btn-xs btn-primary" onclick="detail({{element.id}})">{%trans 'detail'%}</a>{% endif %}
                                 {% if perms.common.can_change_serverinfo %}<a class="btn btn-xs btn-info" onclick="edit({{element.id}})">{%trans 'edit' %}</a>{% endif %}
