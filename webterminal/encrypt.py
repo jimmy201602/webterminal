@@ -82,5 +82,5 @@ class PyCrypt(object):
             plain_text = cryptor.decrypt(a2b_hex(text))
         except TypeError:
             # raise ServerError('Decrypt password error, TYpe error.')
-            pass
+            plain_text = ""
         return plain_text.decode('utf8', 'ignore').rstrip('\0')
