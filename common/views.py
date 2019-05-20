@@ -318,9 +318,12 @@ class WebterminalHelperDetectApi(LoginRequiredMixin, View):
                 conn.expire(id, 15)
                 return JsonResponse({'status': True, 'message': id})
             elif protocol in ["rdp", "ssh", "sftp"] and identify:
-                if conn.get(identify) == 'set':
+                if conn.get(identify) == 'installed':
                     conn.delete(identify)
                     return JsonResponse({'status': True, 'message': 'ok'})
+                elif conn.get(identify) == 'need upgrade':
+                    conn.delete(identify)
+                    return JsonResponse({'status': False, 'message': 'Webterminal helper need upgrade to version: {0}'.format(__webterminalhelperversion__)})
                 else:
                     conn.delete(identify)
                     # not install webterminal helper
@@ -340,9 +343,12 @@ class WebterminalHelperDetectCallbackApi(View):
             protocol = request.POST.get('protocol', None)
             identify = request.POST.get('identify', None)
             if version and protocol in ["rdp", "ssh", "sftp"] and identify:
-                if conn.get(identify) == 'ok':
-                    conn.set(identify, 'set')
+                if conn.get(identify) == 'ok' and version == __webterminalhelperversion__:
+                    conn.set(identify, 'installed')
                     return JsonResponse({'status': True, 'message': 'ok'})
+                elif conn.get(identify) == 'ok' and version != __webterminalhelperversion__:
+                    conn.set(identify, 'need upgrade')
+                    return JsonResponse({'status': False, 'message': 'no'})
                 else:
                     conn.delete(identify)
                     # not install webterminal helper
