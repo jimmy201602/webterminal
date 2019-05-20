@@ -77,7 +77,11 @@
                             <td data-editable="false" class="text-center pull-left">
                                 {% if element.is_finished %}
                                 {% if perms.common.can_play_log %}
+                                    {% if element.commercial_version %}
+                                    <a class="btn btn-xs btn-primary play" onclick="playauditvideo('{{element.user.username}}','{{element.server.ip}}','{% ifequal LANGUAGE_CODE 'zh-hans' %}{{element.start_time|timezone:"Asia/Shanghai"}}{%else%}{{element.start_time|localtime}}{%endifequal%}','{% ifequal LANGUAGE_CODE 'zh-hans' %}{{element.end_time|timezone:"Asia/Shanghai"}}{%else%}{{element.end_time|localtime}}{%endifequal%}','{{element.channel}}');">{%trans 'replay' %}</a>
+                                    {% else %}
                                     <a class="btn btn-xs btn-primary play" onclick="play('{{element.user.username}}','{{element.server.ip}}','{% ifequal LANGUAGE_CODE 'zh-hans' %}{{element.start_time|timezone:"Asia/Shanghai"}}{%else%}{{element.start_time|localtime}}{%endifequal%}','{% ifequal LANGUAGE_CODE 'zh-hans' %}{{element.end_time|timezone:"Asia/Shanghai"}}{%else%}{{element.end_time|localtime}}{%endifequal%}',{% if element.server.credential.protocol == 'ssh-password' or element.server.credential.protocol == 'ssh-key' %} '{% url 'sshlogplay' element.id %}' {% else %} '{% url 'guacamolelogplay' element.id %}' {% endif %} );">{%trans 'replay' %}</a>
+                                {% endif %}
                                 {% endif %}
                                 {% else %}
                                 {% if perms.common.can_kill_serverinfo %}
@@ -334,7 +338,7 @@ function get_commands_detail(id) {
         });
     });
 }
-function playauditvideo(user,ip,start_time,end_time,url) {
+function playauditvideo(user,ip,start_time,end_time,logid) {
     var div_username = ' {% trans 'user' %}: '+'<span class="text-info">'+user+'' + '</span>';
     var div_ip = ' {% trans 'server' %}: '+'<span class="text-info">' + ip + '</span>';
     var div_time = ' {% trans 'start time' %}: ' + '<span class="text-info">'+start_time +'</span>' + ' {% trans 'end time' %}: ' +'<span class="text-info">' + end_time + '</span>';
@@ -342,18 +346,19 @@ function playauditvideo(user,ip,start_time,end_time,url) {
     $('#playermodal').modal({backdrop: 'static', keyboard: false});
     $('#playermodal').modal('show');
     $("#playermodaltitle").empty().append(title);
-    var options = {};
-    var player = videojs('auditlogplay', options, function onPlayerReady() {
-        // videojs.log('Your player is ready!');
+    video_path = window.location.origin + '/media/' + logid + '-000000'
 
-        // In this context, `this` is the player that was created by Video.js.
-        this.play();
+    var player = videojs('auditlogplay');
+    player.poster(video_path + '.png')
+    player.src({ type: "video/mp4", src: video_path + '.mp4' });
+    //api documents https://docs.videojs.com/docs/api/player.html
 
-        // How about an event listener?
-        // this.on('ended', function() {
-        //     videojs.log('Awww...over so soon?!');
-        // });
+    player.ready(function () {
+        player.play()
     });
+    // player.on('ended',function () {
+    //     console.log('ended')
+    // })
     $("#modalclosebutton").on('click',function () {
         player.pause()
     })
