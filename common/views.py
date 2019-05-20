@@ -35,7 +35,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 import pytz
 import uuid
 from common.utils import get_redis_instance
-__webterminalhelperversion__ = 0.2
+__webterminalhelperversion__ = '0.2'
 
 
 class LoginRequiredMixin(AccessMixin):
