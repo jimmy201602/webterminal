@@ -210,6 +210,8 @@ class Log(models.Model):
         default=40, verbose_name=_('Height'))
     gucamole_client_id = models.CharField(max_length=100, verbose_name=_(
         'Gucamole channel name'), blank=True, editable=False)
+    commercial_version = models.BooleanField(
+        default=False, verbose_name=_('Is Commercial Version'))
 
     def __unicode__(self):
         return self.server.name
