@@ -1,4 +1,4 @@
-# [中文 文档由此入](./doc/README-zh_cn.md)
+# [中文文档](./doc/README-zh_cn.md)
 
 Webterminal implemented by django.
 This project focus on DevOps and Continuous Delivery.
