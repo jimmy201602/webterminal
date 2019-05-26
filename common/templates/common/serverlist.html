@@ -76,7 +76,7 @@
                                     {% ifequal element.credential.protocol 'ssh-password'%}
                                     {% if perms.common.can_connect_serverinfo %}
                                     <li><span><a><img src="{% static "images/securecrt.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}},'ssh')"></a></span><p class="text-center">ssh</p></li>
-                                    <li><span><a><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}})"></a></span><p class="text-center">sftp</p></li>
+                                    <li><span><a><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}},'sftp')"></a></span><p class="text-center">sftp</p></li>
                                     <!--<li><span><a href="#"><img src="{% static "images/xmanager.gif" %}" width="60px"></a></span><p class="text-center">X11</p></li>-->
                                     <li><span><a href="{% url 'sshconnect' element.ip  element.id%}" target="_blank"><img src="{% static "images/terminal.gif" %}" width="60px"></a></span><p class="text-center">webssh</p></li>
                                     {% endif %}
@@ -84,7 +84,7 @@
                                     {% ifequal element.credential.protocol 'ssh-key'%}
                                     {% if perms.common.can_connect_serverinfo %}
                                     <li><span><a><img src="{% static "images/securecrt.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}},'ssh')"></a></span><p class="text-center">ssh</p></li>
-                                    <li><span><a><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}})"></a></span><p class="text-center">sftp</p></li>
+                                    <li><span><a><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}},'sftp')"></a></span><p class="text-center">sftp</p></li>
                                     <!--<li><span><a href="#"><img src="{% static "images/xmanager.gif" %}" width="60px"></a></span><p class="text-center">X11</p></li>-->
                                     <li><span><a href="{% url 'sshconnect' element.ip  element.id%}" target="_blank"><img src="{% static "images/terminal.gif" %}" width="60px"></a></span><p class="text-center">webssh</p></li>
                                     {% endif %}
@@ -92,7 +92,7 @@
                                     {% ifequal element.credential.protocol 'ssh-key-with-password'%}
                                     {% if perms.common.can_connect_serverinfo %}
                                     <li><span><a><img src="{% static "images/securecrt.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}},'ssh')"></a></span><p class="text-center">ssh</p></li>
-                                    <li><span><a><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}})"></a></span><p class="text-center">sftp</p></li>
+                                    <li><span><a><img src="{% static "images/filezilla.gif" %}" width="60px" onclick="connectwebterminalhelper({{element.id}},'sftp')"></a></span><p class="text-center">sftp</p></li>
                                     <!--<li><span><a><img src="{% static "images/xmanager.gif" %}" width="60px"></a></span><p class="text-center">X11</p></li>-->
                                     <li><span><a href="{% url 'sshconnect' element.ip  element.id%}" target="_blank"><img src="{% static "images/terminal.gif" %}" width="60px"></a></span><p class="text-center">webssh</p></li>
                                     {% endif %}
@@ -428,9 +428,9 @@
                 if (data.status){
                     var server_address = window.location.hostname;
                     var user_pass_dict = data.message;
-                    if (protocol == 'ssh'){
+                    if (protocol == 'ssh' || protocol == 'sftp'){
                         var server_remote_port = 2100;
-                    }else {
+                    }else{
                         var server_remote_port = 3389;
                     }
                     var username = user_pass_dict.username;
