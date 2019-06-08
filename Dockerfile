@@ -39,7 +39,6 @@ WORKDIR /opt
 RUN git clone https://github.com/jimmy201602/webterminal.git
 WORKDIR /opt/webterminal
 RUN mkdir -p /opt/webterminal/media/admin/Download
-RUN mkdir media
 RUN pip install -r requirements.txt
 #RUN /usr/local/pypy/bin/pip install -r requirements.txt
 RUN python manage.py makemigrations
