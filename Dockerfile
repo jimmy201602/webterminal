@@ -33,13 +33,12 @@ RUN rm -rf /tmp/guacamole-server*
 RUN cp -rfv /usr/local/lib/libguac* /usr/lib/
 RUN mkdir -p /usr/lib/x86_64-linux-gnu/freerdp/
 RUN ln -s /usr/local/lib/freerdp/guacdr-client.so /usr/lib/x86_64-linux-gnu/freerdp/guacdr-client.so
-RUN mkdir -p /opt/webterminal/media/admin/Download
 RUN ln -s /usr/local/lib/freerdp/guacsnd-client.so /usr/lib/x86_64-linux-gnu/freerdp/guacsnd-client.so 
 RUN mkdir -p /var/log/web
 WORKDIR /opt
 RUN git clone https://github.com/jimmy201602/webterminal.git
 WORKDIR /opt/webterminal
-RUN mkdir media
+RUN mkdir -p /opt/webterminal/media/admin/Download
 RUN pip install -r requirements.txt
 #RUN /usr/local/pypy/bin/pip install -r requirements.txt
 RUN python manage.py makemigrations
