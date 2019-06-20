@@ -35,7 +35,7 @@
   "hompage": "https://github.com/devjin0617/vue2-admin-lte#readme",
   "dependencies": {
     "admin-lte": "^2.3.11",
-    "axios": "^0.15.3",
+    "axios": ">=0.18.1",
     "bootstrap": "^3.3.7",
     "bootstrap3-wysihtml5-bower": "^0.3.3",
     "chart.js": "^2.5.0",
@@ -110,7 +110,7 @@
     "vue-style-loader": "^2.0.0",
     "vue-template-compiler": "^2.1.10",
     "webpack": "^2.2.1",
-    "webpack-bundle-analyzer": "^2.2.1",
+    "webpack-bundle-analyzer": ">=3.3.2",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.16.1",
     "webpack-merge": "^2.6.1"
