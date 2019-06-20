@@ -1,5 +1,8 @@
 # [中文文档](./doc/README-zh_cn.md)
 
+# Notification
+## The next release will drop support python 2 version.
+
 Webterminal implemented by django.
 This project focus on DevOps and Continuous Delivery.
 For now it support almost 90% remote management protocol such as vnc, ssh,rdp,telnet,sftp... It support a possiblity to monitor and recorded user action when user use this project to manage their server!You can also replay the user action such as like a video.
