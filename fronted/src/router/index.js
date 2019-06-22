@@ -13,7 +13,7 @@ export default new Router({
       name: 'Hello',
       component: LayOut,
       children: [
-        {path: 'ownspace', name: 'ownspace_index', title: '个人中心', component: Hello}
+        {path: '', name: 'ownspace_index', title: '个人中心', component: Hello}
       ]
     }
   ],
