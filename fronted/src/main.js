@@ -7,8 +7,9 @@ import './lib/global'
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import EventBus from './lib/eventBus.js'
+import EventBus from './lib/eventBus'
 import axios from 'axios'
+import i18n from './locale'
 
 Vue.prototype.$bus = EventBus
 Vue.prototype.$http = axios
@@ -20,5 +21,6 @@ new Vue({
   render: h => h(App),
   components: {
     App
-  }
+  },
+  i18n
 }).$mount('#app')
