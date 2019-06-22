@@ -1,8 +1,8 @@
 export default {
     'zh-CN': {
-        test: {
-            test: '测试!'
-        }
+        test: '测试!',
+        'Sign out': '退出',
+        'Profile': '简介'
     },
     'en-US': {
         index: {
