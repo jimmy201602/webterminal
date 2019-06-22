@@ -7,9 +7,9 @@
 </template>
 
 <script>
-  import VANaviBar from 'NaviBar.vue'
-  import VASlider from 'Slider.vue'
-  import VAContentWrap from 'ContentWrap.vue'
+  import VANaviBar from './NaviBar.vue'
+  import VASlider from './Slider.vue'
+  import VAContentWrap from './ContentWrap.vue'
   import store from './vuex/store.js'
   import slideMenuItems from './lib/slideMenuItems.js'
 

@@ -17,8 +17,8 @@ Vue.prototype.$http = axios
 new Vue({
   el: '#app',
   router,
-  template: '<App/>',
+  render: h => h(App),
   components: {
     App
   }
-})
+}).$mount('#app')
