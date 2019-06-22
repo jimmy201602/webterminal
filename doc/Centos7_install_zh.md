@@ -3,12 +3,13 @@
 ## 系统准备
 
 ```
-1.全新Centos7系统
+1.全新最小化Centos7系统
 2.项目部署目录 /opt
-3.关闭防火墙
+3.关闭Selinux
 setenforce 0
-systemctl stop iptables.service
-systemctl stop firewalld.service
+sed -i "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
+4.开放防火墙
+firewall-cmd --zone=public --add-port=80/tcp --permanent
 ```
 
 ## 准备环境
@@ -18,101 +19,113 @@ systemctl stop firewalld.service
 ```
 yum install -y epel-release
 yum clean all
-yum install -y python python-dev python-devel redis-server redis python-pip supervisor nginx git gcc 
+yum install -y gcc gcc-c++ libffi-devel MySQL-python python python-dev python-devel python-pip supervisor git bzip2 wget
 ```
 
-#### 2.编译安装guacamole server
-
+#### 2.安装并配置mariadb
 ```
-rpm --import http://li.nux.ro/download/nux/RPM-GPG-KEY-nux.ro
-rpm -Uvh http://li.nux.ro/download/nux/dextop/el7/x86_64/nux-dextop-release-0-5.el7.nux.noarch.rpm
+yum install mariadb mariadb-server
+systemctl enable mariadb
+systemctl start mariadb
+#此时数据库密码为空 可执行 mysql_secure_installation 初始化数据库
+mysql -uroot 
+CREATE DATABASE `webterminal` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+grant all on webterminal.* to 'webterminal'@'127.0.0.1' identified by 'password'; 
+flush privileges;
+```
 
-yum clean all
-yum install epel-release -y
+#### 3.安装redis并设置开机启动
+```
+yum install -y redis-server redis
+systemctl start redis
+systemctl enable redis
+```
 
-yum install -y freerdp-plugins gcc gnu-free-mono-fonts pv libjpeg-devel freerdp-devel libssh2-devel libvorbis-devel libwebp-devel pulseaudio-libs-devel libvncserver-devel libssh-devel pango-devel ffmpeg ffmpeg-devel openssl-devel dialog libtelnet-devel wget cairo-devel libpng-devel uuid-devel
-
+#### 4.安装guacamole-server
+```
+yum install -y freerdp-plugins gcc gnu-free-mono-fonts pv libjpeg-devel freerdp-devel libssh2-devel libvorbis-devel libwebp-devel pulseaudio-libs-devel libvncserver-devel libssh-devel pango-devel ffmpeg ffmpeg-devel openssl-devel dialog libtelnet-devel cairo-devel libpng-devel uuid-devel
 yum localinstall http://sourceforge.net/projects/libjpeg-turbo/files/libjpeg-turbo-official-1.5.2.x86_64.rpm -y
 ln -vfs /opt/libjpeg-turbo/include/* /usr/include/
 ln -vfs /opt/libjpeg-turbo/lib??/* /usr/lib64/
-
 cd /tmp
 wget http://sourceforge.net/projects/guacamole/files/current/source/guacamole-server-0.9.14.tar.gz
 tar -xvpf guacamole-server-0.9.14.tar.gz
 cd guacamole-server-0.9.14
 ./configure --with-init-dir=/etc/init.d
 make && make install
+#设置开机启动
+/sbin/chkconfig guacd on
 ```
 
-#### ３.拉取项目代码（时间取决于网络环境）
-
+#### 5.安装webterminal
 ```
-cd /opt
+#拉取项目代码
 git clone https://github.com/jimmy201602/webterminal.git
-```
-
-## 安装webterminal 
-
-```
-1.进入项目目录
 cd /opt/webterminal
-2.安装程序依赖包
+#安装项目依赖
 pip install -r requirements.txt
-3.检测项目程序数据表变动
+#如果使用mariadb数据库  修改以下2个配置文件
+vim webterminal.conf 
+[db]
+engine = mysql
+host = 127.0.0.1
+port = 3306
+user = webterminal
+password = password
+database = webterminal
+
+vim webterminal/settings.py
+#注释以下行
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+#添加以下行
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'webterminal',
+        'USER': 'webterminal',
+        'PASSWORD': 'password',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
+
+#检测项目程序数据表变动并创建数据库
 python manage.py makemigrations
-4.创建数据表
 python manage.py migrate
-5.启动redis
-systemctl start redis
-6.创建管理员账户
+#这一步如果有报错，请参考最下方手动安装twisted
+#创建管理员账户
 python manage.py createsuperuser
 ```
 
-## nginx代理配置
-```sh
-1 删除原有的nginx配置文件
+#### 6.安装并配置nginx
+```
+#安装nginx并设置开机启动
+yum install -y nginx
+systemctl start nginx
+systemctl enable nginx
+#设置nginx代理
 rm -rf /etc/nginx/nginx.conf
-2 设置新的nginx配置文件
 cp /opt/webterminal/nginx.conf /etc/nginx/nginx.conf
-3 重启nginx以使配置文件生效
 systemctl restart nginx
 ```
 
-## 开机自启动服务配置
-
-1. 关闭防火墙！ 确认你是否已执行安装教程以上的guacd、redis 等服务加入开机启动项。如果没有请执行以下命令，已执行的请忽略。
-
+#### 7.安装supervisor
 ```
-1.将guacd 加入开机启动项
-/sbin/chkconfig guacd on
-2.将redis 加入开机启动项
-systemctl enable redis
-3 将nginx加入开机启动项
-systemctl enable nginx
-```
-
-2. 安装supervisor(进程守护程序)
-
-```
-yum install supervisor
-```
-
-3. supervisor配置文件
-将项目根目录下的的supervisord.conf 拷贝至/etc/supervisord.conf
-```
+mkdir /var/log/web/
 cp /opt/webterminal/supervisord.conf /etc/supervisord.conf
-```
-## 启动webterminal
-```sh
-1 开启redis 服务
-systemctl start redis
-2 开启guacamole server服务
-systemctl start guacd
-3 开启supervisor守护进程 (启动webterminal应用)
+systemctl restart guacd
+systemctl restart nginx
+#开启supervisor守护进程 (启动webterminal应用)
 supervisord -c /etc/supervisord.conf
-4 开启nginx代理
-systemctl start nginx
+#设置开机启动
+echo 'supervisord -c /etc/supervisord.conf' >> /etc/rc.local
 ```
+
 ## 访问webterminal
 
 [http://webterminal_server_ip](http://webterminal_server_ip)
