@@ -10,6 +10,10 @@ import router from './router'
 import EventBus from './lib/eventBus'
 import axios from 'axios'
 import i18n from './locale'
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+
+Vue.use(iView)
 
 Vue.prototype.$bus = EventBus
 Vue.prototype.$http = axios
