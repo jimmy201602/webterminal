@@ -60,6 +60,7 @@ make && make install
 #### 5.安装webterminal
 ```
 #拉取项目代码
+
 git clone https://github.com/jimmy201602/webterminal.git
 cd /opt/webterminal
 #安装项目依赖
