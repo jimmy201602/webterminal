@@ -8,7 +8,7 @@
             <span class="input-group-addon"><button type="submit"><i class="fa fa-search"></i></button></span>
           </div>
         </form>
-        <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="contextItems" @contextSelected="contextSelected"></v-treeview>
+        <v-treeview v-model="treeData" :treeTypes="treeTypes" @selected="selected" :openAll="openAll" :contextItems="contextItems" :contextSelected="contextSelected"></v-treeview>
       </div>
       <div slot="right" class="demo-split-pane">
         <Tabs type="card" closable @on-tab-remove="handleTabRemove">
@@ -174,6 +174,7 @@ export default {
       return typeRule;
     },
     contextSelected(command) {
+      console.log(1111111111,command)
       switch (command) {
         case "Create Basic":
           var node = {
