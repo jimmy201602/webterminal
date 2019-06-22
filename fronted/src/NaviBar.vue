@@ -227,20 +227,20 @@
                 </p>
               </li>
               <!-- Menu Body -->
-              <li class="user-body">
-                <row>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
-                </row>
-                <!-- /.row -->
-              </li>
+<!--              <li class="user-body">-->
+<!--                <row>-->
+<!--                  <div class="col-xs-4 text-center">-->
+<!--                    <a href="#">Followers</a>-->
+<!--                  </div>-->
+<!--                  <div class="col-xs-4 text-center">-->
+<!--                    <a href="#">Sales</a>-->
+<!--                  </div>-->
+<!--                  <div class="col-xs-4 text-center">-->
+<!--                    <a href="#">Friends</a>-->
+<!--                  </div>-->
+<!--                </row>-->
+<!--                &lt;!&ndash; /.row &ndash;&gt;-->
+<!--              </li>-->
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
@@ -253,9 +253,9 @@
             </ul>
           </li>
           <!-- Control Sidebar Toggle Button -->
-          <li>
-            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-          </li>
+<!--          <li>-->
+<!--            <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>-->
+<!--          </li>-->
         </ul>
       </div>
     </nav>
