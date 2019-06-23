@@ -43,7 +43,7 @@
     <!--{% endif %}-->
 <!--{{ form.otp_token.errors }}-->
 
-{% csrf_token %} 
+{% csrf_token %}
 <input type="submit" value="{% trans 'Log in' %}" />
 <select name="language" onchange="selectdo(this)">
                 {% get_current_language as LANGUAGE_CODE %}

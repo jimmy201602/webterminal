@@ -344,6 +344,7 @@
             console.log('Can not copy')
             console.log(e)
           })
+          console.log(window.clipboardData)
         }
       });
     let height = document.body.clientHeight -214;
