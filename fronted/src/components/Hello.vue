@@ -24,7 +24,42 @@
       </div>
       <div slot="right" class="demo-split-pane">
         <Tabs type="card" closable @on-tab-remove="handleTabRemove">
-          <TabPane label="标签一" v-if="tab0"><div :id="termid" v-contextmenu:termcontextmenu></div></TabPane>
+          <TabPane label="标签一" v-if="tab0">
+            <div :id="termid" v-contextmenu:termcontextmenu></div>
+            <div>
+              <div class="toolsbar">
+                <!--
+                  <Button type="primary" size="large" shape="circle" icon="wrench"></Button>
+                -->
+                <Button-group vertical>
+                  <i-button
+                          type="primary"
+                          size="large"
+                          :title="$t('console.toolsbar_refresh')"
+                          icon="md-refresh"
+                  ></i-button>
+                  <i-button
+                          type="primary"
+                          size="large"
+                          :title="$t('console.toolsbar_file_transfer')"
+                          icon="md-swap"
+                  ></i-button>
+                  <i-button
+                          type="primary"
+                          size="large"
+                          :title="$t('console.toolsbar_fullscreen')"
+                          icon="md-expand"
+                  ></i-button>
+                  <i-button
+                          type="primary"
+                          size="large"
+                          :title="$t('console.toolsbar_settings')"
+                          icon="md-settings"
+                  ></i-button>
+                </Button-group>
+              </div>
+            </div>
+          </TabPane>
           <TabPane label="标签二" v-if="tab1">标签二的内容</TabPane>
           <TabPane label="标签三" v-if="tab2">标签三的内容</TabPane>
         </Tabs>
@@ -393,5 +428,11 @@
   }
   .icon-state-success {
     color: green;
+  }
+  .toolsbar {
+    position: absolute;
+    right: 10px;
+    top: 160px;
+    z-index: 10;
   }
 </style>
