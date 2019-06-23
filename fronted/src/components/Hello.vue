@@ -305,4 +305,16 @@ export default {
   .demo-split-pane{
     padding: 10px;
   }
+  .icon-state-default {
+    color: gray;
+  }
+  .icon-state-danger {
+    color: red;
+  }
+  .icon-state-warning {
+    color: yellow;
+  }
+  .icon-state-success {
+    color: green;
+  }
 </style>
