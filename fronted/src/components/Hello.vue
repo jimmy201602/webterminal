@@ -152,7 +152,7 @@ export default {
       // this.MouseEvent = data
       // console.log(this.showContext,this.MouseEvent)
       // console.log(33333333333,data)
-      console.log(data)
+      //console.log(data)
       const postition = {
         top: mouseevent.clientY,
         left: mouseevent.clientX,
