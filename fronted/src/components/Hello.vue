@@ -24,7 +24,7 @@
       </div>
       <div slot="right" class="demo-split-pane">
         <Tabs type="card" closable @on-tab-remove="handleTabRemove">
-          <TabPane label="标签一" v-if="tab0"><div :id="termid"></div></TabPane>
+          <TabPane label="标签一" v-if="tab0"><div :id="termid" v-contextmenu:termcontextmenu></div></TabPane>
           <TabPane label="标签二" v-if="tab1">标签二的内容</TabPane>
           <TabPane label="标签三" v-if="tab2">标签三的内容</TabPane>
         </Tabs>
@@ -34,6 +34,11 @@
       <v-contextmenu-item @click="clickmenu(1)">菜单1</v-contextmenu-item>
       <v-contextmenu-item @click="clickmenu(2)">菜单2</v-contextmenu-item>
       <v-contextmenu-item @click="clickmenu(3)">菜单3</v-contextmenu-item>
+    </v-contextmenu>
+    <v-contextmenu ref="termcontextmenu">
+      <v-contextmenu-item>{{ $t('copy') }}</v-contextmenu-item>
+      <v-contextmenu-item>{{ $t('paste') }}</v-contextmenu-item>
+      <v-contextmenu-item>{{ $t('fullscreen') }}</v-contextmenu-item>
     </v-contextmenu>
   </div>
 </template>

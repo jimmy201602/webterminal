@@ -5,7 +5,10 @@ export default {
         'All rights reserved':'保留所有权',
         'Copyright':'版权',
         'version':'版本',
-        'search':'搜索'
+        'search':'搜索',
+        'copy':'复制',
+        'paste':'粘贴',
+        'fullscreen':'全屏'
     },
     'en-US': {
         index: {
