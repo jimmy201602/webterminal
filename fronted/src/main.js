@@ -14,6 +14,9 @@ import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 import contentmenu from 'v-contextmenu'
 import 'v-contextmenu/dist/index.css'
+import VueClipboard from 'vue-clipboard2'
+
+Vue.use(VueClipboard)
 Vue.use(contentmenu)
 
 Vue.use(iView)
