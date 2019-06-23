@@ -12,9 +12,17 @@ module.exports = [
       {
         type: 'item',
         icon: 'fa fa-circle-o',
-        name: 'Dashboard v1',
+        name: 'Hello',
         router: {
-          name: 'DashboardV1'
+          name: 'hello'
+        }
+      },
+      {
+        type: 'item',
+        icon: 'fa fa-circle-o',
+        name: 'Login',
+        router: {
+          name: 'login'
         }
       }
     ]
