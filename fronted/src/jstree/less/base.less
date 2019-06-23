@@ -1,0 +1,35 @@
+// base tree
+.tree-node, .tree-children, .tree-container-ul { display:block; margin:0; padding:0; list-style-type:none; list-style-image:none; }
+.tree-children {overflow: hidden; }
+.tree-node { white-space:nowrap; }
+.tree-anchor { display:inline-block; color:black; white-space:nowrap; padding:0 4px 0 1px; margin:0; vertical-align:top; font-size: 14px; cursor: pointer;}
+.tree-anchor:focus { outline:0; }
+.tree-anchor, .tree-anchor:link, .tree-anchor:visited, .tree-anchor:hover, .tree-anchor:active { text-decoration:none; color:inherit; }
+.tree-icon { display:inline-block; text-decoration:none; margin:0; padding:0; vertical-align:top; text-align:center; }
+.tree-icon:empty { display:inline-block; text-decoration:none; margin:0; padding:0; vertical-align:top; text-align:center; }
+.tree-ocl { cursor:pointer; }
+.tree-leaf > .tree-ocl { cursor:default; }
+.tree-anchor > .tree-themeicon { margin-right:2px; }
+.tree-no-icons .tree-themeicon,
+.tree-anchor > .tree-themeicon-hidden { display:none; }
+.tree-hidden, .tree-node.tree-hidden { display:none; }
+
+// base tree rtl
+.tree-rtl {
+	.tree-anchor { padding:0 1px 0 4px; }
+	.tree-anchor > .tree-themeicon { margin-left:2px; margin-right:0; }
+	.tree-node { margin-left:0; }
+	.tree-container-ul > .tree-node { margin-right:0; }
+}
+
+// base tree wholerow
+.tree-wholerow-ul {
+	position:relative;
+	display:inline-block;
+	min-width:100%;
+	.tree-leaf > .tree-ocl { cursor:pointer; }
+	.tree-anchor, .tree-icon { position:relative; }
+	.tree-wholerow { width:100%; cursor:pointer; z-index: -1; position:absolute; left:0; -webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none; }
+}
+
+

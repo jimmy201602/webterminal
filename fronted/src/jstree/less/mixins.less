@@ -1,0 +1,91 @@
+.tree-theme (@base-height, @image, @image-height) {
+	@correction: (@image-height - @base-height) / 2;
+
+	.tree-node { min-height:@base-height; line-height:@base-height; margin-left:@base-height + 6; min-width:@base-height; }
+	.tree-anchor { line-height:@base-height; height:@base-height; }
+	.tree-icon { width:@base-height; height:@base-height; line-height:@base-height; }
+	.tree-icon:empty { width:@base-height; height:@base-height; line-height:@base-height; }
+	&.tree-rtl .tree-node { margin-right:@base-height; }
+	.tree-wholerow { height:@base-height; }
+
+	.tree-node,
+	.tree-icon { background-image:url("@{image}"); }
+	.tree-node { background-position:-(@image-height * 9 + @correction) -@correction; background-repeat:repeat-y; }
+	.tree-last { background:transparent; }
+
+	.tree-open > .tree-ocl { background-position:-(@image-height * 4 + @correction) -@correction; }
+	.tree-closed > .tree-ocl { background-position:-(@image-height * 3 + @correction) -@correction; }
+	.tree-leaf > .tree-ocl { background-position:-(@image-height * 2 + @correction) -@correction; }
+
+	.tree-themeicon { background-position:-(@image-height * 8 + @correction) -@correction; }
+
+	> .tree-no-dots {
+		.tree-node,
+		.tree-leaf > .tree-ocl { background:transparent; }
+		.tree-open > .tree-ocl { background-position:-(@image-height * 1 + @correction) -@correction; }
+		.tree-closed > .tree-ocl { background-position:-@correction -@correction; }
+	}
+
+	.tree-disabled {
+		background:transparent;
+		&.tree-hovered {
+			background:transparent;
+		}
+		&.tree-selected {
+			background:#efefef;
+		}
+	}
+
+	.tree-checkbox {
+		background-position:-(@image-height * 5 + @correction) -@correction;
+		&:hover { background-position:-(@image-height * 5 + @correction) -(@image-height * 1 + @correction); }
+	}
+
+	&.tree-checkbox-selection .tree-selected, .tree-checked {
+		> .tree-checkbox {
+			background-position:-(@image-height * 7 + @correction) -@correction;
+			&:hover { background-position:-(@image-height * 7 + @correction) -(@image-height * 1 + @correction); }
+		}
+	}
+	.tree-anchor {
+		> .tree-undetermined {
+			background-position:-(@image-height * 6 + @correction) -@correction;
+			&:hover {
+				background-position:-(@image-height * 6 + @correction) -(@image-height * 1 + @correction);
+			}
+		}
+	}
+	.tree-checkbox-disabled { opacity:0.8; filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'tree-grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#tree-grayscale"); /* Firefox 10+ */ filter: gray; /* IE6-9 */ -webkit-filter: grayscale(100%); /* Chrome 19+ & Safari 6+ */ }
+
+	> .tree-striped { background-size:auto (@base-height * 2); }
+
+	&.tree-rtl {
+		.tree-node { background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAACAQMAAAB49I5GAAAABlBMVEUAAAAdHRvEkCwcAAAAAXRSTlMAQObYZgAAAAxJREFUCNdjAAMOBgAAGAAJMwQHdQAAAABJRU5ErkJggg=="); background-position: 100% 1px; background-repeat:repeat-y; }
+		.tree-last { background:transparent; }
+		.tree-open > .tree-ocl { background-position:-(@image-height * 4 + @correction) -(@image-height * 1 + @correction); }
+		.tree-closed > .tree-ocl { background-position:-(@image-height * 3 + @correction) -(@image-height * 1 + @correction); }
+		.tree-leaf > .tree-ocl { background-position:-(@image-height * 2 + @correction) -(@image-height * 1 + @correction); }
+		> .tree-no-dots {
+			.tree-node,
+			.tree-leaf > .tree-ocl { background:transparent; }
+			.tree-open > .tree-ocl { background-position:-(@image-height * 1 + @correction) -(@image-height * 1 + @correction); }
+			.tree-closed > .tree-ocl { background-position:-@correction -(@image-height * 1 + @correction); }
+		}
+	}
+	.tree-themeicon-custom { background-color:transparent; background-image:none; background-position:0 0; }
+
+	.tree-node.tree-loading{background: none;}
+
+	> .tree-container-ul .tree-loading > .tree-ocl { background:url("data:image/gif;base64,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") center center no-repeat; }
+
+	.tree-file { background:url("@{image}") -(@image-height * 3 + @correction) -(@image-height * 2 + @correction) no-repeat; }
+	.tree-folder { background:url("@{image}") -(@image-height * 8 + @correction) -(@correction) no-repeat; }
+
+	> .tree-container-ul > .tree-node { margin-left:0; margin-right:0; }
+
+	// ellipsis
+	.tree-ellipsis { overflow: hidden; }
+	// base height + PADDINGS!
+	.tree-ellipsis .tree-anchor { width: calc(100% ~"-" (@base-height + 5px)); text-overflow: ellipsis; overflow: hidden; }
+	.tree-ellipsis.tree-no-icons .tree-anchor { width: calc(100% ~"-" 5px); }
+}

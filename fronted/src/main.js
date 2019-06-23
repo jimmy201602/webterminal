@@ -12,6 +12,9 @@ import axios from 'axios'
 import i18n from './locale'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import contentmenu from 'v-contextmenu'
+import 'v-contextmenu/dist/index.css'
+Vue.use(contentmenu)
 
 Vue.use(iView)
 
