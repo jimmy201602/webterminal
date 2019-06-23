@@ -1,61 +1,67 @@
 <template>
-  <div class="demo-split">
-    <Split v-model="split1">
-      <div slot="left" class="demo-split-pane">
+  <Panel>
+    <div class="demo-split">
+      <Split v-model="split1">
+        <div slot="left" class="demo-split-pane">
           <div class="input-group">
             <input type="text" v-model="searchText" :placeholder="$t('search')" class="form-control" @keyup="inputKeyUp">
             <span class="input-group-addon"><button type="submit" @click="inputKeyUp"><i class="fa fa-search"></i></button></span>
           </div>
-        <v-jstree :data="data"
-                  :item-events="itemEvents"
-                  :show-checkbox="false"
-                  multiple
-                  allow-batch
-                  whole-row
-                  draggable
-                  :contextmenu="contextmenu"
-                  @item-click="itemClick"
-                  @item-drag-start="itemDragStart"
-                  @item-drag-end="itemDragEnd"
-                  @item-drop-before = "itemDropBefore"
-                  ref="tree"
-                  @item-drop="itemDrop">
-        </v-jstree>
-      </div>
-      <div slot="right" class="demo-split-pane">
-        <Tabs type="card" closable @on-tab-remove="handleTabRemove">
-          <TabPane label="标签一" v-if="tab0">
-            <div :id="termid" v-contextmenu:termcontextmenu></div>
-            <div>
-              <div class="toolsbar">
-                <!--
-                  <Button type="primary" size="large" shape="circle" icon="wrench"></Button>
-                -->
-                <Button-group vertical>
-                  <i-button type="primary" size="large" :title="$t('refresh')" icon="md-refresh"></i-button>
-                  <i-button type="primary" size="large" :title="$t('file transfer')" icon="md-swap"></i-button>
-                  <i-button type="primary" size="large" :title="$t('fullscreen')" icon="md-expand"></i-button>
-                  <i-button type="primary" size="large" :title="$t('settings')" icon="md-settings"></i-button>
-                </Button-group>
+          <v-jstree :data="data"
+                    :item-events="itemEvents"
+                    :show-checkbox="false"
+                    multiple
+                    allow-batch
+                    whole-row
+                    draggable
+                    :contextmenu="contextmenu"
+                    @item-click="itemClick"
+                    @item-drag-start="itemDragStart"
+                    @item-drag-end="itemDragEnd"
+                    @item-drop-before = "itemDropBefore"
+                    ref="tree"
+                    @item-drop="itemDrop">
+          </v-jstree>
+        </div>
+        <div slot="right" class="demo-split-pane">
+          <Tabs type="card" closable @on-tab-remove="handleTabRemove">
+            <TabPane label="标签一" v-if="tab0">
+              <div :id="termid" v-contextmenu:termcontextmenu></div>
+              <div>
+                <div class="toolsbar">
+                  <!--
+                    <Button type="primary" size="large" shape="circle" icon="wrench"></Button>
+                  -->
+                  <Button-group vertical>
+                    <i-button type="primary" size="large" :title="$t('refresh')" icon="md-refresh" @click="openmodal"></i-button>
+                    <i-button type="primary" size="large" :title="$t('file transfer')" icon="md-swap"></i-button>
+                    <i-button type="primary" size="large" :title="$t('fullscreen')" icon="md-expand"></i-button>
+                    <i-button type="primary" size="large" :title="$t('settings')" icon="md-settings"></i-button>
+                  </Button-group>
+                </div>
               </div>
-            </div>
-          </TabPane>
-          <TabPane label="标签二" v-if="tab1">标签二的内容</TabPane>
-          <TabPane label="标签三" v-if="tab2">标签三的内容</TabPane>
-        </Tabs>
-      </div>
-    </Split>
-    <v-contextmenu ref="contextmenu">
-      <v-contextmenu-item @click="clickmenu(1)">菜单1</v-contextmenu-item>
-      <v-contextmenu-item @click="clickmenu(2)">菜单2</v-contextmenu-item>
-      <v-contextmenu-item @click="clickmenu(3)">菜单3</v-contextmenu-item>
-    </v-contextmenu>
-    <v-contextmenu ref="termcontextmenu">
-      <v-contextmenu-item>{{ $t('copy') }}</v-contextmenu-item>
-      <v-contextmenu-item>{{ $t('paste') }}</v-contextmenu-item>
-      <v-contextmenu-item>{{ $t('fullscreen') }}</v-contextmenu-item>
-    </v-contextmenu>
-  </div>
+            </TabPane>
+            <TabPane label="标签二" v-if="tab1">标签二的内容</TabPane>
+            <TabPane label="标签三" v-if="tab2">标签三的内容</TabPane>
+          </Tabs>
+        </div>
+      </Split>
+      <v-contextmenu ref="contextmenu">
+        <v-contextmenu-item @click="clickmenu(1)">菜单1</v-contextmenu-item>
+        <v-contextmenu-item @click="clickmenu(2)">菜单2</v-contextmenu-item>
+        <v-contextmenu-item @click="clickmenu(3)">菜单3</v-contextmenu-item>
+      </v-contextmenu>
+      <v-contextmenu ref="termcontextmenu">
+        <v-contextmenu-item>{{ $t('copy') }}</v-contextmenu-item>
+        <v-contextmenu-item>{{ $t('paste') }}</v-contextmenu-item>
+        <v-contextmenu-item>{{ $t('fullscreen') }}</v-contextmenu-item>
+      </v-contextmenu>
+      <Modal v-model="modal" fullscreen title="Fullscreen Modal" :mask-closable="false">
+        <iframe src="http://www.baidu.com" style="height: 100%;width: 100%;" frameborder="0"></iframe>
+      </Modal>
+    </div>
+  </Panel>
+
 </template>
 
 <script>
@@ -72,6 +78,7 @@
   name: 'hello',
   data () {
     return {
+      modal: false,
       termid:'test1',
       split1: 0.15,
       tab0: true,
@@ -172,6 +179,9 @@
   methods: {
     handleTabRemove (name) {
       this['tab' + name] = false;
+    },
+    openmodal(){
+      this.modal = true
     },
     clickmenu(data){
       console.log(data)
