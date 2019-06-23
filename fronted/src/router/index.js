@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '../components/Hello.vue'
-import LayOut from '../LayOut.vue'
+import Hello from '../components/Hello'
+import LayOut from '../LayOut'
+import Login from '../components/Login'
 
 Vue.use(Router)
 
@@ -13,8 +14,13 @@ export default new Router({
       name: 'Hello',
       component: LayOut,
       children: [
-        {path: '', name: 'ownspace_index', title: '个人中心', component: Hello}
+        {path: 'hello', name: 'hello', component: Hello},
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ],
   linkActiveClass: 'active'

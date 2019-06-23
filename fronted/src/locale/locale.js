@@ -8,7 +8,12 @@ export default {
         'search':'搜索',
         'copy':'复制',
         'paste':'粘贴',
-        'fullscreen':'全屏'
+        'fullscreen':'全屏',
+        'Chinese':'中文',
+        'English':'英语',
+        'Username':'用户名',
+        'Password':'密码',
+        'Log in':'登录'
     },
     'en-US': {
         index: {
