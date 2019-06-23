@@ -24,7 +24,7 @@
       </div>
       <div slot="right" class="demo-split-pane">
         <Tabs type="card" closable @on-tab-remove="handleTabRemove">
-          <TabPane label="标签一" v-if="tab0">标签一的内容</TabPane>
+          <TabPane label="标签一" v-if="tab0"><div :id="termid"></div></TabPane>
           <TabPane label="标签二" v-if="tab1">标签二的内容</TabPane>
           <TabPane label="标签三" v-if="tab2">标签三的内容</TabPane>
         </Tabs>
@@ -40,10 +40,19 @@
 
 <script>
   import VJstree from  '../jstree/tree'
-export default {
+  import 'xterm/dist/xterm.css'
+  import { Terminal } from 'xterm';
+  import * as fit from 'xterm/lib/addons/fit/fit';
+  import 'xterm/dist/addons/fullscreen/fullscreen.css'
+  import * as fullscreen from 'xterm/lib/addons/fullscreen/fullscreen';
+  Terminal.applyAddon(fullscreen);
+  Terminal.applyAddon(fit);
+
+  export default {
   name: 'hello',
   data () {
     return {
+      termid:'test1',
       split1: 0.15,
       tab0: true,
       tab1: true,
@@ -293,6 +302,68 @@ export default {
   },
   components:{
     VJstree
+  },
+  mounted() {
+    var that = this
+    let terminalContainer = document.getElementById('test1')
+    let term = new Terminal({
+        // cols: 92,
+        rows: 40,
+        cursorBlink: true, // 光标闪烁
+        cursorStyle: "underline", // 光标样式  null | 'block' | 'underline' | 'bar'
+        scrollback: 800, //回滚
+        tabStopWidth: 8, //制表宽度
+        screenKeys: true//
+      })
+      term.open(terminalContainer)
+      term.fit()
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.writeln('111111111111111111111111111111111111111111111111111111111111111111')
+      term.on("selection", function() {
+        if (term.hasSelection()) {
+          const copy = term.getSelection();
+          console.log(copy)
+          that.$copyText(copy).then(function (e) {
+            console.log('Copied')
+            console.log(e)
+          }, function (e) {
+            console.log('Can not copy')
+            console.log(e)
+          })
+        }
+      });
+    let height = document.body.clientHeight -214;
+    let rows = height/18;
+    term.on("data", function(data) {
+      console.log("data", data);
+      // websocket.send(new TextEncoder().encode("\x00" + data));
+      term.write(data)
+    });
+    term.attachCustomKeyEventHandler(function(ev,data) {
+      //ctrl+v
+      if (ev.keyCode == 86 && ev.ctrlKey) {
+        console.log('ctrl + v')
+        term.writeln('ctrl + v')
+      }
+    })
+    term.resize(term.cols,parseInt(rows))
+      // window.onresize = function() {
+      // term.fit();
+      // term.scrollToBottom();
+      // };
+    window.addEventListener('resize',function() {
+      term.fit();
+      term.scrollToBottom();
+    })
   }
 }
 </script>
