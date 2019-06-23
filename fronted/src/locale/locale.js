@@ -13,7 +13,10 @@ export default {
         'English':'英语',
         'Username':'用户名',
         'Password':'密码',
-        'Log in':'登录'
+        'Log in':'登录',
+        'refresh':'刷新',
+        'file transfer':'文件传送',
+        'settings':'设置'
     },
     'en-US': {
         index: {
