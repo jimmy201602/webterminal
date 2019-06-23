@@ -32,30 +32,10 @@
                   <Button type="primary" size="large" shape="circle" icon="wrench"></Button>
                 -->
                 <Button-group vertical>
-                  <i-button
-                          type="primary"
-                          size="large"
-                          :title="$t('console.toolsbar_refresh')"
-                          icon="md-refresh"
-                  ></i-button>
-                  <i-button
-                          type="primary"
-                          size="large"
-                          :title="$t('console.toolsbar_file_transfer')"
-                          icon="md-swap"
-                  ></i-button>
-                  <i-button
-                          type="primary"
-                          size="large"
-                          :title="$t('console.toolsbar_fullscreen')"
-                          icon="md-expand"
-                  ></i-button>
-                  <i-button
-                          type="primary"
-                          size="large"
-                          :title="$t('console.toolsbar_settings')"
-                          icon="md-settings"
-                  ></i-button>
+                  <i-button type="primary" size="large" :title="$t('refresh')" icon="md-refresh"></i-button>
+                  <i-button type="primary" size="large" :title="$t('file transfer')" icon="md-swap"></i-button>
+                  <i-button type="primary" size="large" :title="$t('fullscreen')" icon="md-expand"></i-button>
+                  <i-button type="primary" size="large" :title="$t('settings')" icon="md-settings"></i-button>
                 </Button-group>
               </div>
             </div>
