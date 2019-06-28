@@ -42,6 +42,7 @@ zhengge2012@gmail.com
 ![screenshots](./screenshots/screenshots1.png  "screenshots")
 ![screenshots](./screenshots/screenshots2.gif  "screenshots")
 ![screenshots](./screenshots/screenshots9.gif  "screenshots")
+![screenshots](./screenshots/screenshotlinux.gif  "screenshots")
 # commercial version provide mstsc helper （clipboard support vs file upload download）
 ![screenshots](./screenshots/screenshotmstsc.gif  "screenshots")
 ![screenshots](./screenshots/screenshotvnc.gif  "screenshots")
