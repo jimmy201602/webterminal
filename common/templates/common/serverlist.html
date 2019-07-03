@@ -435,7 +435,7 @@
                     }
                     var username = user_pass_dict.username;
                     var temp_pass = user_pass_dict.password;
-                    var protocol_path = "ssh://"+ protocol +"#"+server_address+"#"+server_remote_port+"#"+username+"#"+temp_pass;
+                    var protocol_path = "wssh://"+ protocol +"#"+server_address+"#"+server_remote_port+"#"+username+"#"+temp_pass;
                     window.location.href = protocol_path
                 }
          },
