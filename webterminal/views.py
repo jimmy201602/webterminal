@@ -179,7 +179,7 @@ class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView)
         if request.is_ajax():
             serverid = request.POST.get('serverid', None)
             try:
-                ServerInfor.objects.get(id=serverid)
+                data = ServerInfor.objects.get(id=serverid)
                 username = uuid.uuid4().hex[0:5]
                 password = uuid.uuid4().hex
                 conn = get_redis_instance()
@@ -187,7 +187,8 @@ class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView)
                 key = encrypt.encrypt(content=username + password)
                 key = encrypt.md5_crypt(key)
                 serverid = encrypt.encrypt(content=serverid)
-                password = encrypt.encrypt(content=password)
+                if data.credential.protocol not in ['rdp', 'vnc']:
+                    password = encrypt.encrypt(content=password)
                 request_username = encrypt.encrypt(
                     content=self.request.user.username)
                 if isinstance(serverid, bytes):

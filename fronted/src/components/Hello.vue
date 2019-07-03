@@ -57,7 +57,7 @@
         <v-contextmenu-item>{{ $t('fullscreen') }}</v-contextmenu-item>
       </v-contextmenu>
       <Modal v-model="modal" fullscreen title="Fullscreen Modal" :mask-closable="false">
-        <iframe src="http://www.baidu.com" style="height: 100%;width: 100%;" frameborder="0"></iframe>
+        <iframe :src="src" style="height: 100%;width: 100%;" frameborder="0"></iframe>
       </Modal>
     </div>
   </Panel>
@@ -85,6 +85,7 @@
       tab1: true,
       tab2: true,
       searchText: '',
+      src:'http://www.baidu.com',
       itemEvents: {
         // mouseover: function () {
         //   console.log('mouseover')

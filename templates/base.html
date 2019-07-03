@@ -382,7 +382,7 @@ toastr.options = {
           var server_protocol = window.location.protocol;
           var server_host = window.location.host;
           var api_path = '{% url 'webterminalhelperdetectcallbackapi' %}';
-          var ssh_protocol_test_path = "ssh://test#" + server_protocol + "//" + server_host + api_path + '#' + data.message;
+          var ssh_protocol_test_path = "wssh://test#" + server_protocol + "//" + server_host + api_path + '#' + data.message;
           window.location.href = ssh_protocol_test_path
           //after 3 second then check ssh helper is installed
           setTimeout(function () {
