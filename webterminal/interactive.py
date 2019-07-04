@@ -79,7 +79,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                 if chan in r:
                     data = chan.recv(1024)
                     x = u(data)
-                    if x == '<<<close>>>':
+                    if x == '<<<close>>>':  # close flag
                         logger.debug('close ssh session')
                         break
                     if len(x) == 0:
