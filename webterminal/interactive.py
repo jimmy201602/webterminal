@@ -78,6 +78,9 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                 r, w, x = select.select([chan], [], [])
                 if chan in r:
                     data = chan.recv(1024)
+                    if data == '<<<close>>>':
+                        logger.debug('close ssh session')
+                        break
                     x = u(data)
                     if len(x) == 0:
                         if elementid:
@@ -97,7 +100,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                     else:
                         if vim_flag:
                             vim_data += x
-                        #logger.debug('raw data {0}'.format(command))
+                        # logger.debug('raw data {0}'.format(command))
                         if '\r\n' not in x:
                             command.append(x)
                         else:
@@ -146,7 +149,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                         channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {
                                                  'text': json.dumps(['stdout', smart_unicode(x)])})
             except socket.timeout:
-                pass
+                break
             except UnicodeDecodeError:
                 channel_layer.send(channel, {'bytes': data})
             except Exception as e:
@@ -252,8 +255,10 @@ class SshTerminalThread(threading.Thread):
                 else:
                     data = text['data']
                 if isinstance(data, (list, tuple)):
-                    if data[0] == 'close':
+                    if data[0] == 'close' or data[0] == "'close'":
                         logger.debug('close threading')
+                        self.chan.send('<<<close>>>')  # close flag
+                        time.sleep(3)
                         self.chan.close()
                         self.stop()
                     elif data[0] == 'set_size':
