@@ -318,10 +318,15 @@ class WebterminalHelperDetectApi(LoginRequiredMixin, View):
                 conn.expire(id, 15)
                 return JsonResponse({'status': True, 'message': id})
             elif protocol in ["rdp", "ssh", "sftp"] and identify:
-                if conn.get(identify) == 'installed':
+                identify_data = conn.get(identify)
+                if isinstance(identify_data, bytes):
+                    identify_data = identify_data.decode()
+                else:
+                    identify_data = identify_data
+                if identify_data == 'installed':
                     conn.delete(identify)
                     return JsonResponse({'status': True, 'message': 'ok'})
-                elif conn.get(identify) == 'need upgrade':
+                elif identify_data == 'need upgrade':
                     conn.delete(identify)
                     return JsonResponse({'status': False, 'message': 'Webterminal helper need upgrade to version: {0}'.format(__webterminalhelperversion__)})
                 else:
@@ -343,10 +348,15 @@ class WebterminalHelperDetectCallbackApi(View):
             protocol = request.POST.get('protocol', None)
             identify = request.POST.get('identify', None)
             if version and protocol in ["rdp", "ssh", "sftp"] and identify:
-                if conn.get(identify) == 'ok' and version == __webterminalhelperversion__:
+                identify_data = conn.get(identify)
+                if isinstance(identify_data, bytes):
+                    identify_data = identify_data.decode()
+                else:
+                    identify_data = identify_data
+                if identify_data == 'ok' and version == __webterminalhelperversion__:
                     conn.set(identify, 'installed')
                     return JsonResponse({'status': True, 'message': 'ok'})
-                elif conn.get(identify) == 'ok' and version != __webterminalhelperversion__:
+                elif identify_data == 'ok' and version != __webterminalhelperversion__:
                     conn.set(identify, 'need upgrade')
                     return JsonResponse({'status': False, 'message': 'no'})
                 else:

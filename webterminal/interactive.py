@@ -78,10 +78,10 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                 r, w, x = select.select([chan], [], [])
                 if chan in r:
                     data = chan.recv(1024)
-                    if data == '<<<close>>>':
+                    x = u(data)
+                    if x == '<<<close>>>':
                         logger.debug('close ssh session')
                         break
-                    x = u(data)
                     if len(x) == 0:
                         if elementid:
                             channel_layer.send(channel, {'text': json.dumps(
