@@ -2,8 +2,9 @@
 
 ## 系统准备
 
+#部署环境 Centos7 Python3.6
 ```
-1.全新最小化Centos7系统
+1.全新最小化Centos7系统 
 2.项目部署目录 /opt
 3.关闭Selinux
 setenforce 0
@@ -19,7 +20,21 @@ firewall-cmd --zone=public --add-port=80/tcp --permanent
 ```
 yum install -y epel-release
 yum clean all
-yum install -y gcc gcc-c++ libffi-devel MySQL-python python python-dev python-devel python-pip supervisor git bzip2 wget
+yum install -y gcc gcc-c++ libffi-devel MySQL-python36 python36 python36-dev python36-pip supervisor git bzip2 wget
+```
+##1.1设置系统默认python版本为python3.6
+
+```
+rm -rf /bin/python
+ln -s /bin/python3 /bin/python
+ln -s /bin/pip /bin/pip3
+
+因为firewalld和yum需要python2所以设置后需要修改相关文件
+影响以下文件 需要修改第一行 #!/usr/bin/python 为 #!/usr/bin/python2
+/bin/firewall-cmd
+/usr/sbin/firewalld
+/bin/yum
+/usr/libexec/urlgrabber-ext-down
 ```
 
 #### 2.安装并配置mariadb
@@ -36,7 +51,7 @@ flush privileges;
 
 #### 3.安装redis并设置开机启动
 ```
-yum install -y redis-server redis
+yum install -y redis
 systemctl start redis
 systemctl enable redis
 ```
