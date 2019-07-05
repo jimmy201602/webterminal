@@ -22,7 +22,7 @@ yum install -y epel-release
 yum clean all
 yum install -y gcc gcc-c++ libffi-devel MySQL-python36 python36 python36-dev python36-pip supervisor git bzip2 wget
 ```
-##1.1设置系统默认python版本为python3.6
+#####1.1设置系统默认python版本为python3.6
 
 ```
 rm -rf /bin/python
