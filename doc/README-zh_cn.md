@@ -52,6 +52,10 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 ![screenshots](../screenshots/alipay.png  "alipay")
 
 
+# 预览
+![screenshots](../screenshots/screenshots1.png  "screenshots")
+![screenshots](../screenshots/screenshots2.gif  "screenshots")
+
 # 开源版本提供ssh调用putty、xshell、securecrt、sftp功能(rdp调用后端不开源)
 ![screenshots](../screenshots/screenshots9.gif  "screenshots")
 # Ubuntu 系统webterminal helper 支持
@@ -62,9 +66,7 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 # 商业版本提供rdp本地调用mstsc及vnc功能(支持文本及文件复制粘贴及nla安全认证)
 ![screenshots](../screenshots/screenshotmstsc.gif  "screenshots")
 ![screenshots](../screenshots/screenshotvnc.gif  "screenshots")
-# 预览
-![screenshots](../screenshots/screenshots1.png  "screenshots")
-![screenshots](../screenshots/screenshots2.gif  "screenshots")
+
 ![screenshots](../screenshots/screenshots3.gif  "screenshots")
 ![screenshots](../screenshots/screenshots4.gif  "screenshots")
 ![screenshots](../screenshots/screenshots2.png  "screenshots")
