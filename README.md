@@ -41,13 +41,14 @@ zhengge2012@gmail.com
 # screenshots
 ![screenshots](./screenshots/screenshots1.png  "screenshots")
 ![screenshots](./screenshots/screenshots2.gif  "screenshots")
-![screenshots](./screenshots/screenshots9.gif  "screenshots")
 # Ubuntu webterminal helper support
 ![screenshots](./screenshots/screenshotslinux1.gif  "screenshots")
 ![screenshots](./screenshots/screenshotslinux2.gif  "screenshots")
 # Mac webterminal helper support
 ![screenshots](./screenshots/screenshotsmac.gif  "screenshots")
-# commercial version provide mstsc helper （clipboard support vs file upload download）
+# Windows webterminal helper support
+![screenshots](./screenshots/screenshots9.gif  "screenshots")
+# commercial version provide mstsc helper（rdp clipboard support vs file upload download and vnc protocol connection support）
 ![screenshots](./screenshots/screenshotmstsc.gif  "screenshots")
 ![screenshots](./screenshots/screenshotvnc.gif  "screenshots")
 
