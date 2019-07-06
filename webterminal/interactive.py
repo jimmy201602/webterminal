@@ -24,7 +24,6 @@ import time
 import codecs
 import io
 import re
-import subprocess
 from django.contrib.auth.models import User
 from django.utils import timezone
 from common.models import Log, CommandLog
@@ -168,9 +167,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
     finally:
         attrs = {
             "version": 1,
-            # int(subprocess.check_output(['tput', 'cols'])),
             "width": width,
-            # int(subprocess.check_output(['tput', 'lines'])),
             "height": height,
             "duration": round(time.time() - begin_time, 6),
             "command": os.environ.get('SHELL', None),
