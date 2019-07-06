@@ -50,7 +50,7 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 ![screenshots](../screenshots/screenshotslinux1.gif  "screenshots")
 ![screenshots](../screenshots/screenshotslinux2.gif  "screenshots")
 # Mac webterminal helper support
-![screenshots](../screenshots/screenshotsmac.gif  "screenshots")
+![screenshots](../screenshots/screenshotsmac.gif  "screenshots"){ width="100%"}
 # 商业版本提供rdp本地调用mstsc及vnc功能(支持文本及文件复制粘贴及nla安全认证)
 ![screenshots](../screenshots/screenshotmstsc.gif  "screenshots")
 ![screenshots](./screenshots/screenshotvnc.gif  "screenshots")
