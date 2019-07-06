@@ -41,6 +41,8 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 # QQ讨论群
 ### QQ群号 531612760
+![screenshots](../screenshots/qqgroupqr.png  "screenshots")
+
 # 欢迎打赏
 
 ## 微信
@@ -49,7 +51,6 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 ## 支付宝
 ![screenshots](../screenshots/alipay.png  "alipay")
 
-![screenshots](../screenshots/qqgroupqr.png  "screenshots")
 
 # 开源版本提供ssh调用putty、xshell、securecrt、sftp功能(rdp调用后端不开源)
 ![screenshots](../screenshots/screenshots9.gif  "screenshots")
