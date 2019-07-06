@@ -41,15 +41,22 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 # QQ讨论群
 ### QQ群号 531612760
+# 欢迎打赏
+
+## 微信
+![screenshots](../screenshots/wechatpay.png  "wechat")
+
+## 支付宝
+![screenshots](../screenshots/alipay.png  "alipay")
 
 ![screenshots](../screenshots/qqgroupqr.png  "screenshots")
 
-# 开源版本提供ssh调用putty、xshell、securecrt、sftp功能(不提供rdp协议本地调用)
+# 开源版本提供ssh调用putty、xshell、securecrt、sftp功能(rdp调用后端不开源)
 ![screenshots](../screenshots/screenshots9.gif  "screenshots")
-# Ubuntu webterminal helper support
+# Ubuntu 系统webterminal helper 支持
 ![screenshots](../screenshots/screenshotslinux1.gif  "screenshots")
 ![screenshots](../screenshots/screenshotslinux2.gif  "screenshots")
-# Mac webterminal helper support
+# 苹果系统 webterminal helper 支持
 ![screenshots](../screenshots/screenshotsmac.gif  "screenshots")
 # 商业版本提供rdp本地调用mstsc及vnc功能(支持文本及文件复制粘贴及nla安全认证)
 ![screenshots](../screenshots/screenshotmstsc.gif  "screenshots")
@@ -78,12 +85,3 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 # 欢迎提交bug
 欢迎提交并反馈[bug](https://github.com/jimmy201602/webterminal/issues/new)
-
-
-# 欢迎打赏
-
-## 微信
-![screenshots](../screenshots/wechatpay.png  "wechat")
-
-## 支付宝
-![screenshots](../screenshots/alipay.png  "alipay")
