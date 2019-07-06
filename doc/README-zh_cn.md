@@ -46,7 +46,11 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 # 开源版本提供ssh调用putty、xshell、securecrt、sftp功能
 ![screenshots](../screenshots/screenshots9.gif  "screenshots")
-
+# Ubuntu webterminal helper support
+![screenshots](../screenshots/screenshotslinux1.gif  "screenshots")
+![screenshots](../screenshots/screenshotslinux2.gif  "screenshots")
+# Mac webterminal helper support
+![screenshots](../screenshots/screenshotsmac.gif  "screenshots")
 # 商业版本提供rdp本地调用mstsc及vnc功能(支持文本及文件复制粘贴及nla安全认证)
 ![screenshots](../screenshots/screenshotmstsc.gif  "screenshots")
 ![screenshots](./screenshots/screenshotvnc.gif  "screenshots")
