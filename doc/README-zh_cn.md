@@ -44,7 +44,7 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 ![screenshots](../screenshots/qqgroupqr.png  "screenshots")
 
-# 开源版本提供ssh调用putty、xshell、securecrt、sftp功能
+# 开源版本提供ssh调用putty、xshell、securecrt、sftp功能(不提供rdp协议本地调用)
 ![screenshots](../screenshots/screenshots9.gif  "screenshots")
 # Ubuntu webterminal helper support
 ![screenshots](../screenshots/screenshotslinux1.gif  "screenshots")
