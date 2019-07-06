@@ -46,8 +46,7 @@ zhengge2012@gmail.com
 ![screenshots](./screenshots/screenshotslinux1.gif  "screenshots")
 ![screenshots](./screenshots/screenshotslinux2.gif  "screenshots")
 # Mac webterminal helper support
-<img style="width:100%;height:500px" src="./screenshots/screenshotsmac.gif"    align=center />
-![screenshots](./screenshots/screenshotsmac.gif  "screenshots"){ width="100%"}
+![screenshots](./screenshots/screenshotsmac.gif  "screenshots")
 # commercial version provide mstsc helper （clipboard support vs file upload download）
 ![screenshots](./screenshots/screenshotmstsc.gif  "screenshots")
 ![screenshots](./screenshots/screenshotvnc.gif  "screenshots")
