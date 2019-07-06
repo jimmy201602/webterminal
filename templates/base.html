@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	{% load staticfiles %} 
+	{% load staticfiles %}
 	{%load i18n%}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -221,7 +221,7 @@
     </section>
     <!-- /.sidebar -->
   </aside>
- 
+
     <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
 
@@ -244,7 +244,7 @@
     <!-- /.content -->
     {% endblock %}
   </div>
-  
+
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
       <b>{%trans 'Version' %}</b> 0.1
@@ -353,11 +353,22 @@ toastr.options = {
       type: 'POST',
       data: {'identify':id,'protocol':'rdp'},
       success: function(data, textStatus, jqXHR) {
-        // console.log(data)
+        var ostype = getOS();
+        var version = '';
+        if (ostype == 'Linux'){
+          var subfix = 'deb'
+        }else if (ostype == 'Mac'){
+          var subfix = 'dmg'
+        }else if (ostype == 'Windows'){
+          var subfix = 'exe'
+        }else{
+          toastr['error']("Unsupport system version,Please contact us or submit a issue on github!");
+          return false
+        }
         if(data.status != true){
           $('body').prepend('  <div class="container text-center protocoldetection" style="background-color:#8aa4af;width:100%;height: auto">\n' +
                   '  <div>\n' +
-                  '  <h1>You haven\'t install webterminal ssh helper,please download and install it. <a class="download" target="_blank" href="https://github.com/jimmy201602/webterminal/raw/master/helper/Webterminal%20Helper.exe">Download</a>  <button type="button" class="close" aria-label="Close" onclick="$(\'.protocoldetection\').remove()"><span aria-hidden="true">×</span></button>\n' +
+                  '  <h1>You haven\'t install webterminal ssh helper,please download and install it. <a class="download" target="_blank" href="https://github.com/jimmy201602/webterminal/raw/master/helper/Webterminal%20Helper'+version + '.'+subfix+'">Download</a>  <button type="button" class="close" aria-label="Close" onclick="$(\'.protocoldetection\').remove()"><span aria-hidden="true">×</span></button>\n' +
                   '\t</h2>\n' +
                   '  </div>\n' +
                   '   </div>')
@@ -371,6 +382,34 @@ toastr.options = {
       }
     });
   };
+
+  function getOS() {
+    var sUserAgent = navigator.userAgent;
+    var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+    var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+    if (isMac) return "Mac";
+    var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
+    if (isUnix) return "Unix";
+    var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
+    if (isLinux) return "Linux";
+    if (isWin) return 'Windows';
+    // if (isWin) {
+    //   var isWin2K = sUserAgent.indexOf("Windows NT 5.0") > -1 || sUserAgent.indexOf("Windows 2000") > -1;
+    //   if (isWin2K) return "Win2000";
+    //   var isWinXP = sUserAgent.indexOf("Windows NT 5.1") > -1 || sUserAgent.indexOf("Windows XP") > -1;
+    //   if (isWinXP) return "WinXP";
+    //   var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") > -1 || sUserAgent.indexOf("Windows 2003") > -1;
+    //   if (isWin2003) return "Win2003";
+    //   var isWinVista= sUserAgent.indexOf("Windows NT 6.0") > -1 || sUserAgent.indexOf("Windows Vista") > -1;
+    //   if (isWinVista) return "WinVista";
+    //   var isWin7 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
+    //   if (isWin7) return "Win7";
+    //   var isWin10 = sUserAgent.indexOf("Windows NT 10") > -1 || sUserAgent.indexOf("Windows 10") > -1;
+    //   if (isWin10) return "Win10";
+    // }
+    return "other";
+  }
+
   $(document).ready(function () {
     $.ajax({
       url: '{% url 'webterminalhelperdetectapi' %}',
