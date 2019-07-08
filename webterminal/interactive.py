@@ -47,6 +47,7 @@ try:
 except NameError:
     long = int
 import select
+import socket
 
 
 def interactive_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):
