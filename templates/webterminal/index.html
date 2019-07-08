@@ -149,6 +149,7 @@
             if (protocol == 'ssh') {
                 var ws = terminals[tabContentId.substr(1)];
                 ws.send(JSON.stringify(['close']))
+                ws.close()
                 delete terminals[tabContentId.substr(1)];
             }
             $(this).parent().parent().remove(); //remove li of tab
