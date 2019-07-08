@@ -35,7 +35,7 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 # demo/试用 
 
-[试用服务器](http://ssh.yygzs.cn/)
+[试用服务器](http://193.112.194.114:8000/)
 
 账户/密码: demo/demo12345678
 
