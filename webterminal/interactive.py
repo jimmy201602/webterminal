@@ -166,6 +166,7 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                     channel_layer.send(channel, {'bytes': data})
 
     finally:
+        chan.transport.close()
         attrs = {
             "version": 1,
             "width": width,
