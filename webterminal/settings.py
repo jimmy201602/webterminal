@@ -284,3 +284,9 @@ CHANNELS_WS_PROTOCOLS = ["guacamole"]
 # guacd daemon host address and port
 GUACD_HOST = '127.0.0.1'
 GUACD_PORT = '4822'
+
+# session will expire when user close browser
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = False
+# session will expire in 30 minutes
+SESSION_COOKIE_AGE = 30 * 60
