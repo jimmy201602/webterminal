@@ -6,4 +6,7 @@ from permission.models import Role
 
 # Register your models here.
 
-admin.site.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    filter_horizontal = ('permissions','groups')
+
+admin.site.register(Role,RoleAdmin)
