@@ -60,12 +60,12 @@ class Role(models.Model):
 
     class Meta:
         permissions = (
-            ("can_add_user", _("Can add role")),
-            ("can_change_user", _("Can change role info")),
-            ("can_delete_user", _("Can delete role info")),
-            ("can_view_user", _("Can view role info")),
-            ("can_view_permissions", _("Can view role permissions")),
-            ("can_change_permissions", _("Can change role permissions")),
-            ("can_delete_permissions", _("Can revoke role permissions")),
-            ("can_add_permissions", _("Can add role permissions")),
+            ("can_add_role", _("Can add role")),
+            ("can_change_role", _("Can change role info")),
+            ("can_delete_role", _("Can delete role info")),
+            ("can_view_role", _("Can view role info")),
+            ("can_view_role_permissions", _("Can view role permissions")),
+            ("can_change_role_permissions", _("Can change role permissions")),
+            ("can_delete_role_permissions", _("Can revoke role permissions")),
+            ("can_add_role_permissions", _("Can add role permissions")),
         )
