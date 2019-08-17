@@ -41,8 +41,8 @@ class Permission(models.Model):
 
 
 class Role(models.Model):
-    user = models.OneToOneField(User, verbose_name=_(
-        'User'), related_name='roleuser')
+    name = models.CharField(max_length=50, verbose_name=_(
+        'Role name'), blank=False, unique=True)
     permissions = models.ManyToManyField(
         AuthPermission, verbose_name=_('Permissions'), related_name='rolepermission', limit_choices_to={'content_type__app_label__in': ['common', 'permission'], "codename__contains": 'can_'})
     groups = models.ManyToManyField(
