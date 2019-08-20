@@ -5,6 +5,7 @@
 {% block css %}
 <link rel="stylesheet" href="{% static 'plugins/select2/dist/css/select2.min.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/select2-bootstrap-theme/dist/select2-bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/jstree/themes/proton/style.min.css' %}"/>
 {% endblock %}
 {% block content %}
 {% load crispy_forms_tags %}
@@ -64,9 +65,70 @@
 {% endblock %}
 {% block js %}
 <script type="text/javascript" src="{% static 'plugins/select2/dist/js/select2.full.min.js' %}"></script>
+<script src="{% static 'plugins/jstree/jstree.js' %}"></script>
 <script type="application/javascript">
     $('#id_groups,#id_user').select2({
         theme: "bootstrap"
+    });
+    $("#div_id_permissions >.col-md-8 >.checkbox").hide();
+    $("#div_id_permissions >.col-md-8").jstree({
+        core: {
+            themes: {
+                name: 'proton',
+                // responsive: true
+            },
+            responsive: true,
+            check_callback: 0,
+            data: [
+
+                {
+                    text: "ssh",
+                    children: [
+
+                        {
+                            text: "ssh  192.168.2.8  ssh",
+                            ip: "192.168.2.8",
+                            icon: "fa fa-linux",
+                            state: {selected: !0},
+                            elementid: "ssh-19216828-ssh-qqljuzhhwbbiito",
+                            id: "ssh-19216828-ssh-kcjepodyxghumwo",
+                            serverid: "1",
+                        },
+
+
+                    ],
+                },
+
+                {
+                    text: "test1",
+                    children: [
+
+
+                        {
+                            text: "ssh  192.168.2.8  ssh",
+                            ip: "192.168.2.8",
+                            icon: "fa fa-linux",
+                            state: {selected: !0},
+                            elementid: "ssh-19216828-ssh-ualhptinwyoabnd",
+                            id: "ssh-19216828-ssh-qawvxiquwkoucdm",
+                            serverid: "1",
+                            checked:true
+                        },
+
+
+                    ],
+                }
+
+            ],
+        },
+        types: {
+            default: {icon: "fa fa-folder icon-state-warning icon-lg"},
+            file: {icon: "fa fa-file icon-state-warning icon-lg"}
+        },
+        plugins: ["types","checkbox","state"],
+        checkbox: {
+            "tie_selection": false
+        },
     });
 </script>
 <script>
