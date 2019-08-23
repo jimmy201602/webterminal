@@ -79,47 +79,7 @@
             },
             responsive: true,
             check_callback: 0,
-            data: [
-
-                {
-                    text: "ssh",
-                    children: [
-
-                        {
-                            text: "ssh  192.168.2.8  ssh",
-                            ip: "192.168.2.8",
-                            icon: "fa fa-linux",
-                            state: {selected: !0},
-                            elementid: "ssh-19216828-ssh-qqljuzhhwbbiito",
-                            id: "ssh-19216828-ssh-kcjepodyxghumwo",
-                            serverid: "1",
-                        },
-
-
-                    ],
-                },
-
-                {
-                    text: "test1",
-                    children: [
-
-
-                        {
-                            text: "ssh  192.168.2.8  ssh",
-                            ip: "192.168.2.8",
-                            icon: "fa fa-linux",
-                            state: {selected: !0},
-                            elementid: "ssh-19216828-ssh-ualhptinwyoabnd",
-                            id: "ssh-19216828-ssh-qawvxiquwkoucdm",
-                            serverid: "1",
-                            checked:true
-                        },
-
-
-                    ],
-                }
-
-            ],
+            data: {{permission_tree_list|safe}},
         },
         types: {
             default: {icon: "fa fa-folder icon-state-warning icon-lg"},
