@@ -9,6 +9,7 @@ from permission.models import Permission
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from common.views import LoginRequiredMixin
+from permission.common import parse_permission_tree
 
 
 class UserRegister(LoginRequiredMixin, PermissionRequiredMixin, FormView):
@@ -90,6 +91,7 @@ class PermissionCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(PermissionCreate, self).get_context_data(**kwargs)
         context['title'] = _('Create Permission')
+        context['permission_tree_list'] = parse_permission_tree()
         return context
 
     def form_valid(self, form):
