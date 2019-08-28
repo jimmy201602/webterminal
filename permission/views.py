@@ -9,7 +9,7 @@ from permission.models import Permission
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from common.views import LoginRequiredMixin
-from permission.common import parse_permission_tree
+from permission.commons import parse_permission_tree
 
 
 class UserRegister(LoginRequiredMixin, PermissionRequiredMixin, FormView):
