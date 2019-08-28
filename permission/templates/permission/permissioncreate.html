@@ -89,7 +89,10 @@
         checkbox: {
             "tie_selection": false
         },
-    });
+    }).on("check_node.jstree", function (e, data) {
+            // $("#{{ widget.attrs.id }}").val(data.node.id);
+            console.log(data.node)
+        });
 </script>
 <script>
   $("[href='{% url 'permissionlist' %}']").parent("li").addClass('active')
