@@ -50,7 +50,7 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
             username = get_redis_instance().get(id)
             try:
                 Permission.objects.get(
-                    user__username=username, groups__servers__id=int(id[-1]))
+                    user__username=username, groups__servers__id=int(id[32:]))
             except ObjectDoesNotExist:
                 self.message.reply_channel.send({"text": json.dumps(
                     '\033[1;3;31mYou have not permission to connect server !\033[0m')}, immediately=True)
@@ -61,7 +61,7 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
             client = GuacamoleClient(
                 settings.GUACD_HOST, settings.GUACD_PORT)
             try:
-                data = ServerInfor.objects.get(id=int(id[-1]))
+                data = ServerInfor.objects.get(id=int(id[32:]))
                 if data.credential.protocol in ['vnc', 'rdp', 'telnet']:
                     pass
                 else:
