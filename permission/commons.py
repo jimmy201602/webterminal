@@ -17,6 +17,7 @@ def parse_permission_tree():
                         "state": {"selected": "!0"},
                         "app_label": p.content_type.app_label,
                         "model": p.content_type.model,
+                        'level': 'two',
                         'children': [{
                             "text": _(p.name),
                             "icon": "fa fa-folder",
@@ -24,6 +25,7 @@ def parse_permission_tree():
                             "id": p.id,
                             "app_label": p.content_type.app_label,
                             "model": p.content_type.model,
+                            'level': 'three'
                         }]
                     })
                 else:
@@ -36,9 +38,11 @@ def parse_permission_tree():
                                 "id": p.id,
                                 "app_label": p.content_type.app_label,
                                 "model": p.content_type.model,
+                                'level': 'three'
                             })
             else:
                 permission_tree['text'] = i
+                permission_tree['level'] = 'one'
                 permission_tree['children'] = []
                 permission_tree['children'].append({
                     "text": _(p.content_type.model),
@@ -46,6 +50,7 @@ def parse_permission_tree():
                     "app_label": p.content_type.app_label,
                     "model": p.content_type.model,
                     "state": {"selected": "!0"},
+                    'level': 'two',
                     'children': [{
                         "text": _(p.name),
                         "icon": "fa fa-folder",
@@ -53,6 +58,7 @@ def parse_permission_tree():
                         "id": p.id,
                         "app_label": p.content_type.app_label,
                         "model": p.content_type.model,
+                        'level': 'three'
                     }]
                 })
         permission_tree_list.append(permission_tree)

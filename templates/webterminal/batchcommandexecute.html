@@ -184,8 +184,12 @@
         checkbox: {
             "tie_selection": false
         },
-    });
-    
+    }).on("loaded.jstree", function (event, data) {
+        setTimeout(function () {
+            $("#server_list a").removeClass("jstree-clicked")
+        },100)
+    });;
+
     $("#search").submit(function(e) {
         e.preventDefault();
         $("#server_list").jstree(true).search($("#q").val());
