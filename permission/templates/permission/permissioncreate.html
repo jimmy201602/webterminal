@@ -49,6 +49,15 @@
                             {% crispy form %}
                         {% endif %}
                         <div class="form-group">
+                            <div id="div_id_permissions_tree" class="form-group"><label for="div_id_permissions_tree"
+                                                                            class="control-label col-md-2 requiredField">
+                                {%trans 'Permissions' %}<span class="asteriskField">*</span> </label>
+                                <div class="controls col-md-8">
+
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-xs-offset-2 col-xs-10">
                                 <button type="submit" class="btn btn-primary">{%trans 'submit' %}</button>
                                 <button type="button" class="btn btn-default goback" onclick="history.back()">{%trans 'cancel' %}</button>
@@ -70,8 +79,9 @@
     $('#id_groups,#id_user').select2({
         theme: "bootstrap"
     });
-    $("#div_id_permissions >.col-md-8 >.checkbox").hide();
-    $("#div_id_permissions >.col-md-8").jstree({
+    // $("#div_id_permissions >.col-md-8 >.checkbox").hide();
+    // $(".form-group[id='div_id_permissions']").hide()
+    $("#div_id_permissions_tree >.col-md-8").jstree({
         core: {
             themes: {
                 name: 'proton',
@@ -93,15 +103,34 @@
     }).on("check_node.jstree", function (e, data) {
             // $("#{{ widget.attrs.id }}").val(data.node.id);
             console.log(data.node)
-        }).on("loaded.jstree", function (event, data) {
+            if (data.node.original.level == "three"){
+                $("input[value='"+data.node.original.id+"']").prop("checked",true)
+            }
+            console.log(data.node.original.hasOwnProperty('id'))
+        }).on("uncheck_node.jstree", function (e, data) {
+        // $("#{{ widget.attrs.id }}").val(data.node.id);
+        console.log(data.node)
+        if (data.node.original.level == "three"){
+            $("input[value='"+data.node.original.id+"']").prop("checked",false)
+        }
+        console.log(data.node.original.hasOwnProperty('id'))
+    }).on("loaded.jstree", function (event, data) {
         setTimeout(function () {
-            $("#div_id_permissions >.col-md-8").jstree(true).uncheck_all();
+            $("#div_id_permissions_tree >.col-md-8").jstree(true).uncheck_all();
         },50)
         setTimeout(function () {
-            $("#div_id_permissions >.col-md-8 a").removeClass("jstree-clicked")
+            $("#div_id_permissions_tree >.col-md-8 a").removeClass("jstree-clicked")
+            $("#div_id_permissions >.col-md-8 .checkbox >label >input:checked").each(function (index, item) {
+                $(this).prop("checked",false)
+            });
         },100)
     });
 
+    $("#div_id_permissions >.col-md-8 .checkbox >label >input:checked").each(function (index, item) {
+        // console.log($(this).val());
+        $(this).prop("checked",false)
+        // $("input[value='51']").prop("checked",true)
+    });
 </script>
 <script>
   $("[href='{% url 'permissionlist' %}']").parent("li").addClass('active')
