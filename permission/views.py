@@ -105,8 +105,8 @@ class PermissionCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
     def get_form(self, form_class=None):
         form = super(PermissionCreate, self).get_form(form_class)
-        form.fields['permissions'].widget.attrs.update(
-            {'checked': 'checked'})
+        # form.fields['permissions'].widget.attrs.update(
+            # {'checked': 'checked'})
         return form
 
 
