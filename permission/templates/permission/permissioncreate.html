@@ -79,8 +79,10 @@
     $('#id_groups,#id_user').select2({
         theme: "bootstrap"
     });
-    // $("#div_id_permissions >.col-md-8 >.checkbox").hide();
-    // $(".form-group[id='div_id_permissions']").hide()
+    //hide original permission tree
+    $(".form-group[id='div_id_permissions']").hide()
+
+    //generate new permission tree
     $("#div_id_permissions_tree >.col-md-8").jstree({
         core: {
             themes: {
@@ -101,20 +103,32 @@
             "whole_node": false
         },
     }).on("check_node.jstree", function (e, data) {
-            // $("#{{ widget.attrs.id }}").val(data.node.id);
-            console.log(data.node)
+            //update form data when select tree node
             if (data.node.original.level == "three"){
                 $("input[value='"+data.node.original.id+"']").prop("checked",true)
+            }else if (data.node.original.level == "two"){
+                $(data.node.children).each(function (index,item) {
+                    $("input[value='"+item+"']").prop("checked",true)
+                })
+            }else{
+                $(data.node.children_d).each(function (index,item) {
+                    $("input[value='"+item+"']").prop("checked",true)
+                })
             }
-            console.log(data.node.original.hasOwnProperty('id'))
         }).on("uncheck_node.jstree", function (e, data) {
-        // $("#{{ widget.attrs.id }}").val(data.node.id);
-        console.log(data.node)
         if (data.node.original.level == "three"){
             $("input[value='"+data.node.original.id+"']").prop("checked",false)
+        }else if (data.node.original.level == "two"){
+            $(data.node.children).each(function (index,item) {
+                $("input[value='"+item+"']").prop("checked",false)
+            })
+        }else{
+            $(data.node.children_d).each(function (index,item) {
+                $("input[value='"+item+"']").prop("checked",false)
+            })
         }
-        console.log(data.node.original.hasOwnProperty('id'))
     }).on("loaded.jstree", function (event, data) {
+        //initial tree data
         setTimeout(function () {
             $("#div_id_permissions_tree >.col-md-8").jstree(true).uncheck_all();
         },50)
@@ -126,10 +140,9 @@
         },100)
     });
 
+    //remove initial data
     $("#div_id_permissions >.col-md-8 .checkbox >label >input:checked").each(function (index, item) {
-        // console.log($(this).val());
         $(this).prop("checked",false)
-        // $("input[value='51']").prop("checked",true)
     });
 </script>
 <script>
