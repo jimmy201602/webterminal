@@ -121,13 +121,14 @@ class PermissionUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Permission
     form_class = PermissionForm
     success_url = reverse_lazy('permissionlist')
-    template_name = 'permission/permissioncreate.html'
+    template_name = 'permission/permissionupdate.html'
     permission_required = 'permission.can_change_permissions'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
         context = super(PermissionUpdate, self).get_context_data(**kwargs)
         context['title'] = _('Update Permission')
+        context['permission_tree_list'] = parse_permission_tree()
         return context
 
     def form_valid(self, form):
