@@ -31,9 +31,9 @@ RUN git clone https://github.com/jimmy201602/webterminal.git
 WORKDIR /opt/webterminal
 RUN mkdir -p /opt/webterminal/media/admin/Download
 RUN pip3 install -r requirements.txt
-RUN python manage.py makemigrations
-RUN python manage.py migrate
-RUN python createsuperuser.py
+RUN python3 manage.py makemigrations
+RUN python3 manage.py migrate
+RUN python3 createsuperuser.py
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 ADD docker-entrypoint.sh /docker-entrypoint.sh
