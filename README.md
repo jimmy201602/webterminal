@@ -2,6 +2,8 @@
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](README.md)
 [![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](./doc/README-zh_cn.md)
 
+[![Stargazers over time](https://starchart.cc/jimmy201602/webterminal.svg)](https://starchart.cc/jimmy201602/webterminal)
+
 Webterminal implemented by django.
 This project focus on DevOps and Continuous Delivery.
 For now it support almost 90% remote management protocol such as vnc, ssh,rdp,telnet,sftp... It support a possiblity to monitor and recorded user action when user use this project to manage their server!You can also replay the user action such as like a video.
