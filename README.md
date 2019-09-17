@@ -1,5 +1,6 @@
 # Webterminal bastion server(Webterminal堡垒机)
-# [中文文档](./doc/README-zh_cn.md)
+[![EN doc](https://img.shields.io/badge/document-English-blue.svg)](README.md)
+[![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](./doc/README-zh_cn.md)
 
 # Notification
 ## The next release will drop support python 2 version.
