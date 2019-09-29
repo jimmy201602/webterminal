@@ -257,7 +257,10 @@ class SshTerminalThread(threading.Thread):
                 if isinstance(data, (list, tuple)):
                     if data[0] == 'close' or data[0] == "'close'":
                         logger.debug('close threading')
-                        self.chan.send('<<<close>>>')  # close flag
+                        try:
+                            self.chan.send('<<<close>>>')  # close flag
+                        except OSError:
+                            pass
                         time.sleep(3)
                         self.chan.close()
                         self.stop()
