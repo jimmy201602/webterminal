@@ -49,13 +49,10 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})
         if not self.authenticate:
-            self.message.reply_channel.send({"text": json.dumps(
-                {'status': False, 'message': 'You must login to the system!'})}, immediately=True)
+            self.message.reply_channel.send(
+                {"text": 'You must login to the system!'}, immediately=True)
             self.message.reply_channel.send({"accept": False})
-        # else:
-            # permission auth
-            # self.message.reply_channel.send({"text": json.dumps(
-            # ['channel_name', self.message.reply_channel.name])}, immediately=True)
+            self.close()
 
     def disconnect(self, message):
         # close threading
@@ -63,11 +60,14 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
 
         self.message.reply_channel.send({"accept": False})
 
-        audit_log = Log.objects.get(user=User.objects.get(
-            username=self.message.user), channel=self.message.reply_channel.name)
-        audit_log.is_finished = True
-        audit_log.end_time = now()
-        audit_log.save()
+        try:
+            audit_log = Log.objects.get(user=User.objects.get(
+                username=self.message.user), channel=self.message.reply_channel.name)
+            audit_log.is_finished = True
+            audit_log.end_time = now()
+            audit_log.save()
+        except ObjectDoesNotExist:
+            pass
         self.close()
 
     @property
@@ -100,7 +100,7 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)])}, immediately=True)
                         self.message.reply_channel.send(
-                            {"bytes": '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)}, immediately=True)
+                            {"text": '\033[1;3;31mYou have not permission to connect server {0}!\033[0m'.format(ip)}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error("{0} have not permission to connect server {1}!".format(
                             self.message.user.username, ip))
@@ -121,7 +121,7 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'])}, immediately=True)
                         self.message.reply_channel.send(
-                            {"bytes": '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'}, immediately=True)
+                            {"text": '\033[1;3;31mConnect to server! Server ip doesn\'t exist!\033[0m'}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error(
                             "Connect to server! Server ip {0} doesn\'t exist!".format(ip))
@@ -146,7 +146,7 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
                             else:
                                 # self.message.reply_channel.send({"text": json.dumps(
                                     # ['stdout', '\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'])}, immediately=True)
-                                self.message.reply_channel.send({"bytes":
+                                self.message.reply_channel.send({"text":
                                                                  '\033[1;3;31munknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type\033[0m'}, immediately=True)
                                 self.message.reply_channel.send(
                                     {"accept": False})
@@ -162,7 +162,7 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mConnect to server time out\033[0m'])}, immediately=True)
                         self.message.reply_channel.send(
-                            {"bytes": '\033[1;3;31mConnect to server time out\033[0m'}, immediately=True)
+                            {"text": '\033[1;3;31mConnect to server time out\033[0m'}, immediately=True)
                         logger.error(
                             "Connect to server {0} time out!".format(ip))
                         self.message.reply_channel.send({"accept": False})
@@ -171,7 +171,7 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
                         # self.message.reply_channel.send({"text": json.dumps(
                             # ['stdout', '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)])}, immediately=True)
                         self.message.reply_channel.send(
-                            {"bytes": '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)}, immediately=True)
+                            {"text": '\033[1;3;31mCan not connect to server: {0}\033[0m'.format(e)}, immediately=True)
                         self.message.reply_channel.send({"accept": False})
                         logger.error(
                             "Can not connect to server {0}: {1}".format(ip, e))
@@ -238,8 +238,8 @@ class CommandExecute(WebsocketConsumer, WebsocketAuth):
     def connect(self, message):
         self.message.reply_channel.send({"accept": True})
         if not self.authenticate:
-            self.message.reply_channel.send({"text": json.dumps(
-                {'status': False, 'message': 'You must login to the system!'})}, immediately=True)
+            self.message.reply_channel.send(
+                {"text": 'You must login to the system!'}, immediately=True)
             self.message.reply_channel.send({"accept": False})
 
     def disconnect(self, message):
