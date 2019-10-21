@@ -54,7 +54,7 @@ class Webterminal(WebsocketConsumer, WebsocketAuth):
             self.message.reply_channel.send({"accept": False})
             self.close()
 
-    def disconnect(self, message):
+    def disconnect(self, message,**kwargs):
         # close threading
         self.closessh()
 
@@ -338,7 +338,7 @@ class BatchCommandExecute(WebsocketConsumer, WebsocketAuth):
                 {'status': False, 'message': 'You must login to the system!'})}, immediately=True)
             self.message.reply_channel.send({"accept": False})
 
-    def disconnect(self, message):
+    def disconnect(self, message,**kwargs):
         self.message.reply_channel.send({"accept": False})
         self.close()
 
