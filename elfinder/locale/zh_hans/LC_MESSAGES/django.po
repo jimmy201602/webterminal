@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-08 14:00+0000\n"
+"POT-Creation-Date: 2019-10-22 12:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,27 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: elfinder/connector.py:343 elfinder/connector.py:351
+#: elfinder/connector.py:362 elfinder/connector.py:370
 msgid "File not found"
 msgstr "文件没有查找到"
 
-#: elfinder/connector.py:346
+#: elfinder/connector.py:365
 msgid "Access denied"
 msgstr "访问拒绝"
 
-#: elfinder/exceptions.py:61
+#: elfinder/exceptions.py:69
 msgid "Volume could not be found"
 msgstr "文件卷未查找到"
 
-#: elfinder/exceptions.py:87
+#: elfinder/exceptions.py:105
 msgid "This is not a valid image file"
 msgstr "不是一个有效的图像文件"
 
-#: elfinder/volumes/base.py:197
+#: elfinder/volumes/base.py:204
 msgid "No volume id found"
 msgstr "文件卷未找到"
 
-#: elfinder/volumes/base.py:1205
+#: elfinder/volumes/base.py:1215
 msgid "Unknown"
 msgstr "未知"
 
