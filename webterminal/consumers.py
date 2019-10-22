@@ -242,7 +242,7 @@ class CommandExecute(WebsocketConsumer, WebsocketAuth):
                 {"text": 'You must login to the system!'}, immediately=True)
             self.message.reply_channel.send({"accept": False})
 
-    def disconnect(self, message):
+    def disconnect(self, message,**kwargs):
         self.message.reply_channel.send({"accept": False})
         self.close()
 
