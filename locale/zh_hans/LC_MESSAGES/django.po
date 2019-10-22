@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-08 14:00+0000\n"
+"POT-Creation-Date: 2019-10-22 12:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,145 +17,145 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: common/models.py:18
+#: common/models.py:20
 msgid "Server name"
 msgstr "服务器名称 "
 
-#: common/models.py:19
+#: common/models.py:22
 msgid "Host name"
 msgstr "主机名"
 
-#: common/models.py:20 common/templates/common/servercreate.html:103
+#: common/models.py:24 common/templates/common/servercreate.html:103
 #: common/templates/common/servercreate.html:104
 #: common/templates/common/serverlist.html:51
-#: common/templates/common/serverlist.html:137
-#: common/templates/common/serverlist.html:138
-#: common/templates/common/serverlist.html:270
-#: common/templates/common/serverlist.html:271
+#: common/templates/common/serverlist.html:199
+#: common/templates/common/serverlist.html:200
+#: common/templates/common/serverlist.html:332
+#: common/templates/common/serverlist.html:333
 msgid "ip"
 msgstr "ip"
 
-#: common/models.py:21 common/models.py:50 permission/models.py:15
+#: common/models.py:26 common/models.py:63 permission/models.py:20
+#: permission/models.py:51
 msgid "Create time"
 msgstr "创建时间"
 
-#: common/models.py:22 common/models.py:51 permission/models.py:16
+#: common/models.py:28 common/models.py:65 permission/models.py:22
+#: permission/models.py:53
 msgid "Update time"
 msgstr "更新时间"
 
-#: common/models.py:37
+#: common/models.py:46
 msgid "Can add server"
 msgstr "可新增服务器"
 
-#: common/models.py:38
+#: common/models.py:47
 msgid "Can change server info"
 msgstr "可更新服务器信息"
 
-#: common/models.py:39
+#: common/models.py:48
 msgid "Can delete server info"
 msgstr "可删除服务器"
 
-#: common/models.py:40
+#: common/models.py:49
 msgid "Can connect to server"
 msgstr "可连接至服务器"
 
-#: common/models.py:41
+#: common/models.py:50
 msgid "Can kill online user"
 msgstr "可踢掉在线用户"
 
-#: common/models.py:42
+#: common/models.py:51
 msgid "Can monitor user action"
 msgstr "可监控用户操作"
 
-#: common/models.py:43
+#: common/models.py:52
 msgid "Can view server info"
 msgstr "可查看服务器信息"
 
-#: common/models.py:44
+#: common/models.py:53
 msgid "Can manage file"
 msgstr "可管理文件"
 
-#: common/models.py:48
+#: common/models.py:59
 msgid "Server group name"
 msgstr "服务器组名"
 
-#: common/models.py:49 common/templates/common/groupcreate.html:95
+#: common/models.py:61 common/templates/common/groupcreate.html:95
 #: common/templates/common/grouplist.html:133
 #: common/templates/common/grouplist.html:256
 msgid "Servers"
 msgstr "服务器"
 
-#: common/models.py:58
+#: common/models.py:75
 msgid "Can add group"
 msgstr "可新增组"
 
-#: common/models.py:59
+#: common/models.py:76
 msgid "Can change group info"
 msgstr "可更新服务器组信息"
 
-#: common/models.py:60
+#: common/models.py:77
 msgid "Can delete group info"
 msgstr "可删除服务器组信息"
 
-#: common/models.py:61
+#: common/models.py:78
 msgid "Can view group info"
 msgstr "可查看服务器组信息"
 
-#: common/models.py:66
+#: common/models.py:84
 msgid "ssh-password"
 msgstr "ssh密码"
 
-#: common/models.py:67
+#: common/models.py:85
 msgid "ssh-key"
 msgstr "ssh key"
 
-#: common/models.py:68
-#, fuzzy
-#| msgid "ssh-password"
+#: common/models.py:86
 msgid "ssh-key-with-password"
 msgstr "ssh密码"
 
-#: common/models.py:69
+#: common/models.py:87
 msgid "vnc"
 msgstr "vnc"
 
-#: common/models.py:70
+#: common/models.py:88
 msgid "rdp"
 msgstr "rdp"
 
-#: common/models.py:71
+#: common/models.py:89
 msgid "telnet"
 msgstr "telnet"
 
-#: common/models.py:74
+#: common/models.py:92
 msgid "Standard RDP encryption"
 msgstr "标准RDP加密方式"
 
-#: common/models.py:75
+#: common/models.py:93
 msgid "Network Level Authentication"
 msgstr "网络级别认证"
 
-#: common/models.py:76
+#: common/models.py:94
 msgid "TLS encryption"
 msgstr "TLS加密方式"
 
-#: common/models.py:77
+#: common/models.py:95
 msgid "Allow the server to choose the type of security"
 msgstr "允许服务端选择安全方式"
 
-#: common/models.py:79
+#: common/models.py:98
 msgid "Credential name"
 msgstr "凭证名称"
 
-#: common/models.py:80
+#: common/models.py:100
 msgid "Auth user name"
 msgstr "认证用户名"
 
-#: common/models.py:81
+#: common/models.py:102
 msgid "Port"
 msgstr "端口"
 
-#: common/models.py:82 common/templates/common/credentialcreate.html:226
+#: common/models.py:103 common/templates/common/credentialcreate.html:226
 #: common/templates/common/credentialcreate.html:286
 #: common/templates/common/credentialcreate.html:331
 #: common/templates/common/credentialcreate.html:391
@@ -165,43 +165,43 @@ msgstr "端口"
 msgid "password"
 msgstr "密码"
 
-#: common/models.py:82
+#: common/models.py:104
 msgid "key"
 msgstr "key"
 
-#: common/models.py:82
+#: common/models.py:104
 msgid "Method"
 msgstr "方式"
 
-#: common/models.py:83
+#: common/models.py:105
 msgid "Key"
 msgstr "key"
 
-#: common/models.py:84 templates/admin/login.html:38
+#: common/models.py:107 templates/admin/login.html:38
 msgid "Password"
 msgstr "密码"
 
-#: common/models.py:85
+#: common/models.py:108
 msgid "Proxy"
 msgstr "代理"
 
-#: common/models.py:86
+#: common/models.py:110
 msgid "Proxy ip"
 msgstr "代理ip"
 
-#: common/models.py:87
+#: common/models.py:112
 msgid "Proxy port"
 msgstr "代理端口"
 
-#: common/models.py:88
+#: common/models.py:114
 msgid "Proxy password"
 msgstr "代理密码"
 
-#: common/models.py:89
+#: common/models.py:116
 msgid "Protocol"
 msgstr "协议"
 
-#: common/models.py:90 common/templates/common/credentialcreate.html:293
+#: common/models.py:118 common/templates/common/credentialcreate.html:293
 #: common/templates/common/credentialcreate.html:294
 #: common/templates/common/credentialcreate.html:338
 #: common/templates/common/credentialcreate.html:339
@@ -214,7 +214,7 @@ msgstr "协议"
 msgid "width"
 msgstr "宽度"
 
-#: common/models.py:91 common/templates/common/credentialcreate.html:301
+#: common/models.py:120 common/templates/common/credentialcreate.html:301
 #: common/templates/common/credentialcreate.html:302
 #: common/templates/common/credentialcreate.html:346
 #: common/templates/common/credentialcreate.html:347
@@ -227,7 +227,7 @@ msgstr "宽度"
 msgid "height"
 msgstr "高度"
 
-#: common/models.py:92 common/templates/common/credentialcreate.html:309
+#: common/models.py:121 common/templates/common/credentialcreate.html:309
 #: common/templates/common/credentialcreate.html:310
 #: common/templates/common/credentialcreate.html:354
 #: common/templates/common/credentialcreate.html:355
@@ -240,150 +240,154 @@ msgstr "高度"
 msgid "dpi"
 msgstr "dpi"
 
-#: common/models.py:93
+#: common/models.py:123
 msgid "Security"
 msgstr "安全设置"
 
-#: common/models.py:101
+#: common/models.py:135
 msgid "If you choose password auth method,You must set password!"
 msgstr "如果选择密码认证方式，必须设置密码！"
 
-#: common/models.py:103
+#: common/models.py:138
 msgid "If you choose password auth method,You must make key field for blank!"
 msgstr "如果选择密码认证方式，则必须保持key字段为空！"
 
-#: common/models.py:105
+#: common/models.py:141
 msgid "If you choose key auth method,You must fill in key field!"
 msgstr "如果选择key方式，则必须填写key字段！"
 
-#: common/models.py:107
+#: common/models.py:144
 msgid "If you choose key auth method,You must make password field for blank!"
 msgstr "如果选择key认证方式，则必须保持密码字段未空！"
 
-#: common/models.py:110
+#: common/models.py:148
 msgid ""
 "If you choose auth proxy,You must fill in proxyserverip and proxyport field !"
 msgstr "如果选择代理，必须填写代理ip及代理密码！"
 
-#: common/models.py:114
+#: common/models.py:152
 msgid "Can add credential"
 msgstr "可新增凭证"
 
-#: common/models.py:115
+#: common/models.py:153
 msgid "Can change credential info"
 msgstr "可更新凭证信息"
 
-#: common/models.py:116
+#: common/models.py:154
 msgid "Can delete credential info"
 msgstr "可删除凭证"
 
-#: common/models.py:117
+#: common/models.py:155
 msgid "Can view credential info"
 msgstr "可查看凭证信息"
 
-#: common/models.py:121
+#: common/models.py:161
 msgid "Task name"
 msgstr "任务名称"
 
-#: common/models.py:122
+#: common/models.py:162
 msgid "Task commands"
 msgstr "任务命令"
 
-#: common/models.py:123 common/templates/common/commandcreate.html:96
+#: common/models.py:164 common/templates/common/commandcreate.html:96
 #: common/templates/common/commandslist.html:158
 #: common/templates/common/commandslist.html:261
 msgid "Server group you want to execute"
 msgstr "所需执行的服务器组"
 
-#: common/models.py:132
+#: common/models.py:177
 msgid "Commands sequence is not valid json type"
 msgstr "命令序列不是有效的json格式"
 
-#: common/models.py:141
+#: common/models.py:186
 msgid "Can add commands"
 msgstr "可创建命令"
 
-#: common/models.py:142
+#: common/models.py:187
 msgid "Can change commands info"
 msgstr "可更新命令信息"
 
-#: common/models.py:143
+#: common/models.py:188
 msgid "Can delete commands info"
 msgstr "可删除命令信息"
 
-#: common/models.py:144
+#: common/models.py:189
 msgid "Can view commands info"
 msgstr "可查看命令信息"
 
-#: common/models.py:145
+#: common/models.py:190
 msgid "Can execute commands"
 msgstr "可执行命令"
 
-#: common/models.py:149
+#: common/models.py:195
 msgid "Server"
 msgstr "服务器"
 
-#: common/models.py:150
+#: common/models.py:197
 msgid "Channel name"
 msgstr "频道名称"
 
-#: common/models.py:151
+#: common/models.py:199
 msgid "Log name"
 msgstr "日志名称"
 
-#: common/models.py:152
+#: common/models.py:201
 msgid "Start time"
 msgstr "开始时间"
 
-#: common/models.py:153
+#: common/models.py:203
 msgid "End time"
 msgstr "结束时间"
 
-#: common/models.py:154
+#: common/models.py:205
 msgid "Is finished"
 msgstr "是否结束"
 
-#: common/models.py:155 permission/models.py:12
+#: common/models.py:207 permission/models.py:14
 msgid "User"
 msgstr "用户"
 
-#: common/models.py:156
+#: common/models.py:208
 msgid "Width"
 msgstr "宽度"
 
-#: common/models.py:157
+#: common/models.py:210
 msgid "Height"
 msgstr "高度"
 
-#: common/models.py:158
+#: common/models.py:212
 msgid "Gucamole channel name"
 msgstr "频道名称"
 
-#: common/models.py:165
+#: common/models.py:214
+msgid "Is Commercial Version"
+msgstr "是否是商业版本"
+
+#: common/models.py:224
 msgid "Can delete log info"
 msgstr "可删除日志信息"
 
-#: common/models.py:166
+#: common/models.py:225
 msgid "Can view log info"
 msgstr "可查看日志信息"
 
-#: common/models.py:167
+#: common/models.py:226
 msgid "Can play record"
 msgstr "可播放录像"
 
-#: common/models.py:174
+#: common/models.py:234
 msgid "Log"
 msgstr "日志"
 
-#: common/models.py:175
+#: common/models.py:236
 msgid "date time"
 msgstr "时间日期"
 
-#: common/models.py:176
+#: common/models.py:237
 msgid "command"
 msgstr "命令"
 
-#: common/models.py:180
+#: common/models.py:241
 msgid "Can view command log info"
 msgstr "可查看命令日志信息"
 
@@ -401,12 +405,13 @@ msgstr "返回命令列表"
 #: common/templates/common/credentiallist.html:34
 #: common/templates/common/groupcreate.html:30
 #: common/templates/common/grouplist.html:34
-#: common/templates/common/logslist.html:38
+#: common/templates/common/logslist.html:46
 #: common/templates/common/servercreate.html:30
 #: common/templates/common/serverlist.html:34
-#: permission/templates/permission/permissioncreate.html:31
+#: permission/templates/permission/permissioncreate.html:32
 #: permission/templates/permission/permissiondelete.html:26
 #: permission/templates/permission/permissionlist.html:31
+#: permission/templates/permission/permissionupdate.html:32
 #: permission/templates/permission/userdelete.html:26
 #: permission/templates/permission/userlist.html:31
 #: permission/templates/permission/userregister.html:27
@@ -420,12 +425,13 @@ msgstr "操作"
 #: common/templates/common/credentiallist.html:35
 #: common/templates/common/groupcreate.html:31
 #: common/templates/common/grouplist.html:35
-#: common/templates/common/logslist.html:39
+#: common/templates/common/logslist.html:47
 #: common/templates/common/servercreate.html:31
 #: common/templates/common/serverlist.html:35
-#: permission/templates/permission/permissioncreate.html:32
+#: permission/templates/permission/permissioncreate.html:33
 #: permission/templates/permission/permissiondelete.html:27
 #: permission/templates/permission/permissionlist.html:32
+#: permission/templates/permission/permissionupdate.html:33
 #: permission/templates/permission/userdelete.html:27
 #: permission/templates/permission/userlist.html:32
 #: permission/templates/permission/userregister.html:28
@@ -439,12 +445,13 @@ msgstr "另一个操作"
 #: common/templates/common/credentiallist.html:36
 #: common/templates/common/groupcreate.html:32
 #: common/templates/common/grouplist.html:36
-#: common/templates/common/logslist.html:40
+#: common/templates/common/logslist.html:48
 #: common/templates/common/servercreate.html:32
 #: common/templates/common/serverlist.html:36
-#: permission/templates/permission/permissioncreate.html:33
+#: permission/templates/permission/permissioncreate.html:34
 #: permission/templates/permission/permissiondelete.html:28
 #: permission/templates/permission/permissionlist.html:33
+#: permission/templates/permission/permissionupdate.html:34
 #: permission/templates/permission/userdelete.html:28
 #: permission/templates/permission/userlist.html:33
 #: permission/templates/permission/userregister.html:29
@@ -458,18 +465,19 @@ msgstr "其他"
 #: common/templates/common/credentiallist.html:38
 #: common/templates/common/groupcreate.html:34
 #: common/templates/common/grouplist.html:38
-#: common/templates/common/logslist.html:42
+#: common/templates/common/logslist.html:50
 #: common/templates/common/servercreate.html:34
 #: common/templates/common/serverlist.html:38
-#: permission/templates/permission/permissioncreate.html:35
+#: permission/templates/permission/permissioncreate.html:36
 #: permission/templates/permission/permissiondelete.html:30
 #: permission/templates/permission/permissionlist.html:35
+#: permission/templates/permission/permissionupdate.html:36
 #: permission/templates/permission/userdelete.html:30
 #: permission/templates/permission/userlist.html:35
 #: permission/templates/permission/userregister.html:31
 #: permission/templates/permission/userupdate.html:31
 msgid "Separated link"
-msgstr ""
+msgstr "分割链接"
 
 #: common/templates/common/commandcreate.html:56
 #: common/templates/common/commandslist.html:202
@@ -478,9 +486,10 @@ msgstr ""
 #: common/templates/common/groupcreate.html:56
 #: common/templates/common/grouplist.html:183
 #: common/templates/common/servercreate.html:58
-#: common/templates/common/serverlist.html:193
-#: permission/templates/permission/permissioncreate.html:52
+#: common/templates/common/serverlist.html:255
+#: permission/templates/permission/permissioncreate.html:62
 #: permission/templates/permission/permissiondelete.html:50
+#: permission/templates/permission/permissionupdate.html:62
 #: permission/templates/permission/userdelete.html:50
 #: permission/templates/permission/userregister.html:48
 msgid "submit"
@@ -505,7 +514,7 @@ msgstr "服务器组"
 #: common/templates/common/commandslist.html:50
 #: common/templates/common/commandslist.html:173
 #: common/templates/common/commandslist.html:275
-#: common/templates/common/logslist.html:83
+#: common/templates/common/logslist.html:95
 msgid "commands"
 msgstr "命令"
 
@@ -515,7 +524,7 @@ msgstr "命令"
 msgid "Input the command you need to execute"
 msgstr "输入你要执行的命令"
 
-#: common/templates/common/commandslist.html:4 templates/base.html:200
+#: common/templates/common/commandslist.html:4 templates/base.html:214
 msgid "commands list"
 msgstr "命令列表"
 
@@ -543,7 +552,7 @@ msgstr "组"
 #: common/templates/common/commandslist.html:51
 #: common/templates/common/credentiallist.html:52
 #: common/templates/common/grouplist.html:51
-#: common/templates/common/logslist.html:58
+#: common/templates/common/logslist.html:66
 #: common/templates/common/serverlist.html:52
 #: permission/templates/permission/permissionlist.html:50
 #: permission/templates/permission/userlist.html:49
@@ -553,16 +562,16 @@ msgstr "操作"
 #: common/templates/common/commandslist.html:65
 #: common/templates/common/credentiallist.html:62
 #: common/templates/common/grouplist.html:64
-#: common/templates/common/serverlist.html:62
+#: common/templates/common/serverlist.html:63
 msgid "detail"
 msgstr "详情"
 
 #: common/templates/common/commandslist.html:66
 #: common/templates/common/credentiallist.html:63
 #: common/templates/common/grouplist.html:65
-#: common/templates/common/serverlist.html:63
+#: common/templates/common/serverlist.html:64
 #: permission/templates/permission/permissionlist.html:68
-#: templates/webterminal/index.html:424
+#: templates/webterminal/index.html:668
 msgid "edit"
 msgstr "编辑"
 
@@ -571,8 +580,8 @@ msgstr "编辑"
 #: common/templates/common/credentiallist.html:196
 #: common/templates/common/grouplist.html:66
 #: common/templates/common/grouplist.html:312
-#: common/templates/common/serverlist.html:64
-#: common/templates/common/serverlist.html:323
+#: common/templates/common/serverlist.html:65
+#: common/templates/common/serverlist.html:385
 #: permission/templates/permission/permissionlist.html:69
 #: permission/templates/permission/userlist.html:59
 msgid "delete"
@@ -580,7 +589,7 @@ msgstr "删除"
 
 #: common/templates/common/commandslist.html:108
 #: common/templates/common/commandslist.html:132
-#: common/templates/common/logslist.html:266
+#: common/templates/common/logslist.html:314
 msgid "commands detail"
 msgstr "命令详情"
 
@@ -593,11 +602,11 @@ msgstr "命令详情"
 #: common/templates/common/grouplist.html:153
 #: common/templates/common/grouplist.html:180
 #: common/templates/common/grouplist.html:279
-#: common/templates/common/logslist.html:267
-#: common/templates/common/serverlist.html:106
-#: common/templates/common/serverlist.html:161
-#: common/templates/common/serverlist.html:190
-#: common/templates/common/serverlist.html:296
+#: common/templates/common/logslist.html:315
+#: common/templates/common/serverlist.html:168
+#: common/templates/common/serverlist.html:223
+#: common/templates/common/serverlist.html:252
+#: common/templates/common/serverlist.html:358
 msgid "Loading..."
 msgstr "加载中..."
 
@@ -610,11 +619,12 @@ msgstr "命令编辑"
 #: common/templates/common/credentiallist.html:200
 #: common/templates/common/grouplist.html:187
 #: common/templates/common/grouplist.html:316
-#: common/templates/common/logslist.html:158
-#: common/templates/common/logslist.html:233
-#: common/templates/common/serverlist.html:197
-#: common/templates/common/serverlist.html:327
-#: permission/templates/permission/permissioncreate.html:53
+#: common/templates/common/logslist.html:206
+#: common/templates/common/logslist.html:281
+#: common/templates/common/serverlist.html:259
+#: common/templates/common/serverlist.html:389
+#: permission/templates/permission/permissioncreate.html:63
+#: permission/templates/permission/permissionupdate.html:63
 #: permission/templates/permission/userregister.html:49
 msgid "cancel"
 msgstr "取消"
@@ -645,10 +655,10 @@ msgstr "返回凭证列表"
 #: common/templates/common/credentiallist.html:240
 #: common/templates/common/credentiallist.html:364
 #: common/templates/common/credentiallist.html:365
-#: common/templates/common/serverlist.html:119
-#: common/templates/common/serverlist.html:120
-#: common/templates/common/serverlist.html:254
-#: common/templates/common/serverlist.html:255
+#: common/templates/common/serverlist.html:181
+#: common/templates/common/serverlist.html:182
+#: common/templates/common/serverlist.html:316
+#: common/templates/common/serverlist.html:317
 msgid "credential name"
 msgstr "凭证名称"
 
@@ -801,9 +811,9 @@ msgstr "创建成功"
 #: common/templates/common/grouplist.html:226
 #: common/templates/common/grouplist.html:299
 #: common/templates/common/servercreate.html:170
-#: common/templates/common/serverlist.html:180
-#: common/templates/common/serverlist.html:310
-#: common/templates/common/serverlist.html:350
+#: common/templates/common/serverlist.html:242
+#: common/templates/common/serverlist.html:372
+#: common/templates/common/serverlist.html:412
 msgid "Please check field"
 msgstr "请检查字段"
 
@@ -812,9 +822,9 @@ msgstr "请检查字段"
 #: common/templates/common/grouplist.html:226
 #: common/templates/common/grouplist.html:299
 #: common/templates/common/servercreate.html:170
-#: common/templates/common/serverlist.html:180
-#: common/templates/common/serverlist.html:310
-#: common/templates/common/serverlist.html:350
+#: common/templates/common/serverlist.html:242
+#: common/templates/common/serverlist.html:372
+#: common/templates/common/serverlist.html:412
 msgid "error"
 msgstr "错误"
 
@@ -839,7 +849,7 @@ msgid "Update group info"
 msgstr "服务器信息更新"
 
 #: common/templates/common/grouplist.html:215
-#: common/templates/common/serverlist.html:338
+#: common/templates/common/serverlist.html:400
 msgid "success"
 msgstr "成功"
 
@@ -851,80 +861,85 @@ msgstr "删除服务器组"
 msgid "Are you sure to delete group"
 msgstr "确认删除服务器组"
 
-#: common/templates/common/logslist.html:4
+#: common/templates/common/logslist.html:6
 msgid "Log list"
 msgstr "日志列表"
 
-#: common/templates/common/logslist.html:53 permission/forms.py:30
+#: common/templates/common/logslist.html:61 permission/forms.py:31
 #: permission/templates/permission/permissionlist.html:47
 #: permission/templates/permission/userlist.html:47
 msgid "user name"
 msgstr "用户名"
 
-#: common/templates/common/logslist.html:54
+#: common/templates/common/logslist.html:62
 #: common/templates/common/serverlist.html:49
 msgid "server name"
 msgstr "服务器名称 "
 
-#: common/templates/common/logslist.html:55
+#: common/templates/common/logslist.html:63
 msgid "server ip"
 msgstr "服务器ip"
 
-#: common/templates/common/logslist.html:56
-#: common/templates/common/logslist.html:128
-#: common/templates/common/logslist.html:194
-#: common/templates/common/logslist.html:210
+#: common/templates/common/logslist.html:64
+#: common/templates/common/logslist.html:176
+#: common/templates/common/logslist.html:242
+#: common/templates/common/logslist.html:258
+#: common/templates/common/logslist.html:344
 msgid "start time"
 msgstr "开始时间"
 
-#: common/templates/common/logslist.html:57
+#: common/templates/common/logslist.html:65
 msgid "is finished"
 msgstr "是否结束"
 
-#: common/templates/common/logslist.html:72
+#: common/templates/common/logslist.html:81
+#: common/templates/common/logslist.html:83
 msgid "replay"
 msgstr "重播"
 
-#: common/templates/common/logslist.html:76
-#: common/templates/common/logslist.html:154
-#: common/templates/common/logslist.html:229
+#: common/templates/common/logslist.html:88
+#: common/templates/common/logslist.html:202
+#: common/templates/common/logslist.html:277
 msgid "kill"
 msgstr "杀掉"
 
-#: common/templates/common/logslist.html:79
+#: common/templates/common/logslist.html:91
 msgid "monitor"
 msgstr "监控"
 
-#: common/templates/common/logslist.html:126
-#: common/templates/common/logslist.html:192
-#: common/templates/common/logslist.html:208
+#: common/templates/common/logslist.html:174
+#: common/templates/common/logslist.html:240
+#: common/templates/common/logslist.html:256
+#: common/templates/common/logslist.html:342
 msgid "user"
 msgstr "用户名"
 
-#: common/templates/common/logslist.html:127
-#: common/templates/common/logslist.html:193
-#: common/templates/common/logslist.html:209
+#: common/templates/common/logslist.html:175
+#: common/templates/common/logslist.html:241
+#: common/templates/common/logslist.html:257
+#: common/templates/common/logslist.html:343
 msgid "server"
 msgstr "服务器"
 
-#: common/templates/common/logslist.html:128
+#: common/templates/common/logslist.html:176
+#: common/templates/common/logslist.html:344
 msgid "end time"
 msgstr "结束时间"
 
-#: common/templates/common/logslist.html:150
-#: common/templates/common/logslist.html:225
+#: common/templates/common/logslist.html:198
+#: common/templates/common/logslist.html:273
 msgid "kick user"
 msgstr "踢用户"
 
-#: common/templates/common/logslist.html:150
-#: common/templates/common/logslist.html:151
-#: common/templates/common/logslist.html:225
-#: common/templates/common/logslist.html:226
+#: common/templates/common/logslist.html:198
+#: common/templates/common/logslist.html:199
+#: common/templates/common/logslist.html:273
+#: common/templates/common/logslist.html:274
 msgid "out"
 msgstr "下线"
 
-#: common/templates/common/logslist.html:151
-#: common/templates/common/logslist.html:226
+#: common/templates/common/logslist.html:199
+#: common/templates/common/logslist.html:274
 msgid "Are you sure to kick user"
 msgstr "确认踢掉用户"
 
@@ -937,23 +952,23 @@ msgid "Return Server List"
 msgstr "返回服务器列表"
 
 #: common/templates/common/servercreate.html:95
-#: common/templates/common/serverlist.html:128
-#: common/templates/common/serverlist.html:262
+#: common/templates/common/serverlist.html:190
+#: common/templates/common/serverlist.html:324
 msgid "hostname"
 msgstr "主机名"
 
 #: common/templates/common/servercreate.html:96
-#: common/templates/common/serverlist.html:129
-#: common/templates/common/serverlist.html:263
+#: common/templates/common/serverlist.html:191
+#: common/templates/common/serverlist.html:325
 msgid "server hostname"
 msgstr "服务器主机名"
 
 #: common/templates/common/servercreate.html:110
 #: common/templates/common/servercreate.html:111
-#: common/templates/common/serverlist.html:145
-#: common/templates/common/serverlist.html:146
-#: common/templates/common/serverlist.html:277
-#: common/templates/common/serverlist.html:278
+#: common/templates/common/serverlist.html:207
+#: common/templates/common/serverlist.html:208
+#: common/templates/common/serverlist.html:339
+#: common/templates/common/serverlist.html:340
 msgid "credential"
 msgstr "凭证"
 
@@ -973,116 +988,161 @@ msgstr "服务器列表"
 msgid "host name"
 msgstr "主机名"
 
-#: common/templates/common/serverlist.html:105
+#: common/templates/common/serverlist.html:53
+#: common/templates/common/serverlist.html:69
+#: templates/webterminal/index.html:484
+msgid "connect"
+msgstr "连接"
+
+#: common/templates/common/serverlist.html:167
 msgid "Server information detail"
 msgstr "服务器信息详情"
 
-#: common/templates/common/serverlist.html:189
+#: common/templates/common/serverlist.html:251
 msgid "Server information edit"
 msgstr "服务器信息编辑"
 
-#: common/templates/common/serverlist.html:319
+#: common/templates/common/serverlist.html:381
 msgid "delete server"
 msgstr "删除服务器"
 
-#: common/templates/common/serverlist.html:320
+#: common/templates/common/serverlist.html:382
 msgid "Are you sure to delete server"
 msgstr "确认删除服务器"
 
-#: common/templates/common/serverlist.html:338
+#: common/templates/common/serverlist.html:400
 msgid "Delete server"
 msgstr "删除服务器"
 
-#: common/views.py:59 common/views.py:73 common/views.py:81 common/views.py:96
-#: common/views.py:158 common/views.py:164 common/views.py:174
+#: common/views.py:66 common/views.py:83 common/views.py:92 common/views.py:110
+#: common/views.py:179 common/views.py:185 common/views.py:195
 msgid "403 Forbidden"
 msgstr "403 拒绝"
 
-#: permission/forms.py:31
+#: permission/forms.py:32
 msgid "Please input a valid user."
 msgstr "请输入有效的用户名"
 
-#: permission/forms.py:41
+#: permission/forms.py:42
 msgid "your password"
 msgstr "输入密码"
 
-#: permission/forms.py:42
+#: permission/forms.py:43
 msgid "Please input your password"
 msgstr "请输入你的密码"
 
-#: permission/forms.py:45
+#: permission/forms.py:46
 msgid "new password"
 msgstr "新密码"
 
-#: permission/forms.py:52 permission/forms.py:56
+#: permission/forms.py:53 permission/forms.py:57
 msgid "verify your password"
 msgstr "密码验证"
 
-#: permission/forms.py:53
+#: permission/forms.py:54
 msgid "please input your  password again"
 msgstr "请重新输入密码"
 
-#: permission/forms.py:63 permission/templates/permission/userlist.html:48
+#: permission/forms.py:64 permission/templates/permission/userlist.html:48
 msgid "email"
 msgstr "邮箱"
 
-#: permission/forms.py:64
+#: permission/forms.py:66
 msgid "Please input a valid email address."
 msgstr "请输入有效的邮箱地址"
 
-#: permission/forms.py:74
+#: permission/forms.py:76
 msgid "every filed required"
 msgstr "每个字段都必须填写"
 
-#: permission/forms.py:76
+#: permission/forms.py:79
 msgid "your password does't the same"
 msgstr "密码不一致"
 
-#: permission/forms.py:80
+#: permission/forms.py:84
 msgid "User name has been registered!"
 msgstr "用户已经被注册！"
 
-#: permission/models.py:13
+#: permission/models.py:16 permission/models.py:47
+#: permission/templates/permission/permissioncreate.html:54
+#: permission/templates/permission/permissionupdate.html:54
 msgid "Permissions"
 msgstr "权限"
 
-#: permission/models.py:14
+#: permission/models.py:18 permission/models.py:49
 msgid "Server group"
 msgstr "服务器组"
 
-#: permission/models.py:23
+#: permission/models.py:32
 msgid "Can add user"
 msgstr "可新增用户"
 
-#: permission/models.py:24
+#: permission/models.py:33
 msgid "Can change user info"
 msgstr "可更新用户信息"
 
-#: permission/models.py:25
+#: permission/models.py:34
 msgid "Can delete user info"
 msgstr "可删除用户"
 
-#: permission/models.py:26
+#: permission/models.py:35
 msgid "Can view user info"
 msgstr "可查看用户信息"
 
-#: permission/models.py:27
+#: permission/models.py:36
 msgid "Can view user permissions"
 msgstr "可查看用户权限信息"
 
-#: permission/models.py:28
+#: permission/models.py:37
 msgid "Can change user permissions"
 msgstr "可更新用户权限信息"
 
-#: permission/models.py:29
+#: permission/models.py:38
 msgid "Can revoke user permissions"
 msgstr "可回收用户权限"
 
-#: permission/models.py:30
+#: permission/models.py:39
 msgid "Can add user permissions"
 msgstr "可新增用户权限"
 
-#: permission/templates/permission/permissioncreate.html:19
+#: permission/models.py:45
+msgid "Role name"
+msgstr "角色名称"
+
+#: permission/models.py:63
+msgid "Can add role"
+msgstr "可新增角色"
+
+#: permission/models.py:64
+msgid "Can change role info"
+msgstr "可更新角色信息"
+
+#: permission/models.py:65
+msgid "Can delete role info"
+msgstr "可删除角色信息"
+
+#: permission/models.py:66
+msgid "Can view role info"
+msgstr "可查看角色信息"
+
+#: permission/models.py:67
+msgid "Can view role permissions"
+msgstr "可查看角色权限信息"
+
+#: permission/models.py:68
+msgid "Can change role permissions"
+msgstr "可更改角色权限信息"
+
+#: permission/models.py:69
+msgid "Can revoke role permissions"
+msgstr "可回收角色权限"
+
+#: permission/models.py:70
+msgid "Can add role permissions"
+msgstr "可新增角色权限"
+
+#: permission/templates/permission/permissioncreate.html:20
+#: permission/templates/permission/permissionupdate.html:20
 msgid "Return Permission List"
 msgstr "返回用户权限列表"
 
@@ -1139,11 +1199,11 @@ msgstr "返回用户列表"
 msgid "User update"
 msgstr "更新用户信息"
 
-#: permission/views.py:86
+#: permission/views.py:93
 msgid "Create Permission"
 msgstr "新增权限"
 
-#: permission/views.py:119
+#: permission/views.py:130
 msgid "Update Permission"
 msgstr "更新权限"
 
@@ -1165,7 +1225,7 @@ msgstr "用户名"
 
 #: templates/admin/login.html:40
 msgid "Token OTP"
-msgstr ""
+msgstr "Token OTP"
 
 #: templates/admin/login.html:47
 msgid "Log in"
@@ -1175,107 +1235,115 @@ msgstr "登录"
 msgid "AdminLTE 2 | Dashboard"
 msgstr "AdminLTE 2 | Dashboard"
 
-#: templates/base.html:39
+#: templates/base.html:53
 msgid "W"
 msgstr "W"
 
-#: templates/base.html:39
+#: templates/base.html:53
 msgid "T"
 msgstr "T"
 
-#: templates/base.html:41
+#: templates/base.html:55
 msgid "web"
 msgstr "web"
 
-#: templates/base.html:41
+#: templates/base.html:55
 msgid "terminal"
 msgstr "terminal"
 
-#: templates/base.html:168
+#: templates/base.html:182
 msgid "Profile"
 msgstr "概览"
 
-#: templates/base.html:171
+#: templates/base.html:185 templates/registration/logged_out.html:116
 msgid "logout"
 msgstr "注销"
 
-#: templates/base.html:188
-#, fuzzy
-#| msgid "webterminal"
+#: templates/base.html:202
 msgid "Webterminal"
 msgstr "webterminal"
 
-#: templates/base.html:194 templates/base.html:238
-#: templates/webterminal/index.html:3
+#: templates/base.html:208 templates/base.html:252
+#: templates/registration/logged_out.html:78 templates/webterminal/index.html:3
 msgid "webterminal"
 msgstr "webterminal"
 
-#: templates/base.html:195 templates/webterminal/commandexecute.html:3
+#: templates/base.html:209 templates/webterminal/commandexecute.html:3
 msgid "command execute"
 msgstr "命令执行"
 
-#: templates/base.html:196 templates/webterminal/batchcommandexecute.html:3
+#: templates/base.html:210 templates/webterminal/batchcommandexecute.html:3
 msgid "batch command execute"
 msgstr "批量命令执行"
 
-#: templates/base.html:197
+#: templates/base.html:211
 msgid "credential list"
 msgstr "凭证列表"
 
-#: templates/base.html:198
+#: templates/base.html:212
 msgid "server list"
 msgstr "服务器列表"
 
-#: templates/base.html:199
+#: templates/base.html:213
 msgid "server group list"
 msgstr "服务器组列表"
 
-#: templates/base.html:201
+#: templates/base.html:215
 msgid "log list"
 msgstr "日志列表"
 
-#: templates/base.html:202
+#: templates/base.html:216
 msgid "user list"
 msgstr "用户列表"
 
-#: templates/base.html:203
+#: templates/base.html:217
 msgid "permission list"
 msgstr "权限列表"
 
-#: templates/base.html:236
+#: templates/base.html:250
 msgid "Version"
 msgstr "版本"
 
-#: templates/base.html:238
-msgid "Copyright &copy; 2014-2018"
-msgstr "Copyright &copy; 2014-2018"
+#: templates/base.html:252
+msgid "Copyright &copy; 2014-2019"
+msgstr "Copyright &copy; 2014-2019"
 
-#: templates/base.html:238
+#: templates/base.html:252
 msgid "All rights reserved."
 msgstr "保留所有权利"
 
+#: templates/registration/logged_out.html:8
+msgid "logout webterminal"
+msgstr "webterminal"
+
+#: templates/registration/logged_out.html:131
+msgid "Thanks for your visit!"
+msgstr "感谢你的访问!"
+
+#: templates/registration/logged_out.html:133
+msgid "Login again"
+msgstr "再次登录"
+
 #: templates/webterminal/batchcommandexecute.html:44
-#: templates/webterminal/index.html:25
 msgid "Server List"
 msgstr "服务器列表"
 
-#: templates/webterminal/batchcommandexecute.html:55
-#: templates/webterminal/commandexecute.html:55
-#: templates/webterminal/index.html:36
+#: templates/webterminal/batchcommandexecute.html:56
+#: templates/webterminal/commandexecute.html:56
+#: templates/webterminal/index.html:78
 msgid "search"
 msgstr "搜索"
 
 #: templates/webterminal/batchcommandexecute.html:72
-#: templates/webterminal/commandexecute.html:257
-#: templates/webterminal/commandexecute.html:285
-#: templates/webterminal/commandexecute.html:314
+#: templates/webterminal/commandexecute.html:261
+#: templates/webterminal/commandexecute.html:289
+#: templates/webterminal/commandexecute.html:318
 msgid "execute"
 msgstr "执行"
 
-#: templates/webterminal/batchcommandexecute.html:111
-#: templates/webterminal/commandexecute.html:188
-#: templates/webterminal/index.html:181
-#: templates/webterminal/sshlogmonitor.html:57
+#: templates/webterminal/batchcommandexecute.html:115
+#: templates/webterminal/commandexecute.html:192
+#: templates/webterminal/sshlogmonitor.html:61
 msgid "\\r\\n\\r\\n[Finished...]\\r\\n"
 msgstr "\\r\\n\\r\\n[已结束...]\\r\\n"
 
@@ -1285,51 +1353,47 @@ msgstr "任务列表"
 
 #: templates/webterminal/commandexecute.html:69
 #: templates/webterminal/commandexecute.html:74
-#: templates/webterminal/index.html:48 templates/webterminal/index.html:53
+#: templates/webterminal/index.html:88 templates/webterminal/index.html:93
 msgid "help info"
 msgstr "帮助信息"
 
-#: templates/webterminal/index.html:244
-msgid "connect"
-msgstr "连接"
-
-#: templates/webterminal/index.html:287
+#: templates/webterminal/index.html:527
 msgid "disconnect"
 msgstr "断开"
 
-#: templates/webterminal/index.html:310 templates/webterminal/index.html:349
+#: templates/webterminal/index.html:550 templates/webterminal/index.html:589
 msgid "This function hasn\\"
 msgstr "此功能还未"
 
-#: templates/webterminal/index.html:319
+#: templates/webterminal/index.html:559
 msgid "file manager"
 msgstr "文件管理"
 
-#: templates/webterminal/index.html:489 templates/webterminal/index.html:502
+#: templates/webterminal/index.html:733 templates/webterminal/index.html:746
 msgid "TextArea"
 msgstr "文本编辑"
 
-#: templates/webterminal/index.html:496
+#: templates/webterminal/index.html:740
 msgid "AceEditor"
 msgstr "Ace编辑器"
 
-#: templates/webterminal/index.html:507
+#: templates/webterminal/index.html:751
 msgid "Ace editor setting"
 msgstr "Ace编辑器设置"
 
-#: templates/webterminal/index.html:540
+#: templates/webterminal/index.html:784
 msgid "saveFile"
 msgstr "保存文件"
 
-#: templates/webterminal/index.html:550
+#: templates/webterminal/index.html:794
 msgid "closeEditor"
 msgstr "关闭编辑器"
 
-#: webterminal/settings.py:277
+#: webterminal/settings.py:278
 msgid "Simple Chinese"
 msgstr "简体中文"
 
-#: webterminal/settings.py:278
+#: webterminal/settings.py:279
 msgid "English"
 msgstr "英语"
 
