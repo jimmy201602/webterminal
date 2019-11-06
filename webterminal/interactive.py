@@ -262,6 +262,7 @@ class SshTerminalThread(threading.Thread):
                         except OSError:
                             pass
                         time.sleep(3)
+                        self.chan.transport.close()
                         self.chan.close()
                         self.stop()
                     elif data[0] == 'set_size':
