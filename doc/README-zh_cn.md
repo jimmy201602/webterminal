@@ -20,7 +20,7 @@
 
 
 ```sh
-docker pull webterminal/webterminal(国内请使用阿里云镜像 docker pull registry.cn-hangzhou.aliyuncs.com/webterminal/webterminal)
+docker pull webterminal/webterminal
 
 docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
