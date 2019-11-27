@@ -683,6 +683,8 @@ class ElfinderVolumeDriver(object):
             raise NamedError(ElfinderErrorMessages.ERROR_EXISTS, name)
         except os.error:
             pass
+        except Exception:
+            pass
     
         self._clear_cached_dir(path)
 
