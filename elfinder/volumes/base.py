@@ -721,6 +721,8 @@ class ElfinderVolumeDriver(object):
             raise NamedError(ElfinderErrorMessages.ERROR_EXISTS, name)
         except os.error:
             pass
+        except:
+            pass
 
         self._rm_tmb(file_) #remove old name tmbs, we cannot do this after dir move
         
