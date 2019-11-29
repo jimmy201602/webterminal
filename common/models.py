@@ -250,6 +250,26 @@ class CommandLog(models.Model):
     def __str__(self):
         return self.log.user.username
 
+class Settings(models.Model):
+    datetime = models.DateTimeField(
+        auto_now=True, verbose_name=_('date time'))
+    name = models.CharField(max_length=255, verbose_name=_('name'),unique=True)
+    value = models.CharField(max_length=255, verbose_name=_('value'))
+
+    class Meta:
+        permissions = (
+            ("can_view_settings", _("Can view settings info")),
+        )
+        ordering = [
+            ('-datetime')
+        ]
+
+    def __unicode__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
+
 # Create your models here.
 #from django.contrib.contenttypes.models import ContentType
 #from django.contrib.contenttypes import generic

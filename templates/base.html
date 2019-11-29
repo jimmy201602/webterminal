@@ -412,7 +412,7 @@ toastr.options = {
     // }
     return "other";
   }
-
+  {% if detect_webterminal_helper_is_installed %}
   $(document).ready(function () {
     $.ajax({
       url: '{% url 'webterminalhelperdetectapi' %}',
@@ -439,6 +439,7 @@ toastr.options = {
       }
     });
   })
+  {% endif %}
 </script>
 <!--end ssh helper detection-->
 {%block js%}{%endblock%}

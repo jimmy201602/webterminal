@@ -5,7 +5,7 @@ from django import forms
 from django.contrib.admin.forms import AdminAuthenticationForm
 from django.contrib.admin.sites import AdminSite
 from django.contrib import admin
-from common.models import ServerInfor, ServerGroup, Credential, CommandsSequence, Log, CommandLog
+from common.models import ServerInfor, ServerGroup, Credential, CommandsSequence, Log, CommandLog, Settings
 #from django_otp.forms import OTPAuthenticationFormMixin
 
 
@@ -29,12 +29,16 @@ class ServerInforAdmin(admin.ModelAdmin):
     inlines = [LogInline]
 
 
+class SettingsAdmin(admin.ModelAdmin):
+    list_display = ("name","value","datetime")
+
 admin.site.register(ServerInfor, ServerInforAdmin)
 admin.site.register(ServerGroup)
 admin.site.register(Credential, CredentialAdmin)
 admin.site.register(CommandsSequence)
 admin.site.register(CommandLog)
 admin.site.register(Log, LogAdmin)
+admin.site.register(Settings,SettingsAdmin)
 
 # class OTPAdminAuthenticationForm(AdminAuthenticationForm, OTPAuthenticationFormMixin):
 
