@@ -672,7 +672,29 @@ class ElfinderConnector:
         # the content will be returned as json, so try to json encode it
         # throw an error if it cannot be properly serialized
         if isinstance(content, bytes):
-            content = content.decode()
+            CODES = ['UTF-8', 'UTF-16', 'GB18030', 'BIG5']
+            UTF_8_BOM = b'\xef\xbb\xbf'
+
+            # get file encoding
+            def file_encoding(content):
+                return string_encoding(content)
+
+            # get str encoding
+            def string_encoding(b: bytes):
+                for code in CODES:
+                    try:
+                        b.decode(encoding=code)
+                        if 'UTF-8' == code and b.startswith(UTF_8_BOM):
+                            return 'UTF-8-SIG'
+                        return code
+                    except Exception as ex:
+                        continue
+                return 'unknow'
+            encoding = file_encoding(content)
+            if encoding != "unknow":
+                content = content.decode(encoding)
+            else:
+                content = content.decode()
         try:
             import json
             json.dumps(content)
