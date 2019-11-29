@@ -367,3 +367,9 @@ class WebterminalHelperDetectCallbackApi(View):
                 return JsonResponse({'status': False, 'message': 'Method not allowed!'})
         else:
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
+
+class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Log
+    template_name = 'common/settings.html'
+    permission_required = 'common.can_view_log'
+    raise_exception = True
