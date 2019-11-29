@@ -331,10 +331,29 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         Get file contents
         """
-        try:
-            return open(path).read()
-        except UnicodeDecodeError:
-            return open(path,encoding='gbk').read()
+        CODES = ['UTF-8', 'UTF-16', 'GB18030', 'BIG5']
+        UTF_8_BOM = b'\xef\xbb\xbf'
+
+        # get file encoding
+        def file_encoding(file_path):
+            with open(file_path, 'rb') as f:
+                return string_encoding(f.read())
+
+        # get str encoding
+        def string_encoding(b: bytes):
+            for code in CODES:
+                try:
+                    b.decode(encoding=code)
+                    if 'UTF-8' == code and b.startswith(UTF_8_BOM):
+                        return 'UTF-8-SIG'
+                    return code
+                except Exception as ex:
+                    continue
+            return 'unknow'
+        encoding = file_encoding(path)
+        if encoding != "unknow":
+            return open(path, encoding=encoding).read()
+        return open(path).read()
 
     def _put_contents(self, path, content):
         """
