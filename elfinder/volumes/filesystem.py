@@ -331,7 +331,10 @@ class ElfinderVolumeLocalFileSystem(ElfinderVolumeDriver):
         """
         Get file contents
         """
-        return open(path).read()
+        try:
+            return open(path).read()
+        except UnicodeDecodeError:
+            return open(path,encoding='gbk').read()
 
     def _put_contents(self, path, content):
         """
