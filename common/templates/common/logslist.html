@@ -310,32 +310,30 @@ function killguacamole(id,user_name) {
     });
 }
 function get_commands_detail(id) {
-    var dialog = bootbox.dialog({
-        title: '{%trans 'commands detail' %}',
-        message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>'
-    });
-    dialog.init(function(){
-        $.ajax({
-            url: '{% url 'commandsloglist' %}',
-            type: 'POST',
-            data: {'id':id},
-            success: function(data, textStatus, jqXHR) {
-                if(data.status){
-                    dialog.find('.modal-body').css("height","300px").css("overflow-y","scroll").css("font-size","16px");
-                    var html = "";
-                    var data = data.message;
-                    for ( var i=0; i<data.length; i++ ) {
-                        html += data[i].datetime + " :  " + data[i].command  +"</br>"
-                    }
-                    dialog.find('.bootbox-body').html(html);
-                } else {
-                   toastr['error'](data.message);
+    $.ajax({
+        url: '{% url 'commandsloglist' %}',
+        type: 'POST',
+        data: {'id':id},
+        success: function(data, textStatus, jqXHR) {
+            if(data.status){
+                var dialog = bootbox.dialog({
+                    title: '{%trans 'commands detail' %}',
+                    message: '<p><i class="fa fa-spin fa-spinner"></i> {%trans 'Loading...' %}</p>'
+                });
+                dialog.find('.modal-body').css("height","300px").css("overflow-y","scroll").css("font-size","16px");
+                var html = "";
+                var data = data.message;
+                for ( var i=0; i<data.length; i++ ) {
+                    html += data[i].datetime + " :  " + data[i].command  +"</br>"
                 }
-            },
-            error: function(data, textStatus, jqXHR) {
-                toastr['error'](data);
+                dialog.find('.bootbox-body').html(html);
+            } else {
+                toastr['error'](data.message);
             }
-        });
+        },
+        error: function(data, textStatus, jqXHR) {
+            toastr['error'](data);
+        }
     });
 }
 function playauditvideo(user,ip,start_time,end_time,logid) {
