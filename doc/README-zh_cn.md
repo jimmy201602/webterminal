@@ -10,10 +10,6 @@
 
 [中文使用文档](./manual_zh.md)
 
-# 安装文档
-
-[中文安装部署文档](./Centos7_install_zh.md)
-
 # 以docker方式运行本项目
 
 [Centos7 Docker安装部署 webterminal](./Centos7_docker_deploy_zh.md)
