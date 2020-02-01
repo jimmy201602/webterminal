@@ -10,10 +10,6 @@
 
 [繁體使用文檔](./manual_zht.md)
 
-# 安裝文檔
-
-[繁體安裝部署文檔](./Centos7_install_zht.md)
-
 # 以docker方式運行本項目
 
 [Centos7 Docker安裝部署 webterminal](./Centos7_docker_deploy_zht.md)
