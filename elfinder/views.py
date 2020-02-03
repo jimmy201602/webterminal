@@ -8,7 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 from elfinder.exceptions import ElfinderErrorMessages
 from elfinder.connector import ElfinderConnector
 from elfinder.conf import settings as ls
-from django.shortcuts import render_to_response
 from django.shortcuts import get_object_or_404
 from common.models import ServerInfor
 import re
