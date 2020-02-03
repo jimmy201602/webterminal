@@ -9,6 +9,8 @@ This project focus on DevOps and Continuous Delivery.
 For now it support almost 90% remote management protocol such as vnc, ssh,rdp,telnet,sftp... It support a possiblity to monitor and recorded user action when user use this project to manage their server!You can also replay the user action such as like a video.
 Hope you enjoy it.
 
+## Next Release: *To be defined.*
+
 # useage
 [![Usage Video](https://i.ytimg.com/vi/-HwhB21v8L8/1.jpg?time=1527217648531)](https://www.youtube.com/watch?v=-HwhB21v8L8)
 
