@@ -7,7 +7,7 @@ import uuid
 
 from django.conf import settings
 from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render_to_response
 from django.views.decorators.csrf import csrf_exempt
 
 from guacamole.client import GuacamoleClient
@@ -17,10 +17,8 @@ from webterminal.settings import MEDIA_URL
 from common.models import Log
 from common.views import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from guacamole.instruction import GuacamoleInstruction as Instruction
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
-import traceback
 from common.utils import get_redis_instance
 import uuid
 

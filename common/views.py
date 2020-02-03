@@ -1,37 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-from django.shortcuts import render
 from django.contrib.auth.mixins import AccessMixin
 from django.utils.translation import activate
 from django.views.generic import View
-from django.shortcuts import render_to_response, HttpResponse
 from django.http import JsonResponse
 from common.models import ServerGroup, CommandsSequence, Credential, ServerInfor, Log, CommandLog
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
 try:
     import simplejson as json
 except ImportError:
     import json
-from django.contrib import messages as message
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.utils.encoding import smart_str
 from django.views.generic.list import ListView
-from django.views.generic.edit import DeleteView, CreateView
-from django.views.generic.detail import DetailView
 from django.core.serializers import serialize
-from webterminal.settings import MEDIA_URL
-from django.utils.timezone import now
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
 from django.core.exceptions import PermissionDenied
-from permission.models import Permission
-from django.urls import reverse_lazy
 import traceback
 from django.contrib.auth.views import redirect_to_login
-from django.utils.translation import ugettext, ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _
 import pytz
 import uuid
 from common.utils import get_redis_instance
@@ -367,6 +355,7 @@ class WebterminalHelperDetectCallbackApi(View):
                 return JsonResponse({'status': False, 'message': 'Method not allowed!'})
         else:
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
+
 
 class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Log

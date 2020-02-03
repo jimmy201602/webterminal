@@ -1,31 +1,20 @@
 from django.views.generic import View
-from django.shortcuts import render_to_response, HttpResponse
 from django.http import JsonResponse
-from common.models import ServerGroup, CommandsSequence, Credential, ServerInfor, Log
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from common.models import ServerGroup, CommandsSequence, ServerInfor, Log
 try:
     import simplejson as json
 except ImportError:
     import json
-from django.contrib import messages as message
 from django.core.exceptions import ObjectDoesNotExist
-from django.db import IntegrityError
-from django.utils.encoding import smart_str
-from django.views.generic.list import ListView
-from django.views.generic.edit import DeleteView, CreateView
 from django.views.generic.detail import DetailView
-from django.core.serializers import serialize
 from webterminal.settings import MEDIA_URL
 from django.utils.timezone import now
 from common.utils import get_redis_instance
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import TemplateView
-from django.core.exceptions import PermissionDenied
 from permission.models import Permission
 from django.urls import reverse_lazy
 from common.views import LoginRequiredMixin
-import traceback
 import re
 import uuid
 try:
@@ -147,7 +136,6 @@ class SshTerminalKill(LoginRequiredMixin, PermissionRequiredMixin, View):
                     data.save()
 
                     queue = get_redis_instance()
-                    redis_channel = queue.pubsub()
                     if '_' in channel_name:
                         queue.publish(channel_name.rsplit(
                             '_')[0], json.dumps(['close']))
