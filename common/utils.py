@@ -5,6 +5,8 @@ try:
     import simplejson as json
 except ImportError:
     import json
+from common.models import Settings
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class WebsocketAuth(object):
@@ -54,3 +56,15 @@ class CustomeFloatEncoder(json.JSONEncoder):
         if isinstance(obj, float):
             return format(obj, '.6f')
         return json.JSONEncoder.encode(self, obj)
+
+
+def get_settings_value(name):
+    try:
+        data = Settings.objects.get(name=name)
+        if data.value == 'True':
+            value = True
+        else:
+            value = False
+    except ObjectDoesNotExist:
+        value = False
+    return value
