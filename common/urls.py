@@ -5,7 +5,9 @@ from common.views import (Commands,
                           CommandExecuteList, CommandExecuteDetailApi,
                           CredentialCreate, CredentialList, CredentialDetailApi,
                           ServerCreate, ServerlList, GroupList, GroupCreate,
-                          LogList, CommandLogList, WebterminalHelperDetectApi, WebterminalHelperDetectCallbackApi)
+                          LogList, CommandLogList, WebterminalHelperDetectApi, WebterminalHelperDetectCallbackApi, PasswordResetView,
+                          PasswordResetDoneView, PasswordResetConfirmView
+                          )
 from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet
 from rest_framework import routers
 from django.contrib import admin
@@ -41,4 +43,15 @@ urlpatterns = [
         name='webterminalhelperdetectapi'),
     url(r'^webterminalhelperdetectcallback/$', csrf_exempt(WebterminalHelperDetectCallbackApi.as_view()),
         name='webterminalhelperdetectcallbackapi'),
+    url(r"password-reset/$", PasswordResetView.as_view(), name="password-reset"),
+    url(
+        r"password-reset-done/",
+        PasswordResetDoneView.as_view(),
+        name="password-reset-done",
+    ),
+    url(
+        r"^password-reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$",
+        PasswordResetConfirmView.as_view(),
+        name="password-reset-confirm",
+    ),
 ]

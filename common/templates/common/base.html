@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load staticfiles %}
+    {% load i18n %}
+    
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block description %}{% endblock description %}">
+    <meta name="author" content="Arun Ravindran">
+    <link rel="shortcut icon" href="{% static 'site/ico/favicon.ico' %}">
+
+    <title>{% block title %}{% include "common/_brandname.html" %} :: {% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="{% static "plugins/bootstrap/css/bootstrap.min.css" %}">
+
+    <!-- Custom styles for this site -->
+    {% block styles %}
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+    {% endblock styles %}
+
+    <!-- Custom tags for the head tag -->
+    {% block extrahead %}{% endblock extrahead %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    {% block navbar %}
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}">
+            {% block navbar-brand %}
+              <img src="{% static 'site/img/logo.png' %}" alt="logo">
+              {% include "common/_brandname.html" %}
+            {% endblock %}
+          </a>
+        </div>
+        {% block navbar-menu %}
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            {% block navbar-left %}{% endblock %}
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            {% block navbar-right %}
+              {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <li><a href="{% url 'admin:index' %}">Admin</a></li>
+                {% endif %}
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle profile-menu" data-toggle="dropdown">
+			<img src="" alt="" />
+			{{ user.get_full_name|truncatechars:20 }}
+			<span class="caret"></span>
+		    </a>
+		    
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="{% url 'profiles:show_self' %}">Profile</a></li>
+                    <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                  </ul>
+                </li>
+              {% endif %}
+            {% endblock %}
+          </ul>
+        </div><!--/.nav-collapse -->
+        {% endblock %}
+    </div>
+    {% endblock navbar %}
+
+    {% block messages %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">  <!-- singular -->
+            <a class="close" data-dismiss="alert">×</a>
+            {{ message|safe }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endblock %}
+
+    {% block splash %}
+    {% endblock splash %}
+    
+    {% block container %}
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>New Project</h1>
+        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+      </div>
+
+    </div><!-- /.container -->
+    {% endblock container %}
+
+    <!-- Site footer -->
+    {% block footer %}
+      <!-- Some social button for contact will do -->
+      <a id="contact"></a>
+      <div class="container">
+            <div class="footer">
+        <div class="row">
+          <div class="col-lg-6">
+              <p><strong>{%trans 'Copyright &copy; 2014-2019' %} <a href="https://github.com/jimmy201602/webterminal">{%trans 'webterminal' %}</a></strong> {%trans 'All rights reserved.' %}</p>
+          </div>
+          <div class="col-lg-6 text-right">
+	    <b>{%trans 'Version' %}</b> 0.1
+          </div>
+        </div>
+            </div>
+      </div>
+    {% endblock %}
+  
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery 2.2.3 -->
+    <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+    <!-- Bootstrap 3.3.6 -->
+    <script src="{% static "plugins/bootstrap/js/bootstrap.min.js" %}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+  </body>
+</html>
+
+

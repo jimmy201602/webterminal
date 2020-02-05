@@ -1,0 +1,2 @@
+# session will expire in 30 minutes
+SESSION_COOKIE_AGE = 30 * 60
