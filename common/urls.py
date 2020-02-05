@@ -13,8 +13,8 @@ from rest_framework import routers
 from django.contrib import admin
 from django.views.decorators.csrf import csrf_exempt
 
-#from common.admin import OTPAdminSite
-#admin.site.__class__ = OTPAdminSite
+from common.admin import OTPAdminSite
+admin.site.__class__ = OTPAdminSite
 
 # Register webterminal api
 router = routers.DefaultRouter()

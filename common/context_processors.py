@@ -1,16 +1,9 @@
-from common.models import Settings
-from django.core.exceptions import ObjectDoesNotExist
+from common.utils import get_settings_value
 
 
 def detect_webterminal_helper_is_installed(request):
-    try:
-        data = Settings.objects.get(
-            name='detect_webterminal_helper_is_installed')
-        if data.value == 'True':
-            value = True
-        else:
-            value = False
-    except ObjectDoesNotExist:
-        value = True
-    return {"detect_webterminal_helper_is_installed": value}
+    return {
+        "detect_webterminal_helper_is_installed": get_settings_value("detect_webterminal_helper_is_installed"),
+        "otp_is_open": get_settings_value("otp")
+    }
 
