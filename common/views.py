@@ -23,6 +23,14 @@ from django.utils.translation import ugettext_lazy as _
 import pytz
 import uuid
 from common.utils import get_redis_instance
+from common.extra_views import PasswordResetView as PasswordResetViewNew, PasswordResetDoneView as PasswordResetDoneViewNew, PasswordResetConfirmAndLoginView
+from common.forms import PasswordResetForm, SetPasswordForm
+try:
+    # django >= 1.10
+    from django.urls import reverse_lazy
+except ImportError:
+    # django < 1.10
+    from django.core.urlresolvers import reverse_lazy
 __webterminalhelperversion__ = '0.3'
 
 
@@ -362,3 +370,21 @@ class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     template_name = 'common/settings.html'
     permission_required = 'common.can_view_log'
     raise_exception = True
+
+
+class PasswordResetView(PasswordResetViewNew):
+    form_class = PasswordResetForm
+    template_name = "common/password-reset.html"
+    success_url = reverse_lazy("password-reset-done")
+    subject_template_name = "common/emails/password-reset-subject.txt"
+    email_template_name = "common/emails/password-reset-email.html"
+
+
+class PasswordResetDoneView(PasswordResetDoneViewNew):
+    template_name = "common/password-reset-done.html"
+
+
+class PasswordResetConfirmView(PasswordResetConfirmAndLoginView):
+    success_url = reverse_lazy('index')
+    template_name = "common/password-reset-confirm.html"
+    form_class = SetPasswordForm

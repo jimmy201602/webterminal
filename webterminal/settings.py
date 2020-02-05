@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import sys
 from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -290,5 +291,12 @@ GUACD_PORT = '4822'
 # session will expire when user close browser
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = False
-# session will expire in 30 minutes
-SESSION_COOKIE_AGE = 30 * 60
+
+try:
+    sys.path.append(os.getcwd() + '/..')
+    from extra_settings import *
+except ImportError:
+    # session will expire in 30 minutes
+    SESSION_COOKIE_AGE = 30 * 60
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    pass
