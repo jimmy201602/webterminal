@@ -1,0 +1,305 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-05 08:49+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: permission/forms.py:31
+#: permission/templates/permission/permissionlist.html:47
+#: permission/templates/permission/userlist.html:47
+msgid "user name"
+msgstr "用戶名"
+
+#: permission/forms.py:32
+msgid "Please input a valid user."
+msgstr "請輸入有效的用戶名"
+
+#: permission/forms.py:42
+msgid "your password"
+msgstr "你的密碼"
+
+#: permission/forms.py:43
+msgid "Please input your password"
+msgstr "請輸入你的密碼"
+
+#: permission/forms.py:46
+msgid "new password"
+msgstr "新密碼"
+
+#: permission/forms.py:53 permission/forms.py:57
+msgid "verify your password"
+msgstr "密碼驗證"
+
+#: permission/forms.py:54
+msgid "please input your  password again"
+msgstr "請重新輸入密碼"
+
+#: permission/forms.py:64 permission/templates/permission/userlist.html:48
+msgid "email"
+msgstr "郵箱"
+
+#: permission/forms.py:66
+msgid "Please input a valid email address."
+msgstr "請輸入有效的郵箱地址"
+
+#: permission/forms.py:76
+msgid "every filed required"
+msgstr "每個字段都必須填寫"
+
+#: permission/forms.py:79
+msgid "your password does't the same"
+msgstr "密碼不一致"
+
+#: permission/forms.py:84
+msgid "User name has been registered!"
+msgstr "用戶已經被註冊！"
+
+#: permission/models.py:14
+msgid "User"
+msgstr "用戶"
+
+#: permission/models.py:16 permission/models.py:47
+#: permission/templates/permission/permissioncreate.html:54
+#: permission/templates/permission/permissionupdate.html:54
+msgid "Permissions"
+msgstr "權限"
+
+#: permission/models.py:18 permission/models.py:49
+msgid "Server group"
+msgstr "服務器組"
+
+#: permission/models.py:20 permission/models.py:51
+msgid "Create time"
+msgstr "創建時間"
+
+#: permission/models.py:22 permission/models.py:53
+msgid "Update time"
+msgstr "更新時間"
+
+#: permission/models.py:32
+msgid "Can add user"
+msgstr "可新增用戶"
+
+#: permission/models.py:33
+msgid "Can change user info"
+msgstr "可更新用戶信息"
+
+#: permission/models.py:34
+msgid "Can delete user info"
+msgstr "可刪除用戶"
+
+#: permission/models.py:35
+msgid "Can view user info"
+msgstr "可查看用戶信息"
+
+#: permission/models.py:36
+msgid "Can view user permissions"
+msgstr "可查看用戶權限信息"
+
+#: permission/models.py:37
+msgid "Can change user permissions"
+msgstr "可更新用戶權限信息"
+
+#: permission/models.py:38
+msgid "Can revoke user permissions"
+msgstr "可回收用戶權限"
+
+#: permission/models.py:39
+msgid "Can add user permissions"
+msgstr "可新增用戶權限"
+
+#: permission/models.py:45
+msgid "Role name"
+msgstr "角色名稱"
+
+#: permission/models.py:63
+msgid "Can add role"
+msgstr "可新增角色"
+
+#: permission/models.py:64
+msgid "Can change role info"
+msgstr "可更新角色信息"
+
+#: permission/models.py:65
+msgid "Can delete role info"
+msgstr "可刪除角色信息"
+
+#: permission/models.py:66
+msgid "Can view role info"
+msgstr "可查看角色信息"
+
+#: permission/models.py:67
+msgid "Can view role permissions"
+msgstr "可查看角色權限信息"
+
+#: permission/models.py:68
+msgid "Can change role permissions"
+msgstr "可更改角色權限信息"
+
+#: permission/models.py:69
+msgid "Can revoke role permissions"
+msgstr "可回收角色權限"
+
+#: permission/models.py:70
+msgid "Can add role permissions"
+msgstr "可新增角色權限"
+
+#: permission/templates/permission/permissioncreate.html:20
+#: permission/templates/permission/permissionupdate.html:20
+msgid "Return Permission List"
+msgstr "返回用戶權限列表"
+
+#: permission/templates/permission/permissioncreate.html:32
+#: permission/templates/permission/permissiondelete.html:26
+#: permission/templates/permission/permissionlist.html:31
+#: permission/templates/permission/permissionupdate.html:32
+#: permission/templates/permission/userdelete.html:26
+#: permission/templates/permission/userlist.html:31
+#: permission/templates/permission/userregister.html:27
+#: permission/templates/permission/userupdate.html:27
+msgid "Action"
+msgstr "操作"
+
+#: permission/templates/permission/permissioncreate.html:33
+#: permission/templates/permission/permissiondelete.html:27
+#: permission/templates/permission/permissionlist.html:32
+#: permission/templates/permission/permissionupdate.html:33
+#: permission/templates/permission/userdelete.html:27
+#: permission/templates/permission/userlist.html:32
+#: permission/templates/permission/userregister.html:28
+#: permission/templates/permission/userupdate.html:28
+msgid "Another action"
+msgstr "另一個操作"
+
+#: permission/templates/permission/permissioncreate.html:34
+#: permission/templates/permission/permissiondelete.html:28
+#: permission/templates/permission/permissionlist.html:33
+#: permission/templates/permission/permissionupdate.html:34
+#: permission/templates/permission/userdelete.html:28
+#: permission/templates/permission/userlist.html:33
+#: permission/templates/permission/userregister.html:29
+#: permission/templates/permission/userupdate.html:29
+msgid "Something else here"
+msgstr "其他"
+
+#: permission/templates/permission/permissioncreate.html:36
+#: permission/templates/permission/permissiondelete.html:30
+#: permission/templates/permission/permissionlist.html:35
+#: permission/templates/permission/permissionupdate.html:36
+#: permission/templates/permission/userdelete.html:30
+#: permission/templates/permission/userlist.html:35
+#: permission/templates/permission/userregister.html:31
+#: permission/templates/permission/userupdate.html:31
+msgid "Separated link"
+msgstr "分割鏈接"
+
+#: permission/templates/permission/permissioncreate.html:62
+#: permission/templates/permission/permissiondelete.html:50
+#: permission/templates/permission/permissionupdate.html:62
+#: permission/templates/permission/userdelete.html:50
+#: permission/templates/permission/userregister.html:48
+msgid "submit"
+msgstr "提交"
+
+#: permission/templates/permission/permissioncreate.html:63
+#: permission/templates/permission/permissionupdate.html:63
+#: permission/templates/permission/userregister.html:49
+msgid "cancel"
+msgstr "取消"
+
+#: permission/templates/permission/permissiondelete.html:3
+msgid "Permission delete"
+msgstr "刪除用戶權限"
+
+#: permission/templates/permission/permissiondelete.html:14
+msgid "Return Permission list"
+msgstr "返回權限列表"
+
+#: permission/templates/permission/permissiondelete.html:47
+msgid "Are you sure you want to delete user permission"
+msgstr "確認刪除用戶權限"
+
+#: permission/templates/permission/permissionlist.html:3
+msgid "Permission list"
+msgstr "權限列表"
+
+#: permission/templates/permission/permissionlist.html:18
+#: permission/templates/permission/userlist.html:18
+msgid "Add New"
+msgstr "新增"
+
+#: permission/templates/permission/permissionlist.html:48
+msgid "permissions"
+msgstr "權限"
+
+#: permission/templates/permission/permissionlist.html:49
+msgid "groups"
+msgstr "組"
+
+#: permission/templates/permission/permissionlist.html:50
+#: permission/templates/permission/userlist.html:49
+msgid "action"
+msgstr "操作"
+
+#: permission/templates/permission/permissionlist.html:68
+msgid "edit"
+msgstr "編輯"
+
+#: permission/templates/permission/permissionlist.html:69
+#: permission/templates/permission/userlist.html:59
+msgid "delete"
+msgstr "刪除"
+
+#: permission/templates/permission/userdelete.html:3
+msgid "User delete"
+msgstr "刪除用戶"
+
+#: permission/templates/permission/userdelete.html:14
+#: permission/templates/permission/userupdate.html:15
+msgid "Return user list"
+msgstr "返回服務器列表"
+
+#: permission/templates/permission/userdelete.html:47
+msgid "Are you sure you want to delete user"
+msgstr "確認刪除用戶"
+
+#: permission/templates/permission/userlist.html:3
+msgid "User list"
+msgstr "用戶列表"
+
+#: permission/templates/permission/userlist.html:58
+msgid "update"
+msgstr "更新用戶信息"
+
+#: permission/templates/permission/userregister.html:3
+msgid "Add new user"
+msgstr "新增用戶"
+
+#: permission/templates/permission/userregister.html:15
+msgid "Return user List"
+msgstr "返回用戶列表"
+
+#: permission/templates/permission/userupdate.html:3
+msgid "User update"
+msgstr "更新用戶信息"
+
+#: permission/views.py:93
+msgid "Create Permission"
+msgstr "新增權限"
+
+#: permission/views.py:130
+msgid "Update Permission"
+msgstr "更新權限"
