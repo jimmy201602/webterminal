@@ -25,13 +25,11 @@ import uuid
 from common.utils import get_redis_instance, get_settings_value
 from common.extra_views import PasswordResetView as PasswordResetViewNew, PasswordResetDoneView as PasswordResetDoneViewNew, PasswordResetConfirmAndLoginView
 from common.forms import PasswordResetForm, SetPasswordForm, SettingsForm
-try:
-    # django >= 1.10
-    from django.urls import reverse_lazy
-except ImportError:
-    # django < 1.10
-    from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.conf import settings
+from django.contrib import messages
+from django_otp.plugins.otp_hotp.models import HOTPDevice
+from django_otp.plugins.otp_totp.models import TOTPDevice
 __webterminalhelperversion__ = '0.3'
 
 
@@ -388,7 +386,8 @@ class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     success_url = reverse_lazy('settings')
     template_name = "common/settings.html"
     form_class = SettingsForm
-    permission_required = 'common.can_view_log'
+    permission_required = 'common.can_change_settings'
+    raise_exception = True
 
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
@@ -406,3 +405,28 @@ class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
         initial['otp_switch'] = get_settings_value("otp")
         initial['timezone'] = getattr(settings, "TIME_ZONE", 'UTC')
         return initial
+
+    def get_context_data(self, **kwargs):
+        context = super(SettingsView, self).get_context_data(**kwargs)
+        context['settings'] = True
+        return context
+
+
+class SettingsOtpView(LoginRequiredMixin, TemplateView):
+    template_name = "common/settings.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(SettingsOtpView, self).get_context_data(**kwargs)
+        context['settings'] = False
+        context['otp'] = True
+        if not get_settings_value("otp"):
+            context['otp'] = False
+            messages.add_message(self.request, messages.ERROR, _(
+                'You must set otp switch to open then use this function!'))
+        if get_settings_value("otp"):
+            obj, created = TOTPDevice.objects.update_or_create(
+                user=self.request.user, defaults={"name": "webterminal"})
+            context["qrcode_url"] = reverse_lazy(
+                "admin:otp_totp_totpdevice_qrcode", kwargs={"pk": obj.pk})
+            context["config_url"] = obj.config_url
+        return context

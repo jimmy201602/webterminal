@@ -32,26 +32,42 @@
                 </div>
 
                     <form id="id-m-form" action="" method="post" class="form form-horizontal " role="form">
-                          {% if messages %}
-                            {% for message in messages %}
-                              <div class="alert alert-{{ message.tags }}">  <!-- singular -->
-                                <a class="close" data-dismiss="alert">×</a>
-                                {% trans message.message %}
-                              </div>
-                            {% endfor %}
-                          {% endif %}
                             <div class="box-body">
-                                {% if form.helper %}
-                                    {% crispy form form.helper %}
-                                {% else %}
-                                    {% crispy form %}
+                                {% if otp_is_open %}
+                                <ul class="nav nav-tabs">
+                                    <li class="{% if settings %}active{% endif %}"><a href="{% url 'settings' %}">{% trans 'settings' %}</a></li>
+                                    <li class="{% if otp %}active{% endif %}"><a href="{% url 'settings-otp' %}">{% trans 'otp configuration' %}</a></li>
+                                </ul>
                                 {% endif %}
-                                <div class="form-group">
-                                    <div class="col-xs-offset-2 col-xs-10">
-                                        <button type="submit" class="btn btn-primary">{%trans 'submit' %}</button>
-                                        <button type="button" class="btn btn-default goback" onclick="history.back()">{%trans 'cancel' %}</button>
+                                {% if messages %}
+                                    {% for message in messages %}
+                                      <div class="alert alert-{{ message.tags }}">  <!-- singular -->
+                                        <a class="close" data-dismiss="alert">×</a>
+                                        {% trans message.message %}
+                                      </div>
+                                    {% endfor %}
+                                {% endif %}
+                                {% if settings %}
+                                    {% if form.helper %}
+                                        {% crispy form form.helper %}
+                                    {% else %}
+                                        {% crispy form %}
+                                    {% endif %}
+                                    <div class="form-group">
+                                        <div class="col-xs-offset-2 col-xs-10">
+                                            <button type="submit" class="btn btn-primary">{%trans 'submit' %}</button>
+                                            <button type="button" class="btn btn-default goback" onclick="history.back()">{%trans 'cancel' %}</button>
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
+                                {% if otp %}
+                                    {% if qrcode_url %}
+                                        <img class="img-responsive center-block" src="{{qrcode_url}}" alt="User profile picture">
+                                    {% endif %}
+                                    {%if config_url %}
+                                        <p class="text-center">{{config_url}}</p>
+                                    {% endif %}
+                                {% endif %}
                             </div>
                     </form>
             </div>
