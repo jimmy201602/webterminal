@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 11:08+0000\n"
+"POT-Creation-Date: 2020-02-06 22:30+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -537,7 +537,7 @@ msgstr "分割鏈接"
 #: common/templates/common/grouplist.html:183
 #: common/templates/common/servercreate.html:58
 #: common/templates/common/serverlist.html:255
-#: common/templates/common/settings.html:51
+#: common/templates/common/settings.html:58
 msgid "submit"
 msgstr "提交"
 
@@ -653,7 +653,7 @@ msgstr "命令編輯"
 #: common/templates/common/logslist.html:281
 #: common/templates/common/serverlist.html:259
 #: common/templates/common/serverlist.html:389
-#: common/templates/common/settings.html:52
+#: common/templates/common/settings.html:59
 msgid "cancel"
 msgstr "取消"
 
@@ -1067,19 +1067,19 @@ msgstr "刪除服務器"
 msgid "Change View settings"
 msgstr "可查看設置信息"
 
-#: common/views.py:63 common/views.py:80 common/views.py:89 common/views.py:107
-#: common/views.py:176 common/views.py:182 common/views.py:192
+#: common/templates/common/settings.html:38
+msgid "settings"
+msgstr "設置"
+
+#: common/templates/common/settings.html:39
+msgid "otp configuration"
+msgstr "二次認證配置"
+
+#: common/views.py:61 common/views.py:78 common/views.py:87 common/views.py:105
+#: common/views.py:174 common/views.py:180 common/views.py:190
 msgid "403 Forbidden"
 msgstr "403 拒絕"
 
-#~ msgid "Add new user"
-#~ msgstr "新增用戶"
-
-#~ msgid "Return user List"
-#~ msgstr "返回用戶列表"
-
-#~ msgid "Change TimeZone"
-#~ msgstr "修改時區設置"
-
-#~ msgid "form submission success"
-#~ msgstr "表單提交成功"
+#: common/views.py:425
+msgid "You must set otp switch to open then use this function!"
+msgstr "你必須設置otp功能為開啟方可使用此功能!"
