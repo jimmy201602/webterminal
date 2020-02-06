@@ -68,3 +68,24 @@ def get_settings_value(name):
     except ObjectDoesNotExist:
         value = False
     return value
+
+
+def set_settings(settings_path, variable: bytes, value: str):
+    if not os.path.exists(settings_path):
+        with open(settings_path, 'w') as fd:
+            pass
+    data = []
+    with open(settings_path, "rb") as f:
+        data = f.readlines()
+    has_settings_exist = False
+    for i in data:
+        if i.startswith(variable + b" = "):
+            data.pop(data.index(i))
+            data.append('''{0} = "{1}"'''.format(variable.decode(), value))
+            has_settings_exist = True
+    if not has_settings_exist:
+        data.append('''{0} = "{1}"'''.format(variable.decode(), value))
+    with open(settings_path, "w") as f:
+        for i in data:
+            f.write("{0}\n".format(i.decode().strip()
+                                   if isinstance(i, bytes) else i.strip()))

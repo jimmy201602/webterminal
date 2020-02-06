@@ -15,22 +15,23 @@ from django.utils.encoding import smart_str
 from django.views.generic.list import ListView
 from django.core.serializers import serialize
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 from django.core.exceptions import PermissionDenied
 import traceback
 from django.contrib.auth.views import redirect_to_login
 from django.utils.translation import ugettext_lazy as _
 import pytz
 import uuid
-from common.utils import get_redis_instance
+from common.utils import get_redis_instance, get_settings_value
 from common.extra_views import PasswordResetView as PasswordResetViewNew, PasswordResetDoneView as PasswordResetDoneViewNew, PasswordResetConfirmAndLoginView
-from common.forms import PasswordResetForm, SetPasswordForm
+from common.forms import PasswordResetForm, SetPasswordForm, SettingsForm
 try:
     # django >= 1.10
     from django.urls import reverse_lazy
 except ImportError:
     # django < 1.10
     from django.core.urlresolvers import reverse_lazy
+from django.conf import settings
 __webterminalhelperversion__ = '0.3'
 
 
@@ -365,13 +366,6 @@ class WebterminalHelperDetectCallbackApi(View):
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
 
 
-class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
-    model = Log
-    template_name = 'common/settings.html'
-    permission_required = 'common.can_view_log'
-    raise_exception = True
-
-
 class PasswordResetView(PasswordResetViewNew):
     form_class = PasswordResetForm
     template_name = "common/password-reset.html"
@@ -388,3 +382,27 @@ class PasswordResetConfirmView(PasswordResetConfirmAndLoginView):
     success_url = reverse_lazy('index')
     template_name = "common/password-reset-confirm.html"
     form_class = SetPasswordForm
+
+
+class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
+    success_url = reverse_lazy('settings')
+    template_name = "common/settings.html"
+    form_class = SettingsForm
+    permission_required = 'common.can_view_log'
+
+    def form_valid(self, form):
+        # This method is called when valid form data has been POSTed.
+        # It should return an HttpResponse.
+        form.set_settings(self.request)
+        return super(SettingsView, self).form_valid(form)
+
+    def get_initial(self):
+        """
+        Returns the initial data to use for forms on this view. To avoid form initial cache.
+        """
+        initial = super().get_initial()
+        initial['webterminal_detect'] = get_settings_value(
+            "detect_webterminal_helper_is_installed")
+        initial['otp_switch'] = get_settings_value("otp")
+        initial['timezone'] = getattr(settings, "TIME_ZONE", 'UTC')
+        return initial
