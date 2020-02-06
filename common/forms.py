@@ -2,8 +2,15 @@ from django.contrib.auth.forms import PasswordResetForm as OldPasswordResetForm
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field
+from crispy_forms.layout import Layout, Submit, Field, Div
 from django.contrib.auth import password_validation
+import pytz
+import os
+from common.utils import set_settings, get_settings_value
+from common.models import Settings
+from django.contrib import messages
+from django.conf import settings
+
 
 class FriendlyPasswordResetForm(OldPasswordResetForm):
     error_messages = dict(
@@ -41,6 +48,7 @@ class PasswordResetForm(FriendlyPasswordResetForm):
             Field("email", placeholder="Enter email", autofocus=""),
             Submit("pass_reset", "Reset Password", css_class="btn-warning"),
         )
+
 
 class SetPasswordForm(forms.Form):
     """
@@ -85,6 +93,7 @@ class SetPasswordForm(forms.Form):
             self.user.save()
         return self.user
 
+
 class SetPasswordForm(SetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -93,5 +102,60 @@ class SetPasswordForm(SetPasswordForm):
         self.helper.layout = Layout(
             Field("new_password1", placeholder="Enter new password", autofocus=""),
             Field("new_password2", placeholder="Enter new password (again)"),
-            Submit("pass_change", "Change Password", css_class="btn-warning"),
+            Submit("pass_change", "Change Password",
+                   css_class="btn-warning"),
         )
+
+
+class SettingsForm(forms.Form):
+    webterminal_detect = forms.BooleanField(label=_(
+        "Webterminal Plugin Detect Switch"), required=False)
+    otp_switch = forms.BooleanField(
+        label=_("Otp Switch"), required=False)
+    timezone = forms.CharField(
+        label=_("Time Zone"),
+        widget=forms.Select(choices=tuple(
+            [(tz, tz) for tz in pytz.common_timezones])),
+    )
+
+    def set_timezone(self, request):
+        timezone = self.cleaned_data["timezone"]
+        if getattr(settings, "TIME_ZONE", 'UTC') != timezone:
+            settings_path = os.path.join(
+                os.path.abspath(os.getcwd()), "extra_settings.py")
+            set_settings(settings_path, b"TIME_ZONE", timezone)
+            messages.add_message(request, messages.WARNING, _(
+                'You just modified the timezone configuration, now you should restart website to apply this change!'))
+
+    def set_otp(self, request):
+        otp_switch = self.cleaned_data["otp_switch"]
+        if get_settings_value("otp") != otp_switch:
+            messages.add_message(request, messages.INFO, _(
+                'You just modified the otp configuration!'))
+            Settings.objects.update_or_create(
+                name="otp", defaults={"value": str(otp_switch)})
+
+    def set_detect_webterminal_plugin(self, request):
+        webterminal_detect = self.cleaned_data["webterminal_detect"]
+        if get_settings_value("detect_webterminal_helper_is_installed") != webterminal_detect:
+            messages.add_message(request, messages.INFO, _(
+                'You just modified the detect webterminal helper is installed configuration!'))
+            Settings.objects.update_or_create(name="detect_webterminal_helper_is_installed", defaults={
+                                              "value": str(webterminal_detect)})
+
+    def set_settings(self, request):
+        self.set_timezone(request)
+        self.set_otp(request)
+        self.set_detect_webterminal_plugin(request)
+
+
+class SettingsForm(SettingsForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
+        self.helper.layout = Layout(*[Div(field, css_class='form-group') for field in [
+                                    'webterminal_detect', 'otp_switch', 'timezone']])

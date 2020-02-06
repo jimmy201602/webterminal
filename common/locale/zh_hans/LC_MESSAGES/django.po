@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-05 08:49+0000\n"
+"POT-Creation-Date: 2020-02-06 11:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,23 +17,50 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: common/forms.py:11
+#: common/forms.py:18
 msgid ""
 "This email address doesn't have an associated user account. Are you sure "
 "you've registered?"
 msgstr "此邮箱地址不能关联到用户,请确认是否注册?"
 
-#: common/forms.py:51
+#: common/forms.py:59
 msgid "The two password fields didn't match."
 msgstr "两个密码不一致."
 
-#: common/forms.py:54
+#: common/forms.py:62
 msgid "New password"
 msgstr "新密码"
 
-#: common/forms.py:60
+#: common/forms.py:68
 msgid "New password confirmation"
 msgstr "新密码确认"
+
+#: common/forms.py:112
+msgid "Webterminal Plugin Detect Switch"
+msgstr "检测webterminal助手插件开关"
+
+#: common/forms.py:114
+msgid "Otp Switch"
+msgstr "开启二次认证开关"
+
+#: common/forms.py:116
+msgid "Time Zone"
+msgstr "时区"
+
+#: common/forms.py:128
+msgid ""
+"You just modified the timezone configuration, now you should restart website "
+"to apply this change!"
+msgstr "你刚修改了站点时区设置,需要重启站点以生效!"
+
+#: common/forms.py:134
+msgid "You just modified the otp configuration!"
+msgstr "你刚修改了二次认证配置参数!"
+
+#: common/forms.py:142
+msgid ""
+"You just modified the detect webterminal helper is installed configuration!"
+msgstr "你修改了检测webterminal助手插件开关配置参数"
 
 #: common/models.py:20
 msgid "Server name"
@@ -422,6 +449,12 @@ msgstr "值"
 msgid "Can view settings info"
 msgstr "可查看设置信息"
 
+#: common/models.py:262
+#, fuzzy
+#| msgid "Can view settings info"
+msgid "Can change settings info"
+msgstr "可查看设置信息"
+
 #: common/templates/common/base.html:116
 msgid "Copyright &copy; 2014-2019"
 msgstr "Copyright &copy; 2014-2019"
@@ -455,6 +488,7 @@ msgstr "返回命令列表"
 #: common/templates/common/logslist.html:46
 #: common/templates/common/servercreate.html:30
 #: common/templates/common/serverlist.html:34
+#: common/templates/common/settings.html:22
 msgid "Action"
 msgstr "操作"
 
@@ -467,6 +501,7 @@ msgstr "操作"
 #: common/templates/common/logslist.html:47
 #: common/templates/common/servercreate.html:31
 #: common/templates/common/serverlist.html:35
+#: common/templates/common/settings.html:23
 msgid "Another action"
 msgstr "另一个操作"
 
@@ -479,6 +514,7 @@ msgstr "另一个操作"
 #: common/templates/common/logslist.html:48
 #: common/templates/common/servercreate.html:32
 #: common/templates/common/serverlist.html:36
+#: common/templates/common/settings.html:24
 msgid "Something else here"
 msgstr "其他"
 
@@ -491,6 +527,7 @@ msgstr "其他"
 #: common/templates/common/logslist.html:50
 #: common/templates/common/servercreate.html:34
 #: common/templates/common/serverlist.html:38
+#: common/templates/common/settings.html:26
 msgid "Separated link"
 msgstr "分割链接"
 
@@ -502,6 +539,7 @@ msgstr "分割链接"
 #: common/templates/common/grouplist.html:183
 #: common/templates/common/servercreate.html:58
 #: common/templates/common/serverlist.html:255
+#: common/templates/common/settings.html:51
 msgid "submit"
 msgstr "提交"
 
@@ -617,6 +655,7 @@ msgstr "命令编辑"
 #: common/templates/common/logslist.html:281
 #: common/templates/common/serverlist.html:259
 #: common/templates/common/serverlist.html:389
+#: common/templates/common/settings.html:52
 msgid "cancel"
 msgstr "取消"
 
@@ -1026,7 +1065,25 @@ msgstr "确认删除服务器"
 msgid "Delete server"
 msgstr "删除服务器"
 
-#: common/views.py:62 common/views.py:79 common/views.py:88 common/views.py:106
-#: common/views.py:175 common/views.py:181 common/views.py:191
+#: common/templates/common/settings.html:3
+#, fuzzy
+#| msgid "Can view settings info"
+msgid "Change View settings"
+msgstr "可查看设置信息"
+
+#: common/views.py:63 common/views.py:80 common/views.py:89 common/views.py:107
+#: common/views.py:176 common/views.py:182 common/views.py:192
 msgid "403 Forbidden"
 msgstr "403 拒绝"
+
+#~ msgid "Add new user"
+#~ msgstr "新增用户"
+
+#~ msgid "Return user List"
+#~ msgstr "返回用户列表"
+
+#~ msgid "Change TimeZone"
+#~ msgstr "修改时区设置"
+
+#~ msgid "form submission success"
+#~ msgstr "表单提交成功"

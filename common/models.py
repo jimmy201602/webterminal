@@ -259,6 +259,7 @@ class Settings(models.Model):
     class Meta:
         permissions = (
             ("can_view_settings", _("Can view settings info")),
+            ("can_change_settings", _("Can change settings info")),
         )
         ordering = [
             ('-datetime')
