@@ -450,10 +450,8 @@ msgid "Can view settings info"
 msgstr "可查看設置信息"
 
 #: common/models.py:262
-#, fuzzy
-#| msgid "Can view settings info"
 msgid "Can change settings info"
-msgstr "可查看設置信息"
+msgstr "可更改設置信息"
 
 #: common/templates/common/base.html:116
 msgid "Copyright &copy; 2014-2019"
@@ -1066,8 +1064,6 @@ msgid "Delete server"
 msgstr "刪除服務器"
 
 #: common/templates/common/settings.html:3
-#, fuzzy
-#| msgid "Can view settings info"
 msgid "Change View settings"
 msgstr "可查看設置信息"
 
