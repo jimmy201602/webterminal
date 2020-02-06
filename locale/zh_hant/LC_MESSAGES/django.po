@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-05 08:49+0000\n"
+"POT-Creation-Date: 2020-02-06 11:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Webterminal Login"
 msgstr "webterminal 登錄"
 
-#: templates/admin/login.html:23
+#: templates/admin/login.html:30
 #, python-format
 msgid ""
 "You are authenticated as %(username)s, but are not authorized to access this "
@@ -29,23 +29,23 @@ msgid ""
 msgstr ""
 "你登錄的用戶為%(username)s，你沒有權限登錄此頁面，是否需要登錄不同的賬戶？"
 
-#: templates/admin/login.html:37
+#: templates/admin/login.html:44
 msgid "Username"
 msgstr "用戶名"
 
-#: templates/admin/login.html:38
+#: templates/admin/login.html:45
 msgid "Password"
 msgstr "密碼"
 
-#: templates/admin/login.html:40
+#: templates/admin/login.html:48
 msgid "Token OTP"
 msgstr "Token OTP"
 
-#: templates/admin/login.html:47
+#: templates/admin/login.html:55
 msgid "Log in"
 msgstr "登錄"
 
-#: templates/admin/login.html:58
+#: templates/admin/login.html:66
 msgid "Forgot Password"
 msgstr "忘記密碼"
 
@@ -81,7 +81,7 @@ msgstr "註銷"
 msgid "Webterminal"
 msgstr "webterminal"
 
-#: templates/base.html:208 templates/base.html:252
+#: templates/base.html:208 templates/base.html:253
 #: templates/registration/logged_out.html:78 templates/webterminal/index.html:3
 msgid "webterminal"
 msgstr "webterminal"
@@ -122,15 +122,19 @@ msgstr "用戶列表"
 msgid "permission list"
 msgstr "權限列表"
 
-#: templates/base.html:250
+#: templates/base.html:218
+msgid "settings"
+msgstr "設置"
+
+#: templates/base.html:251
 msgid "Version"
 msgstr "版本"
 
-#: templates/base.html:252
+#: templates/base.html:253
 msgid "Copyright &copy; 2014-2019"
 msgstr "Copyright &copy; 2014-2019"
 
-#: templates/base.html:252
+#: templates/base.html:253
 msgid "All rights reserved."
 msgstr "保留所有權利"
 

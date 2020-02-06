@@ -124,7 +124,7 @@ msgstr "权限列表"
 
 #: templates/base.html:218
 msgid "settings"
-msgstr ""
+msgstr "设置"
 
 #: templates/base.html:251
 msgid "Version"
