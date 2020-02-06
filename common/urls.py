@@ -7,7 +7,7 @@ from common.views import (Commands,
                           ServerCreate, ServerlList, GroupList, GroupCreate,
                           LogList, CommandLogList, WebterminalHelperDetectApi, WebterminalHelperDetectCallbackApi, PasswordResetView,
                           PasswordResetDoneView, PasswordResetConfirmView,
-                          SettingsView
+                          SettingsView, SettingsOtpView
                           )
 from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet
 from rest_framework import routers
@@ -55,5 +55,6 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="password-reset-confirm",
     ),
-    url(r"settings", SettingsView.as_view(), name="settings")
+    url(r"settings/$", SettingsView.as_view(), name="settings"),
+    url(r"settings-otp/$", SettingsOtpView.as_view(), name="settings-otp"),
 ]
