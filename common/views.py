@@ -290,10 +290,7 @@ class CommandLogList(LoginRequiredMixin, PermissionRequiredMixin, View):
             data = CommandLog.objects.filter(log__id=id)
             if data.count() == 0:
                 return JsonResponse({'status': False, 'message': 'Request object not exist!'})
-            if request.LANGUAGE_CODE == 'zh-hans':
-                return JsonResponse({'status': True, 'message': [{'datetime': i.datetime.astimezone(pytz.timezone("Asia/Shanghai")).strftime('%Y-%m-%d %H:%M:%S'), 'command': i.command} for i in data]})
-            else:
-                return JsonResponse({'status': True, 'message': [{'datetime': i.datetime.strftime('%Y-%m-%d %H:%M:%S'), 'command': i.command} for i in data]})
+            return JsonResponse({'status': True, 'message': [{'datetime': i.datetime.astimezone(pytz.timezone(getattr(settings, "TIME_ZONE", 'UTC'))).strftime('%Y-%m-%d %H:%M:%S'), 'command': i.command} for i in data]})
         else:
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
 
