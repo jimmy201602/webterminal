@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-06 22:30+0800\n"
+"POT-Creation-Date: 2020-02-07 15:55+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1083,3 +1083,7 @@ msgstr "403 拒絕"
 #: common/views.py:425
 msgid "You must set otp switch to open then use this function!"
 msgstr "你必須設置otp功能為開啟方可使用此功能!"
+
+#: common/views.py:431
+msgid "You must configure otp or you can not login to this system again!"
+msgstr "你必須配置動態口令功能,否則下次你將無法登錄系統!"
