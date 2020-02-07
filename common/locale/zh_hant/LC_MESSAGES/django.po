@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-07 15:55+0800\n"
+"POT-Creation-Date: 2020-02-07 17:40+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,23 +41,42 @@ msgstr "檢測webterminal助手插件開關"
 
 #: common/forms.py:114
 msgid "Otp Switch"
-msgstr "開啟二次認證開關"
+msgstr "開啟多因子動態認證開關"
+
+#: common/forms.py:114
+msgid "Open mfa function or disable it"
+msgstr "開啟/關閉動態口令功能"
 
 #: common/forms.py:116
+msgid "Use TimeZone Time"
+msgstr "使用時區時間"
+
+#: common/forms.py:116
+msgid ""
+"If you set this configuration will affect records datetime on your database!"
+msgstr "如果打開此開關,數據庫中時間日期數據將使用UTC時間,否則會使用你設置的時區時間!"
+
+#: common/forms.py:118
 msgid "Time Zone"
 msgstr "時區"
 
-#: common/forms.py:128
+#: common/forms.py:130
 msgid ""
 "You just modified the timezone configuration, now you should restart website "
 "to apply this change!"
 msgstr "你剛修改了站點時區設置,需要重啟站點以生效!"
 
-#: common/forms.py:134
+#: common/forms.py:139
+msgid ""
+"You just modified the use time zone time configuration, now you should "
+"restart website to apply this change!"
+msgstr "你剛修改了站點時區時間設置,需要重啟站點以生效!"
+
+#: common/forms.py:145
 msgid "You just modified the otp configuration!"
 msgstr "你剛修改了二次認證配置參數!"
 
-#: common/forms.py:142
+#: common/forms.py:153
 msgid ""
 "You just modified the detect webterminal helper is installed configuration!"
 msgstr "你修改了檢測webterminal助手插件開關配置參數"
@@ -1080,10 +1099,10 @@ msgstr "二次認證配置"
 msgid "403 Forbidden"
 msgstr "403 拒絕"
 
-#: common/views.py:425
+#: common/views.py:423
 msgid "You must set otp switch to open then use this function!"
 msgstr "你必須設置otp功能為開啟方可使用此功能!"
 
-#: common/views.py:431
+#: common/views.py:429
 msgid "You must configure otp or you can not login to this system again!"
 msgstr "你必須配置動態口令功能,否則下次你將無法登錄系統!"
