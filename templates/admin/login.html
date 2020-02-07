@@ -46,6 +46,7 @@
 <input type="hidden" name="next" value="{{ next }}" />
 {% if otp_is_open %}
     <input type="text" name="otp_token" placeholder="{% trans 'Token OTP' %}" id="otp_token"  />
+    <p><h4>{% trans 'If you are first login to system and not configure otp just ignore otp token!' %}</h4></p>
     <!--{% if form.get_user %}-->
         <!--{{ form.otp_device.errors }}{{ form.otp_device }} -->
     <!--{% endif %}-->

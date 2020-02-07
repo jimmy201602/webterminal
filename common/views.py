@@ -426,6 +426,9 @@ class SettingsOtpView(LoginRequiredMixin, TemplateView):
         if get_settings_value("otp"):
             obj, created = TOTPDevice.objects.update_or_create(
                 user=self.request.user, defaults={"name": "webterminal"})
+            if created:
+                messages.add_message(self.request, messages.ERROR, _(
+                'You must configure otp or you can not login to this system again!'))
             context["qrcode_url"] = reverse_lazy(
                 "admin:otp_totp_totpdevice_qrcode", kwargs={"pk": obj.pk})
             context["config_url"] = obj.config_url
