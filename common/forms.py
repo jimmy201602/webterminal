@@ -111,7 +111,9 @@ class SettingsForm(forms.Form):
     webterminal_detect = forms.BooleanField(label=_(
         "Webterminal Plugin Detect Switch"), required=False)
     otp_switch = forms.BooleanField(
-        label=_("Otp Switch"), required=False)
+        label=_("Otp Switch"), required=False, help_text=_("Open mfa function or disable it"))
+    use_tz = forms.BooleanField(
+        label=_("Use TimeZone Time"), required=False, help_text=_("If you set this configuration will affect records datetime on your database!"))
     timezone = forms.CharField(
         label=_("Time Zone"),
         widget=forms.Select(choices=tuple(
@@ -126,6 +128,15 @@ class SettingsForm(forms.Form):
             set_settings(settings_path, b"TIME_ZONE", timezone)
             messages.add_message(request, messages.WARNING, _(
                 'You just modified the timezone configuration, now you should restart website to apply this change!'))
+
+    def set_use_tz(self, request):
+        use_tz = self.cleaned_data["use_tz"]
+        if getattr(settings, "USE_TZ", True) != use_tz:
+            settings_path = os.path.join(
+                os.path.abspath(os.getcwd()), "extra_settings.py")
+            set_settings(settings_path, b"USE_TZ", use_tz, boolean=True)
+            messages.add_message(request, messages.WARNING, _(
+                'You just modified the use time zone time configuration, now you should restart website to apply this change!'))
 
     def set_otp(self, request):
         otp_switch = self.cleaned_data["otp_switch"]
@@ -146,6 +157,7 @@ class SettingsForm(forms.Form):
     def set_settings(self, request):
         self.set_timezone(request)
         self.set_otp(request)
+        self.set_use_tz(request)
         self.set_detect_webterminal_plugin(request)
 
 
@@ -158,4 +170,4 @@ class SettingsForm(SettingsForm):
         self.helper.label_class = 'col-md-2'
         self.helper.field_class = 'col-md-8'
         self.helper.layout = Layout(*[Div(field, css_class='form-group') for field in [
-                                    'webterminal_detect', 'otp_switch', 'timezone']])
+                                    'webterminal_detect', 'otp_switch', 'use_tz', 'timezone']])
