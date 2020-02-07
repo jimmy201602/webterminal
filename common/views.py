@@ -401,6 +401,7 @@ class SettingsView(LoginRequiredMixin, PermissionRequiredMixin, FormView):
             "detect_webterminal_helper_is_installed")
         initial['otp_switch'] = get_settings_value("otp")
         initial['timezone'] = getattr(settings, "TIME_ZONE", 'UTC')
+        initial['use_tz'] = getattr(settings, "USE_TZ", True)
         return initial
 
     def get_context_data(self, **kwargs):
