@@ -20,4 +20,4 @@ else:
     print('Superuser creation skipped.')
 
 Settings.objects.create(name="detect_webterminal_helper_is_installed",value="True")
-Settings.objects.create(name="otp",value="True")
+Settings.objects.create(name="otp",value="False")
