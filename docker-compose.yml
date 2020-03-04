@@ -10,8 +10,9 @@ services:
       - public
       - private
     volumes:
-      - /var/log:/var/log
+      - "/var/log:/var/log"
       - "/etc/localtime:/etc/localtime:ro"
+      - "/etc/timezone:/etc/timezone:ro"
 networks:
   public:
     driver: bridge
