@@ -5,11 +5,15 @@ services:
     container_name: webterminal
     ports:
       - "80:80"
+      - "2100:2100"
     networks:
       - public
       - private
     volumes:
       - /var/log:/var/log
+    environment:
+      - TZ='Asia/Shanghai'
+      - DEBIAN_FRONTEND=noninteractive
     #command: ["sh","/docker-entrypoint.sh","start"]
 networks:
   public:
