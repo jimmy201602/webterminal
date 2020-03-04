@@ -11,10 +11,7 @@ services:
       - private
     volumes:
       - /var/log:/var/log
-    environment:
-      - TZ='Asia/Shanghai'
-      - DEBIAN_FRONTEND=noninteractive
-    #command: ["sh","/docker-entrypoint.sh","start"]
+      - "/etc/localtime:/etc/localtime:ro"
 networks:
   public:
     driver: bridge
