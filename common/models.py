@@ -212,6 +212,8 @@ class Log(models.Model):
         'Gucamole channel name'), blank=True, editable=False)
     commercial_version = models.BooleanField(
         default=False, verbose_name=_('Is Commercial Version'))
+    tag = models.CharField(max_length=100, verbose_name=_(
+        'Tag'), blank=True, null=True)
 
     def __unicode__(self):
         return self.server.name
@@ -253,7 +255,8 @@ class CommandLog(models.Model):
 class Settings(models.Model):
     datetime = models.DateTimeField(
         auto_now=True, verbose_name=_('date time'))
-    name = models.CharField(max_length=255, verbose_name=_('name'),unique=True)
+    name = models.CharField(
+        max_length=255, verbose_name=_('name'), unique=True)
     value = models.CharField(max_length=255, verbose_name=_('value'))
 
     class Meta:
