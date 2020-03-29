@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 LABEL maintainer zhengge2012@gmail.com
 RUN apt-get update
-RUN apt-get remove docker docker-engine docker.io python3-pip supervisor -y
-RUN apt install docker.io -y
+RUN apt-get remove docker docker-engine docker.io -y
+RUN apt install docker.io python3-pip supervisor -y
 RUN mkdir -p /opt/webterminal
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 ADD docker-entrypoint.sh /docker-entrypoint.sh
