@@ -6,7 +6,7 @@ RUN apt install docker.io python3-pip supervisor -y
 RUN mkdir -p /opt/webterminal
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 ADD docker-entrypoint.sh /docker-entrypoint.sh
-ADD backend.so server.so requirements.txt client.py sshserver.py /opt/webterminal/
+ADD backend.so server.so requirements.txt client.py sshserver.py test_rsa.key /opt/webterminal/
 WORKDIR /opt/webterminal
 RUN pip3 install -r requirements.txt
 RUN chmod +x /docker-entrypoint.sh
