@@ -1,4 +1,4 @@
-# Webterminal bastion server (Webterminal堡垒机)
+# Webterminal bastion server (瓦特堡垒机)
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](README.md)
 [![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](./doc/README-zh_cn.md)
 [![CNT doc](https://img.shields.io/badge/文檔-繁體版-blue.svg)](./doc/README-zht.md)
