@@ -10,6 +10,7 @@ For now it support almost 90% remote management protocol such as vnc, ssh,rdp,te
 Hope you enjoy it.
 
 ## Next Release: *To be defined, project will migrate to django 3*
+## This project is still under the development.
 
 # useage
 [![Usage Video](https://i.ytimg.com/vi/-HwhB21v8L8/1.jpg?time=1527217648531)](https://www.youtube.com/watch?v=-HwhB21v8L8)
