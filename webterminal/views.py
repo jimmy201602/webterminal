@@ -161,7 +161,7 @@ class SshConnect(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
 
 class DynamicPassword(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     raise_exception = True
-    permission_required = 'common.can_kill_serverinfo'
+    permission_required = 'common.can_connect_serverinfo'
 
     def post(self, request):
         if request.is_ajax():
