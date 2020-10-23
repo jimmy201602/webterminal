@@ -4,7 +4,7 @@ from django.shortcuts import HttpResponseRedirect
 from django.views.generic import FormView, DeleteView, ListView, UpdateView, CreateView
 from django.contrib.auth.models import User
 from permission.forms import RegisterForm, PermissionForm
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse
 from permission.models import Permission
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.mixins import PermissionRequiredMixin
@@ -15,7 +15,7 @@ from permission.commons import parse_permission_tree
 class UserRegister(LoginRequiredMixin, PermissionRequiredMixin, FormView):
     template_name = 'permission/userregister.html'
     form_class = RegisterForm
-    success_url = reverse_lazy('userlist')
+    success_url = reverse('permission:userlist')
     permission_required = 'permission.can_add_user'
     raise_exception = True
 
@@ -38,7 +38,7 @@ class UserList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 class UserDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = 'permission/userdelete.html'
     model = User
-    success_url = reverse_lazy('userlist')
+    success_url = reverse('userlist')
     permission_required = 'permission.can_delete_user'
     raise_exception = True
 
@@ -47,7 +47,7 @@ class UserUpdate(LoginRequiredMixin, PermissionRequiredMixin, FormView, UpdateVi
     template_name = 'permission/userupdate.html'
     model = User
     form_class = RegisterForm
-    success_url = reverse_lazy('userlist')
+    success_url = reverse('userlist')
     permission_required = 'permission.can_change_user'
     raise_exception = True
 
@@ -83,7 +83,7 @@ class UserUpdate(LoginRequiredMixin, PermissionRequiredMixin, FormView, UpdateVi
 class PermissionCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Permission
     form_class = PermissionForm
-    success_url = reverse_lazy('permissionlist')
+    success_url = reverse('permissionlist')
     template_name = 'permission/permissioncreate.html'
     permission_required = 'permission.can_add_permissions'
     raise_exception = True
@@ -120,7 +120,7 @@ class PermissionList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 class PermissionUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Permission
     form_class = PermissionForm
-    success_url = reverse_lazy('permissionlist')
+    success_url = reverse('permissionlist')
     template_name = 'permission/permissionupdate.html'
     permission_required = 'permission.can_change_permissions'
     raise_exception = True
@@ -143,7 +143,7 @@ class PermissionUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
 
 class PermissionDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Permission
-    success_url = reverse_lazy('permissionlist')
+    success_url = reverse('permissionlist')
     template_name = 'permission/permissiondelete.html'
     permission_required = 'permission.can_delete_permissions'
     raise_exception = True

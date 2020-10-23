@@ -2,11 +2,6 @@
 from Crypto.Cipher import AES
 import hashlib
 from binascii import b2a_hex, a2b_hex
-import sys
-if sys.version_info[0] == 3:
-    python3 = True
-else:
-    python3 = False
 import random
 
 
@@ -45,19 +40,18 @@ class PyCrypt(object):
         """
         return hashlib.new("md5", string).hexdigest()
 
-    @staticmethod
-    def gen_sha512(salt, password):
-        """
-        generate sha512 format password
-        """
-        return crypt.crypt(password, '$6$%s$' % salt)
+    # @staticmethod
+    # def gen_sha512(salt, password):
+        # """
+        # generate sha512 format password
+        # """
+        # return crypt.crypt(password, '$6$%s$' % salt)
 
     def encrypt(self, content=None, length=32):
         """
         encrypt gen password
         """
-        if python3:
-            content = content.encode('utf8', 'ignore')
+        content = content.encode('utf8', 'ignore')
 
         cryptor = AES.new(self.key, self.mode, '8122ca7d906ad5e1')
         try:
@@ -66,9 +60,8 @@ class PyCrypt(object):
             raise Exception('Encrypt password error, TYpe error.')
 
         add = (length - (count % length))
-        if python3:
-            if isinstance(content, bytes):
-                content = content.decode('utf8', 'ignore')
+        if isinstance(content, bytes):
+            content = content.decode('utf8', 'ignore')
         content += ('\0' * add)
         cipher_text = cryptor.encrypt(content)
         return b2a_hex(cipher_text)

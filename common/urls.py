@@ -9,7 +9,7 @@ from common.views import (Commands,
                           PasswordResetDoneView, PasswordResetConfirmView,
                           SettingsView, SettingsOtpView
                           )
-from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet
+from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet, CreateUserViewSet, LogViewSet, CommandsSequenceGroupsViewSet, ServerGroupWithServerInfoViewSet, TimeZoneList, SettingsList,Settings,ServerInforWithCredentialInfoViewSet,DefaultUserSettingsApi,DefaultUserSettingsViewSet,GetDynamicPasswordApi,GetCommandLogListApi,DynamicPasswordAuthApi,WriteGuacamoleLogApi,SshTerminalKillApi,CommandAutoCompeleteApi
 from rest_framework import routers
 from django.contrib import admin
 from django.views.decorators.csrf import csrf_exempt
@@ -20,9 +20,17 @@ admin.site.__class__ = OTPAdminSite
 # Register webterminal api
 router = routers.DefaultRouter()
 router.register('servergroup', ServerGroupViewSet)
+router.register('servergroupwithserverinfo',
+                ServerGroupWithServerInfoViewSet)
 router.register('serverinfo', ServerInforViewSet)
+router.register('serverinfowithcredential', ServerInforWithCredentialInfoViewSet)
 router.register('commandssequence', CommandsSequenceViewSet)
+router.register('commandssequencegroups', CommandsSequenceGroupsViewSet)
 router.register('credential', CredentialViewSet)
+router.register('users', CreateUserViewSet)
+router.register('logs', LogViewSet)
+router.register('defaultusersettings',DefaultUserSettingsViewSet)
+
 
 urlpatterns = [
     url(r'^commands/add/$', Commands.as_view(), name='commandscreate'),
@@ -39,8 +47,18 @@ urlpatterns = [
     url(r'^grouplist/$', GroupList.as_view(), name='grouplist'),
     url(r'^logslist/$', LogList.as_view(), name='logslist'),
     url(r'^commandsloglist/$', CommandLogList.as_view(), name='commandsloglist'),
+    url(r'^api/commandsloglistapi/$', GetCommandLogListApi.as_view(), name='commandsloglistapi'),
+    url(r'^api/timezonelist/$', TimeZoneList.as_view(), name='timezonelist'),
+    url(r'^api/defaultusersettingsquery/$', DefaultUserSettingsApi.as_view(), name='defaultusersettingsquery'),
+    url(r'^api/settings/$', Settings.as_view(), name='settings-webterminal'),
+    url(r'^api/settingslist/$', SettingsList.as_view(), name='settingslist'),
+    url(r'^api/getdynamicpassword/$', GetDynamicPasswordApi.as_view(), name='getdynamicpassword'),
+    url(r'^api/dynamicpasswordauth/$', DynamicPasswordAuthApi.as_view(), name='dynamicpasswordauth'),
+    url(r'^api/writelog/$', WriteGuacamoleLogApi.as_view(), name='writeguacamolelog'),
+    url(r'^api/sshterminalkill/$', SshTerminalKillApi.as_view(), name='sshterminalkill'),
+    url(r'^api/commandautocompeleteapi/$', CommandAutoCompeleteApi.as_view(), name='commandautocompeleteapi'),
     url(r'^api/', include(router.urls)),
-    url(r'^webterminalhelperdetect/$', WebterminalHelperDetectApi.as_view(),
+    url(r'^webterminalhelperdetect/$', csrf_exempt(WebterminalHelperDetectApi.as_view()),
         name='webterminalhelperdetectapi'),
     url(r'^webterminalhelperdetectcallback/$', csrf_exempt(WebterminalHelperDetectCallbackApi.as_view()),
         name='webterminalhelperdetectcallbackapi'),

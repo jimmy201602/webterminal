@@ -23,14 +23,37 @@ except ImportError:
 import paramiko
 from elfinder.sftpstoragedriver.sftpstorage import SFTPStorage
 from django.http import StreamingHttpResponse
+from django.views.generic import TemplateView
+from rest_framework.views import APIView
+from rest_framework import permissions
+from rest_framework_simplejwt.authentication import JWTTokenUserAuthentication
 
 
-class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
+class CustomJWTAuth(JWTTokenUserAuthentication):
+    def authenticate(self, request):
+        raw_token = request.GET.get("webterminal-token-access", None)
+        if raw_token is None:
+            return None
+
+        validated_token = self.get_validated_token(raw_token)
+
+        return self.get_user(validated_token), validated_token
+
+# import pysnooper
+
+# @pysnooper.snoop()
+
+
+class ElfinderConnectorView(APIView):
     """
     Default elfinder backend view
     """
     permission_required = 'common.can_filemanage_serverinfo'
     raise_exception = True
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+    authentication_classes = [JWTTokenUserAuthentication,CustomJWTAuth]
 
     def render_to_response(self, context, **kwargs):
         """
@@ -188,6 +211,7 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
         """
         u_id = str(uuid.uuid4())
         kwargs['u_id'] = u_id
+        loginuser = kwargs.get("loginuser", None)
         if kwargs['optionset'] == 'sftp':
             server_object = get_object_or_404(
                 ServerInfor, id=kwargs['start_path'])
@@ -195,18 +219,29 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
             optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(
                 server_object.name, server_object.ip)
             key_label = "%s::%s" % (
-                server_object.ip, server_object.credential.username)
-            if server_object.credential.method == 'password':
+                server_object.ip, loginuser)
+            port = None
+            method = None
+            key = None
+            password = None
+            for credential in server_object.credentials.all():
+                if credential.username == loginuser:
+                    port = credential.port
+                    method = credential.method
+                    if method == 'password':
+                        password = credential.password
+                    else:
+                        key = credential.key
+            if method == 'password':
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
-                                                                   'params': {'port': server_object.credential.port,
-                                                                              'username': server_object.credential.username,
-                                                                              'password': server_object.credential.password,
+                                                                   'params': {'port': port,
+                                                                              'username': loginuser,
+                                                                              'password': password,
                                                                               'timeout': 30},
                                                                    'root_path': '/', 'interactive': False,
                                                                    'key_label': key_label}
             else:
-                private_key = StringIO(server_object.credential.key)
-                key = server_object.credential.key
+                private_key = StringIO(key)
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(
                         private_key)
@@ -220,8 +255,8 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
                     private_key = paramiko.Ed25519Key.from_private_key(
                         private_key)
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
-                                                                   'params': {'port': server_object.credential.port,
-                                                                              'username': server_object.credential.username,
+                                                                   'params': {'port': port,
+                                                                              'username': loginuser,
                                                                               'pkey': private_key,
                                                                               'timeout': 30},
                                                                    'root_path': '/', 'interactive': False,
@@ -248,6 +283,7 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
         """
         u_id = str(uuid.uuid4())
         kwargs['u_id'] = u_id
+        loginuser = kwargs.get("loginuser", None)
         if kwargs['optionset'] == 'sftp':
             server_object = get_object_or_404(
                 ServerInfor, id=kwargs['start_path'])
@@ -255,18 +291,29 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
             optinon_sets['roots'][u_id][0]['alias'] = '{0}-{1}'.format(
                 server_object.name, server_object.ip)
             key_label = "%s::%s" % (
-                server_object.ip, server_object.credential.username)
-            if server_object.credential.method == 'password':
+                server_object.ip, loginuser)
+            port = None
+            method = None
+            key = None
+            password = None
+            for credential in server_object.credentials.all():
+                if credential.username == loginuser:
+                    port = credential.port
+                    method = credential.method
+                    if method == 'password':
+                        password = credential.password
+                    else:
+                        key = credential.key
+            if method == 'password':
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
-                                                                   'params': {'port': server_object.credential.port,
-                                                                              'username': server_object.credential.username,
-                                                                              'password': server_object.credential.password,
+                                                                   'params': {'port': port,
+                                                                              'username': loginuser,
+                                                                              'password': password,
                                                                               'timeout': 30},
                                                                    'root_path': '/', 'interactive': False,
                                                                    'key_label': key_label}
             else:
-                private_key = StringIO(server_object.credential.key)
-                key = server_object.credential.key
+                private_key = StringIO(key)
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(
                         private_key)
@@ -280,8 +327,8 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
                     private_key = paramiko.Ed25519Key.from_private_key(
                         private_key)
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
-                                                                   'params': {'port': server_object.credential.port,
-                                                                              'username': server_object.credential.username,
+                                                                   'params': {'port': port,
+                                                                              'username': loginuser,
                                                                               'pkey': private_key,
                                                                               'timeout': 30},
                                                                    'root_path': '/', 'interactive': False,
@@ -304,3 +351,13 @@ class ElfinderConnectorView(LoginRequiredMixin, PermissionRequiredMixin, View):
             self.render_to_response({'error': self.elfinder.error(
                 ElfinderErrorMessages.ERROR_UPLOAD, ElfinderErrorMessages.ERROR_UPLOAD_TOTAL_SIZE)})
         return self.output(cmd, request.POST)
+
+
+class ElfinderView(TemplateView):
+    template_name = 'elfinder/elfinder.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ElfinderView, self).get_context_data(**kwargs)
+        context["url"] = self.request.GET.get(
+            "url", "/elfinder/yawd-connector/default/1/loginuser/")
+        return context

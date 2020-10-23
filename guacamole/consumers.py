@@ -40,6 +40,9 @@ class GuacamoleWebsocket(WebsocketConsumer, WebsocketAuth):
 
     def connect(self, message, id):
         self.message.reply_channel.send({"accept": True})
+        # token = 'a54e3a439b15454ea8ca6b700318bb828'
+        # conn = get_redis_instance()
+        # conn.set(token, 'jimmy')
         user = get_redis_instance().get(id)
         if not self.authenticate(id):
             self.message.reply_channel.send({"text": json.dumps(

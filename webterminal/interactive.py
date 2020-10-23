@@ -1,38 +1,23 @@
 # -*- coding: utf-8 -*-
 import socket
-import sys
 from paramiko.py3compat import u
 try:
     from django.utils.encoding import smart_unicode
 except ImportError:
     from django.utils.encoding import smart_text as smart_unicode
-import os
-
 try:
     import termios
-    import tty
-    has_termios = True
 except ImportError:
-    has_termios = False
     raise Exception('This project does\'t support windows system!')
 try:
     import simplejson as json
 except ImportError:
     import json
-import sys
 import time
-import codecs
-import io
-import re
-from django.contrib.auth.models import User
-from django.utils import timezone
-from common.models import Log, CommandLog
-from webterminal.settings import MEDIA_ROOT
 import threading
 import ast
 import traceback
-from common.utils import get_redis_instance, mkdir_p, CustomeFloatEncoder
-from webterminal.commandextract import CommandDeal
+from common.utils import get_redis_instance
 import struct
 import paramiko
 import logging
@@ -48,28 +33,17 @@ except NameError:
     long = int
 import select
 import socket
+from asgiref.sync import async_to_sync
 
 
 def interactive_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):
-    if has_termios:
-        posix_shell(chan, channel, log_name=log_name,
-                    width=width, height=height, elementid=elementid)
-    else:
-        sys.exit(1)
+    posix_shell(chan, channel, log_name=log_name,
+                width=width, height=height, elementid=elementid)
 
 
 def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=None):
-    from webterminal.asgi import channel_layer
-    stdout = list()
-    begin_time = time.time()
-    last_write_time = {'last_activity_time': begin_time}
-    command = list()
-    if elementid:
-        logobj = Log.objects.get(channel=elementid)
-    else:
-        logobj = Log.objects.get(channel=channel)
-    vim_flag = False
-    vim_data = ''
+    from channels.layers import get_channel_layer
+    channel_layer = get_channel_layer()
     try:
         chan.settimeout(0.0)
         data = None
@@ -85,119 +59,32 @@ def posix_shell(chan, channel, log_name=None, width=90, height=40, elementid=Non
                         break
                     if len(x) == 0:
                         if elementid:
-                            channel_layer.send(channel, {'text': json.dumps(
-                                ['disconnect', smart_unicode('\r\n*** EOF\r\n'), elementid.rsplit('_')[0]])})
+                            async_to_sync(channel_layer.send)(channel,{'text': json.dumps(
+                                ['disconnect', smart_unicode('\r\n*** EOF\r\n'), elementid.rsplit('_')[0]]),"type": "webterminal.message"})
                         else:
-                            # channel_layer.send(channel, {'text': json.dumps(
-                                # ['disconnect', smart_unicode('\r\n*** EOF\r\n')])})
-                            channel_layer.send(
-                                channel, {'bytes': '\r\n\r\n[Finished...]\r\n'})
+                            async_to_sync(channel_layer.send)(channel,{'bytes': '\r\n\r\n[Finished...]\r\n',"type": "webterminal.message"})
                         break
-                    now = time.time()
-                    delay = now - last_write_time['last_activity_time']
-                    last_write_time['last_activity_time'] = now
+                    if len(x) > 0:
+                        async_to_sync(channel_layer.send)(channel,{'text': x,"type": "webterminal.message"})
                     if x == "exit\r\n" or x == "logout\r\n" or x == 'logout':
                         chan.close()
-                    else:
-                        if vim_flag:
-                            vim_data += x
-                        # logger.debug('raw data {0}'.format(command))
-                        if '\r\n' not in x:
-                            command.append(x)
-                        else:
-                            command_result = CommandDeal().deal_command(''.join(command))
-                            if len(command_result) != 0:
-                                # vim command record patch
-                                logger.debug(
-                                    'command {0}'.format(command_result))
-                                if command_result.strip().startswith('vi') or command_result.strip().startswith('fg'):
-                                    CommandLog.objects.create(
-                                        log=logobj, command=command_result[0:255])
-                                    vim_flag = True
-                                else:
-                                    if vim_flag:
-                                        if re.compile('\[.*@.*\][\$#]').search(vim_data):
-                                            vim_flag = False
-                                            vim_data = ''
-                                    else:
-                                        CommandLog.objects.create(
-                                            log=logobj, command=command_result[0:255])
-                            command = list()
-
-                        if isinstance(x, unicode):
-                            stdout.append([delay, x])
-                        else:
-                            stdout.append([delay, codecs.getincrementaldecoder(
-                                'UTF-8')('replace').decode(x)])
-                    if isinstance(x, unicode):
-                        if elementid:
-                            channel_layer.send(channel, {'text': json.dumps(
-                                ['stdout', x, elementid.rsplit('_')[0]])})
-                        else:
-                            # channel_layer.send(
-                                # channel, {'text': json.dumps(['stdout', x])})
-                            channel_layer.send(channel, {'bytes': data})
-                    else:
-                        if elementid:
-                            channel_layer.send(channel, {'text': json.dumps(
-                                ['stdout', smart_unicode(x), elementid.rsplit('_')[0]])})
-                        else:
-                            # channel_layer.send(
-                                # channel, {'text': json.dumps(['stdout', smart_unicode(x)])})
-                            channel_layer.send(channel, {'bytes': data})
-                    # send message to monitor group
-                    if log_name:
-                        channel_layer.send_group(u'monitor-{0}'.format(log_name.rsplit('/')[1]), {
-                                                 'text': json.dumps(['stdout', smart_unicode(x)])})
             except socket.timeout:
                 break
             except UnicodeDecodeError:
-                channel_layer.send(channel, {'bytes': data})
+                async_to_sync(channel_layer.send)(channel,{'bytes': data,"type": "webterminal.message"})
             except Exception as e:
-                # print(type(data))
-                # print(repr(data))
                 logger.error(traceback.print_exc())
                 if elementid:
-                    channel_layer.send(channel, {'text': json.dumps(
-                        ['stdout', 'A bug find,You can report it to me' + smart_unicode(e), elementid.rsplit('_')[0]])})
+                    async_to_sync(channel_layer.send)(channel,{'text': json.dumps(
+                        ['stdout', 'A bug find,You can report it to me' + smart_unicode(e), elementid.rsplit('_')[0]]),"type": "webterminal.message"})
                 else:
-                    # channel_layer.send(channel, {'text': json.dumps(
-                        # ['stdout', 'A bug find,You can report it to me' + smart_unicode(e)])})
-                    channel_layer.send(channel, {'bytes': data})
+                    async_to_sync(channel_layer.send)(channel,{'bytes': data,"type": "webterminal.message"})
 
     finally:
         chan.transport.close()
-        attrs = {
-            "version": 1,
-            "width": width,
-            "height": height,
-            "duration": round(time.time() - begin_time, 6),
-            "command": os.environ.get('SHELL', None),
-            'title': None,
-            "env": {
-                "TERM": os.environ.get('TERM'),
-                "SHELL": os.environ.get('SHELL', 'sh')
-            },
-            'stdout': list(map(lambda frame: [round(frame[0], 6), frame[1]], stdout))
-        }
-        mkdir_p(
-            '/'.join(os.path.join(MEDIA_ROOT, log_name).rsplit('/')[0:-1]))
-        with open(os.path.join(MEDIA_ROOT, log_name), "a") as f:
-            f.write(json.dumps(attrs, ensure_ascii=True,
-                               cls=CustomeFloatEncoder, indent=2))
-
-        if elementid:
-            audit_log = Log.objects.get(
-                channel=elementid, log=log_name.rsplit('/')[-1])
-        else:
-            audit_log = Log.objects.get(
-                channel=channel, log=log_name.rsplit('/')[-1])
-        audit_log.is_finished = True
-        audit_log.end_time = timezone.now()
-        audit_log.save()
         # hand ssh terminal exit
         queue = get_redis_instance()
-        redis_channel = queue.pubsub()
+        queue.pubsub()
         queue.publish(channel, json.dumps(['close']))
 
 
@@ -232,10 +119,6 @@ class SshTerminalThread(threading.Thread):
         # fix the first login 1 bug
         first_flag = True
         command = list()
-        if self.elementid:
-            logobj = Log.objects.get(channel=self.elementid)
-        else:
-            logobj = Log.objects.get(channel=self.message.reply_channel.name)
         while (not self._stop_event.is_set()):
             text = self.queue.get_message()
             if text:
@@ -272,13 +155,6 @@ class SshTerminalThread(threading.Thread):
                         except (TypeError, struct.error, paramiko.SSHException):
                             pass
                     elif data[0] in ['stdin', 'stdout']:
-                        if '\r' not in str(data[1]):
-                            command.append(data[1])
-                        else:
-                            # fix command record duplicate
-                            if len(data) >= 3 and data[2] == 'command':
-                                CommandLog.objects.create(
-                                    log=logobj, command=data[1].strip('r')[0:255])
                         self.chan.send(data[1])
 
                 elif isinstance(data, (int, long)):
@@ -291,15 +167,6 @@ class SshTerminalThread(threading.Thread):
                             self.chan.send(str(data))
                 else:
                     try:
-                        # get user command and block user action in the future
-                        if '\r' not in str(data) or '\n' not in str(data):
-                            command.append(str(data))
-                        else:
-                            record_command = CommandDeal().deal_command(''.join(command))
-                            if len(record_command) != 0:
-                                logger.debug(
-                                    'command input {0}'.format(record_command))
-                                command = list()
                         # vi bug need to be fixed
                         if isinstance(data, bytes):
                             self.chan.send(data)

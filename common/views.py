@@ -39,13 +39,13 @@ class LoginRequiredMixin(AccessMixin):
     """
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             return self.handle_no_permission()
         activate(request.LANGUAGE_CODE.replace('-', '_'))
         return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
 
     def handle_no_permission(self):
-        if self.raise_exception and self.request.user.is_authenticated():
+        if self.raise_exception and self.request.user.is_authenticated:
             raise PermissionDenied(self.get_permission_denied_message())
         return redirect_to_login(self.request.get_full_path(), self.get_login_url(), self.get_redirect_field_name())
 
@@ -295,38 +295,42 @@ class CommandLogList(LoginRequiredMixin, PermissionRequiredMixin, View):
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
 
 
-class WebterminalHelperDetectApi(LoginRequiredMixin, View):
+class WebterminalHelperDetectApi(View):
 
     def post(self, request):
-        if request.is_ajax():
-            conn = get_redis_instance()
-            version = request.POST.get('version', None)
-            protocol = request.POST.get('protocol', None)
-            identify = request.POST.get('identify', None)
-            if identify is not None and version is None and protocol is None:
-                # get identify id
-                id = str(uuid.uuid4())
-                conn.set(id, 'ok')
-                conn.expire(id, 15)
-                return JsonResponse({'status': True, 'message': id})
-            elif protocol in ["rdp", "ssh", "sftp"] and identify:
-                identify_data = conn.get(identify)
-                if isinstance(identify_data, bytes):
-                    identify_data = identify_data.decode()
-                else:
-                    identify_data = identify_data
-                if identify_data == 'installed':
-                    conn.delete(identify)
-                    return JsonResponse({'status': True, 'message': 'ok'})
-                elif identify_data == 'need upgrade':
-                    conn.delete(identify)
-                    return JsonResponse({'status': False, 'message': 'Webterminal helper need upgrade to version: {0}'.format(__webterminalhelperversion__)})
-                else:
-                    conn.delete(identify)
-                    # not install webterminal helper
-                    return JsonResponse({'status': False, 'message': 'no'})
+        conn = get_redis_instance()
+        if len(request.POST .keys()) == 0:
+            try:
+                request.POST = json.loads(request.body)
+            except:
+                pass
+        version = request.POST.get('version', None)
+        protocol = request.POST.get('protocol', None)
+        identify = request.POST.get('identify', None)
+        # get identify id
+        id = str(uuid.uuid4())
+        conn.set(id, 'ok')
+        conn.expire(id, 15)
+        if identify is not None and identify == 'get':
+            return JsonResponse({'status': True, 'message': id})
+        if identify is not None and version is None and protocol is None:
+            return JsonResponse({'status': True, 'message': id})
+        elif protocol in ["rdp", "ssh", "sftp"] and identify:
+            identify_data = conn.get(identify)
+            if isinstance(identify_data, bytes):
+                identify_data = identify_data.decode()
             else:
-                return JsonResponse({'status': False, 'message': 'Method not allowed!'})
+                identify_data = identify_data
+            if identify_data == 'installed':
+                conn.delete(identify)
+                return JsonResponse({'status': True, 'message': 'ok'})
+            elif identify_data == 'need upgrade':
+                conn.delete(identify)
+                return JsonResponse({'status': False, 'message': 'Webterminal helper need upgrade to version: {0}'.format(__webterminalhelperversion__)})
+            else:
+                conn.delete(identify)
+                # not install webterminal helper
+                return JsonResponse({'status': False, 'message': 'no'})
         else:
             return JsonResponse({'status': False, 'message': 'Method not allowed!'})
 

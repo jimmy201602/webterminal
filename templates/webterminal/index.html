@@ -1,7 +1,7 @@
 {% extends 'base.html'%}
 {%load i18n%}
 {% block title %}{% trans 'webterminal' %}{% endblock %}
-{% load staticfiles %}
+{% load static %}
     {% block css %}
     <link rel="stylesheet" href="{% static 'plugins/xterm/xterm.css' %}"/>
     <link rel="stylesheet" href="{% static 'plugins/xterm/addons/fullscreen/fullscreen.css' %}"/>
@@ -628,6 +628,7 @@
     function file_manager(tabId,id) {
         var elemetid = '#'+tabId+'_file_manager';
         var url = '/elfinder/yawd-connector/sftp/'+id+'/';
+        console.log(url)
         elfinderinit(elemetid,url);
         }
 

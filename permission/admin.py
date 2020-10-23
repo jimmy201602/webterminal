@@ -9,4 +9,4 @@ from permission.models import Role
 class RoleAdmin(admin.ModelAdmin):
     filter_horizontal = ('permissions','groups')
 
-admin.site.register(Role,RoleAdmin)
+# admin.site.register(Role,RoleAdmin)

@@ -22,14 +22,11 @@ class ServerInfor(models.Model):
         max_length=40, verbose_name=_('Host name'), blank=True)
     ip = models.GenericIPAddressField(
         protocol='ipv4', verbose_name=_('ip'), blank=False)
+    credentials = models.ManyToManyField('Credential')
     createdatetime = models.DateTimeField(
         auto_now_add=True, verbose_name=_('Create time'))
     updatedatetime = models.DateTimeField(
         auto_created=True, auto_now=True, verbose_name=_('Update time'))
-    credential = models.ForeignKey('Credential')
-
-    def __unicode__(self):
-        return self.name
 
     def __str__(self):
         return self.name
@@ -41,17 +38,18 @@ class ServerInfor(models.Model):
         return '{0}{1}'.format(self.pk, ''.join(random.choice(string.ascii_letters) for _ in range(15)).lower())
 
     class Meta:
-        unique_together = (("ip", "credential"),)
+        # unique_together = (("ip", "credential"),)
         permissions = (
-            ("can_add_serverinfo", _("Can add server")),
-            ("can_change_serverinfo", _("Can change server info")),
-            ("can_delete_serverinfo", _("Can delete server info")),
-            ("can_connect_serverinfo", _("Can connect to server")),
-            ("can_kill_serverinfo", _("Can kill online user")),
-            ("can_monitor_serverinfo", _("Can monitor user action")),
-            ("can_view_serverinfo", _("Can view server info")),
-            ("can_filemanage_serverinfo", _("Can manage file")),
+            ("can_add_serverinfor", _("Can add server")),
+            ("can_change_serverinfor", _("Can change server info")),
+            ("can_delete_serverinfor", _("Can delete server info")),
+            ("can_connect_serverinfor", _("Can connect to server")),
+            ("can_kill_serverinfor", _("Can kill online user")),
+            ("can_monitor_serverinfor", _("Can monitor user action")),
+            ("can_view_serverinfor", _("Can view server info")),
+            ("can_filemanage_serverinfor", _("Can manage file")),
         )
+        app_label = 'common'
 
 
 class ServerGroup(models.Model):
@@ -64,9 +62,6 @@ class ServerGroup(models.Model):
     updatedatetime = models.DateTimeField(
         auto_created=True, auto_now=True, verbose_name=_('Update time'))
 
-    def __unicode__(self):
-        return self.name
-
     def __str__(self):
         return self.name
 
@@ -77,6 +72,7 @@ class ServerGroup(models.Model):
             ("can_delete_servergroup", _("Can delete group info")),
             ("can_view_servergroup", _("Can view group info")),
         )
+        app_label = 'common'
 
 
 class Credential(models.Model):
@@ -122,9 +118,6 @@ class Credential(models.Model):
     security = models.CharField(
         max_length=40, default='any', choices=security_choices, verbose_name=_('Security'))
 
-    def __unicode__(self):
-        return self.name
-
     def __str__(self):
         return self.name
 
@@ -154,17 +147,15 @@ class Credential(models.Model):
             ("can_delete_credential", _("Can delete credential info")),
             ("can_view_credential", _("Can view credential info")),
         )
+        app_label = 'common'
 
 
 class CommandsSequence(models.Model):
     name = models.CharField(max_length=40, verbose_name=_(
         'Task name'), blank=False, unique=True)
     commands = models.TextField(verbose_name=_('Task commands'), blank=False)
-    group = models.ManyToManyField(
+    groups = models.ManyToManyField(
         ServerGroup, verbose_name=_('Server group you want to execute'))
-
-    def __unicode__(self):
-        return self.name
 
     def __str__(self):
         return self.name
@@ -189,10 +180,12 @@ class CommandsSequence(models.Model):
             ("can_view_commandssequence", _("Can view commands info")),
             ("can_execute_commandssequence", _("Can execute commands")),
         )
+        app_label = 'common'
 
 
 class Log(models.Model):
-    server = models.ForeignKey(ServerInfor, verbose_name=_('Server'))
+    server = models.ForeignKey(ServerInfor, verbose_name=_(
+        'Server'), on_delete=models.CASCADE)
     channel = models.CharField(max_length=100, verbose_name=_(
         'Channel name'), blank=False, unique=True, editable=False)
     log = models.UUIDField(max_length=100, default=uuid.uuid4, verbose_name=_(
@@ -204,7 +197,7 @@ class Log(models.Model):
     is_finished = models.BooleanField(
         default=False, verbose_name=_('Is finished'))
     user = models.ForeignKey(
-        User, verbose_name=_('User'), related_name='user')
+        User, verbose_name=_('User'), related_name='user', on_delete=models.CASCADE)
     width = models.PositiveIntegerField(default=90, verbose_name=_('Width'))
     height = models.PositiveIntegerField(
         default=40, verbose_name=_('Height'))
@@ -214,9 +207,8 @@ class Log(models.Model):
         default=False, verbose_name=_('Is Commercial Version'))
     tag = models.CharField(max_length=100, verbose_name=_(
         'Tag'), blank=True, null=True)
-
-    def __unicode__(self):
-        return self.server.name
+    protocol = models.CharField(max_length=40, default='ssh',verbose_name=_('Protocol'))
+    loginuser = models.CharField(max_length=40, default='ssh',verbose_name=_('Login user'))
 
     def __str__(self):
         return self.server.name
@@ -230,10 +222,12 @@ class Log(models.Model):
         ordering = [
             ('-start_time')
         ]
+        app_label = 'common'
 
 
 class CommandLog(models.Model):
-    log = models.ForeignKey(Log, verbose_name=_('Log'))
+    log = models.ForeignKey(Log, verbose_name=_(
+        'Log'), on_delete=models.CASCADE)
     datetime = models.DateTimeField(
         auto_now=True, verbose_name=_('date time'))
     command = models.CharField(max_length=255, verbose_name=_('command'))
@@ -245,12 +239,11 @@ class CommandLog(models.Model):
         ordering = [
             ('-datetime')
         ]
-
-    def __unicode__(self):
-        return self.log.user.username
+        app_label = 'common'
 
     def __str__(self):
         return self.log.user.username
+
 
 class Settings(models.Model):
     datetime = models.DateTimeField(
@@ -263,16 +256,38 @@ class Settings(models.Model):
         permissions = (
             ("can_view_settings", _("Can view settings info")),
             ("can_change_settings", _("Can change settings info")),
+            ("can_view_time_zone_list", _("Can view time zone list")),
         )
         ordering = [
             ('-datetime')
         ]
-
-    def __unicode__(self):
-        return self.name
+        app_label = 'common'
 
     def __str__(self):
         return self.name
+
+
+class DefaultUserSettings(models.Model):
+    server = models.OneToOneField(
+        ServerInfor, verbose_name=_('Server'), on_delete=models.CASCADE)
+    username = models.CharField(
+        max_length=40, verbose_name=_('Auth user name'), blank=False)
+    createdatetime = models.DateTimeField(
+        auto_now_add=True, verbose_name=_('Create time'))
+    updatedatetime = models.DateTimeField(
+        auto_created=True, auto_now=True, verbose_name=_('Update time'))
+
+    class Meta:
+        permissions = (
+            ("can_add_defaultusersettings", _("Can configuration default user settings")),
+            ("can_change_defaultusersettings", _("Can modify default user settings")),
+            ("can_delete_defaultusersettings", _("Can delete default user settings")),
+            ("can_view_defaultusersettings", _("Can view default user settings")),
+        )
+        app_label = 'common'
+
+    def __str__(self):
+        return self.server.ip
 
 # Create your models here.
 #from django.contrib.contenttypes.models import ContentType

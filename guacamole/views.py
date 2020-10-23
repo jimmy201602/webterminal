@@ -7,7 +7,7 @@ import uuid
 
 from django.conf import settings
 from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from guacamole.client import GuacamoleClient
@@ -37,7 +37,7 @@ class Index(LoginRequiredMixin, PermissionRequiredMixin, View):
         token = '{0}{1}'.format(''.join(str(uuid.uuid4()).rsplit('-')), id)
         conn = get_redis_instance()
         conn.set(token, request.user.username)
-        return render_to_response('guacamole/index.html', locals())
+        return render(None,'guacamole/index.html', locals())
 
 
 class LogPlay(LoginRequiredMixin, PermissionRequiredMixin, DetailView):

@@ -206,6 +206,8 @@ class GuacamoleClient(object):
         connection_args = [
             kwargs.get(arg.replace('-', '_'), '') for arg in instruction.args
         ]
+        print(instruction.args)
+        print(connection_args)
 
         self.logger.debug('Send `connect` instruction (%s)' %
                           connection_args)

@@ -22,7 +22,7 @@
     <head>
         <title>Guacamole Recording Playback</title>
         <meta charset="utf-8"/>
-        {% load staticfiles %}
+        {% load static %}
         <link rel="stylesheet" type="text/css" href="{% static 'css/playback.css' %}">
     </head>
 
@@ -58,8 +58,7 @@
         </div>
 
         <!-- Guacamole JavaScript API -->
-        <script type="text/javascript"
-            src="{% static 'plugins/guacamole/all.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
 
         <!-- -->
         <script type="text/javascript" src="{% static 'plugins/guacamole/playback.js' %}"></script>

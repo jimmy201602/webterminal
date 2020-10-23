@@ -8,9 +8,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
+from django.conf.locale.en import formats as en_formats
 import os
 import sys
 from django.utils.translation import gettext_lazy as _
+from datetime import timedelta
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,22 +41,25 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webterminal',
     'channels',
+    'rest_framework.authtoken',
     'rest_framework',
     'elfinder',
     'guacamole',
     'permission',
     'common',
-    'guardian',
+    # 'guardian',
     'django_otp',
     'django_otp.plugins.otp_totp',
     'django_otp.plugins.otp_hotp',
     'django_otp.plugins.otp_static',
-    'crispy_forms'
+    'crispy_forms',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,6 +92,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'webterminal.wsgi.application'
+
+ASGI_APPLICATION = "webterminal.routing.application"
 
 
 # Database
@@ -145,7 +152,7 @@ STATICFILES_DIRS = [
 # Channels settings
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "asgi_redis.RedisChannelLayer",  # use redis backend
+        "BACKEND": "channels_redis.core.RedisChannelLayer",  # use redis backend
         "CONFIG": {
             "hosts": [("localhost", 6379)],  # set redis address
             "channel_capacity": {
@@ -153,25 +160,57 @@ CHANNEL_LAYERS = {
                 "websocket.send*": 10000,
             },
             "capacity": 1000000000,
-        },
-        # load routing from our routing.py file
-        "ROUTING": "webterminal.routing.channel_routing",
+        }
     },
 }
 
 # Rest framework api auth config
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework_simplejwt.authentication.JWTTokenUserAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
+        "rest_framework.permissions.DjangoModelPermissions"
     ),
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser',
         'rest_framework.parsers.FormParser',
     ),
+    # 'PAGE_SIZE': 10
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1200),
+    'REFRESH_TOKEN_LIFETIME': timedelta(hours=20),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('Bearer', 'JWT', 'TOKEN', 'Webterminal-jwt'),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+    'JWT_AUTH_COOKIE': 'JWT',
 }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -267,12 +306,11 @@ LOGGING = {
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'guardian.backends.ObjectPermissionBackend',
+    # 'guardian.backends.ObjectPermissionBackend',
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-from django.conf.locale.en import formats as en_formats
 en_formats.DATETIME_FORMAT = 'Y-m-d H:i:s'
 en_formats.DATETIME_INPUT_FORMATS = 'Y-m-d H:i:s'
 
@@ -297,6 +335,37 @@ try:
     from extra_settings import *
 except ImportError:
     # session will expire in 30 minutes
-    SESSION_COOKIE_AGE = 30 * 60
+    SESSION_COOKIE_AGE = 30 * 60 * 60
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
     pass
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+CSRF_TRUSTED_ORIGINS = [
+    '127.0.0.1',
+]
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:8080',
+]
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'X-Frame-Options'
+]
+X_FRAME_OPTIONS = 'ALLOW-FROM http://127.0.0.1:8080/'
+APPEND_SLASH = False

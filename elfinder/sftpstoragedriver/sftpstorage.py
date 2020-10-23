@@ -15,9 +15,8 @@ import paramiko
 from django.core.files.base import File
 from django.core.files.storage import Storage
 from django.utils.deconstruct import deconstructible
-from django.utils.six import BytesIO
-from django.utils.six.moves.urllib import parse as urlparse
-
+from six import BytesIO
+from urllib.parse import urljoin
 from elfinder.sftpstoragedriver.utils import setting
 import traceback
 
@@ -79,7 +78,7 @@ class SFTPStorage(Storage):
             else:
                 raise paramiko.AuthenticationException(e)
         except Exception as e:
-            print(traceback.print_exc())
+            print(traceback.format_exc())
 
         if not hasattr(self, '_sftp'):
             self._sftp = self._ssh.open_sftp()
@@ -205,7 +204,7 @@ class SFTPStorage(Storage):
     def url(self, name):
         if self._base_url is None:
             raise ValueError("This file is not accessible via a URL.")
-        return urlparse.urljoin(self._base_url, name).replace('\\', '/')
+        return urljoin(self._base_url, name).replace('\\', '/')
 
 
 class SFTPStorageFile(File):

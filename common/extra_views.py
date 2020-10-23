@@ -1,10 +1,5 @@
 from django.views.decorators.csrf import csrf_protect
-try:
-    # django >= 1.10
-    from django.urls import reverse_lazy
-except ImportError:
-    # django < 1.10
-    from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import FormView, TemplateView
 from django.contrib.auth.tokens import default_token_generator
 from django import VERSION as DJANGO_VERSION
@@ -12,7 +7,7 @@ from django.contrib.auth.forms import (SetPasswordForm,
                                        PasswordResetForm)
 from django.shortcuts import resolve_url
 from django.utils.functional import lazy
-from django.utils import six
+import six
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters

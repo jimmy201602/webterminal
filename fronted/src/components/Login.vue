@@ -1,835 +1,130 @@
 <template>
-<div>
-    <div id="logo">
-        <h1><i> WEBTERMINAL</i></h1>
+<div class="login_page">
+  <!--
+     作者：offline
+     时间：2020-01-03
+     描述：头部
+   -->
+  <div class="header">
+    <div id="logo"><img src="../assets/logo.png" width="192" height="30"></div>
+    <div class="lag_select">
+      <a href="#"><img src="../assets/ch.png" width="38" height="19">CH</a>
+      <a href="#"><img src="../assets/en.png" width="38" height="19">EN</a>
     </div>
+  </div>
+  <!--
+       作者：offline
+       时间：2020-01-03
+       描述：登录表单内容
+     -->
+  <div class="content">
+<!--    <img src="../assets/title.png" width="312" height="74" style="position: center;">-->
+    <div style="font-size: large;width: 312px;height: 44px;position: center;margin-left: 50px">{{$t('Welcome come back')}}!</div>
+    <ul class="form_list">
+      <form action="" method="post">
+        <li class="tips01" v-show="tips" style="font-size: small">{{$t('Please the input correct username or password')}}!</li>
+        <li><input class="txt_bag" type="text" :placeholder="$t('Username/Email')" v-model="username"></li>
+        <li>
+          <input class="txt_bag" type="password" :placeholder="$t('Please input your password')" v-model="password">
+          <div class="auto_login">
+            <a class="reset-password" @click="forgetPassword">{{$t('Forgotten Password')}}</a>
+            <input id="color-input" class="chat-button-location-radio-input" type="checkbox" name="color-input" v-model="remember_password" />
+            <label for="color-input"></label><span>{{$t('Remember me')}}</span>
+          </div>
+        </li>
+        <li><input class="login_btn" type="button" :value="$t('Login')" @click="Login"></li>
+      </form>
+    </ul>
+  </div>
+  <div id="footer-bg">&nbsp;</div>
+  <q-dialog
+    v-model="showmodal"
+    full-width
+    full-height
+    :maximized="true"
+    draggable="true"
+  >
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
 
-    <section class="stark-login">
-        <div id="fade-box">
-            <form>
-                <input type="text" id="id_username" :placeholder="$t('Username')" v-model="username" autofocus required />
-                <input type="password"  id="id_password":placeholder="$t('Password')" v-model="password" required />
-                <input type="submit" :value="$t('Log in')"/>
-                <select v-model="language">
-                    <option value="" selected>
-                        {{$t('Chinese')}}
-                    </option>
-                    <option value="">
-                        {{$t('English')}}
-                    </option>
-                </select>
-            </form>
+      <q-card-section>
+        <div style="margin:0px;padding:0px;overflow:hidden">
+          <iframe
+            :src="resetpasswordaddress"
+            frameborder="0"
+            allowfullscreen
+            style="overflow:hidden;height:92vh;width:100%;"
+          ></iframe>
         </div>
-
-        <div class="hexagons">
-            <img src="../static/img/backgroud.gif" height="100%" width="100%"/>
-        </div>
-    </section>
-
-    <div id="circle1">
-        <div id="inner-cirlce1">
-            <h2></h2>
-        </div>
-    </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </div>
 </template>
-
 <script>
-    export default {
-        name: "Login",
-        data(){
-            return{
-                username:'',
-                password:'',
-                language:'',
-            }
-        }
+let resetpasswordaddress = ''
+if (process.env.NODE_ENV === 'production') {
+  resetpasswordaddress = '/common/password-reset/'
+} else {
+  resetpasswordaddress = 'http://127.0.0.1:8000/common/password-reset/'
+}
+import * as auth from '../lib/auth'
+export default {
+  name: 'Login',
+  watch: {
+    username (val, valueold) {
+      if (val) {
+        this.tips = false
+      }
+    },
+    password (val, valueold) {
+      if (val) {
+        this.tips = false
+      }
     }
+  },
+  data () {
+    return {
+      remember_password: false,
+      tips: false,
+      username: null,
+      password: null,
+      showmodal: false,
+      resetpasswordaddress: resetpasswordaddress
+    }
+  },
+  methods: {
+    forgetPassword () {
+      this.showmodal = true
+    },
+    Login () {
+      const that = this
+      if (that.username && that.password) {
+        this.$axios.post('/api/token/', {
+          username: that.username,
+          password: that.password
+        }).then(res => {
+          that.$store.commit('Login', res.data)
+          // add rediret handle
+          if (this.$route.query && this.$route.query.redirect) {
+            that.$store.commit('SetUserInfo', { username: 'Jimmy', avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: this.$route.query.redirect })
+          } else {
+            that.$store.commit('SetUserInfo', { username: 'Jimmy', avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: null })
+          }
+        }).catch(() => {
+          that.tips = true
+          auth.removeToken()
+        })
+      } else {
+        that.tips = true
+      }
+    }
+  }
+}
 </script>
 <style scoped>
-    /*! normalize.css v2.1.2 | MIT License | git.io/normalize */
-
-    /* ==========================================================================
-       HTML5 display definitions
-       ========================================================================== */
-
-    /**
-     * Correct `block` display not defined in IE 8/9.
-     */
-
-    article,
-    aside,
-    details,
-    figcaption,
-    figure,
-    footer,
-    header,
-    hgroup,
-    main,
-    nav,
-    section,
-    summary {
-        display: block;
-    }
-
-    /**
-     * Correct `inline-block` display not defined in IE 8/9.
-     */
-
-    audio,
-    canvas,
-    video {
-        display: inline-block;
-    }
-
-    /**
-     * Prevent modern browsers from displaying `audio` without controls.
-     * Remove excess height in iOS 5 devices.
-     */
-
-    audio:not([controls]) {
-        display: none;
-        height: 0;
-    }
-
-    /**
-     * Address styling not present in IE 8/9.
-     */
-
-    [hidden] {
-        display: none;
-    }
-
-    /* ==========================================================================
-       Base
-       ========================================================================== */
-
-    /**
-     * 1. Set default font family to sans-serif.
-     * 2. Prevent iOS text size adjust after orientation change, without disabling
-     *    user zoom.
-     */
-
-    html {
-        font-family: sans-serif; /* 1 */
-        -ms-text-size-adjust: 100%; /* 2 */
-        -webkit-text-size-adjust: 100%; /* 2 */
-    }
-
-    /**
-     * Remove default margin.
-     */
-
-    body {
-        margin: 0;
-    }
-
-    /* ==========================================================================
-       Links
-       ========================================================================== */
-
-    /**
-     * Address `outline` inconsistency between Chrome and other browsers.
-     */
-
-    a:focus {
-        outline: thin dotted;
-    }
-
-    /**
-     * Improve readability when focused and also mouse hovered in all browsers.
-     */
-
-    a:active,
-    a:hover {
-        outline: 0;
-    }
-
-    /* ==========================================================================
-       Typography
-       ========================================================================== */
-
-    /**
-     * Address variable `h1` font-size and margin within `section` and `article`
-     * contexts in Firefox 4+, Safari 5, and Chrome.
-     */
-
-    h1 {
-        font-size: 2em;
-        margin: 0.67em 0;
-    }
-
-    /**
-     * Address styling not present in IE 8/9, Safari 5, and Chrome.
-     */
-
-    abbr[title] {
-        border-bottom: 1px dotted;
-    }
-
-    /**
-     * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
-     */
-
-    b,
-    strong {
-        font-weight: bold;
-    }
-
-    /**
-     * Address styling not present in Safari 5 and Chrome.
-     */
-
-    dfn {
-        font-style: italic;
-    }
-
-    /**
-     * Address differences between Firefox and other browsers.
-     */
-
-    hr {
-        -moz-box-sizing: content-box;
-        box-sizing: content-box;
-        height: 0;
-    }
-
-    /**
-     * Address styling not present in IE 8/9.
-     */
-
-    mark {
-        background: #ff0;
-        color: #000;
-    }
-
-    /**
-     * Correct font family set oddly in Safari 5 and Chrome.
-     */
-
-    code,
-    kbd,
-    pre,
-    samp {
-        font-family: monospace, serif;
-        font-size: 1em;
-    }
-
-    /**
-     * Improve readability of pre-formatted text in all browsers.
-     */
-
-    pre {
-        white-space: pre-wrap;
-    }
-
-    /**
-     * Set consistent quote types.
-     */
-
-    q {
-        quotes: "\201C" "\201D" "\2018" "\2019";
-    }
-
-    /**
-     * Address inconsistent and variable font size in all browsers.
-     */
-
-    small {
-        font-size: 80%;
-    }
-
-    /**
-     * Prevent `sub` and `sup` affecting `line-height` in all browsers.
-     */
-
-    sub,
-    sup {
-        font-size: 75%;
-        line-height: 0;
-        position: relative;
-        vertical-align: baseline;
-    }
-
-    sup {
-        top: -0.5em;
-    }
-
-    sub {
-        bottom: -0.25em;
-    }
-
-    /* ==========================================================================
-       Embedded content
-       ========================================================================== */
-
-    /**
-     * Remove border when inside `a` element in IE 8/9.
-     */
-
-    img {
-        border: 0;
-    }
-
-    /**
-     * Correct overflow displayed oddly in IE 9.
-     */
-
-    svg:not(:root) {
-        overflow: hidden;
-    }
-
-    /* ==========================================================================
-       Figures
-       ========================================================================== */
-
-    /**
-     * Address margin not present in IE 8/9 and Safari 5.
-     */
-
-    figure {
-        margin: 0;
-    }
-
-    /* ==========================================================================
-       Forms
-       ========================================================================== */
-
-    /**
-     * Define consistent border, margin, and padding.
-     */
-
-    fieldset {
-        border: 1px solid #c0c0c0;
-        margin: 0 2px;
-        padding: 0.35em 0.625em 0.75em;
-    }
-
-    /**
-     * 1. Correct `color` not being inherited in IE 8/9.
-     * 2. Remove padding so people aren't caught out if they zero out fieldsets.
-     */
-
-    legend {
-        border: 0; /* 1 */
-        padding: 0; /* 2 */
-    }
-
-    /**
-     * 1. Correct font family not being inherited in all browsers.
-     * 2. Correct font size not being inherited in all browsers.
-     * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
-     */
-
-    button,
-    input,
-    select,
-    textarea {
-        font-family: inherit; /* 1 */
-        font-size: 100%; /* 2 */
-        margin: 0; /* 3 */
-    }
-
-    /**
-     * Address Firefox 4+ setting `line-height` on `input` using `!important` in
-     * the UA stylesheet.
-     */
-
-    button,
-    input {
-        line-height: normal;
-    }
-
-    /**
-     * Address inconsistent `text-transform` inheritance for `button` and `select`.
-     * All other form control elements do not inherit `text-transform` values.
-     * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
-     * Correct `select` style inheritance in Firefox 4+ and Opera.
-     */
-
-    button,
-    select {
-        text-transform: none;
-    }
-
-    /**
-     * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
-     *    and `video` controls.
-     * 2. Correct inability to style clickable `input` types in iOS.
-     * 3. Improve usability and consistency of cursor style between image-type
-     *    `input` and others.
-     */
-
-    button,
-    html input[type="button"], /* 1 */
-    input[type="reset"],
-    input[type="submit"] {
-        -webkit-appearance: button; /* 2 */
-        cursor: pointer; /* 3 */
-    }
-
-    /**
-     * Re-set default cursor for disabled elements.
-     */
-
-    button[disabled],
-    html input[disabled] {
-        cursor: default;
-    }
-
-    /**
-     * 1. Address box sizing set to `content-box` in IE 8/9.
-     * 2. Remove excess padding in IE 8/9.
-     */
-
-    input[type="checkbox"],
-    input[type="radio"] {
-        box-sizing: border-box; /* 1 */
-        padding: 0; /* 2 */
-    }
-
-    /**
-     * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
-     * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
-     *    (include `-moz` to future-proof).
-     */
-
-    input[type="search"] {
-        -webkit-appearance: textfield; /* 1 */
-        -moz-box-sizing: content-box;
-        -webkit-box-sizing: content-box; /* 2 */
-        box-sizing: content-box;
-    }
-
-    /**
-     * Remove inner padding and search cancel button in Safari 5 and Chrome
-     * on OS X.
-     */
-
-    input[type="search"]::-webkit-search-cancel-button,
-    input[type="search"]::-webkit-search-decoration {
-        -webkit-appearance: none;
-    }
-
-    /**
-     * Remove inner padding and border in Firefox 4+.
-     */
-
-    button::-moz-focus-inner,
-    input::-moz-focus-inner {
-        border: 0;
-        padding: 0;
-    }
-
-    /**
-     * 1. Remove default vertical scrollbar in IE 8/9.
-     * 2. Improve readability and alignment in all browsers.
-     */
-
-    textarea {
-        overflow: auto; /* 1 */
-        vertical-align: top; /* 2 */
-    }
-
-    /* ==========================================================================
-       Tables
-       ========================================================================== */
-
-    /**
-     * Remove most spacing between table cells.
-     */
-
-    table {
-        border-collapse: collapse;
-        border-spacing: 0;
-    }
-
-    @import "https://fonts.googleapis.com/css?family=Ubuntu:400,700italic";
-    @import "https://fonts.googleapis.com/css?family=Cabin:400";
-    * {
-        box-sizing: border-box;
-    }
-
-    html {
-        background: #000;
-        background-size: cover;
-        font-size: 10px;
-        height: 100%;
-        overflow: hidden;
-        position: absolute;
-        text-align: center;
-        width: 100%;
-    }
-
-    /* =========================================
-    Stark Industries Logo
-    ========================================= */
-    #logo {
-        animation: logo-entry 4s ease-in;
-        width: 500px;
-        margin: 0 auto;
-        position: relative;
-        z-index: 40;
-    }
-
-    h1 {
-        animation: text-glow 2s ease-out infinite alternate;
-        font-family: 'Ubuntu', sans-serif;
-        color: #74ebe6;
-        font-size: 48px;
-        font-size: 4.8rem;
-        font-weight: bold;
-        position: absolute;
-        text-shadow: 0 0 10px #000, 0 0 20px #000, 0 0 30px #000, 0 0 40px #000, 0 0 50px #000, 0 0 60px #000, 0 0 70px #000;
-        top: 50px;
-    }
-    h1:before {
-        animation: before-glow 2s ease-out infinite alternate;
-        border-left: 535px solid transparent;
-        border-bottom: 10px solid #74ebe6;
-        content: ' ';
-        height: 0;
-        position: absolute;
-        right: -74px;
-        top: -10px;
-        width: 0;
-    }
-    h1:after {
-        animation: after-glow 2s ease-out infinite alternate;
-        border-left: 100px solid transparent;
-        border-top: 16px solid #74ebe6;
-        content: ' ';
-        height: 0;
-        position: absolute;
-        right: -85px;
-        top: 24px;
-        transform: rotate(-47deg);
-        width: 0;
-    }
-
-    /* =========================================
-    Log in form
-    ========================================= */
-    #fade-box {
-        animation: input-entry 3s ease-in;
-        z-index: 4;
-
-    }
-
-    .stark-login form {
-        animation: form-entry 3s ease-in-out;
-        background: #111;
-        background: linear-gradient(#74ebe6, #74ebe6);
-        border: 6px solid #74ebe6;
-        box-shadow: 0 0 15px #74ebe6;
-        border-radius: 5px;
-        display: inline-block;
-        height: 220px;
-        margin: 270px auto 0;
-        position: relative;
-        z-index: 4;
-        width: 500px;
-        transition: 1s all;
-        left: 36.4%;
-    }
-    .stark-login form:hover {
-        border: 6px solid #74ebe6;
-        box-shadow: 0 0 25px #74ebe6;
-        transition: 1s all;
-    }
-    .stark-login input {
-        background: #222;
-        background: linear-gradient(#333333, #222222);
-        border: 1px solid #444;
-        border-radius: 5px;
-        box-shadow: 0 2px 0 #000;
-        color: #888;
-        display: block;
-        font-family: 'Cabin', helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-size: 1.3rem;
-        height: 40px;
-        margin: 20px auto 10px;
-        padding: 0 10px;
-        text-shadow: 0 -1px 0 #000;
-        width: 400px;
-    }
-    .stark-login input:focus {
-        animation: box-glow 1s ease-out infinite alternate;
-        background: #0B4252;
-        background: linear-gradient(#333933, #222922);
-        border-color: #00fffc;
-        box-shadow: 0 0 5px rgba(0, 255, 253, 0.2), inset 0 0 5px rgba(0, 255, 253, 0.1), 0 2px 0 black;
-        color: #efe;
-        outline: none;
-    }
-    .stark-login input:invalid {
-        border: 2px solid  #00fffc;
-        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2), inset 0 0 5px rgba(255, 0, 0, 0.1), 0 2px 0 black;
-    }
-    .stark-login button {
-        animation: input-entry 3s ease-in;
-        background: #222;
-        background: linear-gradient(#333333, #222222);
-        box-sizing: content-box;
-        border: 1px solid #444;
-        border-left-color: #000;
-        border-radius: 3px;
-        box-shadow: 0 2px 0 #000;
-        color: #fff;
-        display: block;
-        font-family: 'Cabin', helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 400;
-        height: 50px;
-        line-height: 40px;
-        margin: 20px auto;
-        padding: 0;
-        position: relative;
-        text-shadow: 0 -1px 0 #000;
-        width: 400px;
-        transition: 1s all;
-        top: 1px;
-        float: top;
-    }
-    .stark-login select {
-        animation: input-entry 3s ease-in;
-        background: #222;
-        /*background: linear-gradient(#333333, #222222);*/
-        /*box-sizing: content-box;*/
-        border: 1px solid #444;
-        border-left-color: #000;
-        border-radius: 5px;
-        box-shadow: 0 2px 0 #000;
-        color: #fff;
-        display: block;
-        font-family: 'Cabin', helvetica, arial, sans-serif;
-        font-size: 13px;
-        font-weight: 400;
-        height: 20px;
-        line-height: 40px;
-        margin: 20px auto;
-        padding: 0;
-        position: relative;
-        text-shadow: 0 -1px 0 #000;
-        width: 100px;
-        transition: 1s all;
-    }
-    .stark-login button:hover,
-    .stark-login button:focus {
-        background: #0C6125;
-        background: linear-gradient(#393939, #292929);
-        color: #00fffc;
-        outline: none;
-        transition: 1s all;
-    }
-    .stark-login button:active {
-        background: #292929;
-        background: linear-gradient(#393939, #292929);
-        box-shadow: 0 1px 0 #000, inset 1px 0 1px #222;
-        top: 1px;
-    }
-
-    /* =========================================
-    Spinner
-    ========================================= */
-    #circle1 {
-        animation: circle1 4s linear infinite, circle-entry 6s ease-in-out;
-        background: #74ebe6;
-        border-radius: 100%;
-        border: 10px solid #74ebe6;
-        box-shadow: 0 0 0 2px black, 0 0 0 6px #74ebe6;
-        height: 500px;
-        width: 500px;
-        position: absolute;
-        top: 120px;
-        left: 50%;
-        margin-left: -250px;
-        overflow: hidden;
-        opacity: 1.5;
-        z-index: -3;
-    }
-
-    #inner-cirlce1 {
-        background: #000;
-        border-radius: 100%;
-        border: 36px solid #74ebe6;
-        height: 460px;
-        width: 460px;
-        margin: 10px;
-    }
-    #inner-cirlce1:before {
-        content: ' ';
-        width: 240px;
-        height: 480px;
-        background: #000;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-    #inner-cirlce1:after {
-        content: ' ';
-        width: 480px;
-        height: 240px;
-        background: #000;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-
-    /* =========================================
-    Hexagon Mesh
-    ========================================= */
-    .hexagons {
-        animation: logo-entry 4s ease-in;
-        /*background:url(http://fc03.deviantart.net/fs71/i/2012/237/c/7/jarvis_rainmeter_skin_by_ingwey-d5cc571.png);*/
-        color: #000;
-        font-size: 52px;
-        font-size: 5.1rem;
-        letter-spacing: -0.2em;
-        line-height: 0.7;
-        position: absolute;
-        text-shadow: 0 0 6px #74ebe6;
-        top: 1px;
-        width: 100%;
-        /*transform: perspective(60px)  scale(2.4);*/
-        z-index: -3;
-    }
-
-    /* =========================================
-    Animation Keyframes
-    ========================================= */
-    @keyframes logo-entry {
-        0% {
-            opacity: 0;
-        }
-
-        80% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes circle-entry {
-        0% {
-            opacity: 0;
-        }
-
-        20% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 0.4;
-        }
-    }
-
-    @keyframes input-entry {
-        0% {
-            opacity: 0;
-        }
-
-        90% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @keyframes form-entry {
-        0% {
-            height: 0;
-            width: 0;
-            opacity: 0;
-            padding: 0;
-        }
-
-        20% {
-            height: 0;
-            border: 1px solid #00a4a2;
-            width: 0;
-            opacity: 0;
-            padding: 0;
-        }
-
-        40% {
-            width: 0;
-            height: 220px;
-            border: 6px solid #00a4a2;
-            opacity: 1;
-            padding: 0;
-        }
-
-        100% {
-            height: 220px;
-            width: 500px;
-        }
-    }
-
-    @keyframes box-glow {
-        0% {
-            border-color: #00b8b6;
-            box-shadow: 0 0 5px rgba(0, 255, 253, 0.2), inset 0 0 5px rgba(0, 255, 253, 0.1), 0 2px 0 black;
-        }
-
-        100% {
-            border-color: #00fffc;
-            box-shadow: 0 0 20px rgba(0, 255, 253, 0.6), inset 0 0 10px rgba(0, 255, 253, 0.4), 0 2px 0 black;
-        }
-    }
-
-    @keyframes text-glow {
-        0% {
-            color: #00a4a2;
-            text-shadow: 0 0 10px #000, 0 0 20px #000, 0 0 30px #000, 0 0 40px #000, 0 0 50px #000, 0 0 60px #000, 0 0 70px #000;
-        }
-
-        100% {
-            color: #00fffc;
-            text-shadow: 0 0 20px rgba(0, 255, 253, 0.6), 0 0 10px rgba(0, 255, 253, 0.4), 0 2px 0 black;
-        }
-    }
-
-    @keyframes before-glow {
-        0% {
-            border-bottom: 10px solid #00a4a2;
-        }
-
-        100% {
-            border-bottom: 10px solid #00fffc;
-        }
-    }
-
-    @keyframes after-glow {
-        0% {
-            border-top: 16px solid #00a4a2;
-        }
-
-        100% {
-            border-top: 16px solid #00fffc;
-        }
-    }
-
-    @keyframes circle1 {
-        0% {
-            -webkit-transform: rotate(0deg);
-            -moz-transform: rotate(0deg);
-            -ms-transform: rotate(0deg);
-            -o-transform: rotate(0deg);
-            transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-            -moz-transform: rotate(360deg);
-            -ms-transform: rotate(360deg);
-            -o-transform: rotate(360deg);
-            transform: rotate(360deg);
-        }
-    }
+  @import "../css/login.css";
 </style>

@@ -20,12 +20,12 @@ class LogAdmin(admin.ModelAdmin):
     list_display = ('user',)
 
 
-class CredentialInline(admin.TabularInline):
-    model = ServerInfor
+# class CredentialInline(admin.TabularInline):
+    # model = ServerInfor
 
 
-class CredentialAdmin(admin.ModelAdmin):
-    inlines = [CredentialInline]
+# class CredentialAdmin(admin.ModelAdmin):
+    # inlines = [CredentialInline]
 
 
 class LogInline(admin.TabularInline):
@@ -40,13 +40,13 @@ class SettingsAdmin(admin.ModelAdmin):
     list_display = ("name", "value", "datetime")
 
 
-admin.site.register(ServerInfor, ServerInforAdmin)
-admin.site.register(ServerGroup)
-admin.site.register(Credential, CredentialAdmin)
-admin.site.register(CommandsSequence)
-admin.site.register(CommandLog)
-admin.site.register(Log, LogAdmin)
-admin.site.register(Settings, SettingsAdmin)
+# admin.site.register(ServerInfor, ServerInforAdmin)
+# admin.site.register(ServerGroup)
+# admin.site.register(Credential, CredentialAdmin)
+# admin.site.register(CommandsSequence)
+# admin.site.register(CommandLog)
+# admin.site.register(Log, LogAdmin)
+# admin.site.register(Settings, SettingsAdmin)
 
 
 class OTPAdminAuthenticationForm(AdminAuthenticationForm, OTPAuthenticationFormMixin):

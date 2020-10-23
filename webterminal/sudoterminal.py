@@ -1,61 +1,39 @@
 import paramiko
 import re
 try:
-    import simplejson as json
-except ImportError:
-    import json
-try:
     from django.utils.encoding import smart_unicode
 except ImportError:
     from django.utils.encoding import smart_text as smart_unicode
 import threading
-from common.models import ServerInfor
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 import socket
 import traceback
 import logging
+from asgiref.sync import async_to_sync
 logger = logging.getLogger(__name__)
 
 
 class ShellHandler(object):
 
-    def __init__(self, ip, username, port, method, credential, timeout=3, channel_name=None):
-        if method not in ['key', 'password']:
-            raise Exception('Authication must be key or password')
+    def __init__(self, ip, username, port, password, timeout=3, channel_name=None):
         self.ssh = paramiko.SSHClient()
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        from webterminal.asgi import channel_layer
-        if method == 'password':
+        from channels.layers import get_channel_layer
+        channel_layer = get_channel_layer()
+        try:
             self.ssh.connect(ip, port=port, username=username,
-                             password=credential, timeout=timeout)
-        else:
-            private_key = StringIO(credential)
-            if 'RSA' in credential:
-                private_key = paramiko.RSAKey.from_private_key(private_key)
-            elif 'DSA' in credential:
-                private_key = paramiko.DSSKey.from_private_key(private_key)
-            elif 'EC' in credential:
-                private_key = paramiko.ECDSAKey.from_private_key(private_key)
-            elif 'OPENSSH' in credential:
-                private_key = paramiko.Ed25519Key.from_private_key(
-                    private_key)
-            else:
-                logger.error(
-                    "Unknown or unsupported key type, only support rsa dsa ed25519 ecdsa key type!")
-            try:
-                self.ssh.connect(ip, port=port, username=username,
-                                 pkey=private_key, timeout=timeout)
-            except socket.timeout:
-                logger.error('Connect to server {0} time out!'.format(ip))
-                self.is_connect = False
-                return
-            except Exception as e:
-                logger.error(traceback.print_exc())
-                self.is_connect = False
-                return
+                             password=password, timeout=timeout)
+        except socket.timeout:
+            logger.error('Connect to server {0} time out!'.format(ip))
+            self.is_connect = False
+            async_to_sync(channel_layer.send)(channel_name, {
+                'text': 'Connect to server {0} time out!\r\n'.format(ip), "type": "webterminal.message"})
+            return
+        except Exception as e:
+            logger.error(e)
+            self.is_connect = False
+            async_to_sync(channel_layer.send)(
+                channel_name, {'text': '{0}\r\n'.format(e), "type": "webterminal.message"})
+            return
         channel = self.ssh.invoke_shell(term='xterm')
         self.stdin = channel.makefile('wb')
         self.stdout = channel.makefile('r')
@@ -67,35 +45,36 @@ class ShellHandler(object):
 
     @staticmethod
     def _print_exec_out(cmd, out_buf, err_buf, exit_status, channel_name=None):
-        from webterminal.asgi import channel_layer
-        channel_layer.send(channel_name, {'text': json.dumps(
-            ['stdout', smart_unicode('command executed: {}'.format(cmd))])})
+        from channels.layers import get_channel_layer
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.send)(channel_name, {'text': smart_unicode(
+            'command executed: {}\r\n'.format(cmd)), "type": "webterminal.message"})
         logger.debug('command executed: {}'.format(cmd))
         logger.debug('STDOUT:')
-        channel_layer.send(channel_name, {'text': json.dumps(
-            ['stdout', smart_unicode('STDOUT:')])})
+        async_to_sync(channel_layer.send)(channel_name, {
+            'text': smart_unicode('STDOUT:\r\n'), "type": "webterminal.message"})
         for line in out_buf:
-            logger.debug(line, "end=")
-            channel_layer.send(channel_name, {'text': json.dumps(
-                ['stdout', smart_unicode(line.strip('\n'))])})
-        channel_layer.send(channel_name, {'text': json.dumps(
-            ['stdout', smart_unicode('end of STDOUT')])})
+            logger.debug("{0} end=".format(line))
+            async_to_sync(channel_layer.send)(channel_name, {'text': '{0}\r\n'.format(
+                smart_unicode(line.strip('\n'))), "type": "webterminal.message"})
+        async_to_sync(channel_layer.send)(channel_name, {'text': smart_unicode(
+            'end of STDOUT\r\n'), "type": "webterminal.message"})
         logger.debug('end of STDOUT')
-        channel_layer.send(channel_name, {'text': json.dumps(
-            ['stdout', smart_unicode('STDERR:')])})
+        async_to_sync(channel_layer.send)(channel_name, {
+            'text': smart_unicode('STDERR:\r\n'), "type": "webterminal.message"})
         logger.debug('STDERR:')
         for line in err_buf:
-            logger.debug(line, "end=")
-            channel_layer.send(channel_name, {'text': json.dumps(
-                ['stdout', smart_unicode(line, "end=")])})
-        channel_layer.send(channel_name, {'text': json.dumps(
-            ['stdout', smart_unicode('end of STDERR')])})
+            logger.debug("{0} end=".format(line))
+            async_to_sync(channel_layer.send)(channel_name, {'text': '{0}\r\n'.format(
+                smart_unicode(line, "end")), "type": "webterminal.message"})
+        async_to_sync(channel_layer.send)(channel_name, {'text': smart_unicode(
+            'end of STDERR\r\n'), "type": "webterminal.message"})
         logger.debug('end of STDERR')
-        channel_layer.send(channel_name, {'text': json.dumps(
-            ['stdout', smart_unicode('finished with exit status: {}'.format(exit_status))])})
+        async_to_sync(channel_layer.send)(channel_name, {'text': smart_unicode(
+            'finished with exit status: {}\r\n'.format(exit_status)), "type": "webterminal.message"})
         logger.debug('finished with exit status: {}'.format(exit_status))
-        channel_layer.send(channel_name, {'text': json.dumps(
-            ['stdout', smart_unicode('------------------------------------')])})
+        async_to_sync(channel_layer.send)(channel_name, {'text': smart_unicode(
+            '------------------------------------\r\n'), "type": "webterminal.message"})
         logger.debug('------------------------------------')
 
     def execute(self, cmd):
@@ -152,36 +131,35 @@ class ShellHandler(object):
 
 class ShellHandlerThread(threading.Thread):
 
-    def __init__(self, message=None, commands=None, server_list=None):
+    def __init__(self, channel_name=None, commands=None, server_list=None, server_ip=None, port=2100, username=None, password=None):
         super(ShellHandlerThread, self).__init__()
         self.commands = commands
         self.server_list = server_list
-        self.message = message
+        self.channel_name = channel_name
+        self.server_ip = server_ip
+        self.port = port
+        self.username = username
+        self.password = password
 
     def run(self):
         for server_ip in self.server_list:
-            self.message.reply_channel.send({"text": json.dumps(
-                ['stdout', '\033[1;3;31mExecute task on server:{0} \033[0m'.format(server_ip)])}, immediately=True)
-
-            # get server credential info
-            serverdata = ServerInfor.objects.get(ip=server_ip, credential__protocol__in=[
-                                                 'ssh-password', 'ssh-key'])
-            port = serverdata.credential.port
-            method = serverdata.credential.method
-            username = serverdata.credential.username
-            if method == 'password':
-                credential = serverdata.credential.password
-            else:
-                credential = serverdata.credential.key
-
+            from channels.layers import get_channel_layer
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.send)(self.channel_name, {
+                'text': '\033[1;3;31mExecute task on server:{0} \033[0m\r\n'.format(server_ip), "type": "webterminal.message"})
             # do actual job
-            ssh = ShellHandler(server_ip, username, port, method,
-                               credential, channel_name=self.message.reply_channel.name)
+            ssh = ShellHandler(self.server_ip, self.username, self.port,
+                               self.password, channel_name=self.channel_name)
             for command in self.commands:
                 if ssh.is_connect:
-                    ssh.execute(command)
+                    try:
+                        ssh.execute(command)
+                    except OSError:
+                        async_to_sync(channel_layer.send)(self.channel_name, {
+                            'text': '\033[1;3;31mServer {0} has been closed the session! \033[0m\r\n'.format(server_ip), "type": "webterminal.message"})
+                        break
                 else:
-                    self.message.reply_channel.send({"text": json.dumps(
-                        ['stdout', '\033[1;3;31mCan not connect to server {0}! \033[0m'.format(server_ip)])}, immediately=True)
+                    async_to_sync(channel_layer.send)(self.channel_name, {
+                        'text': '\033[1;3;31mCan not connect to server {0}! \033[0m\r\n'.format(server_ip), "type": "webterminal.message"})
                     break
             del ssh

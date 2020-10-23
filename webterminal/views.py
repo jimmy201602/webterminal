@@ -46,10 +46,10 @@ class Index(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
         return context
 
 
-class SshLogPlay(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class SshLogPlay(DetailView):
     model = Log
     template_name = 'webterminal/sshlogplay.html'
-    permission_required = 'common.can_play_log'
+    # permission_required = 'common.can_play_log'
     raise_exception = True
 
     def get_context_data(self, **kwargs):
@@ -58,6 +58,10 @@ class SshLogPlay(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
         context['logpath'] = '{0}{1}-{2}-{3}/{4}'.format(
             MEDIA_URL, objects.start_time.year, objects.start_time.month, objects.start_time.day, objects.log)
         return context
+
+
+class SessionLogPlay(TemplateView):
+    template_name = 'webterminal/sessionplayer.html'
 
 
 class SshTerminalMonitor(LoginRequiredMixin, PermissionRequiredMixin, DetailView):

@@ -8,15 +8,8 @@ except:
 from django.utils.translation import ugettext_lazy as _
 from elfinder.exceptions import ElfinderErrorMessages, VolumeNotFoundError, DirNotFoundError, FileNotFoundError, NamedError, NotAnImageError
 from .utils.volumes import instantiate_driver
-try:
-    import sys
-    reload(sys)
-    sys.setdefaultencoding("utf-8")
-except:
-    pass
 from six import string_types as basestring
 from collections import defaultdict
-import traceback
 
 
 class ElfinderConnector:
@@ -79,6 +72,8 @@ class ElfinderConnector:
             try:
                 volume = instantiate_driver(o)
             except Exception as e:
+                import traceback
+                traceback.print_exc()
                 try:
                     self._mountErrors.append(e.__unicode__())
                 except AttributeError:
@@ -148,7 +143,13 @@ class ElfinderConnector:
         """
         Exec command and return result
         """
-        if not self._loaded:
+        try:
+            
+            if not self._loaded:
+                return {'error': self.error(ElfinderErrorMessages.ERROR_CONF, ElfinderErrorMessages.ERROR_CONF_NO_VOL)}
+        except Exception:
+            import traceback
+            traceback.print_exc()
             return {'error': self.error(ElfinderErrorMessages.ERROR_CONF, ElfinderErrorMessages.ERROR_CONF_NO_VOL)}
 
         if not self.commandExists(cmd):
@@ -611,7 +612,7 @@ class ElfinderConnector:
                         result['added'].append(file_)
                     except Exception as e:
                         result['warning'] = self.error(
-                            ElfinderErrorMessages.ERROR_UPLOAD_FILE, uploaded_file.name, e)
+                            ElfinderErrorMessages.ERROR_UPLOAD_FILE, files[file_index].name, e)
                         self._uploadDebug = 'Upload error: Django handler error'
         return result
 
@@ -695,7 +696,7 @@ class ElfinderConnector:
             if encoding != "unknow":
                 content = content.decode(encoding)
             else:
-                content = content.decode()
+                content = content.decode('utf8','ignore')
         try:
             import json
             json.dumps(content)

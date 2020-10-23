@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
-from common.models import ServerGroup
+from common.models import ServerGroup,Credential
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Permission as AuthPermission
 from django.contrib.contenttypes.models import ContentType
@@ -11,11 +11,12 @@ from django.utils.translation import ugettext_lazy as _
 
 class Permission(models.Model):
     user = models.OneToOneField(User, verbose_name=_(
-        'User'), related_name='permissionuser')
+        'User'), related_name='permissionuser',on_delete=models.CASCADE)
     permissions = models.ManyToManyField(
         AuthPermission, verbose_name=_('Permissions'), related_name='permission')
     groups = models.ManyToManyField(
         ServerGroup, verbose_name=_('Server group'))
+    credentials = models.ManyToManyField(Credential,verbose_name=_('credentials'), related_name='credentials')
     createdatetime = models.DateTimeField(
         auto_now_add=True, verbose_name=_('Create time'))
     updatedatetime = models.DateTimeField(
@@ -33,11 +34,12 @@ class Permission(models.Model):
             ("can_change_user", _("Can change user info")),
             ("can_delete_user", _("Can delete user info")),
             ("can_view_user", _("Can view user info")),
-            ("can_view_permissions", _("Can view user permissions")),
-            ("can_change_permissions", _("Can change user permissions")),
-            ("can_delete_permissions", _("Can revoke user permissions")),
-            ("can_add_permissions", _("Can add user permissions")),
+            ("can_view_permission", _("Can view user permission")),
+            ("can_change_permission", _("Can change user permission")),
+            ("can_delete_permission", _("Can revoke user permission")),
+            ("can_add_permission", _("Can add user permission")),
         )
+        app_label = 'permission'
 
 
 class Role(models.Model):
@@ -69,3 +71,4 @@ class Role(models.Model):
             ("can_delete_role_permissions", _("Can revoke role permissions")),
             ("can_add_role_permissions", _("Can add role permissions")),
         )
+        app_label = 'permission'

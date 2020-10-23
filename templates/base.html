@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	{% load staticfiles %}
+	{% load static %}
 	{%load i18n%}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -213,8 +213,6 @@
             {% if perms.common.can_add_servergroup or perms.common.can_change_servergroup or perms.common.can_delete_servergroup or perms.common.can_view_servergroup %}<li class=""><a href="{% url 'grouplist' %}"><i class="fa  fa-crop"></i> {%trans 'server group list' %}</a></li>{% endif%}
             {% if perms.common.can_add_commandssequence or perms.common.can_change_commandssequence or perms.common.can_delete_commandssequence or perms.common.can_view_commandssequence %}<li class=""><a href="{% url 'commandslist' %}"><i class="fa fa-list"></i> {%trans 'commands list' %}</a></li>{% endif%}
             {% if perms.common.can_delete_log or perms.common.can_view_log or perms.common.can_play_log or perms.common.can_kill_serverinfo or perms.common.can_monitor_serverinfo %}<li class=""><a href="{% url 'logslist' %}"><i class="fa fa-tv"></i> {%trans 'log list' %}</a></li>{% endif%}
-            {% if perms.permission.can_add_user or perms.permission.can_change_user or perms.permission.can_delete_user or perms.permission.can_view_user %}<li class=""><a href="{% url 'userlist' %}"><i class="fa fa-user"></i> {%trans 'user list' %}</a></li>{% endif%}
-            {% if perms.permission.can_view_permissions or perms.permission.can_change_permissions or perms.permission.can_delete_permissions or perms.permission.can_add_permissions %}<li class=""><a href="{% url 'permissionlist' %}"><i class="fa fa-lock"></i> {%trans 'permission list' %}</a></li>{% endif%}
 	    {% if perms.common.can_view_settings or perms.common.can_change_settings %}<li class=""><a href="{% url 'settings' %}"><i class="fa fa-cog"></i> {%trans 'settings' %}</a></li>{% endif%}
           </ul>
         </li>
