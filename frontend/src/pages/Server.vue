@@ -916,7 +916,7 @@ export default {
       return 'other'
     },
     getDetectApi (data) {
-      // const that = this
+      const that = this
       this.$axios.post('/common/webterminalhelperdetect/', data).then(res => {
         const id = res.data.message
         const serverProtocol = window.location.protocol
@@ -928,9 +928,27 @@ export default {
           sshProtocolTestPath,
           () => {
             console.log('Custom protocol not found.')
+            that.$q.notify({
+              type: 'negative',
+              color: 'red-5',
+              textColor: 'white',
+              multiLine: true,
+              message: 'Custom protocol not found.',
+              timeout: 5000,
+              position: 'top'
+            })
           },
           () => {
             console.log('Custom protocol found and opened the file successfully.')
+            that.$q.notify({
+              type: 'negative',
+              color: 'red-5',
+              textColor: 'white',
+              multiLine: true,
+              message: 'Custom protocol found and opened the file successfully.',
+              timeout: 5000,
+              position: 'top'
+            })
           }, 3000
         )
       }).catch(() => {

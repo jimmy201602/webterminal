@@ -223,86 +223,87 @@ LOCALE_PATHS = [
 LOG_LEVEL = 'DEBUG' if DEBUG else 'INFO'
 
 # Logging setting
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+if not DEBUG:
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'verbose': {
+                'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            },
+            'main': {
+                'datefmt': '%Y-%m-%d %H:%M:%S',
+                'format': '%(asctime)s [%(module)s %(levelname)s] %(message)s',
+            },
+            'simple': {
+                'format': '%(levelname)s %(message)s'
+            },
         },
-        'main': {
-            'datefmt': '%Y-%m-%d %H:%M:%S',
-            'format': '%(asctime)s [%(module)s %(levelname)s] %(message)s',
+        'handlers': {
+            'null': {
+                'level': 'DEBUG',
+                'class': 'logging.NullHandler',
+            },
+            'console': {
+                'level': 'DEBUG',
+                'class': 'logging.StreamHandler',
+                'formatter': 'main'
+            },
+            'file': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'formatter': 'main',
+                'filename': os.path.join(BASE_DIR, 'log', 'webterminal.log')
+            },
+            'sshconsumer': {
+                'level': 'DEBUG',
+                'class': 'logging.FileHandler',
+                'formatter': 'main',
+                'filename': os.path.join(BASE_DIR, 'log', 'sshconsumer.log')
+            },
         },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
-    'handlers': {
-        'null': {
-            'level': 'DEBUG',
-            'class': 'logging.NullHandler',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'main'
-        },
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'main',
-            'filename': os.path.join(BASE_DIR, 'log', 'webterminal.log')
-        },
-        'sshconsumer': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'formatter': 'main',
-            'filename': os.path.join(BASE_DIR, 'log', 'sshconsumer.log')
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['null'],
-            'propagate': False,
-            'level': LOG_LEVEL,
-        },
-        'django.request': {
-            'handlers': ['console', 'file'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-        'django.server': {
-            'handlers': ['console', 'file'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-        'webterminal.views': {
-            'handlers': ['console', 'file'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-        'webterminal.consumers': {
-            'handlers': ['console', 'sshconsumer'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-        'webterminal.interactive': {
-            'handlers': ['console', 'sshconsumer'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-        'webterminal.sudoterminal': {
-            'handlers': ['console', 'sshconsumer'],
-            'level': LOG_LEVEL,
-            'propagate': False,
-        },
-        'django.db': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO'
+        'loggers': {
+            'django': {
+                'handlers': ['null'],
+                'propagate': False,
+                'level': LOG_LEVEL,
+            },
+            'django.request': {
+                'handlers': ['console', 'file'],
+                'level': LOG_LEVEL,
+                'propagate': False,
+            },
+            'django.server': {
+                'handlers': ['console', 'file'],
+                'level': LOG_LEVEL,
+                'propagate': False,
+            },
+            'webterminal.views': {
+                'handlers': ['console', 'file'],
+                'level': LOG_LEVEL,
+                'propagate': False,
+            },
+            'webterminal.consumers': {
+                'handlers': ['console', 'sshconsumer'],
+                'level': LOG_LEVEL,
+                'propagate': False,
+            },
+            'webterminal.interactive': {
+                'handlers': ['console', 'sshconsumer'],
+                'level': LOG_LEVEL,
+                'propagate': False,
+            },
+            'webterminal.sudoterminal': {
+                'handlers': ['console', 'sshconsumer'],
+                'level': LOG_LEVEL,
+                'propagate': False,
+            },
+            'django.db': {
+                'handlers': ['console', 'file'],
+                'level': 'INFO'
+            }
         }
     }
-}
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
