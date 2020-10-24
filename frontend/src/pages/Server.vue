@@ -915,7 +915,18 @@ export default {
       // }
       return 'other'
     },
-    getDetectApi (data) {
+    detectWebterminalHelperIsInstalled () {
+      const that = this
+      this.$axios.get('/common/api/settingslist/').then(res => {
+        if (res.data.webterminal_detect) {
+          const data = { identify: 'get' }
+          that.detectHelperIsInstalled(data)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    detectHelperIsInstalled (data) {
       const that = this
       this.$axios.post('/common/webterminalhelperdetect/', data).then(res => {
         const id = res.data.message
@@ -1001,8 +1012,7 @@ export default {
     }
   },
   mounted () {
-    const data = { identify: 'get' }
-    this.getDetectApi(data)
+    this.detectWebterminalHelperIsInstalled()
     this.addLine()
   },
   created () {
