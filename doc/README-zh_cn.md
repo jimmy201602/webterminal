@@ -35,19 +35,6 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 
 账户/密码: demo/demo12345678
 
-# QQ讨论群
-### QQ群号 531612760
-![screenshots](../screenshots/qqgroupqr.png  "screenshots")
-
-# 欢迎打赏
-
-## 微信
-![screenshots](../screenshots/wechatpay.png  "wechat")
-
-## 支付宝
-![screenshots](../screenshots/alipay.png  "alipay")
-
-
 # 预览
 ![screenshots](../screenshots/screenshots1.png  "screenshots")
 ![screenshots](../screenshots/screenshots2.gif  "screenshots")
