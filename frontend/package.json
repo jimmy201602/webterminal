@@ -1,8 +1,8 @@
 {
-  "name": "fronted",
-  "version": "0.0.1",
-  "description": "Webterminal fronted",
-  "productName": "webterminal fronted",
+  "name": "frontend",
+  "version": "1.0",
+  "description": "Webterminal frontend",
+  "productName": "webterminal frontend",
   "cordovaId": "org.cordova.quasar.app",
   "capacitorId": "",
   "author": "jimmy201602 <zhengge2012@gmail.com>",
