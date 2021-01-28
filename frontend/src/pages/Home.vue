@@ -263,10 +263,8 @@ export default {
         that.tree = res.data.tree
         that.tree_map = res.data.tree_map
         that.can_login_usernames = res.data.can_login_usernames
-        setTimeout(() => {
-          // set time out expand tree
-          that.$refs.servertree.expandAll()
-        }, 100)
+      }).then(() => {
+        that.$refs.servertree.expandAll()
       }).catch(err => {
         console.log(err)
       })
