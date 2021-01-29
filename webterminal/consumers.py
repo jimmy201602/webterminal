@@ -1,6 +1,6 @@
 import paramiko
 import socket
-from channels.generic.websocket import  AsyncWebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
 try:
     import simplejson as json
 except ImportError:
@@ -75,7 +75,10 @@ class Webterminal(AsyncWebsocketConsumer):
                 self.channel_name, self.chan, elementid=self.channel_name)
             sshterminal.setDaemon = True
             sshterminal.start()
+            await self.accept()
         except socket.error:
+            await self.accept()
+            await self.send(text_data='\033[1;3;31mCan not connect to webterminal socket server!\033[0m')
             self.closessh()
             await self.close()
         except ValueError:
@@ -85,7 +88,6 @@ class Webterminal(AsyncWebsocketConsumer):
             traceback.print_exc()
             self.closessh()
             await self.close()
-        await self.accept()
 
     async def disconnect(self, message, **kwargs):
         # close threading
