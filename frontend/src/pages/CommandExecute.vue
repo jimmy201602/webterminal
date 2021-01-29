@@ -13,7 +13,7 @@
           </div>
           <q-tree
             :nodes="tree"
-            node-key="id"
+            node-key="raw"
             selected-color="primary"
             :filter="filter"
             :ticked.sync="selectednode"
@@ -86,13 +86,16 @@ export default {
       tree: [],
       tree_map: {},
       can_login_usernames: [],
-      selectednode: []
+      selectednode: [],
+      selectNodeKey: null
     }
   },
   watch: {
     selectednode: function (newnode, oldnode) {
       const that = this
       newnode.map(function (value) {
+        that.selectNodeKey = value
+        value = parseInt(value.split('_')[0])
         if (that.tabsdict[that.tree_map[value]] !== undefined) {
           console.log('exist')
         } else {
@@ -101,6 +104,7 @@ export default {
       })
       oldnode.map(function (value) {
         if (!newnode.includes(value)) {
+          value = parseInt(value.split('_')[0])
           that.removeTab(that.tree_map[value])
         }
       })
@@ -139,7 +143,6 @@ export default {
       }
     },
     removeTab: function (name) {
-      console.log('Removing tab', name)
       if (name !== 'help') {
         const Id = this.tabsdict[name]
         let index = -1
@@ -150,7 +153,13 @@ export default {
               key = parseInt(key)
             } catch (e) {
             }
-            index = this.selectednode.indexOf(key)
+            let nodeKey = null
+            this.selectednode.map(value => {
+              if (value.startsWith(`${key}_`)) {
+                nodeKey = value
+              }
+            })
+            index = this.selectednode.indexOf(nodeKey)
           }
         }
         delete this.tabsdict[name]
@@ -341,8 +350,8 @@ export default {
         tabobj.protocol = res.data.data.protocol
         tabobj.loginuser = loginuser
         tabobj.ip = res.data.data.ip
-        if (that.$refs.servertree.getNodeByKey(serverid)) {
-          tabobj.commandid = that.$refs.servertree.getNodeByKey(serverid).commandid
+        if (that.$refs.servertree.getNodeByKey(that.selectNodeKey)) {
+          tabobj.commandid = that.$refs.servertree.getNodeByKey(that.selectNodeKey).commandid
         }
         if (res.data.data.protocol !== 'ssh') {
           that.dynamicUserPasswordAuth(target, tabobj)
