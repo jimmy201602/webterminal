@@ -2,6 +2,7 @@
   <div>
     <q-splitter
       v-model="splitterModel"
+      :limits="[10, 25]"
       class="fit"
     >
       <template v-slot:before>
