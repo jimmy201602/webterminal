@@ -94,6 +94,7 @@ class GetCommandListTreeApi(APIView):
             tree = {
                 "label": commandtask.name,
                 "id": commandtask.id,
+                "raw": '{0}_{1}'.format(server.id,uuid.uuid4().hex),
                 "selectable": False,
                 "children": []
             }
