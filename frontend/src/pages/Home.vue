@@ -318,7 +318,13 @@ export default {
         } else if (usernames.length === 1) {
           that.getDynamicUserPassword(serverid, usernames[0], target, tabobj)
         } else {
-          console.log('no user can login')
+          that.$q.notify({
+            position: 'top',
+            progress: true,
+            message: that.$t('No user can login !'),
+            color: 'negative',
+            multiLine: true
+          })
         }
       }).catch(err => {
         console.log(err)

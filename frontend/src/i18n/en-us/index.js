@@ -96,6 +96,7 @@ export default {
   'Please type a valid proxy port': 'Please type a valid proxy port',
   'Proxy password': 'Proxy password',
   'Please type your proxy password': 'Please type your proxy password',
+  'No user can login !': 'No user can login !',
 
   // log page
   log: {
