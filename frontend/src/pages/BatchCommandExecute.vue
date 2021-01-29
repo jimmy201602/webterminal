@@ -13,7 +13,7 @@
           </div>
           <q-tree
             :nodes="tree"
-            node-key="id"
+            node-key="raw"
             selected-color="primary"
             :filter="filter"
             :ticked.sync="selectednode"
@@ -94,13 +94,16 @@ export default {
       can_login_usernames: [],
       selectednode: [],
       command: null,
-      options: []
+      options: [],
+      selectNodeKey: null
     }
   },
   watch: {
     selectednode: function (newnode, oldnode) {
       const that = this
       newnode.map(function (value) {
+        that.selectNodeKey = value
+        value = parseInt(value.split('_')[0])
         if (that.tabsdict[that.tree_map[value]] !== undefined) {
           console.log('exist')
         } else {
@@ -108,6 +111,7 @@ export default {
         }
       })
       oldnode.map(function (value) {
+        value = parseInt(value.split('_')[0])
         if (!newnode.includes(value)) {
           that.removeTab(that.tree_map[value])
         }
@@ -176,7 +180,13 @@ export default {
               key = parseInt(key)
             } catch (e) {
             }
-            index = this.selectednode.indexOf(key)
+            let nodeKey = null
+            this.selectednode.map(value => {
+              if (value.startsWith(`${key}_`)) {
+                nodeKey = value
+              }
+            })
+            index = this.selectednode.indexOf(nodeKey)
           }
         }
         delete this.tabsdict[name]
