@@ -8,8 +8,8 @@ application = ProtocolTypeRouter({
     'websocket':
         URLRouter([
             path('ws', Webterminal.as_asgi()),
-            path('execute', CommandExecute),
-            path('monitor', SshTerminalMonitor),
+            path('execute', CommandExecute.as_asgi()),
+            path('monitor', SshTerminalMonitor.as_asgi()),
         ]
         ),
 })

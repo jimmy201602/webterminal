@@ -13,7 +13,7 @@
           </div>
           <q-tree
             :nodes="tree"
-            node-key="id"
+            node-key="raw"
             selected-color="primary"
             :selected.sync="selected"
             :filter="filter"
@@ -21,6 +21,7 @@
             @update:selected="update"
             label-key="label"
             ref="servertree"
+            onclick="clickNode"
             default-expand-all
           />
         </div>
@@ -221,6 +222,7 @@ export default {
         this.selected = null
         return
       }
+      target = parseInt(target.split('_')[0])
       const serverid = target
       target = this.tree_map[target]
       const OriTarget = target
