@@ -21,7 +21,6 @@
             @update:selected="update"
             label-key="label"
             ref="servertree"
-            onclick="clickNode"
             default-expand-all
           />
         </div>

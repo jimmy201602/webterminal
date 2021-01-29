@@ -54,6 +54,7 @@ class GetServerListTreeApi(APIView):
                 tree = {
                     "label": group.name,
                     "selectable": False,
+                    "raw": '{0}'.format(uuid.uuid4().hex),
                     "children": []
                 }
                 for server in group.servers.all():
@@ -137,6 +138,7 @@ class GetLinuxServerListTreeApi(APIView):
                 tree = {
                     "label": group.name,
                     "selectable": False,
+                    "raw": '{0}'.format(uuid.uuid4().hex),
                     "children": []
                 }
                 for server in group.servers.all():
