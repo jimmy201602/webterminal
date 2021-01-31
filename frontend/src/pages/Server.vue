@@ -164,7 +164,7 @@
                   basic
                   spinner-color="white"
                   class="rounded-borders"
-                  @click="clickRow(props,'wevnc')"
+                  @click="clickRow(props,'webvnc')"
                   @contextmenu.stop.prevent="settingsRow(props,'vnc')"
                 >
                   <div class="absolute-bottom text-center text-italic">
@@ -450,7 +450,10 @@ export default {
       })
     },
     clickRow (props, protocol) {
-      window.open(`/#/webterminal/${props.row.id}/`, '', 'scrollbars=no,location=no,status=no,toolbar=no,menubar=no,width=1600,height=900')
+      console.log(props, protocol)
+      if (protocol.startsWith('web')) {
+        window.open(`/#/webterminal/${props.row.id}/`, '', 'scrollbars=no,location=no,status=no,toolbar=no,menubar=no,width=1600,height=900')
+      }
     },
     settingsRow (props, protocol) {
       this.SettingDefaultUser(props, protocol)
