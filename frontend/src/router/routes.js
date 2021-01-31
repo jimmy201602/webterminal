@@ -23,6 +23,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import('../components/Login')
+  },
+  {
+    path: '/webterminal/:id/',
+    name: 'webterminal',
+    component: () => import('../pages/WebTerminal')
   }
 ]
 

@@ -450,7 +450,7 @@ export default {
       })
     },
     clickRow (props, protocol) {
-      console.log(props, protocol)
+      window.open(`/#/webterminal/${props.row.id}/`, '', 'scrollbars=no,location=no,status=no,toolbar=no,menubar=no,width=1600,height=900')
     },
     settingsRow (props, protocol) {
       this.SettingDefaultUser(props, protocol)
