@@ -174,17 +174,12 @@ export default {
       links3: [],
       buttons1: [
         { text: 'About' },
-        { text: 'Press' },
         { text: 'Copyright' },
         { text: 'Contact us' },
-        { text: 'Creators' },
-        { text: 'Advertise' },
-        { text: 'Developers' }
+        { text: 'Creators' }
       ],
       buttons2: [
-        { text: 'Terms' },
         { text: 'Privacy' },
-        { text: 'Policy & Safety' },
         { text: 'Test new features' }
       ]
     }
