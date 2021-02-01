@@ -150,6 +150,11 @@
               </a>
             </div>
           </div>
+          <div class="q-py-md q-px-md text-grey-9">
+            <div class="row items-center q-gutter-x-sm q-gutter-y-xs">
+              © 2021 Webterminal
+            </div>
+          </div>
         </q-list>
       </q-scroll-area>
     </q-drawer>
