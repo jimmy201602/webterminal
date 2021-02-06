@@ -436,10 +436,121 @@ export default {
       update_title: this.$t('server.update_server'),
       id: null,
       default_user_config_id: null,
-      downloadLink: false
+      downloadLink: false,
+      can_login_usernames: [],
+      protocol: ''
     }
   },
   methods: {
+    getLoginUserName (serverid) {
+      const that = this
+      this.$axios.get(`/common/api/serverinfowithcredential/${serverid}/`).then(res => {
+        let usernames = []
+        res.data.credentials.map(val => {
+          if (that.can_login_usernames.indexOf(val.username) !== -1) {
+            usernames.push(val.username)
+          }
+        })
+        usernames = [...new Set(usernames)]
+        if (usernames.length > 1) {
+          const items = []
+          usernames = Array.from(usernames)
+          usernames.map(item => {
+            items.push({
+              label: item,
+              value: item
+            })
+          })
+          that.$q.dialog({
+            title: '',
+            message: 'Choose your default connect user:',
+            options: {
+              type: 'radio',
+              model: '',
+              // inline: true,
+              items: items
+            },
+            cancel: true,
+            persistent: true
+          }).onOk(loginuser => {
+            if (loginuser !== '') {
+              that.getDynamicUserPassword(serverid, loginuser)
+            }
+          })
+        } else if (usernames.length === 1) {
+          that.getDynamicUserPassword(serverid, usernames[0])
+        } else {
+          that.$q.notify({
+            position: 'top',
+            progress: true,
+            message: that.$t('No user can login !'),
+            color: 'negative',
+            multiLine: true
+          })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getDynamicUserPassword (serverid, loginuser) {
+      const that = this
+      const tabobj = {}
+      this.$axios.post('/common/api/getdynamicpassword/', { serverid: serverid, username: loginuser }).then(res => {
+        tabobj.username = res.data.data.username
+        tabobj.password = res.data.data.password
+        tabobj.protocol = res.data.data.protocol
+        tabobj.loginuser = loginuser
+        if (res.data.data.protocol !== 'ssh') {
+          that.dynamicUserPasswordAuth(tabobj)
+        } else {
+          // that.tab = tabobj
+          // console.log(tabobj)
+          this.openWebterminalHelperToConnectServer(tabobj)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    dynamicUserPasswordAuth (tabobj) {
+      // const that = this
+      this.$axios.post('/common/api/dynamicpasswordauth/', { username: tabobj.username, password: tabobj.password }).then(res => {
+        // that.tab = tabobj
+        // console.log(tabobj)
+        this.openWebterminalHelperToConnectServer(tabobj)
+      })
+    },
+    openWebterminalHelperToConnectServer (tabobj) {
+      // console.log(tabobj)
+      const that = this
+      var serverAddress = window.location.hostname
+      const protocol = this.protocol
+      let serverRemotePort = ''
+      if (tabobj.protocol === 'ssh' || tabobj.protocol === 'sftp') {
+        serverRemotePort = 2100
+      } else {
+        serverRemotePort = 3389
+      }
+      var username = tabobj.username
+      var tempPass = tabobj.password
+      var protocolPath = 'wssh://' + protocol + '#' + serverAddress + '#' + serverRemotePort + '#' + username + '#' + tempPass
+      customProtocolCheck(
+        protocolPath,
+        () => {
+          that.$q.notify({
+            type: 'negative',
+            color: 'red-5',
+            textColor: 'white',
+            multiLine: true,
+            message: 'Custom protocol not found.',
+            timeout: 5000,
+            position: 'top-right'
+          })
+          that.downloadLink = true
+        },
+        () => {
+        }, 3000
+      )
+    },
     getDownloadWebterminalHelperLink () {
       const baseUrl = 'https://github.com/jimmy201602/webterminal/raw/master/helper/Webterminal%20Helper'
       return {
@@ -451,7 +562,7 @@ export default {
     },
     downloadWebterminalHelper (platform) {
       const systemPlatform = this.getPlatform()
-      if (systemPlatform === 'other' || systemPlatform === 'Unix') {
+      if (systemPlatform === 'Other' || systemPlatform === 'Unix') {
         this.$q.notify({
           type: 'positive',
           textColor: 'grey-10',
@@ -545,9 +656,12 @@ export default {
       })
     },
     clickRow (props, protocol) {
-      console.log(props, protocol)
+      // console.log(props, protocol)
       if (protocol.startsWith('web')) {
         window.open(`/#/webterminal/${props.row.id}/`, '', 'scrollbars=no,location=no,status=no,toolbar=no,menubar=no,width=1600,height=900')
+      } else {
+        this.getLoginUserName(props.row.id)
+        this.protocol = protocol
       }
     },
     settingsRow (props, protocol) {
@@ -1011,7 +1125,7 @@ export default {
       //   var isWin10 = sUserAgent.indexOf("Windows NT 10") > -1 || sUserAgent.indexOf("Windows 10") > -1;
       //   if (isWin10) return "Win10";
       // }
-      return 'other'
+      return 'Other'
     },
     detectWebterminalHelperIsInstalled () {
       const that = this
@@ -1117,6 +1231,10 @@ export default {
   created () {
     this.fetchdata()
     this.fetchCredential()
+    const that = this
+    this.$axios.get('/permission/api/getserverlisttree/').then(res => {
+      that.can_login_usernames = res.data.can_login_usernames
+    })
   }
 }
 </script>
