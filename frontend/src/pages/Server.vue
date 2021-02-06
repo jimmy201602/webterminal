@@ -313,7 +313,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="downloadLink" persistent transition-show="flip-down" transition-hide="flip-up">
+    <q-dialog v-model="downloadLink" persistent transition-show="flip-down" transition-hide="flip-up" position="top">
       <q-card>
         <q-bar>
           <q-space />
@@ -323,7 +323,7 @@
         </q-bar>
 
         <q-card-section>
-            {{$t('You haven\'t install webterminal ssh helper,please download and install it.')}}
+            {{$t('You haven\'t install webterminal helper,please download and install it.')}}
           <q-list>
             <q-item
               @click.native="downloadWebterminalHelper('Windows')"
@@ -1044,7 +1044,7 @@ export default {
               multiLine: true,
               message: 'Custom protocol not found.',
               timeout: 5000,
-              position: 'top'
+              position: 'top-right'
             })
             that.downloadLink = true
           },

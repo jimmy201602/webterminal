@@ -98,7 +98,7 @@ export default {
   'Please type your proxy password': 'Please type your proxy password',
   'No user can login !': 'No user can login !',
   'Not supported system.': 'Not supported system.',
-  'You haven\'t install webterminal ssh helper,please download and install it.': 'You haven\'t install webterminal ssh helper,please download and install it.',
+  'You haven\'t install webterminal helper,please download and install it.': 'You haven\'t install webterminal helper,please download and install it.',
 
   // log page
   log: {
