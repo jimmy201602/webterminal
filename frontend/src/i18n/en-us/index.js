@@ -99,7 +99,17 @@ export default {
   'No user can login !': 'No user can login !',
   'Not supported system.': 'Not supported system.',
   'You haven\'t install webterminal helper,please download and install it.': 'You haven\'t install webterminal helper,please download and install it.',
-
+  Audit: 'Audit',
+  User: 'User',
+  Permission: 'Permission',
+  Settings: 'Settings',
+  Webterminal: 'Webterminal',
+  Credential: 'Credential',
+  'Command execution': 'Command execution',
+  'Batch command execution': 'Batch command execution',
+  Group: 'Group',
+  Server: 'Server',
+  Commands: 'Commands',
   // log page
   log: {
     log: 'Log',

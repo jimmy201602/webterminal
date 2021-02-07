@@ -181,9 +181,9 @@ class GetMenuListApi(APIView):
                 "can_view_commandssequence": {'icon': 'list_alt', 'text': 'Commands', 'name': 'command'}
             },
             "links3": {
-                "can_view_log": {'icon': 'view_list', 'text': 'Log list', 'name': 'log'},
-                "can_view_user": {'icon': 'account_box', 'text': 'User list', 'name': 'user'},
-                "can_view_permission": {'icon': 'lock', 'text': 'Permission list', 'name': 'permission'},
+                "can_view_log": {'icon': 'view_list', 'text': 'Audit', 'name': 'log'},
+                "can_view_user": {'icon': 'account_box', 'text': 'User', 'name': 'user'},
+                "can_view_permission": {'icon': 'lock', 'text': 'Permission', 'name': 'permission'},
                 "can_view_settings": {'icon': 'settings', 'text': 'Settings', 'name': 'setting'}
 
             },

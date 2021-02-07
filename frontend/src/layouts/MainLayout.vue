@@ -98,7 +98,7 @@
               <q-icon color="grey" :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label>{{ $t(link.text) }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -109,7 +109,7 @@
               <q-icon color="grey" :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label>{{ $t(link.text) }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -120,7 +120,7 @@
               <q-icon color="grey" :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label>{{ $t(link.text) }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -204,9 +204,9 @@ export default {
       { icon: 'list_alt', text: 'Commands', name: 'command' }
     ]
     this.links3 = [
-      { icon: 'view_list', text: 'Log list', name: 'log' },
-      { icon: 'account_box', text: 'User list', name: 'user' },
-      { icon: 'lock', text: 'Permission list', name: 'permission' },
+      { icon: 'view_list', text: 'Audit', name: 'log' },
+      { icon: 'account_box', text: 'User', name: 'user' },
+      { icon: 'lock', text: 'Permission', name: 'permission' },
       { icon: 'settings', text: 'Settings', name: 'setting' }
     ]
     this.getMenuList()
