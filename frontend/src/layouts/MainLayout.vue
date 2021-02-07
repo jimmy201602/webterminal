@@ -33,7 +33,7 @@
           </q-btn>
           <q-btn round dense flat color="grey-8" icon="notifications">
             <q-badge color="red" text-color="white" floating>
-              5
+              {{ message_count}}
             </q-badge>
             <q-menu
             >
@@ -186,7 +186,8 @@ export default {
       buttons2: [
         { text: 'Privacy' },
         { text: 'Test new features' }
-      ]
+      ],
+      message_count: 0
     }
   },
   mounted () {
