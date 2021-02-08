@@ -35,6 +35,8 @@ export default {
   'Verify your password': 'Verify your password',
   'Email address': 'Email address',
   'password strength': 'password strength',
+  'About Us': 'About Us',
+  'Our mission is to give everyone a full control platform to manage all your it asset.': 'Our mission is to give everyone a full control platform to manage all your it asset.',
 
   // Credential page
   credential: {

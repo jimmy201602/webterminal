@@ -132,7 +132,7 @@
                 v-for="button in buttons1"
                 :key="button.text"
                 class="YL__drawer-footer-link"
-                href="javascript:void(0)"
+                :href="'/#/'+button.name"
               >
                 {{ button.text }}
               </a>
@@ -144,7 +144,7 @@
                 v-for="button in buttons2"
                 :key="button.text"
                 class="YL__drawer-footer-link"
-                href="javascript:void(0)"
+                :href="'/#/'+button.name"
               >
                 {{ button.text }}
               </a>
@@ -178,14 +178,14 @@ export default {
       links2: [],
       links3: [],
       buttons1: [
-        { text: 'About' },
-        { text: 'Copyright' },
-        { text: 'Contact us' },
-        { text: 'Creators' }
+        { text: 'About', name: 'about' },
+        { text: 'Copyright', name: '' },
+        { text: 'Contact us', name: '' },
+        { text: 'Creators', name: '' }
       ],
       buttons2: [
-        { text: 'Privacy' },
-        { text: 'Test new features' }
+        { text: 'Privacy', name: '' },
+        { text: 'Test new features', name: '' }
       ],
       message_count: 0
     }

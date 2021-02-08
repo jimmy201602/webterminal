@@ -16,7 +16,8 @@ const routes = [
       { path: 'logs', name: 'log', component: () => import('pages/Log.vue') },
       { path: 'users', name: 'user', component: () => import('pages/User.vue') },
       { path: 'permissions', name: 'permission', component: () => import('pages/Permission.vue') },
-      { path: 'settings', name: 'setting', component: () => import('pages/Setting.vue') }
+      { path: 'settings', name: 'setting', component: () => import('pages/Setting.vue') },
+      { path: 'about', name: 'about', component: () => import('pages/About.vue') }
     ]
   },
   {

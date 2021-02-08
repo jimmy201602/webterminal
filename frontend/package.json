@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@quasar/app": "^1.9.6",
+    "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
