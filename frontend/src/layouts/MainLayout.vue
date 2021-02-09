@@ -179,13 +179,13 @@ export default {
       links3: [],
       buttons1: [
         { text: 'About', name: 'about' },
-        { text: 'Copyright', name: '' },
-        { text: 'Contact us', name: '' },
-        { text: 'Creators', name: '' }
+        // { text: 'Copyright', name: '' },
+        { text: 'Contact us', name: 'contact' }
+        // { text: 'Creators', name: '' }
       ],
       buttons2: [
-        { text: 'Privacy', name: '' },
-        { text: 'Test new features', name: '' }
+        // { text: 'Privacy', name: '' },
+        // { text: 'Test new features', name: '' }
       ],
       message_count: 0
     }

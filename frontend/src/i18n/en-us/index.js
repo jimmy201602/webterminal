@@ -37,6 +37,7 @@ export default {
   'password strength': 'password strength',
   'About Us': 'About Us',
   'Our mission is to give everyone a full control platform to manage all your it asset.': 'Our mission is to give everyone a full control platform to manage all your it asset.',
+  'Contact Us': 'Contact Us',
 
   // Credential page
   credential: {

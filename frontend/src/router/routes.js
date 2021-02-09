@@ -17,7 +17,8 @@ const routes = [
       { path: 'users', name: 'user', component: () => import('pages/User.vue') },
       { path: 'permissions', name: 'permission', component: () => import('pages/Permission.vue') },
       { path: 'settings', name: 'setting', component: () => import('pages/Setting.vue') },
-      { path: 'about', name: 'about', component: () => import('pages/About.vue') }
+      { path: 'about', name: 'about', component: () => import('pages/About.vue') },
+      { path: 'contact', name: 'contact', component: () => import('pages/Contact.vue') }
     ]
   },
   {
