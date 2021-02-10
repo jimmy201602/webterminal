@@ -40,6 +40,12 @@ export default {
   'Contact Us': 'Contact Us',
   Email: 'Email',
   Github: 'Github',
+  'DESIGN PHILOSOPHY': 'DESIGN PHILOSOPHY',
+  'Easy to use. Agile deployment. Full control. Full auidt platform.': 'Easy to use. Agile deployment. Full control. Full auidt platform.',
+  'OUR MISSION': 'OUR MISSION',
+  'Provide a full control platform to manage all your IT asset.': 'Provide a full control platform to manage all your IT asset.',
+  'OUR VALUE': 'OUR VALUE',
+  'Try to provide a easy way to control and audit your action platform to manage all your asset.': 'Try to provide a easy way to control and audit your action platform to manage all your asset.',
 
   // Credential page
   credential: {

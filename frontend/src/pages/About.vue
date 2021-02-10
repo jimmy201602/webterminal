@@ -20,10 +20,10 @@
               />
 
               <q-card-section>
-                <div class="text-overline text-orange-9">Overline</div>
-                <div :class="about_heading_1" :style="'color: ' + about_heading_color_1" class="about_heading_1 text-h6 q-mt-sm q-mb-xs">OFFICE PHILOSOPHY</div>
+<!--                <div class="text-overline text-orange-9">Overline</div>-->
+                <div :class="about_heading_1" :style="'color: ' + about_heading_color_1" class="about_heading_1 text-h6 q-mt-sm q-mb-xs">{{$t('DESIGN PHILOSOPHY')}}</div>
                 <div class="text-caption text-grey-9">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  {{$t('Easy to use. Agile deployment. Full control. Full auidt platform.')}}
                 </div>
               </q-card-section>
             </q-card>
@@ -35,10 +35,10 @@
               />
 
               <q-card-section>
-                <div class="text-overline text-orange-9">Overline</div>
-                <div :class="about_heading_2" :style="'color: ' + about_heading_color_2" class="text-h6 q-mt-sm q-mb-xs">OFFICE MISSION</div>
+<!--                <div class="text-overline text-orange-9">Overline</div>-->
+                <div :class="about_heading_2" :style="'color: ' + about_heading_color_2" class="text-h6 q-mt-sm q-mb-xs">{{$t('OUR MISSION')}}</div>
                 <div class="text-caption text-grey-9">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  {{$t('Provide a full control platform to manage all your IT asset.')}}
                 </div>
               </q-card-section>
             </q-card>
@@ -50,11 +50,10 @@
               />
 
               <q-card-section>
-                <div class="text-overline text-orange-9">Overline</div>
-                <div :class="about_heading_3" :style="'color: ' + about_heading_color_3" class="text-h6 q-mt-sm q-mb-xs">OFFICE VALUE & RULES</div>
+<!--                <div class="text-overline text-orange-9">Overline</div>-->
+                <div :class="about_heading_3" :style="'color: ' + about_heading_color_3" class="text-h6 q-mt-sm q-mb-xs">{{$t('OUR VALUE')}}</div>
                 <div class="text-caption text-grey-9">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                  et dolore magna aliqua.
+                  {{$t('Try to provide a easy way to control and audit your action platform to manage all your asset.')}}
                 </div>
               </q-card-section>
             </q-card>
