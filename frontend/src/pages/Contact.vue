@@ -7,7 +7,7 @@
           <h5 class="text-center">{{$t('Contact Us')}}
             <br>
             <span
-              class="text-center text-grey text-h6">{{$t('Our mission is to give everyone a full control platform to manage all your it asset.')}}</span>
+              class="text-center text-grey text-h6">{{$t('Email')}}: <q-btn flat no-caps size="lg" type="a" href="mailto:zhengge2012@gmail.com">zhengge2012@gmail.com</q-btn></span>
           </h5>
         </div>
       </div>
