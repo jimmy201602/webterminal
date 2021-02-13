@@ -10,7 +10,7 @@
               class="text-center text-grey text-h6">{{$t('Email')}}: <q-btn flat no-caps size="lg" type="a" href="mailto:zhengge2012@gmail.com">zhengge2012@gmail.com</q-btn></span>
             <br>
             <span
-              class="text-center text-grey text-h6">{{$t('Github')}}: <q-btn flat no-caps size="lg" type="a" href="https://github.com/jimmy201602/webterminal">https://github.com/jimmy201602/webterminal</q-btn></span>
+              class="text-center text-grey text-h6">{{$t('Github')}}: <q-btn flat no-caps size="lg" type="a" target="_blank" href="https://github.com/jimmy201602/webterminal">https://github.com/jimmy201602/webterminal</q-btn></span>
           </h5>
         </div>
       </div>
