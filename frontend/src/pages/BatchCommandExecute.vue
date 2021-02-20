@@ -64,7 +64,7 @@
                   <q-space ></q-space>
                   <q-btn dense flat icon="minimize"></q-btn>
                   <q-btn dense flat icon="crop_square"></q-btn>
-                  <q-btn dense flat icon="close" @click.stop="removeTab(tab.name)"></q-btn>
+                  <q-btn dense flat icon="close" @click.stop="closeWindow(tab.originalValue)"></q-btn>
                 </q-bar>
                 <terminal :showtoolbar="false" :id="tab.id" :loginuser="tab.loginuser" :username="tab.username" :serverid="tab.serverid" :password="tab.password" ref="terminal" style="overflow:hidden;height:200px;width:100%;"></terminal>
             </div>
@@ -85,7 +85,6 @@ export default {
     return {
       searchFocused: false,
       splitterModel: 15,
-      selected: '',
       filter: '',
       tabs: [],
       tabsdict: { help: 'help' },
@@ -103,36 +102,21 @@ export default {
       const that = this
       newnode.map(function (value) {
         that.selectNodeKey = value
-        value = parseInt(value.split('_')[0])
-        if (that.tabsdict[that.tree_map[value]] !== undefined) {
+        // value = parseInt(value.split('_')[0])
+        const tempTabs = that.tabs.filter(function (el, index) { return el.name === value })
+        // need to handle different user login condition
+        if (tempTabs.length === 1) {
           console.log('exist')
         } else {
           that.update(value)
         }
       })
       oldnode.map(function (value) {
-        value = parseInt(value.split('_')[0])
-        if (!newnode.includes(value)) {
-          that.removeTab(that.tree_map[value])
+        const tempTabs = that.tabs.filter(function (el, index) { return el.name === value })
+        if (tempTabs.length === 0) {
+          that.closeWindow(value)
         }
       })
-    },
-    selected: function (newFolder, oldFolder) {
-      console.log('watch selected node change', newFolder, oldFolder)
-      if (newFolder === null) {
-        this.selected = oldFolder
-      }
-      // resize the tab window when tab change
-      if (newFolder !== 'help') {
-        const that = this
-        if (this.$refs.terminal) {
-          this.$refs.terminal.map(function (term) {
-            if (term.id === that.tabsdict[that.selected]) {
-              term.onWindowResize()
-            }
-          })
-        }
-      }
     },
     splitterModel: function (new1, old) {
       this.ResizeTerminalWindow()
@@ -159,77 +143,41 @@ export default {
       this.command = val
     },
     ResizeTerminalWindow: function () {
-      const that = this
-      if (this.selected !== 'help') {
-        // when splitter width change then resize the terminal to fit
+      this.$refs.terminal.map(function (term) {
+        term.onWindowResize()
+      })
+    },
+    closeWindow: function (id) {
+      // console.log('Removing tab id', id)
+      const tempTabs = this.tabs.filter(function (el, index) { return el.originalValue === id })
+      // terminal element id
+      let Id = null
+      if (tempTabs.length === 1) {
+        Id = tempTabs[0].id
+      }
+      let index = -1
+      index = this.selectednode.indexOf(id)
+      if (index > -1) {
+        this.selectednode.splice(index, 1)
+      }
+      // close websocket
+      if (this.$refs.terminal) {
         this.$refs.terminal.map(function (term) {
-          if (term.id === that.tabsdict[that.selected]) {
-            term.onWindowResize()
+          if (term.id === Id) {
+            if (term.ws) {
+              term.ws.close()
+            }
           }
         })
       }
-    },
-    removeTab: function (name) {
-      console.log('Removing tab', name)
-      if (name !== 'help') {
-        const Id = this.tabsdict[name]
-        let index = -1
-        for (var key in this.tree_map) {
-          if (this.tree_map[key] === name) {
-            try {
-              key = parseInt(key)
-            } catch (e) {
-            }
-            let nodeKey = null
-            this.selectednode.map(value => {
-              if (value.startsWith(`${key}_`)) {
-                nodeKey = value
-              }
-            })
-            index = this.selectednode.indexOf(nodeKey)
-          }
-        }
-        delete this.tabsdict[name]
-        if (index > -1) {
-          this.selectednode.splice(index, 1)
-        }
-        let IndexId = -1
-        this.tabs.map(function (el, index) {
-          if (el.name === name) {
-            IndexId = index
-          }
-        })
-        // close websocket
-        if (this.$refs.terminal) {
-          this.$refs.terminal.map(function (term) {
-            if (term.id === Id) {
-              if (term.ws) {
-                term.ws.close()
-              }
-            }
-          })
-        }
 
-        this.tabs = this.tabs.filter(function (el, index) { return el.name !== name })
-        this.selected = 'help'
-        if (this.tabs[IndexId - 1]) {
-          this.selected = this.tabs[IndexId - 1].name
+      this.tabs = this.tabs.filter(function (el, index) { return el.originalValue !== id })
+      try {
+        if (window.document.getElementById(Id)) {
+          window.document.getElementById(Id).remove()
         }
-        try {
-          if (window.document.getElementById(Id)) {
-            window.document.getElementById(Id).remove()
-          }
-        } catch (e) {
-          console.log(e)
-        }
-      } else {
-        this.$q.notify({
-          position: 'top',
-          progress: true,
-          message: 'You can\'t remove help tab!',
-          color: 'warning',
-          multiLine: true
-        })
+      } catch (e) {
+        console.log(e)
       }
     },
     filterServer (node, filter) {
@@ -257,55 +205,9 @@ export default {
       return result
     },
     update (target) {
-      console.log('update target', target)
-      // if the target is null then alert user re click the tree
-      // generate unique key reflect
-      if (target === null) {
-        this.$q.notify({
-          position: 'top',
-          progress: true,
-          message: 'Please re click the node, It can\'t be null !',
-          color: 'warning',
-          multiLine: true
-        })
-        this.selected = null
-        return
-      }
-      const serverid = target
-      target = this.tree_map[target]
-      const OriTarget = target
-      let CurrentIndex = 0
-      let CurrentIndexArray = []
-      this.tabs.map((item) => {
-        if (item.OriTarget === target) {
-          CurrentIndexArray.push(item.CurrentIndex)
-        }
-      })
-      CurrentIndexArray = CurrentIndexArray.sort(function (a, b) { return a - b })
-      if (CurrentIndexArray.length > 1) {
-        CurrentIndex = CurrentIndexArray[CurrentIndexArray.length - 1] + 1
-        if (CurrentIndex === 0) {
-          // eslint-disable-next-line no-self-assign
-          target = target
-        } else {
-          target = target + ' (' + CurrentIndex + ')'
-        }
-      } else {
-        if (CurrentIndexArray.length === 1) {
-          target = target + ' (' + CurrentIndex + ')'
-        } else {
-          target = OriTarget
-        }
-      }
-      // add a friendly tab name
+      const serverid = parseInt(target.split('_')[0])
       const RandomId = this.makeid(10)
-      this.tabsdict[target] = RandomId
-      // this.tabs.push()
-      // this.selected = target
-      this.loginToWebterminal(serverid, target, { name: target, id: RandomId, serverid: serverid, OriTarget: OriTarget, CurrentIndex: CurrentIndex, username: '', password: '', loginuser: '' })
-    },
-    updatetab (value) {
-      // console.log(value)
+      this.loginToWebterminal(serverid, target, { name: target, id: RandomId, serverid: serverid, username: '', password: '', loginuser: '' })
     },
     fetchData () {
       const that = this
@@ -342,7 +244,6 @@ export default {
         })
         usernames = [...new Set(usernames)]
         if (usernames.length > 1) {
-          console.log('choose the login user name')
           const items = []
           usernames = Array.from(usernames)
           usernames.map(item => {
@@ -383,21 +284,12 @@ export default {
         tabobj.password = res.data.data.password
         tabobj.protocol = res.data.data.protocol
         tabobj.loginuser = loginuser
-        if (res.data.data.protocol !== 'ssh') {
-          that.dynamicUserPasswordAuth(target, tabobj)
-        } else {
+        tabobj.originalValue = target
+        if (res.data.data.protocol === 'ssh') {
           that.tabs.push(tabobj)
-          that.selected = target
         }
       }).catch(err => {
         console.log(err)
-      })
-    },
-    dynamicUserPasswordAuth (target, tabobj) {
-      const that = this
-      this.$axios.post('/common/api/dynamicpasswordauth/', { username: tabobj.username, password: tabobj.password }).then(res => {
-        that.tabs.push(tabobj)
-        that.selected = target
       })
     }
   },
@@ -418,9 +310,6 @@ export default {
     }
   },
   created () {
-    if (this.tabs.length > 0 && this.selected !== null) {
-      this.selected = 'help'
-    }
     this.fetchData()
     this.fetchAutoCompeleteCommandslist('')
   },
