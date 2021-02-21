@@ -87,7 +87,6 @@ export default {
       splitterModel: 15,
       filter: '',
       tabs: [],
-      tabsdict: { help: 'help' },
       tree: [],
       can_login_usernames: [],
       selectednode: [],
