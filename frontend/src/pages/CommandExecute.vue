@@ -21,6 +21,7 @@
             tick-strategy="leaf"
             label-key="label"
             ref="servertree"
+            @update:ticked="tickedNode"
             default-expand-all
           />
         </div>
@@ -86,31 +87,11 @@ export default {
       tree: [],
       tree_map: {},
       can_login_usernames: [],
-      selectednode: [],
-      selectNodeKey: null
+      selectednode: []
     }
   },
   watch: {
-    selectednode: function (newnode, oldnode) {
-      const that = this
-      newnode.map(function (value) {
-        that.selectNodeKey = value
-        value = parseInt(value.split('_')[0])
-        if (that.tabsdict[that.tree_map[value]] !== undefined) {
-          console.log('exist')
-        } else {
-          that.update(value)
-        }
-      })
-      oldnode.map(function (value) {
-        if (!newnode.includes(value)) {
-          value = parseInt(value.split('_')[0])
-          that.removeTab(that.tree_map[value])
-        }
-      })
-    },
     selected: function (newFolder, oldFolder) {
-      console.log('watch selected node change', newFolder, oldFolder)
       if (newFolder === null) {
         this.selected = oldFolder
       }
@@ -131,6 +112,23 @@ export default {
     }
   },
   methods: {
+    tickedNode: function (target) {
+      const that = this
+      target.map(function (value) {
+        const tempTabs = that.tabs.filter(function (el, index) { return el.originalValue === value })
+        if (tempTabs.length === 1) {
+          console.log('exist')
+        } else {
+          that.update(value)
+        }
+      })
+      this.tabs.map(function (value) {
+        const tempTabs = that.tabs.filter(function (el, index) { return !target.includes(el.originalValue) && el.id !== 'help' })
+        if (tempTabs.length === 1) {
+          that.removeTab(tempTabs[0].name)
+        }
+      })
+    },
     ResizeTerminalWindow: function () {
       const that = this
       if (this.selected !== 'help') {
@@ -146,21 +144,9 @@ export default {
       if (name !== 'help') {
         const Id = this.tabsdict[name]
         let index = -1
-        for (var key in this.tree_map) {
-          if (this.tree_map[key] === name) {
-            console.log(this.selectednode)
-            try {
-              key = parseInt(key)
-            } catch (e) {
-            }
-            let nodeKey = null
-            this.selectednode.map(value => {
-              if (value.startsWith(`${key}_`)) {
-                nodeKey = value
-              }
-            })
-            index = this.selectednode.indexOf(nodeKey)
-          }
+        const tempTabs = this.tabs.filter(function (el, index) { return el.id === Id })
+        if (tempTabs.length === 1) {
+          index = this.selectednode.indexOf(tempTabs[0].originalValue)
         }
         delete this.tabsdict[name]
         if (index > -1) {
@@ -230,7 +216,6 @@ export default {
       return result
     },
     update (target) {
-      console.log('update target', target)
       // if the target is null then alert user re click the tree
       // generate unique key reflect
       if (target === null) {
@@ -244,38 +229,13 @@ export default {
         this.selected = null
         return
       }
-      const serverid = target
-      target = this.tree_map[target]
-      const OriTarget = target
-      let CurrentIndex = 0
-      let CurrentIndexArray = []
-      this.tabs.map((item) => {
-        if (item.OriTarget === target) {
-          CurrentIndexArray.push(item.CurrentIndex)
-        }
-      })
-      CurrentIndexArray = CurrentIndexArray.sort(function (a, b) { return a - b })
-      if (CurrentIndexArray.length > 1) {
-        CurrentIndex = CurrentIndexArray[CurrentIndexArray.length - 1] + 1
-        if (CurrentIndex === 0) {
-          // eslint-disable-next-line no-self-assign
-          target = target
-        } else {
-          target = target + ' (' + CurrentIndex + ')'
-        }
-      } else {
-        if (CurrentIndexArray.length === 1) {
-          target = target + ' (' + CurrentIndex + ')'
-        } else {
-          target = OriTarget
-        }
-      }
+      const serverid = parseInt(target.split('_')[0])
+      const originalTarget = target
       // add a friendly tab name
       const RandomId = this.makeid(10)
-      this.tabsdict[target] = RandomId
       // this.tabs.push()
       // this.selected = target
-      this.loginToWebterminal(serverid, target, { name: target, id: RandomId, serverid: serverid, OriTarget: OriTarget, CurrentIndex: CurrentIndex, username: '', password: '', loginuser: '' })
+      this.loginToWebterminal(serverid, originalTarget, { name: target, id: RandomId, serverid: serverid, OriTarget: this.tree_map[serverid], CurrentIndex: 0, username: '', password: '', loginuser: '' })
     },
     updatetab (value) {
       // console.log(value)
@@ -307,7 +267,6 @@ export default {
         })
         usernames = [...new Set(usernames)]
         if (usernames.length > 1) {
-          console.log('choose the login user name')
           const items = []
           usernames = Array.from(usernames)
           usernames.map(item => {
@@ -331,6 +290,11 @@ export default {
             if (loginuser !== '') {
               that.getDynamicUserPassword(serverid, loginuser, target, tabobj)
             }
+          }).onCancel(() => {
+          // if cancel action happend then deselect the node
+            let index = -1
+            index = that.selectednode.indexOf(target)
+            this.selectednode.splice(index, 1)
           })
         } else if (usernames.length === 1) {
           that.getDynamicUserPassword(serverid, usernames[0], target, tabobj)
@@ -343,31 +307,49 @@ export default {
     },
     getDynamicUserPassword (serverid, loginuser, target, tabobj) {
       const that = this
-      console.log(this.$refs.servertree.nodes)
+      const targetKey = target
       this.$axios.post('/common/api/getdynamicpassword/', { serverid: serverid, username: loginuser }).then(res => {
+        target = this.tree_map[serverid]
+        const OriTarget = target
+        let CurrentIndex = 0
+        let CurrentIndexArray = []
+        this.tabs.map((item) => {
+          if (item.OriTarget === target) {
+            CurrentIndexArray.push(item.CurrentIndex)
+          }
+        })
+        CurrentIndexArray = CurrentIndexArray.sort(function (a, b) { return a - b })
+        if (CurrentIndexArray.length > 1) {
+          CurrentIndex = CurrentIndexArray[CurrentIndexArray.length - 1] + 1
+          if (CurrentIndex === 0) {
+            // eslint-disable-next-line no-self-assign
+            target = target
+          } else {
+            target = target + ' (' + CurrentIndex + ')'
+          }
+        } else {
+          if (CurrentIndexArray.length === 1) {
+            target = target + ' (' + CurrentIndex + ')'
+          } else {
+            target = OriTarget
+          }
+        }
+        that.tabsdict[target] = tabobj.id
         tabobj.username = res.data.data.username
         tabobj.password = res.data.data.password
         tabobj.protocol = res.data.data.protocol
         tabobj.loginuser = loginuser
         tabobj.ip = res.data.data.ip
-        if (that.$refs.servertree.getNodeByKey(that.selectNodeKey)) {
-          tabobj.commandid = that.$refs.servertree.getNodeByKey(that.selectNodeKey).commandid
+        tabobj.originalValue = targetKey
+        tabobj.name = target
+        tabobj.CurrentIndex = CurrentIndex
+        if (that.$refs.servertree.getNodeByKey(targetKey)) {
+          tabobj.commandid = that.$refs.servertree.getNodeByKey(targetKey).commandid
         }
-        if (res.data.data.protocol !== 'ssh') {
-          that.dynamicUserPasswordAuth(target, tabobj)
-        } else {
-          that.tabs.push(tabobj)
-          that.selected = target
-        }
+        that.tabs.push(tabobj)
+        that.selected = tabobj.name
       }).catch(err => {
         console.log(err)
-      })
-    },
-    dynamicUserPasswordAuth (target, tabobj) {
-      const that = this
-      this.$axios.post('/common/api/dynamicpasswordauth/', { username: tabobj.username, password: tabobj.password }).then(res => {
-        that.tabs.push(tabobj)
-        that.selected = target
       })
     }
   },

@@ -21,6 +21,7 @@
             tick-strategy="leaf"
             label-key="label"
             ref="servertree"
+            @update:ticked="tickedNode"
             default-expand-all
           />
         </div>
@@ -96,31 +97,28 @@ export default {
     }
   },
   watch: {
-    selectednode: function (newnode, oldnode) {
+    splitterModel: function (new1, old) {
+      this.ResizeTerminalWindow()
+    }
+  },
+  methods: {
+    tickedNode: function (target) {
       const that = this
-      newnode.map(function (value) {
-        that.selectNodeKey = value
-        // value = parseInt(value.split('_')[0])
-        const tempTabs = that.tabs.filter(function (el, index) { return el.name === value })
-        // need to handle different user login condition
+      target.map(function (value) {
+        const tempTabs = that.tabs.filter(function (el, index) { return el.originalValue === value })
         if (tempTabs.length === 1) {
           console.log('exist')
         } else {
           that.update(value)
         }
       })
-      oldnode.map(function (value) {
-        const tempTabs = that.tabs.filter(function (el, index) { return el.name === value })
-        if (tempTabs.length === 0) {
-          that.closeWindow(value)
+      this.tabs.map(function (value) {
+        const tempTabs = that.tabs.filter(function (el, index) { return !target.includes(el.originalValue) && el.id !== 'help' })
+        if (tempTabs.length === 1) {
+          that.closeWindow(tempTabs[0].originalValue)
         }
       })
     },
-    splitterModel: function (new1, old) {
-      this.ResizeTerminalWindow()
-    }
-  },
-  methods: {
     execute () {
       const that = this
       if (this.$refs.terminal) {
@@ -264,6 +262,11 @@ export default {
             if (loginuser !== '') {
               that.getDynamicUserPassword(serverid, loginuser, target, tabobj)
             }
+          }).onCancel(() => {
+          // if cancel action happend then deselect the node
+            let index = -1
+            index = that.selectednode.indexOf(target)
+            this.selectednode.splice(index, 1)
           })
         } else if (usernames.length === 1) {
           that.getDynamicUserPassword(serverid, usernames[0], target, tabobj)
