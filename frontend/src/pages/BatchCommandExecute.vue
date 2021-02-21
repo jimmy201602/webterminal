@@ -89,7 +89,6 @@ export default {
       tabs: [],
       tabsdict: { help: 'help' },
       tree: [],
-      tree_map: {},
       can_login_usernames: [],
       selectednode: [],
       command: null,
@@ -214,7 +213,6 @@ export default {
       this.can_login_usernames = []
       this.$axios.get('/permission/api/getlinuxserverlisttree/').then(res => {
         that.tree = res.data.tree
-        that.tree_map = res.data.tree_map
         that.can_login_usernames = res.data.can_login_usernames
       }).then(() => {
         that.$refs.servertree.expandAll()
