@@ -80,7 +80,7 @@
 import Terminal from 'components/Terminal'
 
 export default {
-  name: 'CommandExecute',
+  name: 'BatchCommandExecute',
   data () {
     return {
       searchFocused: false,
