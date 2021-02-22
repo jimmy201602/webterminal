@@ -24,6 +24,7 @@
     "vue-formio": "^4.0.1",
     "vue-friendly-iframe": "^0.18.0",
     "vue-i18n": "^8.0.0",
+    "vue-matomo": "^3.14.0-0",
     "vue-password-strength-meter": "^1.7.2",
     "vue-term": "^0.1.2",
     "vxe-table": "^2.9.4",
