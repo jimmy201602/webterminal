@@ -140,7 +140,6 @@ export default {
             that.$store.commit('SetUserInfo', { username: 'Jimmy', avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: null })
           }
         }).catch(function (error) {
-          console.log(error.response.data)
           if (error.response.data.detail === that.$t('no otp token') || error.response.data.detail === that.$t('error otop token')) {
             that.prompt = true
             if (error.response.data.detail === that.$t('error otop token')) {
