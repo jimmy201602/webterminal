@@ -46,6 +46,10 @@ export default {
   'Provide a full control platform to manage all your IT asset.': 'Provide a full control platform to manage all your IT asset.',
   'OUR VALUE': 'OUR VALUE',
   'Try to provide a easy way to control and audit your action platform to manage all your asset.': 'Try to provide a easy way to control and audit your action platform to manage all your asset.',
+  'no otp token': 'no otp token',
+  'error otop token': 'error otop token',
+  'Two Factor Token': 'Two Factor Token',
+  'This field is required': 'This field is required',
 
   // Credential page
   credential: {
