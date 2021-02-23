@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      ng-app="app"
+      ng-controller="appController">
+
+    <head>
+    	  {% load static %}
+        <title>Webterminal Session Recording Player</title>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="{% static "plugins/guacamole/glen-player.css" %}">
+        <link rel="stylesheet" href="{% static "plugins/font-awesome/5.10.1/css/fontawesome.css" %}">
+        <link rel="stylesheet" href="{% static "plugins/font-awesome/5.10.1/css/solid.css" %}">
+    </head>
+
+    <body class="glen-player-app"
+          ng-class="{
+              'no-recording' : !selectedRecording,
+              'paused' : !playing,
+              'playing' : playing
+          }">
+
+        <!-- Player for selected recording -->
+        <glen-player blob="selectedRecording"></glen-player>
+
+        <!-- Recording selector (local files) -->
+        <div class="glen-player-recording-selector">
+            <glen-file-chooser file="selectedRecording">
+                <p class="glen-player-help-recording-error"
+                   ng-hide="selectedRecording || !error"><i class="fas fa-exclamation-triangle"></i>
+                The selected recording cannot be played. The recording may be
+                corrupt, or you may not have permission to read the recording.
+                Please select a different recording.</p>
+            </glen-file-chooser>
+        </div>
+
+        <!-- Apache Guacamole -->
+        <!-- jQuery 2.2.3 -->
+		  <script type="text/javascript" src="{% static 'plugins/guacamole/all.min.js' %}"></script>
+
+        <!-- jQuery -->
+        <script src="{% static "plugins/jQuery/jquery-2.2.3.min.js" %}"></script>
+
+        <!-- AngularJS -->
+        <script src="{% static "plugins/angular/1.7.8/angular.min.js" %}"></script>
+        <script src="{% static "plugins/angular-touch/1.7.8/angular-touch.min.js" %}"></script>
+        <script src="{% static "plugins/angular-module-shim/0.0.4/angular-module-shim.js" %}"></script>
+
+        <!-- Webterminal session Player -->
+        <script src="{% static "plugins/guacamole/glen-player.js" %}"></script>
+
+    </body>
+
+</html>
