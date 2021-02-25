@@ -1,21 +1,23 @@
-version: '3'
+version: "3"
+
+volumes:
+  recording_data:
+      driver: local
+
 services:
-  webterminal:
-    image: webterminal/webterminal:latest
-    container_name: webterminal
-    ports:
-      - "80:80"
-      - "2100:2100"
-    networks:
-      - public
-      - private
+  guacd:
+    image: guacamole/guacd:0.9.14
+    network_mode: "host"
     volumes:
-      #- "/var/log:/var/log"
-      - "/etc/localtime:/etc/localtime:ro"
-      - "/etc/timezone:/etc/timezone:ro"
-    restart: always
-networks:
-  public:
-    driver: bridge
-  private:
-    driver: bridge
+      - recording_data:/opt/webterminal/media/
+  redis:
+    image: redis:6.0-alpine
+    network_mode: "host"
+  webterminal:
+    image: webterminal/webterminal:beta
+    network_mode: "host"
+    volumes:
+      - recording_data:/opt/webterminal/media/
+    ports:
+      - 80:80
+      - 2100:2100
