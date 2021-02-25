@@ -1,5 +1,5 @@
 #Webterminal dockfile
-FROM ubuntu:latest
+FROM ubuntu:18.04
 LABEL maintainer zhengge2012@gmail.com
 ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /opt
