@@ -9,6 +9,7 @@ RUN mkdir -p /opt/webterminal/media/admin/Download
 RUN mkdir -p /var/log/web
 RUN mkdir -p /run/daphne
 RUN pip3 install --no-cache-dir -r requirements.txt
+RUN cp extra_settings.py.example extra_settings.py
 RUN python3 manage.py makemigrations
 RUN python3 manage.py migrate
 RUN python3 createsuperuser.py
