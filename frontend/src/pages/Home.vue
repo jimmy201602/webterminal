@@ -369,6 +369,24 @@ export default {
     }
     this.fetchData()
   },
+  beforeDestroy () {
+    // close websocket
+    if (this.$refs.terminal) {
+      this.$refs.terminal.map(function (term) {
+        if (term.ws) {
+          term.ws.close()
+        }
+      })
+    }
+
+    if (this.$refs.guacamole) {
+      this.$refs.guacamole.map(function (guacamole) {
+        if (guacamole.client) {
+          guacamole.client.disconnect()
+        }
+      })
+    }
+  },
   components: {
     Terminal,
     GuacamoleClient
