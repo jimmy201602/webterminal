@@ -1145,8 +1145,7 @@ export default {
         const serverProtocol = window.location.protocol
         const serverHost = window.location.host
         const apiPath = '/common/webterminalhelperdetect/'
-        const sshProtocolTestPath = `wssh://test#${serverProtocol}/${serverHost}${apiPath}#${id}`
-        console.log(sshProtocolTestPath)
+        const sshProtocolTestPath = `wssh://test#${serverProtocol}//${serverHost}${apiPath}#${id}`
         customProtocolCheck(
           sshProtocolTestPath,
           () => {

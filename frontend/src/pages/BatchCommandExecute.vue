@@ -139,9 +139,11 @@ export default {
       this.command = val
     },
     ResizeTerminalWindow: function () {
-      this.$refs.terminal.map(function (term) {
-        term.onWindowResize()
-      })
+      if (this.$refs.terminal) {
+        this.$refs.terminal.map(function (term) {
+          term.onWindowResize()
+        })
+      }
     },
     closeWindow: function (id) {
       // console.log('Removing tab id', id)
