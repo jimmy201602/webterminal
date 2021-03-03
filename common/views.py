@@ -349,6 +349,10 @@ class WebterminalHelperDetectCallbackApi(View):
                     identify_data = identify_data.decode()
                 else:
                     identify_data = identify_data
+                if isinstance(identify_data, bytes):
+                    identify_data = identify_data.decode()
+                else:
+                    identify_data = identify_data
                 if identify_data == 'ok' and version == __webterminalhelperversion__:
                     conn.set(identify, 'installed')
                     return JsonResponse({'status': True, 'message': 'ok'})

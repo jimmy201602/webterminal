@@ -1144,7 +1144,7 @@ export default {
         const id = res.data.message
         const serverProtocol = window.location.protocol
         const serverHost = window.location.host
-        const apiPath = '/common/webterminalhelperdetect/'
+        const apiPath = '/common/webterminalhelperdetectcallback/'
         const sshProtocolTestPath = `wssh://test#${serverProtocol}//${serverHost}${apiPath}#${id}`
         customProtocolCheck(
           sshProtocolTestPath,
