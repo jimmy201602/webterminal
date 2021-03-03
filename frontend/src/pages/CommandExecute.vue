@@ -6,7 +6,7 @@
       class="fit"
     >
       <template v-slot:before>
-        <div class="q-pa-md" style="overflow:hidden;height:100vh;width:100%;">
+        <div class="q-pa-md" style="overflow:hidden;height:100vh;width:100%;;overflow-y: auto;">
           <div class="row no-wrap">
             <q-input ref="filter" dense outlined square v-model="filter" :placeholder="searchPlaceholder" @focus="onSearchFocus"  @blur="onSearchBlur" class="bg-white col" />
             <q-btn color="grey-3" text-color="grey-8" icon="search" unelevated @click="resetFilter" />
