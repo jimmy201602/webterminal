@@ -1084,6 +1084,11 @@
   resolved "https://registry.yarnpkg.com/@quasar/extras/-/extras-1.8.2.tgz#54ff5e0c8fc17763c083c4f0dcd3a60e1b00b4a8"
   integrity sha512-y3A4OO4DGDxuFyh/X4k5fS17TTxhpPauZv8Qr/0bso+RTk5f+3X4lLAcP7aaiqcBLOV8HsUKpGzNArMleClYgg==
 
+"@quasar/extras@^1.9.17":
+  version "1.9.18"
+  resolved "https://registry.yarnpkg.com/@quasar/extras/-/extras-1.9.18.tgz#9a6b1aa644584dcb42c8ae2eba1534384bc3c3c0"
+  integrity sha512-ZYZ4WIbJf4kGK2JA142Wqeg6rghAa8GRPNiLUe+IlrxFah23mOVKmcoDz2ru9E5mdpo/b7CmKyt9Ubnnl8f8zw==
+
 "@quasar/fastclick@1.1.4":
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/@quasar/fastclick/-/fastclick-1.1.4.tgz#21ed3e9a4387dcb43022a08af4ef08a5f1abf159"
@@ -1098,6 +1103,13 @@
     front-matter "^4.0.2"
     raw-loader "^4.0.2"
     ware-loader "^0.2.4"
+
+"@quasar/quasar-app-extension-qmediaplayer@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-app-extension-qmediaplayer/-/quasar-app-extension-qmediaplayer-1.2.1.tgz#b9f0ea13c146e1ed92839941fa3bd944ec1f94f8"
+  integrity sha512-93qS5mGMSUkUONMCLp+073aUDU3hyfMwzdXCcsNDsYvS766L0ZU1O2514WxQWK2jTyyCJlbA9j2LxokcvdZDBg==
+  dependencies:
+    "@quasar/quasar-ui-qmediaplayer" "^1.2.1"
 
 "@quasar/quasar-ui-qmarkdown@^1.4.1":
   version "1.4.1"
@@ -1118,6 +1130,14 @@
     markdown-it-task-lists "^2.1.1"
     markdown-it-toc-and-anchor "^4.2.0"
     prismjs "^1.23.0"
+
+"@quasar/quasar-ui-qmediaplayer@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@quasar/quasar-ui-qmediaplayer/-/quasar-ui-qmediaplayer-1.2.1.tgz#44206298345f5c61496be7f5178dc838e40602fe"
+  integrity sha512-/mzc6ybtfT2sxpDE8dpgZFJBklzvwuinODzKVpr/525liZQ8qmUnDivDjrnZVo3BnyQ9gM69uFW22AXtzXpySA==
+  dependencies:
+    "@quasar/extras" "^1.9.17"
+    q-colorize-mixin "^1.0.10"
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -8042,6 +8062,11 @@ punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+
+q-colorize-mixin@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/q-colorize-mixin/-/q-colorize-mixin-1.0.10.tgz#f0fbfa2826cbfdaffc5c6851e9949aff311da48a"
+  integrity sha512-pqMSb3mxTps0pfKh2zV/7ukgVvrzQT8+Ic2c3PaTkMI5yGPBbBK+t0SgF1ktBJ0PCYFE1bpK1unK20Z2OlTzlg==
 
 q@^1.1.2:
   version "1.5.1"

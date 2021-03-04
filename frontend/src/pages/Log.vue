@@ -66,7 +66,17 @@
               icon="fa fa-play-circle"
               @click="playGuacamoleLog(props)"
               :title="$t('log.play_log')"
-              v-show="props.row.is_finished && props.row.tag !== 'ssh'"
+              v-show="props.row.is_finished && props.row.tag !== 'ssh' && !props.row.commercial_version"
+            ></q-btn>
+            <q-btn
+              dense
+              round
+              flat
+              color="grey"
+              icon="fa fa-play-circle"
+              @click="playRdpLog(props)"
+              :title="$t('log.play_log')"
+              v-show="props.row.is_finished && props.row.commercial_version"
             ></q-btn>
             <q-btn
               dense
@@ -143,6 +153,14 @@
             </div>
             <terminal-monitor :id="sshmonitorchannel" v-if="show_ssh_monitor_player"></terminal-monitor>
             <guacamole-monitor :username="username" :password="password" :loginuser="loginuser" :serverid="serverid" :channel="guacamole_channel" v-if="show_guacamole_monitor_player"></guacamole-monitor>
+            <q-media-player
+              v-if="show_rdp_player"
+              :sources="sources"
+              background-color="black"
+              type="video"
+              style="overflow:hidden;height:92vh;width:100%;text-align: center;"
+            >
+            </q-media-player>
           </div>
         </q-card-section>
       </q-card>
@@ -222,6 +240,7 @@ export default {
       logplayermodal: false,
       player_address: null,
       show_ssh_player: false,
+      show_rdp_player: false,
       show_ssh_commands: false,
       show_guacamole_monitor_player: false,
       commands_list: [],
@@ -237,7 +256,8 @@ export default {
       password: null,
       serverid: null,
       loginuser: null,
-      guacamole_channel: null
+      guacamole_channel: null,
+      sources: []
     }
   },
   methods: {
@@ -278,12 +298,37 @@ export default {
       this.show_ssh_player = true
       this.show_ssh_commands = false
       this.show_ssh_monitor_player = false
+      this.show_rdp_player = false
       if (process.env.NODE_ENV === 'production') {
         this.player_address = `/sshlogplay/${props.row.id}/`
       } else {
         this.player_address = `http://127.0.0.1:8000/sshlogplay/${props.row.id}/`
       }
       this.show_guacamole_monitor_player = false
+      this.log_obj = props.row
+    },
+    playRdpLog (props) {
+      this.logplayermodal = true
+      this.show_rdp_player = true
+      this.show_ssh_commands = false
+      this.show_ssh_monitor_player = false
+      this.show_ssh_player = false
+      this.show_guacamole_monitor_player = false
+      if (process.env.NODE_ENV === 'production') {
+        this.sources = [
+          {
+            src: `/media/${props.row.channel}-000000.mp4`,
+            type: 'video/mp4'
+          }
+        ]
+      } else {
+        this.sources = [
+          {
+            src: `http://127.0.0.1:8000/media/${props.row.channel}-000000.mp4`,
+            type: 'video/mp4'
+          }
+        ]
+      }
       this.log_obj = props.row
     },
     monitorSession (props) {
@@ -296,10 +341,12 @@ export default {
         this.show_ssh_player = false
         this.sshmonitorchannel = props.row.log
         this.show_guacamole_monitor_player = false
+        this.show_rdp_player = false
       } else {
         this.serverid = props.row.server.id
         this.loginuser = props.row.loginuser
         this.guacamole_channel = props.row.gucamole_client_id
+        this.show_rdp_player = false
         this.getDynamicUserPassword(props.row.server.id, props.row.loginuser)
       }
     },
@@ -309,6 +356,7 @@ export default {
       this.show_ssh_monitor_player = false
       this.show_ssh_player = false
       this.show_guacamole_monitor_player = true
+      this.show_rdp_player = false
     },
     getDynamicUserPassword (serverid, loginuser) {
       const that = this
@@ -347,6 +395,7 @@ export default {
       this.show_ssh_commands = false
       this.show_ssh_monitor_player = false
       this.show_guacamole_monitor_player = false
+      this.show_rdp_player = false
       if (process.env.NODE_ENV === 'production') {
         this.player_address = `/sessionlogplay/?media=${date.getFullYear()}-${month}-${day}/${props.row.channel}`
       } else {
@@ -360,6 +409,7 @@ export default {
       this.show_ssh_commands = true
       this.show_ssh_monitor_player = false
       this.show_guacamole_monitor_player = false
+      this.show_rdp_player = false
       this.fetchCommandsData({ id: props.row.id })
     },
     fetchData () {
