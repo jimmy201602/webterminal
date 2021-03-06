@@ -85,7 +85,7 @@
               color="grey"
               icon="fa fa-eye"
               @click="monitorSession(props)"
-              v-show="!props.row.is_finished"
+              v-show="!props.row.is_finished && !props.row.commercial_version"
               :title="$t('log.monitor')"
             ></q-btn>
             <q-btn
@@ -95,7 +95,7 @@
               color="grey"
               icon="fa fa-stop-circle"
               @click="sessionKill(props)"
-              v-show="!props.row.is_finished"
+              v-show="!props.row.is_finished && !props.row.commercial_version"
               :title="$t('log.stop')"
             ></q-btn>
             <q-btn
