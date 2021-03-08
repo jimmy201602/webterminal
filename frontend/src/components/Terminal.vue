@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-layout view="lhh LpR lff" container class="shadow-2 rounded-borders">
     <q-tabs
       v-show="showtab"
       v-model="selected"
@@ -55,7 +55,7 @@
         </keep-alive>
       </q-tab-panel>
     </q-tab-panels>
-  </div>
+  </q-layout>
 </template>
 <script>
 import { Terminal } from 'xterm'

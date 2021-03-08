@@ -1,0 +1,680 @@
+/*
+ * Copyright (C) 2019 Glyptodon, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+* {
+    box-sizing: border-box;
+}
+
+.glen-player-app {
+
+    background: black;
+    color: white;
+    font-family: 'Source Sans Pro', sans-serif;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+
+}
+
+.glen-player-app glen-player {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glen-player-app .glen-player-selected-file {
+
+    font-size: 1.5em;
+    font-weight: normal;
+
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+
+    margin: 8px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.glen-player-app .glen-player-help-no-recording,
+.glen-player-app .glen-player-help-recording-error {
+    margin: 8px;
+    max-width: 480px;
+}
+
+.glen-player-app .glen-player-recording-selector {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+}
+
+.glen-player-app .glen-player-button {
+
+    display: inline-block;
+
+    border: 2px solid white;
+    border-radius: 0;
+    background: black;
+    color: white;
+    font-weight: bold;
+
+    padding: 0.5em 1em;
+    margin: 8px;
+
+}
+
+.glen-player-app .glen-player-controls {
+    padding: 0.25em;
+}
+
+.glen-player-app .glen-player-recording-selector,
+.glen-player-app .glen-player-controls {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.glen-player-app.playing .glen-player-recording-selector,
+.glen-player-app.playing .glen-player-controls {
+    opacity: 0;
+    -webkit-transition: opacity 0.25s linear 0.25s;
+    -moz-transition: opacity 0.25s linear 0.25s;
+    -o-transition: opacity 0.25s linear 0.25s;
+    transition: opacity 0.25s linear 0.25s;
+}
+
+.glen-player-app.paused .glen-player-recording-selector,
+.glen-player-app.paused .glen-player-controls,
+.glen-player-app.playing:hover .glen-player-recording-selector,
+.glen-player-app.playing:hover .glen-player-controls {
+
+    opacity: 1;
+    -webkit-transition-delay: 0.00s;
+    -moz-transition-delay: 0.00s;
+    -o-transition-delay: 0.00s;
+    transition-delay: 0.00s;
+
+    /*
+     * NOTE: The nonsensical "0.00s" above is a workaround for YUI Compressor's
+     * incorrect minification of "0s" to "0". There appears to be a fix merged,
+     * however the Maven plugin which leverages YUI Compressor is still
+     * affected.
+     *
+     * See: https://github.com/yui/yuicompressor/issues/246
+     */
+
+}
+
+.glen-player-app.no-recording .glen-player-recording-selector {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glen-player-app.no-recording glen-file-chooser {
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+}
+
+.glen-player-recording-selector h1 .fas {
+    margin-right: 8px;
+    margin-left: 2px;
+}
+/*
+ * Copyright (C) 2019 Glyptodon, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/*
+ * Hide until AngularJS is loaded.
+ */
+
+body {
+    visibility: hidden;
+}
+
+.ng-scope body {
+    visibility: visible;
+}
+/*
+ * Copyright (C) 2019 Glyptodon, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+glen-player {
+    display: inline-block;
+    position: relative;
+}
+
+glen-player glen-player-display {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+glen-player .glen-player-controls {
+
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+}
+
+.glen-player-controls .glen-player-seek {
+    display: block;
+    width: 100%;
+}
+
+.glen-player-controls .glen-player-play,
+.glen-player-controls .glen-player-pause {
+    color: white;
+    background: transparent;
+    border: none;
+    width: 2em;
+    height: 2em;
+}
+
+.glen-player-controls .glen-player-play:hover,
+.glen-player-controls .glen-player-pause:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+glen-player .glen-player-status {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+
+}
+/*
+ * Copyright (C) 2019 Glyptodon, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+glen-player-display {
+
+    position: relative;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+
+}
+
+glen-player-display .glen-resize-sensor {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+    overflow: hidden;
+    border: none;
+    z-index: -1;
+
+}
+
+glen-player-display .glen-player-display-container {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -moz-box-flex: 0;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+}/*
+ * Copyright (C) 2019 Glyptodon, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+glen-player-progress-indicator {
+
+    width: 128px;
+    height: 128px;
+
+    position: relative;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+
+}
+
+glen-player-progress-indicator .glen-player-progress-text {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+glen-player-progress-indicator .glen-player-progress-bar-container {
+
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+glen-player-progress-indicator .glen-player-progress-bar-container.past-halfway {
+    overflow: visible;
+}
+
+glen-player-progress-indicator .glen-player-progress-bar-container.past-halfway::before,
+glen-player-progress-indicator .glen-player-progress-bar {
+
+    position: absolute;
+    left: -64px;
+    top: 0;
+    width: 128px;
+    height: 128px;
+
+    -webkit-border-radius: 128px;
+    -moz-border-radius: 128px;
+    border-radius: 128px;
+
+    border: 12px solid #5AF;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+
+}
+
+glen-player-progress-indicator .glen-player-progress-bar-container.past-halfway::before {
+
+    content: ' ';
+    display:  block;
+    box-sizing: border-box;
+
+    -webkit-transform: rotate(135deg);
+    -moz-transform: rotate(135deg);
+    -ms-transform: rotate(135deg);
+    -o-transform: rotate(135deg);
+    transform: rotate(135deg);
+
+}
+/*
+ * Copyright (C) 2019 Glyptodon, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/*
+ * General (not browser-specific)
+ */
+
+input[type="range"] {
+    background: transparent;
+    width: 100%;
+    margin: 0;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+/*
+ * WebKit
+ */
+
+input[type="range"] {
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+
+    border: none;
+    border-radius: 0;
+    background: #5AF;
+
+    width: 100%;
+    height: 0.5em;
+
+    cursor: pointer;
+
+}
+
+input[type="range"]::-webkit-slider-thumb {
+
+    border: none;
+    border-radius: 0;
+    background: white;
+
+    width: 3px;
+    height: 0.5em;
+
+    -webkit-appearance: none;
+    cursor: pointer;
+
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+    background: #5AF;
+}
+
+/*
+ * Firefox
+ */
+
+input[type="range"]::-moz-range-track {
+
+    border: none;
+    border-radius: 0;
+    background: #5AF;
+
+    width: 100%;
+    height: 0.5em;
+
+    cursor: pointer;
+
+}
+
+input[type="range"]::-moz-range-thumb {
+
+    border: none;
+    border-radius: 0;
+    background: white;
+
+    width: 3px;
+    height: 0.5em;
+
+    cursor: pointer;
+
+}
+
+/*
+ * Internet Explorer
+ */
+
+input[type="range"]::-ms-track {
+
+    width: 100%;
+    height: 0.5em;
+    margin: 0;
+
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    color: transparent;
+
+    cursor: pointer;
+
+}
+
+input[type="range"]::-ms-thumb {
+
+    border: none;
+    border-radius: 0;
+    background: white;
+
+    width: 3px;
+    height: 0.5em;
+    margin: 0;
+
+    cursor: pointer;
+
+}
+
+input[type="range"]::-ms-fill-lower,
+input[type="range"]::-ms-fill-upper,
+input[type="range"]:focus::-ms-fill-lower,
+input[type="range"]:focus::-ms-fill-upper {
+    border: none;
+    border-radius: 0;
+    background: #5AF;
+}
+/*
+ * Copyright (C) 2019 Glyptodon, Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Source Sans Pro Regular'), local('SourceSansPro-Regular'),
+        url('/static/fonts/source-sans-pro-regular.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'),
+        url('/static/fonts/source-sans-pro-bold.woff') format('woff');
+}

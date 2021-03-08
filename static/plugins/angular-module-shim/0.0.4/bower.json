@@ -1,0 +1,28 @@
+{
+  "name": "angular-module-shim",
+  "main": "angular-module-shim.js",
+  "version": "0.0.4",
+  "authors": [
+    "jedrichards <jedrichards@gmail.com>"
+  ],
+  "description": "Adjusts the behaviour of angular.module so as to make module retrieval and creation order agnostic",
+  "moduleType": [
+    "globals"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16"
+  },
+  "keywords": [
+    "angular",
+    "module",
+    "shim"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

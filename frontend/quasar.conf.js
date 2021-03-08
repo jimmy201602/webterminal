@@ -8,7 +8,9 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
       'i18n',
-      'axios'
+      'axios',
+      'markdown',
+      'matomo'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -52,7 +54,8 @@ module.exports = function (ctx) {
       plugins: [
         'AppFullscreen',
         'Notify',
-        'Dialog'
+        'Dialog',
+        'Loading'
       ]
     },
 
@@ -90,7 +93,7 @@ module.exports = function (ctx) {
     devServer: {
       https: false,
       port: 8080,
-      open: true, // opens browser window automatically
+      open: false, // opens browser window automatically
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         '/api': {

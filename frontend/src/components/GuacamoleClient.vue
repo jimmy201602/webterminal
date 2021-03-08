@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <q-layout view="lhh LpR lff" container class="shadow-2 rounded-borders">
     <q-tabs
       v-show="showtab"
       v-model="selected"
@@ -74,7 +74,7 @@
         </keep-alive>
       </q-tab-panel>
     </q-tab-panels>
-  </div>
+  </q-layout>
 </template>
 
 <script>
@@ -397,8 +397,15 @@ export default {
   mounted () {
     if (this.query && !this.connected) {
       this.connected = true
-      this.connect(`username=${this.username}&password=${this.password}`)
-      this.query = `username=${this.username}&password=${this.password}`
+
+      // initial client query width and height to fix guacamole reconnect bug
+      const elm = this.$refs.viewport
+      const pixelDensity = window.devicePixelRatio || 1
+      const width = elm.clientWidth * pixelDensity
+      const height = elm.clientHeight * pixelDensity
+
+      this.connect(`username=${this.username}&password=${this.password}&width=${width}&height=${height}`)
+      this.query = `username=${this.username}&password=${this.password}&width=${width}&height=${height}`
     }
     if (process.env.NODE_ENV === 'production') {
       this.sftpaddress = `/elfinder/?url=/elfinder/yawd-connector/default/${this.serverid}/${this.loginuser}/?webterminal-token-access=${localStorage.getItem('webterminal-token-access')}`

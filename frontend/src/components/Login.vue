@@ -62,6 +62,28 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+  <q-dialog v-model="prompt">
+    <q-card style="min-width: 400px;" dark>
+      <q-form @submit.prevent="Login">
+        <q-card-section class="text-center text-h6">{{ $t('Two Factor Token') }}</q-card-section>
+
+        <q-card-section>
+          <q-input
+            autofocus
+            outlined
+            v-model="otp_token"
+            dark
+            :rules="[val => (val && val.length > 0) || $t('This field is required')]"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" v-close-popup />
+          <q-btn flat label="Submit" type="submit" />
+        </q-card-actions>
+      </q-form>
+    </q-card>
+  </q-dialog>
 </div>
 </template>
 <script>
@@ -88,10 +110,12 @@ export default {
   },
   data () {
     return {
+      prompt: false,
       remember_password: false,
       tips: false,
       username: null,
       password: null,
+      otp_token: '',
       showmodal: false,
       resetpasswordaddress: resetpasswordaddress
     }
@@ -105,7 +129,8 @@ export default {
       if (that.username && that.password) {
         this.$axios.post('/api/token/', {
           username: that.username,
-          password: that.password
+          password: that.password,
+          otp_token: that.otp_token
         }).then(res => {
           that.$store.commit('Login', res.data)
           // add rediret handle
@@ -114,9 +139,16 @@ export default {
           } else {
             that.$store.commit('SetUserInfo', { username: 'Jimmy', avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: null })
           }
-        }).catch(() => {
-          that.tips = true
-          auth.removeToken()
+        }).catch(function (error) {
+          if (error.response.data.detail === that.$t('no otp token') || error.response.data.detail === that.$t('error otop token')) {
+            that.prompt = true
+            if (error.response.data.detail === that.$t('error otop token')) {
+              that.otp_token = ''
+            }
+          } else {
+            that.tips = true
+            auth.removeToken()
+          }
         })
       } else {
         that.tips = true

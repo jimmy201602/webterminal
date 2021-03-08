@@ -14,7 +14,7 @@ def parse_permission_tree():
                 if p.content_type.model not in [i['model'] for i in permission_tree['children']]:
                     permission_tree['children'].append({
                         "text": _(p.content_type.model),
-                        "label": _(p.content_type.model),
+                        "label": p.content_type.model,
                         "icon": "fa fa-folder",
                         "state": {"selected": "!0"},
                         "app_label": p.content_type.app_label,
@@ -22,7 +22,7 @@ def parse_permission_tree():
                         'level': 'two',
                         'children': [{
                             "text": _(p.name),
-                            "label": _(p.name),
+                            "label": p.name,
                             "icon": "fa fa-folder",
                             "state": {"selected": "!0"},
                             "id": p.id,
@@ -36,7 +36,7 @@ def parse_permission_tree():
                         if i['model'] == p.content_type.model:
                             permission_tree['children'][permission_tree['children'].index(i)]['children'].append({
                                 "text": _(p.name),
-                                "label": _(p.name),
+                                "label": p.name,
                                 "icon": "fa fa-folder",
                                 "state": {"selected": "!0"},
                                 "id": p.id,
@@ -51,7 +51,7 @@ def parse_permission_tree():
                 permission_tree['children'] = []
                 permission_tree['children'].append({
                     "text": _(p.content_type.model),
-                    "label": _(p.content_type.model),
+                    "label": p.content_type.model,
                     "icon": "fa fa-folder",
                     "app_label": p.content_type.app_label,
                     "model": p.content_type.model,
@@ -59,7 +59,7 @@ def parse_permission_tree():
                     'level': 'two',
                     'children': [{
                         "text": _(p.name),
-                        "label": _(p.name),
+                        "label": p.name,
                         "icon": "fa fa-folder",
                         "state": {"selected": "!0"},
                         "id": p.id,

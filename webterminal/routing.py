@@ -7,9 +7,9 @@ application = ProtocolTypeRouter({
     # (http->django views is added by default)
     'websocket':
         URLRouter([
-            path('ws', Webterminal),
-            path('execute', CommandExecute),
-            path('monitor', SshTerminalMonitor),
+            path('ws', Webterminal.as_asgi()),
+            path('execute', CommandExecute.as_asgi()),
+            path('monitor', SshTerminalMonitor.as_asgi()),
         ]
         ),
 })

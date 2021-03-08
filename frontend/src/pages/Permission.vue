@@ -193,7 +193,13 @@
                         :ticked.sync="ticked"
                         :expanded.sync="expanded"
                         default-expand-all
-                />
+                >
+                  <template v-slot:default-header="prop">
+                    <div class="row items-center">
+                      <div class="text-default">{{ prop.node.text }}</div>
+                    </div>
+                  </template>
+                </q-tree>
 
                 <div>
                   <q-btn :label="$t('Submit')" type="submit" color="primary"/>

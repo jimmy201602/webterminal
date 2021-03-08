@@ -35,6 +35,21 @@ export default {
   'Verify your password': 'Verify your password',
   'Email address': 'Email address',
   'password strength': 'password strength',
+  'About Us': 'About Us',
+  'Our mission is to give everyone a full control platform to manage all your it asset.': 'Our mission is to give everyone a full control platform to manage all your it asset.',
+  'Contact Us': 'Contact Us',
+  Email: 'Email',
+  Github: 'Github',
+  'DESIGN PHILOSOPHY': 'DESIGN PHILOSOPHY',
+  'Easy to use. Agile deployment. Full control. Full auidt platform.': 'Easy to use. Agile deployment. Full control. Full auidt platform.',
+  'OUR MISSION': 'OUR MISSION',
+  'Provide a full control platform to manage all your IT asset.': 'Provide a full control platform to manage all your IT asset.',
+  'OUR VALUE': 'OUR VALUE',
+  'Try to provide a easy way to control and audit your action platform to manage all your asset.': 'Try to provide a easy way to control and audit your action platform to manage all your asset.',
+  'no otp token': 'no otp token',
+  'error otop token': 'error otop token',
+  'Two Factor Token': 'Two Factor Token',
+  'This field is required': 'This field is required',
 
   // Credential page
   credential: {
@@ -96,7 +111,20 @@ export default {
   'Please type a valid proxy port': 'Please type a valid proxy port',
   'Proxy password': 'Proxy password',
   'Please type your proxy password': 'Please type your proxy password',
-
+  'No user can login !': 'No user can login !',
+  'Not supported system.': 'Not supported system.',
+  'You haven\'t install webterminal helper,please download and install it.': 'You haven\'t install webterminal helper,please download and install it.',
+  Audit: 'Audit',
+  User: 'User',
+  Permission: 'Permission',
+  Settings: 'Settings',
+  Webterminal: 'Webterminal',
+  Credential: 'Credential',
+  'Command execution': 'Command execution',
+  'Batch command execution': 'Batch command execution',
+  Group: 'Group',
+  Server: 'Server',
+  Commands: 'Commands',
   // log page
   log: {
     log: 'Log',

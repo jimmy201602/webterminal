@@ -205,7 +205,7 @@ class GetDynamicPasswordApi(APIView):
             key = encrypt.encrypt(content=username + password)
             key = encrypt.md5_crypt(key)
             serverid = encrypt.encrypt(content=str(serverid))
-            password = encrypt.encrypt(content=password)
+            # password = encrypt.encrypt(content=password)
             request_username = encrypt.encrypt(content=request.user.username)
             if isinstance(serverid, bytes):
                 serverid = serverid.decode('utf8')
@@ -251,7 +251,7 @@ class DynamicPasswordAuthApi(APIView):
                 return Response({'status': False, 'message': 'Usename and password needed!'})
             try:
                 key = encrypt.encrypt(
-                    content=username + encrypt.decrypt(password))
+                    content=username + password)
                 key = encrypt.md5_crypt(key)
             except:
                 conn.delete(username)
@@ -422,11 +422,7 @@ class SshTerminalKillApi(APIView):
                 data.save()
 
                 queue = get_redis_instance()
-                if '_' in channel_name:
-                    queue.publish(channel_name.rsplit(
-                        '_')[0], json.dumps(['close']))
-                else:
-                    queue.publish(channel_name, json.dumps(['close']))
+                queue.publish(channel_name, json.dumps(['close']))
                 return Response({'status': True, 'message': 'Terminal has been killed !'})
         except ObjectDoesNotExist:
             return Response({'status': False, 'message': 'Request object does not exist!'})

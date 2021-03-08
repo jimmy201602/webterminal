@@ -33,7 +33,7 @@
           </q-btn>
           <q-btn round dense flat color="grey-8" icon="notifications">
             <q-badge color="red" text-color="white" floating>
-              5
+              {{ message_count}}
             </q-badge>
             <q-menu
             >
@@ -98,7 +98,7 @@
               <q-icon color="grey" :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label>{{ $t(link.text) }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -109,7 +109,7 @@
               <q-icon color="grey" :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label>{{ $t(link.text) }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -120,7 +120,7 @@
               <q-icon color="grey" :name="link.icon" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>{{ link.text }}</q-item-label>
+              <q-item-label>{{ $t(link.text) }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -132,7 +132,7 @@
                 v-for="button in buttons1"
                 :key="button.text"
                 class="YL__drawer-footer-link"
-                href="javascript:void(0)"
+                :href="'/#/'+button.name"
               >
                 {{ button.text }}
               </a>
@@ -144,10 +144,15 @@
                 v-for="button in buttons2"
                 :key="button.text"
                 class="YL__drawer-footer-link"
-                href="javascript:void(0)"
+                :href="'/#/'+button.name"
               >
                 {{ button.text }}
               </a>
+            </div>
+          </div>
+          <div class="q-py-md q-px-md text-grey-9">
+            <div class="row items-center q-gutter-x-sm q-gutter-y-xs">
+              © 2021 Webterminal
             </div>
           </div>
         </q-list>
@@ -173,20 +178,16 @@ export default {
       links2: [],
       links3: [],
       buttons1: [
-        { text: 'About' },
-        { text: 'Press' },
-        { text: 'Copyright' },
-        { text: 'Contact us' },
-        { text: 'Creators' },
-        { text: 'Advertise' },
-        { text: 'Developers' }
+        { text: 'About', name: 'about' },
+        // { text: 'Copyright', name: '' },
+        { text: 'Contact us', name: 'contact' }
+        // { text: 'Creators', name: '' }
       ],
       buttons2: [
-        { text: 'Terms' },
-        { text: 'Privacy' },
-        { text: 'Policy & Safety' },
-        { text: 'Test new features' }
-      ]
+        // { text: 'Privacy', name: '' },
+        // { text: 'Test new features', name: '' }
+      ],
+      message_count: 0
     }
   },
   mounted () {
@@ -204,9 +205,9 @@ export default {
       { icon: 'list_alt', text: 'Commands', name: 'command' }
     ]
     this.links3 = [
-      { icon: 'view_list', text: 'Log list', name: 'log' },
-      { icon: 'account_box', text: 'User list', name: 'user' },
-      { icon: 'lock', text: 'Permission list', name: 'permission' },
+      { icon: 'view_list', text: 'Audit', name: 'log' },
+      { icon: 'account_box', text: 'User', name: 'user' },
+      { icon: 'lock', text: 'Permission', name: 'permission' },
       { icon: 'settings', text: 'Settings', name: 'setting' }
     ]
     this.getMenuList()

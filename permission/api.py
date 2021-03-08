@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from permission.commons import parse_permission_tree
 from common.utils import CustomModelPerm
 from django.core.exceptions import ObjectDoesNotExist
+import uuid
 
 
 class PermissionWithGroupInfoViewSet(viewsets.ModelViewSet):
@@ -53,6 +54,7 @@ class GetServerListTreeApi(APIView):
                 tree = {
                     "label": group.name,
                     "selectable": False,
+                    "raw": '{0}'.format(uuid.uuid4().hex),
                     "children": []
                 }
                 for server in group.servers.all():
@@ -60,7 +62,8 @@ class GetServerListTreeApi(APIView):
                         {
                             "label": '{0} {1}'.format(server.name, server.ip),
                             "icon": 'devices',
-                            "id": server.id
+                            "id": server.id,
+                            "raw": '{0}_{1}'.format(server.id,uuid.uuid4().hex)
                         }
                     )
                     tree_object_dict[server.id] = '{0} {1}'.format(
@@ -92,6 +95,7 @@ class GetCommandListTreeApi(APIView):
             tree = {
                 "label": commandtask.name,
                 "id": commandtask.id,
+                "raw": '{0}_{1}'.format(commandtask.id,uuid.uuid4().hex),
                 "selectable": False,
                 "children": []
             }
@@ -106,7 +110,8 @@ class GetCommandListTreeApi(APIView):
                                         "label": '{0} {1}'.format(server.name, server.ip),
                                         "icon": 'devices',
                                         "id": server.id,
-                                        "commandid": commandtask.id
+                                        "commandid": commandtask.id,
+                                        "raw": '{0}_{1}'.format(server.id,uuid.uuid4().hex)
                                     }
                                 )
                                 tree_object_dict[server.id] = '{0} {1}'.format(
@@ -133,6 +138,7 @@ class GetLinuxServerListTreeApi(APIView):
                 tree = {
                     "label": group.name,
                     "selectable": False,
+                    "raw": '{0}'.format(uuid.uuid4().hex),
                     "children": []
                 }
                 for server in group.servers.all():
@@ -143,7 +149,8 @@ class GetLinuxServerListTreeApi(APIView):
                                 {
                                     "label": '{0} {1}'.format(server.name, server.ip),
                                     "icon": 'devices',
-                                    "id": server.id
+                                    "id": server.id,
+                                    "raw": '{0}_{1}'.format(server.id,uuid.uuid4().hex)
                                 }
                             )
                             tree_object_dict[server.id] = '{0} {1}'.format(
@@ -174,9 +181,9 @@ class GetMenuListApi(APIView):
                 "can_view_commandssequence": {'icon': 'list_alt', 'text': 'Commands', 'name': 'command'}
             },
             "links3": {
-                "can_view_log": {'icon': 'view_list', 'text': 'Log list', 'name': 'log'},
-                "can_view_user": {'icon': 'account_box', 'text': 'User list', 'name': 'user'},
-                "can_view_permission": {'icon': 'lock', 'text': 'Permission list', 'name': 'permission'},
+                "can_view_log": {'icon': 'view_list', 'text': 'Audit', 'name': 'log'},
+                "can_view_user": {'icon': 'account_box', 'text': 'User', 'name': 'user'},
+                "can_view_permission": {'icon': 'lock', 'text': 'Permission', 'name': 'permission'},
                 "can_view_settings": {'icon': 'settings', 'text': 'Settings', 'name': 'setting'}
 
             },

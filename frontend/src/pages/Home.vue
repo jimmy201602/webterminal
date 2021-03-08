@@ -2,17 +2,18 @@
   <div>
     <q-splitter
       v-model="splitterModel"
+      :limits="[10, 25]"
       class="fit"
     >
       <template v-slot:before>
-        <div class="q-pa-md" style="overflow:hidden;height:100vh;width:100%;">
+        <div class="q-pa-md" style="overflow:hidden;height:100vh;width:100%;overflow-y: auto;">
           <div class="row no-wrap">
             <q-input ref="filter" dense outlined square v-model="filter" :placeholder="searchPlaceholder" @focus="onSearchFocus"  @blur="onSearchBlur" class="bg-white col" />
             <q-btn color="grey-3" text-color="grey-8" icon="search" unelevated @click="resetFilter" />
           </div>
           <q-tree
             :nodes="tree"
-            node-key="id"
+            node-key="raw"
             selected-color="primary"
             :selected.sync="selected"
             :filter="filter"
@@ -220,6 +221,7 @@ export default {
         this.selected = null
         return
       }
+      target = parseInt(target.split('_')[0])
       const serverid = target
       target = this.tree_map[target]
       const OriTarget = target
@@ -263,10 +265,8 @@ export default {
         that.tree = res.data.tree
         that.tree_map = res.data.tree_map
         that.can_login_usernames = res.data.can_login_usernames
-        setTimeout(() => {
-          // set time out expand tree
-          that.$refs.servertree.expandAll()
-        }, 100)
+      }).then(() => {
+        that.$refs.servertree.expandAll()
       }).catch(err => {
         console.log(err)
       })
@@ -319,7 +319,13 @@ export default {
         } else if (usernames.length === 1) {
           that.getDynamicUserPassword(serverid, usernames[0], target, tabobj)
         } else {
-          console.log('no user can login')
+          that.$q.notify({
+            position: 'top',
+            progress: true,
+            message: that.$t('No user can login !'),
+            color: 'negative',
+            multiLine: true
+          })
         }
       }).catch(err => {
         console.log(err)
@@ -362,6 +368,24 @@ export default {
       this.selected = 'help'
     }
     this.fetchData()
+  },
+  beforeDestroy () {
+    // close websocket
+    if (this.$refs.terminal) {
+      this.$refs.terminal.map(function (term) {
+        if (term.ws) {
+          term.ws.close()
+        }
+      })
+    }
+
+    if (this.$refs.guacamole) {
+      this.$refs.guacamole.map(function (guacamole) {
+        if (guacamole.client) {
+          guacamole.client.disconnect()
+        }
+      })
+    }
   },
   components: {
     Terminal,
