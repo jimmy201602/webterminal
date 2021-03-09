@@ -380,13 +380,13 @@ export default {
       const date = new Date(props.row.start_time)
       let month = ''
       let day = ''
-      if (date.getMonth() < 9) {
-        month = `0${date.getMonth() + 1}`
+      if (date.getMonth() <= 9) {
+        month = `${date.getMonth() + 1}`
       } else {
         month = date.getMonth() + 1
       }
-      if (date.getDate() < 9) {
-        day = `0${date.getDate()}`
+      if (date.getDate() <= 9) {
+        day = `${date.getDate()}`
       } else {
         day = date.getDate()
       }
