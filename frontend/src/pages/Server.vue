@@ -668,6 +668,7 @@ export default {
       this.SettingDefaultUser(props, protocol)
     },
     AddNewServer () {
+      this.onReset()
       this.create = true
       this.createservermodal = true
       this.fetchCredential()
