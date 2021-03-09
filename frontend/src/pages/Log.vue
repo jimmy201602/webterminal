@@ -378,18 +378,8 @@ export default {
     },
     playGuacamoleLog (props) {
       const date = new Date(props.row.start_time)
-      let month = ''
-      let day = ''
-      if (date.getMonth() < 9) {
-        month = `0${date.getMonth() + 1}`
-      } else {
-        month = date.getMonth() + 1
-      }
-      if (date.getDate() < 9) {
-        day = `0${date.getDate()}`
-      } else {
-        day = date.getDate()
-      }
+      const month = date.getMonth() + 1
+      const day = date.getDate()
       this.logplayermodal = true
       this.show_ssh_player = true
       this.show_ssh_commands = false
