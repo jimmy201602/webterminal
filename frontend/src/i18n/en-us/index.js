@@ -50,6 +50,8 @@ export default {
   'error otop token': 'error otop token',
   'Two Factor Token': 'Two Factor Token',
   'This field is required': 'This field is required',
+  Setting: 'Setting',
+  MFA: 'MFA',
 
   // Credential page
   credential: {

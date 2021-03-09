@@ -1,47 +1,82 @@
 <template>
   <div class="q-pa-md">
-
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
+    <q-tabs
+      v-show="otp_switch"
+      v-model="selected"
+      align="left"
+      active-color="primary"
+      stretch
+      no-caps
+      dense
     >
+      <q-tab key="setting" v-model="selected"
+             name="setting" @click="selected = 'setting'"
+      >
+        <div>
+          {{$t('Setting')}}
+        </div>
+      </q-tab>
+      <q-tab key="mfa" v-model="selected"
+             name="mfa" @click="selected = 'mfa'"
+      >
+        <div>
+          {{$t('MFA')}}
+        </div>
+      </q-tab>
+    </q-tabs>
+    <q-tab-panels v-model="selected" animated class="fit" keep-alive>
+      <q-tab-panel name="setting" key="setting" keep-alive>
+          <q-form
+            @submit="onSubmit"
+            @reset="onReset"
+            class="q-gutter-md"
+          >
 
-      <div class="q-gutter-sm">
-      <q-toggle v-model="webterminal_detect" :label="$t('settings.helper_swith')" />
-      </div>
-      <div class="q-gutter-sm">
-      <q-toggle v-model="otp_switch" :label="$t('settings.mfa')" />
-      </div>
-      <div class="q-gutter-sm">
-        <q-toggle v-model="use_tz" :label="$t('settings.use_timezone')" />
-      </div>
-      <div class="q-gutter-md row">
-        <q-select
-          style="width: 40%"
-          filled
-          v-model="timezone"
-          use-input
-          input-debounce="0"
-          :label="$t('settings.timezone')"
-          :options="timezonelist"
-          @filter="filterFn"
-        >
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class="text-grey">
-                No results
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
-      </div>
-      <div>
-        <q-btn label="Submit" type="submit" color="primary"/>
-        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
-      </div>
-    </q-form>
-
+            <div class="q-gutter-sm">
+              <q-toggle v-model="webterminal_detect" :label="$t('settings.helper_swith')" />
+            </div>
+            <div class="q-gutter-sm">
+              <q-toggle v-model="otp_switch" :label="$t('settings.mfa')" />
+            </div>
+            <div class="q-gutter-sm">
+              <q-toggle v-model="use_tz" :label="$t('settings.use_timezone')" />
+            </div>
+            <div class="q-gutter-md row">
+              <q-select
+                style="width: 40%"
+                filled
+                v-model="timezone"
+                use-input
+                input-debounce="0"
+                :label="$t('settings.timezone')"
+                :options="timezonelist"
+                @filter="filterFn"
+              >
+                <template v-slot:no-option>
+                  <q-item>
+                    <q-item-section class="text-grey">
+                      No results
+                    </q-item-section>
+                  </q-item>
+                </template>
+              </q-select>
+            </div>
+            <div>
+              <q-btn label="Submit" type="submit" color="primary"/>
+              <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+            </div>
+          </q-form>
+      </q-tab-panel>
+      <q-tab-panel name="mfa" key="mfa" v-show="otp_switch" keep-alive>
+        <q-img
+          v-if="qrcode !== null"
+          :src="qrcode"
+          :ratio="1"
+          class="q-mt-md"
+          style="width: 150px"
+        />
+      </q-tab-panel>
+    </q-tab-panels>
   </div>
 </template>
 
@@ -55,7 +90,9 @@ export default {
       otp_switch: false,
       timezone: null,
       use_tz: false,
-      timezonelist: timezonelist
+      timezonelist: timezonelist,
+      selected: 'setting',
+      qrcode: null
     }
   },
 
@@ -155,6 +192,10 @@ export default {
   created () {
     this.fetchtimezonelist()
     this.fetchdata()
+    const that = this
+    this.$axios.post('/common/api/mfaqrcode/').then(response => {
+      that.qrcode = `data:image/svg+xml;base64,${response.data.data}`
+    })
   }
 }
 </script>

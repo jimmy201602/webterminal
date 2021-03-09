@@ -2,7 +2,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import exceptions, serializers
 from django_otp.plugins.otp_totp.models import TOTPDevice
-from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
 from common.utils import get_settings_value
@@ -25,8 +24,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         is_otp_open = get_settings_value("otp")
         if is_otp_open:
             try:
-                obj = TOTPDevice.objects.get(user=User.objects.get(
-                    username=dict(attrs).get('username')))
+                obj = TOTPDevice.objects.get(user__username=dict(attrs).get('username'))
                 if dict(attrs).get('otp_token') == "":
                     raise exceptions.AuthenticationFailed(
                         self.error_messages['no_otp_token'],

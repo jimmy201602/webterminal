@@ -30,6 +30,10 @@ except ImportError:
 
 from .utils import CustomModelPerm
 # permissions.IsAuthenticated = CustomModelPerm
+import qrcode
+import qrcode.image.svg
+import six
+from django_otp.plugins.otp_totp.models import TOTPDevice
 
 
 class ServerGroupViewSet(viewsets.ModelViewSet):
@@ -406,7 +410,7 @@ class WriteGuacamoleLogApi(APIView):
 
 class SshTerminalKillApi(APIView):
     perms_map = {
-        'PATCH': ['common.can_kill_serverinfor']
+        'POST': ['common.can_kill_serverinfor']
     }
     permission_classes = [permissions.IsAuthenticated, CustomModelPerm]
 
@@ -443,3 +447,20 @@ class CommandAutoCompeleteApi(APIView):
             else:
                 continue
         return Response({'status': True, 'data': list(set(commandmatch))})
+
+class MFAQrcodeAPi(APIView):
+    perms_map = {
+        'POST': ['common.can_get_mfa']
+    }
+    permission_classes = [permissions.IsAuthenticated, CustomModelPerm]
+
+    def post(self, request, format=None):
+        try:
+            device = TOTPDevice.objects.get(user__username=request.user.username)
+            img = qrcode.make(device.config_url, image_factory=qrcode.image.svg.SvgImage)
+            buffered = six.BytesIO()
+            img.save(buffered)
+            img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+            return Response({'status': True, 'data': img_str})
+        except ObjectDoesNotExist:
+            return Response({'status': False, 'data': None, 'message': 'Request user not exist in mfa device list.'})
