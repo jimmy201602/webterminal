@@ -68,15 +68,58 @@
           </q-form>
       </q-tab-panel>
       <q-tab-panel name="mfa" key="mfa" v-show="otp_switch" keep-alive>
-        <q-img
-          v-if="qrcode !== null"
-          :src="qrcode"
-          :ratio="1"
-          class="q-mt-md"
-          style="width: 150px"
-        />
+        <q-list separator>
+          <q-item>
+        <p>{{ $t('If you set up 2 - Step Verification, you should install') }} <a href="javascript:" class="qr-modal" @click="showGa" style="color: #3DA8F5;">{{$t('Google Authenticator')}}</a>.</p>
+          </q-item>
+        <q-item>
+          <q-item-section side>
+            <q-avatar square style="width: 150px;height: auto">
+              <img
+                v-if="qrcode !== null"
+                :src="qrcode"
+                :ratio="1"
+                class="q-mt-md"
+                style="width: 150px"
+              />
+            </q-avatar>
+          </q-item-section>
+          <q-item-section>
+            <div class="q-pa-md">
+              <div class="q-gutter-y-md column" style="max-width: 400px">
+            <q-input
+              outlined
+              :label="$t('Verify code')"
+            >
+              <template v-slot:after>
+                <q-btn color="primary">{{ $t('Bind MFA') }}</q-btn>
+              </template>
+            </q-input>
+                <br/>
+                {{ $t('Scan the QR code on the left then you can obtain the verify code.') }}
+              </div>
+            </div>
+          </q-item-section>
+        </q-item>
+        </q-list>
       </q-tab-panel>
     </q-tab-panels>
+    <q-dialog v-model="showDownloadLink">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">{{ $t('Download Google Authenticator')}}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none" style="min-width: 420px">
+          <div class="qr-image-goog-auth" ></div>
+          <p class="qr-tip">{{ $t('Scan QR code to start download')}}</p>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -92,7 +135,8 @@ export default {
       use_tz: false,
       timezonelist: timezonelist,
       selected: 'setting',
-      qrcode: null
+      qrcode: null,
+      showDownloadLink: false
     }
   },
 
@@ -187,6 +231,9 @@ export default {
           })
         })
       })
+    },
+    showGa () {
+      this.showDownloadLink = true
     }
   },
   created () {
@@ -200,6 +247,19 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="css" scoped>
+.qr-tip{
+  font-size: 14px;
+  line-height: 80px;
+  color: #383838;
+  text-align: center;
+}
+.qr-image-goog-auth {
+  background-image: url(../assets/google-authenticator.png);
+  background-size: contain;
+  width: 200px;
+  height: 200px;
+  margin: 10px auto;
+  display: block;
+}
 </style>

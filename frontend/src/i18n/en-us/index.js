@@ -52,6 +52,13 @@ export default {
   'This field is required': 'This field is required',
   Setting: 'Setting',
   MFA: 'MFA',
+  'Verify code': 'Verify code',
+  'If you set up 2 - Step Verification, you should install': 'If you set up 2 - Step Verification, you should install',
+  'Google Authenticator': 'Google Authenticator',
+  'Scan the QR code on the left then you can obtain the verify code.': 'Scan the QR code on the left then you can obtain the verify code.',
+  'Download Google Authenticator': 'Download Google Authenticator',
+  'Scan QR code to start download': 'Scan QR code to start download',
+  'Bind MFA': 'Bind MFA',
 
   // Credential page
   credential: {
