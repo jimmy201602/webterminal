@@ -98,9 +98,9 @@ class Credential(models.Model):
         default=22, blank=False, verbose_name=_('Port'))
     method = models.CharField(max_length=40, choices=(('password', _('password')), ('key', _(
         'key')), ('key-with-password', _('key with password'))), blank=False, default='password', verbose_name=_('Method'))
-    key = models.TextField(blank=True, verbose_name=_('Key'),null=True,)
+    key = models.TextField(blank=True, verbose_name=_('Key'), null=True,)
     password = models.CharField(
-        max_length=40, blank=True,null=True, verbose_name=_('Password'))
+        max_length=40, blank=True, null=True, verbose_name=_('Password'))
     proxy = models.BooleanField(default=False, verbose_name=_('Proxy'))
     proxyserverip = models.GenericIPAddressField(
         protocol='ipv4', null=True, blank=True, verbose_name=_('Proxy ip'))
@@ -123,21 +123,29 @@ class Credential(models.Model):
 
     def clean(self):
         if self.protocol == 'ssh-password' or self.protocol == 'ssh-key' or self.protocol == 'ssh-key-with-password':
-            if self.method == 'password' and len(self.password) == 0:
-                raise ValidationError(
-                    _('If you choose password auth method,You must set password!'))
-            if self.method == 'password' and len(self.key) > 0:
-                raise ValidationError(
-                    _('If you choose password auth method,You must make key field for blank!'))
-            if self.method == 'key' and len(self.key) == 0:
-                raise ValidationError(
-                    _('If you choose key auth method,You must fill in key field!'))
-            if self.method == 'key' and len(self.password) > 0:
-                raise ValidationError(
-                    _('If you choose key auth method,You must make password field for blank!'))
-            if self.method == 'key-with-password' and len(self.key) == 0 or len(self.password) == 0:
-                raise ValidationError(
-                    _('If you choose key with password auth method,You must fill in key and password field!'))
+            if self.method == 'password':
+                if self.password and len(self.password) > 0:
+                    pass
+                elif self.key and len(self.key) > 0:
+                    raise ValidationError(
+                        _('If you choose password auth method,You must make key field for blank!'))
+                else:
+                    raise ValidationError(
+                        _('If you choose password auth method,You must set password!'))
+            if self.method == 'key':
+                if self.key and len(self.key) == 0:
+                    raise ValidationError(
+                        _('If you choose key auth method,You must fill in key field!'))
+                if self.password and len(self.password) > 0:
+                    raise ValidationError(
+                        _('If you choose key auth method,You must make password field for blank!'))
+            if self.method == 'key-with-password':
+                if not self.key or not self.password:
+                    raise ValidationError(
+                        _('If you choose key with password auth method,You must fill in key and password field!'))
+                if len(self.password) == 0 or len(self.password) == 0:
+                    raise ValidationError(
+                        _('If you choose key with password auth method,You must fill in key and password field!'))
         if self.proxy:
             if self.proxyserverip is None or self.proxyport is None:
                 raise ValidationError(
