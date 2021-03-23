@@ -26,26 +26,34 @@ export default {
     create_user_success: 'User: {username} has been created',
     password_validation: 'Password and password verify must be equal!'
   },
-  'Please type user name at least 2 characters': 'Please type user name at least 2 characters',
-  'Please type your password at least 8 characters': 'Please type your password at least 8 characters',
-  'Please retype your password at least 8 characters': 'Please retype your password at least 8 characters',
-  'Password and verify password must equal': 'Password and verify password must equal',
+  'Please type user name at least 2 characters':
+    'Please type user name at least 2 characters',
+  'Please type your password at least 8 characters':
+    'Please type your password at least 8 characters',
+  'Please retype your password at least 8 characters':
+    'Please retype your password at least 8 characters',
+  'Password and verify password must equal':
+    'Password and verify password must equal',
   'Please input your email address': 'Please input your email address',
   'User password': 'User password',
   'Verify your password': 'Verify your password',
   'Email address': 'Email address',
   'password strength': 'password strength',
   'About Us': 'About Us',
-  'Our mission is to give everyone a full control platform to manage all your it asset.': 'Our mission is to give everyone a full control platform to manage all your it asset.',
+  'Our mission is to give everyone a full control platform to manage all your it asset.':
+    'Our mission is to give everyone a full control platform to manage all your it asset.',
   'Contact Us': 'Contact Us',
   Email: 'Email',
   Github: 'Github',
   'DESIGN PHILOSOPHY': 'DESIGN PHILOSOPHY',
-  'Easy to use. Agile deployment. Full control. Full auidt platform.': 'Easy to use. Agile deployment. Full control. Full auidt platform.',
+  'Easy to use. Agile deployment. Full control. Full auidt platform.':
+    'Easy to use. Agile deployment. Full control. Full auidt platform.',
   'OUR MISSION': 'OUR MISSION',
-  'Provide a full control platform to manage all your IT asset.': 'Provide a full control platform to manage all your IT asset.',
+  'Provide a full control platform to manage all your IT asset.':
+    'Provide a full control platform to manage all your IT asset.',
   'OUR VALUE': 'OUR VALUE',
-  'Try to provide a easy way to control and audit your action platform to manage all your asset.': 'Try to provide a easy way to control and audit your action platform to manage all your asset.',
+  'Try to provide a easy way to control and audit your action platform to manage all your asset.':
+    'Try to provide a easy way to control and audit your action platform to manage all your asset.',
   'no otp token': 'no otp token',
   'error otop token': 'error otop token',
   'Two Factor Token': 'Two Factor Token',
@@ -53,12 +61,16 @@ export default {
   Setting: 'Setting',
   MFA: 'MFA',
   'Verify code': 'Verify code',
-  'If you set up 2 - Step Verification, you should install': 'If you set up 2 - Step Verification, you should install',
+  'If you set up 2 - Step Verification, you should install':
+    'If you set up 2 - Step Verification, you should install',
   'Google Authenticator': 'Google Authenticator',
-  'Scan the QR code on the left then you can obtain the verify code.': 'Scan the QR code on the left then you can obtain the verify code.',
+  'Scan the QR code on the left then you can obtain the verify code.':
+    'Scan the QR code on the left then you can obtain the verify code.',
   'Download Google Authenticator': 'Download Google Authenticator',
   'Scan QR code to start download': 'Scan QR code to start download',
   'Bind MFA': 'Bind MFA',
+  'Use key password': 'Use key password',
+  'Auth key password': 'Auth key password',
 
   // Credential page
   credential: {
@@ -122,7 +134,8 @@ export default {
   'Please type your proxy password': 'Please type your proxy password',
   'No user can login !': 'No user can login !',
   'Not supported system.': 'Not supported system.',
-  'You haven\'t install webterminal helper,please download and install it.': 'You haven\'t install webterminal helper,please download and install it.',
+  "You haven't install webterminal helper,please download and install it.":
+    "You haven't install webterminal helper,please download and install it.",
   Audit: 'Audit',
   User: 'User',
   Permission: 'Permission',
@@ -205,7 +218,8 @@ export default {
   },
   'Create Group': 'Create Group',
   'Group name': 'Group name',
-  'Please type group name at least 2 characters': 'Please type group name at least 2 characters',
+  'Please type group name at least 2 characters':
+    'Please type group name at least 2 characters',
 
   // server page
   server: {
@@ -243,8 +257,10 @@ export default {
   },
   'Create Server': 'Create Server',
   'Server name': 'Server name',
-  'Please type server name at least 2 characters': 'Please type server name at least 2 characters',
-  'Group will be used to control permission': 'Group will be used to control permission',
+  'Please type server name at least 2 characters':
+    'Please type server name at least 2 characters',
+  'Group will be used to control permission':
+    'Group will be used to control permission',
   'Please type a valid ip address': 'Please type a valid ip address',
 
   // command page
@@ -280,8 +296,10 @@ export default {
     update_command_success: 'Command: {name} has been updated',
     create_command_success: 'Command: {name} has been created'
   },
-  'Please type name at least 2 characters': 'Please type name at least 2 characters',
-  'Please type command name at least 2 characters': 'Please type command name at least 2 characters',
+  'Please type name at least 2 characters':
+    'Please type name at least 2 characters',
+  'Please type command name at least 2 characters':
+    'Please type command name at least 2 characters',
   'Command name': 'Command name',
 
   // permission page
@@ -313,10 +331,11 @@ export default {
     },
     create_permission: 'Create permission',
     update_permission: 'Update permission',
-    delete_permission: 'Are you want to reovke user {name}\'s  permission',
-    delete_permission_success: 'Permission: user {name}\'s  permission has been revoked',
-    update_permission_success: 'Permission: user {name}\'s has been updated',
-    create_permission_success: 'Permission: user {name}\'s has been created'
+    delete_permission: "Are you want to reovke user {name}'s  permission",
+    delete_permission_success:
+      "Permission: user {name}'s  permission has been revoked",
+    update_permission_success: "Permission: user {name}'s has been updated",
+    create_permission_success: "Permission: user {name}'s has been created"
   },
   // permission code
   'Can view command log info': 'Can view command log info',
@@ -354,7 +373,8 @@ export default {
   'Can delete user info': 'Can delete user info',
   'Can view user permission': 'Can view user permission',
   'Can view time zone list': 'Can view time zone list',
-  'Can configuration default user settings': 'Can configuration default user settings',
+  'Can configuration default user settings':
+    'Can configuration default user settings',
   'Can modify default user settings': 'Can modify default user settings',
   'Can delete default user settings': 'Can delete default user settings',
   'Can view default user settings': 'Can view default user settings',
@@ -364,15 +384,19 @@ export default {
   settings: {
     helper_swith: 'Webterminal Plugin Detect Switch',
     mfa: 'Open mfa function',
-    use_timezone: 'Use TimeZone Time (If you set this configuration will affect records datetime on your database!)',
+    use_timezone:
+      'Use TimeZone Time (If you set this configuration will affect records datetime on your database!)',
     timezone: 'Time Zone',
-    update_settings_success: 'Settings has been updated, Please restart the server to make it work'
+    update_settings_success:
+      'Settings has been updated, Please restart the server to make it work'
   },
 
   // defaultusersettings
   defaultusersettings: {
-    create_defaultusersettings_success: 'Settings user {name} to default login user',
-    update_defaultusersettings_success: 'Update user {name} to default login user'
+    create_defaultusersettings_success:
+      'Settings user {name} to default login user',
+    update_defaultusersettings_success:
+      'Update user {name} to default login user'
   },
 
   Confirm: 'Confirm',
@@ -382,7 +406,8 @@ export default {
   Reset: 'Reset',
   // login page
   'Welcome come back': 'Welcome come back',
-  'Please the input correct username or password': 'Please the input correct username or password',
+  'Please the input correct username or password':
+    'Please the input correct username or password',
   'Username/Email': 'Username/Email',
   'Please input your password': 'Please input your password',
   'Forgotten Password': 'Forgotten Password',
