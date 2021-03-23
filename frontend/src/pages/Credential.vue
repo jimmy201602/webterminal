@@ -554,18 +554,23 @@ export default {
       data.name = this.name
       data.username = this.username
       data.port = this.port
+      data.method = 'password'
       if (this.protocol === 'ssh') {
         if (this.usekey) {
           if (this.usekeypassword) {
             data.protocol = 'ssh-key-with-password'
             data.password = this.password
+            data.method = 'key-with-password'
           } else {
             data.protocol = 'ssh-key'
+            data.method = 'key'
+            data.password = null
           }
           data.key = this.key
         } else {
           data.protocol = 'ssh-password'
           data.password = this.password
+          data.key = null
         }
       } else if (this.protocol === 'telnet') {
         data.protocol = this.protocol

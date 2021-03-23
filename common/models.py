@@ -97,10 +97,10 @@ class Credential(models.Model):
     port = models.PositiveIntegerField(
         default=22, blank=False, verbose_name=_('Port'))
     method = models.CharField(max_length=40, choices=(('password', _('password')), ('key', _(
-        'key'))), blank=False, default='password', verbose_name=_('Method'))
-    key = models.TextField(blank=True, verbose_name=_('Key'))
+        'key')), ('key-with-password', _('key with password'))), blank=False, default='password', verbose_name=_('Method'))
+    key = models.TextField(blank=True, verbose_name=_('Key'),null=True,)
     password = models.CharField(
-        max_length=40, blank=True, verbose_name=_('Password'))
+        max_length=40, blank=True,null=True, verbose_name=_('Password'))
     proxy = models.BooleanField(default=False, verbose_name=_('Proxy'))
     proxyserverip = models.GenericIPAddressField(
         protocol='ipv4', null=True, blank=True, verbose_name=_('Proxy ip'))
@@ -122,7 +122,7 @@ class Credential(models.Model):
         return self.name
 
     def clean(self):
-        if self.protocol == 'ssh-password' or self.protocol == 'ssh-key':
+        if self.protocol == 'ssh-password' or self.protocol == 'ssh-key' or self.protocol == 'ssh-key-with-password':
             if self.method == 'password' and len(self.password) == 0:
                 raise ValidationError(
                     _('If you choose password auth method,You must set password!'))
@@ -135,10 +135,13 @@ class Credential(models.Model):
             if self.method == 'key' and len(self.password) > 0:
                 raise ValidationError(
                     _('If you choose key auth method,You must make password field for blank!'))
-            if self.proxy:
-                if self.proxyserverip is None or self.proxyport is None:
-                    raise ValidationError(
-                        _('If you choose auth proxy,You must fill in proxyserverip and proxyport field !'))
+            if self.method == 'key-with-password' and len(self.key) == 0 or len(self.password) == 0:
+                raise ValidationError(
+                    _('If you choose key with password auth method,You must fill in key and password field!'))
+        if self.proxy:
+            if self.proxyserverip is None or self.proxyport is None:
+                raise ValidationError(
+                    _('If you choose auth proxy,You must fill in proxyserverip and proxyport field !'))
 
     class Meta:
         permissions = (
@@ -207,8 +210,10 @@ class Log(models.Model):
         default=False, verbose_name=_('Is Commercial Version'))
     tag = models.CharField(max_length=100, verbose_name=_(
         'Tag'), blank=True, null=True)
-    protocol = models.CharField(max_length=40, default='ssh',verbose_name=_('Protocol'))
-    loginuser = models.CharField(max_length=40, default='ssh',verbose_name=_('Login user'))
+    protocol = models.CharField(
+        max_length=40, default='ssh', verbose_name=_('Protocol'))
+    loginuser = models.CharField(
+        max_length=40, default='ssh', verbose_name=_('Login user'))
 
     def __str__(self):
         return self.server.name
@@ -279,9 +284,12 @@ class DefaultUserSettings(models.Model):
 
     class Meta:
         permissions = (
-            ("can_add_defaultusersettings", _("Can configuration default user settings")),
-            ("can_change_defaultusersettings", _("Can modify default user settings")),
-            ("can_delete_defaultusersettings", _("Can delete default user settings")),
+            ("can_add_defaultusersettings", _(
+                "Can configuration default user settings")),
+            ("can_change_defaultusersettings", _(
+                "Can modify default user settings")),
+            ("can_delete_defaultusersettings", _(
+                "Can delete default user settings")),
             ("can_view_defaultusersettings", _("Can view default user settings")),
         )
         app_label = 'common'

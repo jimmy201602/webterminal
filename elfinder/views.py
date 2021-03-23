@@ -231,6 +231,7 @@ class ElfinderConnectorView(APIView):
                     if method == 'password':
                         password = credential.password
                     else:
+                        password = credential.password
                         key = credential.key
             if method == 'password':
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
@@ -244,16 +245,16 @@ class ElfinderConnectorView(APIView):
                 private_key = StringIO(key)
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 elif 'DSA' in key:
                     private_key = paramiko.DSSKey.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 elif 'EC' in key:
                     private_key = paramiko.ECDSAKey.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 elif 'OPENSSH' in key:
                     private_key = paramiko.Ed25519Key.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
                                                                    'params': {'port': port,
                                                                               'username': loginuser,
@@ -303,6 +304,7 @@ class ElfinderConnectorView(APIView):
                     if method == 'password':
                         password = credential.password
                     else:
+                        password = credential.password
                         key = credential.key
             if method == 'password':
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
@@ -316,16 +318,16 @@ class ElfinderConnectorView(APIView):
                 private_key = StringIO(key)
                 if 'RSA' in key:
                     private_key = paramiko.RSAKey.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 elif 'DSA' in key:
                     private_key = paramiko.DSSKey.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 elif 'EC' in key:
                     private_key = paramiko.ECDSAKey.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 elif 'OPENSSH' in key:
                     private_key = paramiko.Ed25519Key.from_private_key(
-                        private_key)
+                        private_key,password=password)
                 optinon_sets['roots'][u_id][0]['storageKwArgs'] = {'host': server_object.ip,
                                                                    'params': {'port': port,
                                                                               'username': loginuser,
