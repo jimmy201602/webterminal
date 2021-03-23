@@ -15,6 +15,11 @@ class CredentialSerializer(serializers.ModelSerializer):
         model = Credential
         fields = '__all__'
 
+    def validate(self, attrs):
+        instance = Credential(**attrs)
+        instance.clean()
+        return attrs
+
 
 class CredentialProtocolSerializer(serializers.ModelSerializer):
     class Meta:
