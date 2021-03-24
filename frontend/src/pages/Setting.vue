@@ -82,6 +82,7 @@
                 class="q-mt-md"
                 style="width: 150px"
               />
+              <a v-if="qrcode === null" style="font-size: small">{{message}}</a>
             </q-avatar>
           </q-item-section>
           <q-item-section>
@@ -89,10 +90,11 @@
               <div class="q-gutter-y-md column" style="max-width: 400px">
             <q-input
               outlined
+              v-model="mfacode"
               :label="$t('Verify code')"
             >
               <template v-slot:after>
-                <q-btn color="primary">{{ $t('Bind MFA') }}</q-btn>
+                <q-btn color="primary" @click="bindMfa">{{ $t('Bind MFA') }}</q-btn>
               </template>
             </q-input>
                 <br/>
@@ -124,6 +126,8 @@
 </template>
 
 <script>
+import * as auth from 'src/lib/auth'
+
 let timezonelist = []
 export default {
   name: 'Setting',
@@ -136,6 +140,8 @@ export default {
       timezonelist: timezonelist,
       selected: 'setting',
       qrcode: null,
+      message: null,
+      mfacode: null,
       showDownloadLink: false
     }
   },
@@ -149,7 +155,48 @@ export default {
         use_tz: this.use_tz
       })
     },
-
+    bindMfa () {
+      if (!this.mfacode) {
+        this.$q.notify({
+          type: 'negative',
+          color: 'red-5',
+          textColor: 'white',
+          multiLine: true,
+          message: this.$t('Please input the mfa code!'),
+          timeout: 5000,
+          position: 'top'
+        })
+      } else {
+        this.$axios.post('/common/api/bindmfa/', { verify_code: this.mfacode }).then(response => {
+          if (response.data.status) {
+            auth.removeToken()
+            this.mfasetting = false
+            this.$q.notify({
+              type: 'negative',
+              color: 'red-5',
+              textColor: 'white',
+              multiLine: true,
+              message: this.$t('Bind mfa success, please login the user again!'),
+              timeout: 5000,
+              position: 'top'
+            })
+            this.$router.push({
+              name: 'login'
+            })
+          } else {
+            this.$q.notify({
+              type: 'negative',
+              color: 'red-5',
+              textColor: 'white',
+              multiLine: true,
+              message: this.$t('Bind mfa failed, please input a validate verify code!'),
+              timeout: 5000,
+              position: 'top'
+            })
+          }
+        })
+      }
+    },
     onReset () {
       this.webterminal_detect = false
       this.otp_switch = false
@@ -241,7 +288,11 @@ export default {
     this.fetchdata()
     const that = this
     this.$axios.post('/common/api/mfaqrcode/').then(response => {
-      that.qrcode = `data:image/svg+xml;base64,${response.data.data}`
+      if (response.data.status) {
+        that.qrcode = `data:image/svg+xml;base64,${response.data.data}`
+      } else {
+        that.message = response.data.message
+      }
     })
   }
 }

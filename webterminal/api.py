@@ -5,6 +5,7 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ObjectDoesNotExist
 from common.utils import get_settings_value
+from django.contrib.auth.models import User
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -22,25 +23,34 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         is_otp_open = get_settings_value("otp")
+        data['username'] = dict(attrs).get('username')
         if is_otp_open:
             try:
-                obj = TOTPDevice.objects.get(user__username=dict(attrs).get('username'))
-                if dict(attrs).get('otp_token') == "":
-                    raise exceptions.AuthenticationFailed(
-                        self.error_messages['no_otp_token'],
-                        'no_otp_token',
-                    )
-                else:
-                    validated = obj.verify_token(
-                        dict(attrs).get('otp_token'))
-                    if not validated:
+                obj = TOTPDevice.objects.get(
+                    user__username=dict(attrs).get('username'))
+                if obj.confirmed:
+                    # device is ready to use
+                    if dict(attrs).get('otp_token') == "":
                         raise exceptions.AuthenticationFailed(
-                            self.error_messages['error_otp_token'],
-                            'error_otp_token',
+                            self.error_messages['no_otp_token'],
+                            'no_otp_token',
                         )
+                    else:
+                        validated = obj.verify_token(
+                            dict(attrs).get('otp_token'))
+                        if not validated:
+                            raise exceptions.AuthenticationFailed(
+                                self.error_messages['error_otp_token'],
+                                'error_otp_token',
+                            )
+                else:
+                    # redirect the otp mfa settings page
+                    data['detail'] = _('redirect otp settings page')
             except ObjectDoesNotExist:
                 # in the future will redirect the otp settings page
-                pass
+                obj = TOTPDevice.objects.create(
+                    user=User.objects.get(username=dict(attrs).get('username')), confirmed=False,name='webterminal')
+                data['detail'] = _('redirect otp settings page')
         return data
 
     @classmethod

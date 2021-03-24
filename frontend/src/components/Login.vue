@@ -84,6 +84,76 @@
       </q-form>
     </q-card>
   </q-dialog>
+  <q-dialog
+    v-model="mfasetting"
+    full-width
+    full-height
+    :maximized="true"
+  >
+    <q-card>
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6">{{ $t('Two Factor MFA setting') }}</div>
+        <q-space />
+        <q-btn icon="close" flat round dense v-close-popup />
+      </q-card-section>
+      <q-card-section>
+        <div class="q-pa-md">
+          <q-list separator>
+            <q-item>
+              <p>{{ $t('If you set up 2 - Step Verification, you should install') }} <a href="javascript:" class="qr-modal" @click="showGa" style="color: #3DA8F5;">{{$t('Google Authenticator')}}</a>.</p>
+            </q-item>
+            <q-item>
+              <q-item-section side>
+                <q-avatar square style="width: 150px;height: auto">
+                  <img
+                    v-if="qrcode !== null"
+                    :src="qrcode"
+                    :ratio="1"
+                    class="q-mt-md"
+                    style="width: 150px"
+                  />
+                  <a v-if="qrcode === null" style="font-size: small">{{message}}</a>
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <div class="q-pa-md">
+                  <div class="q-gutter-y-md column" style="max-width: 400px">
+                    <q-input
+                      outlined
+                      v-model="mfacode"
+                      :label="$t('Verify code')"
+                    >
+                      <template v-slot:after>
+                        <q-btn color="primary" @click="bindMfa">{{ $t('Bind MFA') }}</q-btn>
+                      </template>
+                    </q-input>
+                    <br/>
+                    {{ $t('Scan the QR code on the left then you can obtain the verify code.') }}
+                  </div>
+                </div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="showDownloadLink">
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{ $t('Download Google Authenticator')}}</div>
+      </q-card-section>
+
+      <q-card-section class="q-pt-none" style="min-width: 420px">
+        <div class="qr-image-goog-auth" ></div>
+        <p class="qr-tip">{{ $t('Scan QR code to start download')}}</p>
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="OK" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </div>
 </template>
 <script>
@@ -117,12 +187,69 @@ export default {
       password: null,
       otp_token: '',
       showmodal: false,
+      mfasetting: false,
+      mfacode: null,
+      qrcode: null,
+      message: null,
+      showDownloadLink: false,
       resetpasswordaddress: resetpasswordaddress
     }
   },
   methods: {
+    bindMfa () {
+      if (!this.mfacode) {
+        this.$q.notify({
+          type: 'negative',
+          color: 'red-5',
+          textColor: 'white',
+          multiLine: true,
+          message: this.$t('Please input the mfa code!'),
+          timeout: 5000,
+          position: 'top'
+        })
+      } else {
+        this.$axios.post('/common/api/bindmfa/', { verify_code: this.mfacode }).then(response => {
+          if (response.data.status) {
+            auth.removeToken()
+            this.mfasetting = false
+            this.$q.notify({
+              type: 'negative',
+              color: 'red-5',
+              textColor: 'white',
+              multiLine: true,
+              message: this.$t('Bind mfa success, please login the user again!'),
+              timeout: 5000,
+              position: 'top'
+            })
+          } else {
+            this.$q.notify({
+              type: 'negative',
+              color: 'red-5',
+              textColor: 'white',
+              multiLine: true,
+              message: this.$t('Bind mfa failed, please input a validate verify code!'),
+              timeout: 5000,
+              position: 'top'
+            })
+          }
+        })
+      }
+    },
+    showGa () {
+      this.showDownloadLink = true
+    },
     forgetPassword () {
       this.showmodal = true
+    },
+    getMfaCode () {
+      const that = this
+      this.$axios.post('/common/api/mfaqrcode/').then(response => {
+        if (response.data.status) {
+          that.qrcode = `data:image/svg+xml;base64,${response.data.data}`
+        } else {
+          that.message = response.data.message
+        }
+      })
     },
     Login () {
       const that = this
@@ -134,10 +261,16 @@ export default {
         }).then(res => {
           that.$store.commit('Login', res.data)
           // add rediret handle
-          if (this.$route.query && this.$route.query.redirect) {
-            that.$store.commit('SetUserInfo', { username: 'Jimmy', avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: this.$route.query.redirect })
+          if (res.data.detail === that.$t('redirect otp settings page')) {
+            // redirect the page to mfa settings
+            that.mfasetting = true
+            that.getMfaCode()
+            return
+          }
+          if (this.$route.query && this.$route.query.redirect !== 'login') {
+            that.$store.commit('SetUserInfo', { username: res.data.username, avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: this.$route.query.redirect })
           } else {
-            that.$store.commit('SetUserInfo', { username: 'Jimmy', avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: null })
+            that.$store.commit('SetUserInfo', { username: res.data.username, avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: null })
           }
         }).catch(function (error) {
           if (error.response.data.detail === that.$t('no otp token') || error.response.data.detail === that.$t('error otop token')) {
@@ -159,4 +292,20 @@ export default {
 </script>
 <style scoped>
   @import "../css/login.css";
+</style>
+<style lang="css" scoped>
+.qr-tip{
+  font-size: 14px;
+  line-height: 80px;
+  color: #383838;
+  text-align: center;
+}
+.qr-image-goog-auth {
+  background-image: url(../assets/google-authenticator.png);
+  background-size: contain;
+  width: 200px;
+  height: 200px;
+  margin: 10px auto;
+  display: block;
+}
 </style>

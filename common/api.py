@@ -448,6 +448,7 @@ class CommandAutoCompeleteApi(APIView):
                 continue
         return Response({'status': True, 'data': list(set(commandmatch))})
 
+
 class MFAQrcodeAPi(APIView):
     perms_map = {
         'POST': ['common.can_get_mfa']
@@ -456,11 +457,33 @@ class MFAQrcodeAPi(APIView):
 
     def post(self, request, format=None):
         try:
-            device = TOTPDevice.objects.get(user__username=request.user.username)
-            img = qrcode.make(device.config_url, image_factory=qrcode.image.svg.SvgImage)
+            device = TOTPDevice.objects.get(
+                user__username=request.user.username)
+            img = qrcode.make(device.config_url,
+                              image_factory=qrcode.image.svg.SvgImage)
             buffered = six.BytesIO()
             img.save(buffered)
             img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
             return Response({'status': True, 'data': img_str})
         except ObjectDoesNotExist:
             return Response({'status': False, 'data': None, 'message': 'Request user not exist in mfa device list.'})
+
+
+class BindMfaAPi(APIView):
+    perms_map = {
+        'POST': ['common.can_get_mfa']
+    }
+    permission_classes = [permissions.IsAuthenticated, CustomModelPerm]
+
+    def post(self, request, format=None):
+        try:
+            device = TOTPDevice.objects.get(
+                user__username=request.user.username)
+            validated = device.verify_token(
+                request.data.get('verify_code', ''))
+            if validated and not device.confirmed:
+                device.confirmed = True
+                device.save()
+            return Response({'status': validated, 'message': None})
+        except ObjectDoesNotExist:
+            return Response({'status': False, 'message': 'Request user not exist in mfa device list.'})

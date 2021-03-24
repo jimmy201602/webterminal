@@ -61,6 +61,7 @@ export default {
   Setting: 'Setting',
   MFA: 'MFA',
   'Verify code': 'Verify code',
+  'redirect otp settings page': 'redirect otp settings page',
   'If you set up 2 - Step Verification, you should install':
     'If you set up 2 - Step Verification, you should install',
   'Google Authenticator': 'Google Authenticator',
@@ -71,6 +72,10 @@ export default {
   'Bind MFA': 'Bind MFA',
   'Use key password': 'Use key password',
   'Auth key password': 'Auth key password',
+  'Two Factor MFA setting': 'Two Factor MFA setting',
+  'Please input the mfa code!': 'Please input the mfa code!',
+  'Bind mfa success, please login the user again!': 'Bind mfa success, please login the user again!',
+  'Bind mfa failed, please input a validate verify code!': 'Bind mfa failed, please input a validate verify code!',
 
   // Credential page
   credential: {
