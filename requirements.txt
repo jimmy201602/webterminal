@@ -27,7 +27,7 @@ pycparser==2.18
 PyNaCl==1.2.0
 python-magic==0.4.3
 pytz==2017.3
-PyYAML==4.2b1
+PyYAML==5.4
 redis==2.10.6
 six==1.11.0
 Twisted==17.5.0
