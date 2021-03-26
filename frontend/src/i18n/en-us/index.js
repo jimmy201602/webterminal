@@ -82,6 +82,8 @@ export default {
     'User ip changed, Please use username and password to authenticate.',
   'Illegal visit, please contact your administrator!':
     'Illegal visit, please contact your administrator!',
+  'For security concern, remember password function only last one day!':
+    'For security concern, remember password function only last one day!',
 
   // Credential page
   credential: {

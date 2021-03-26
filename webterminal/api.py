@@ -81,6 +81,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
             encrypt = PyCrypt(data['remember_me_token'])
             redis_conn.set(data['remember_me_token'], encrypt.encrypt(json.dumps(
                 {'ip': self.get_request_ip(), 'username': data['username'], 'password': encrypt.encrypt(dict(attrs).get('password')).decode(), 'remember_me_token': data['remember_me_token']})))
+            redis_conn.expire(data['remember_me_token'], 24 * 60 * 60)
         return data
 
     @classmethod

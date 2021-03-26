@@ -181,6 +181,16 @@ export default {
     remember_password (val, valueold) {
       if (valueold === true) {
         removeRememberMeToken()
+      } else {
+        this.$q.notify({
+          type: 'negative',
+          color: 'red-5',
+          textColor: 'white',
+          multiLine: true,
+          message: this.$t('For security concern, remember password function only last one day!'),
+          timeout: 5000,
+          position: 'top'
+        })
       }
     }
   },
