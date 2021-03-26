@@ -411,8 +411,8 @@ export default {
   Reset: 'Reset',
   // login page
   'Welcome come back': 'Welcome come back',
-  'Please the input correct username or password':
-    'Please the input correct username or password',
+  'Please input the correct username or password':
+    'Please input the correct username or password',
   'Username/Email': 'Username/Email',
   'Please input your password': 'Please input your password',
   'Forgotten Password': 'Forgotten Password',

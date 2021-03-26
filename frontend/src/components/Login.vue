@@ -22,7 +22,7 @@
     <div style="font-size: large;width: 312px;height: 44px;position: center;margin-left: 50px">{{$t('Welcome come back')}}!</div>
     <ul class="form_list">
       <form action="" method="post">
-        <li class="tips01" v-show="tips" style="font-size: small">{{$t('Please the input correct username or password')}}!</li>
+        <li class="tips01" v-show="tips" style="font-size: small">{{$t('Please input the correct username or password')}}!</li>
         <li><input class="txt_bag" type="text" :placeholder="$t('Username/Email')" v-model="username"></li>
         <li>
           <input class="txt_bag" type="password" :placeholder="$t('Please input your password')" v-model="password">
