@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'webterminal',
     'channels',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt.token_blacklist',
     'rest_framework',
     'elfinder',
     'guacamole',
@@ -189,7 +190,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1200),
     'REFRESH_TOKEN_LIFETIME': timedelta(hours=20),
-    'ROTATE_REFRESH_TOKENS': False,
+    'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 
     'ALGORITHM': 'HS256',
@@ -202,8 +203,11 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
 
+    # 'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.RefreshToken',),
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'UPDATE_LAST_LOGIN': True,
 
     'JTI_CLAIM': 'jti',
 

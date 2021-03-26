@@ -487,3 +487,21 @@ class BindMfaAPi(APIView):
             return Response({'status': validated, 'message': None})
         except ObjectDoesNotExist:
             return Response({'status': False, 'message': 'Request user not exist in mfa device list.'})
+
+
+class BlackToken(APIView):
+    permission_classes = [permissions.IsAuthenticated, CustomModelPerm]
+
+    def post(self, request, format=None):
+        try:
+            token = request.data.get('token', '')
+            from rest_framework_simplejwt.tokens import BlacklistedToken, OutstandingToken
+            import base64
+            import json
+            jti = json.loads(base64.b64decode(token.rsplit(
+                '.')[1].encode() + b'==').decode()).get('jti', None)
+            BlacklistedToken.objects.get_or_create(
+                token=OutstandingToken.objects.get(jti=jti))
+            return Response({'status': True, 'message': None})
+        except Exception:
+            return Response({'status': False, 'message': None})

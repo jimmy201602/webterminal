@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^dynamicpassword/$', DynamicPassword.as_view(), name='dynamicpassword'),
     url(r'^api/api-token-auth/', obtain_auth_token, name='api-token-auth'),
     url(r'^api/token/$', WebterminalTokenObtainPairView.as_view(), name='token_obtain_pair'),
-    url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),    
+    url(r'^api/token/refresh/$', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 

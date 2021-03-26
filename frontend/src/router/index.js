@@ -165,6 +165,7 @@ axios.interceptors.request.use(
       }
 
       config.headers.Authorization = 'Webterminal-jwt ' + getAccessToken()
+      // config.headers.Authorization = 'Webterminal-jwt ' + getRefreshToken()
     }
 
     return config

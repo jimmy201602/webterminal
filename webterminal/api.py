@@ -19,6 +19,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         super().__init__(*args, **kwargs)
         self.fields['otp_token'] = serializers.CharField(
             required=False, max_length=6, allow_blank=True)
+        self.fields['remember_me'] = serializers.BooleanField(default=False)
 
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -51,6 +52,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
                 obj = TOTPDevice.objects.create(
                     user=User.objects.get(username=dict(attrs).get('username')), confirmed=False,name='webterminal')
                 data['detail'] = _('redirect otp settings page')
+        dict(attrs).get('remember_me')
         return data
 
     @classmethod
