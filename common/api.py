@@ -505,3 +505,24 @@ class BlackToken(APIView):
             return Response({'status': True, 'message': None})
         except Exception:
             return Response({'status': False, 'message': None})
+
+
+class GetRememberUserName(APIView):
+    permission_classes = []
+
+    def post(self, request, format=None):
+        try:
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+            if x_forwarded_for:
+                ip = x_forwarded_for.split(',')[0]
+            else:
+                ip = request.META.get('REMOTE_ADDR')
+            redis_conn = get_redis_instance()
+            encrypt = PyCrypt(request.data.get('remember_me_token', None))
+            content = json.loads(encrypt.decrypt(
+                redis_conn.get(request.data.get('remember_me_token', None))))
+            if ip != content.get('ip', None):
+                return Response({'status': False, 'message': 'User ip changed, Please use username and password to authenticate.'})
+            return Response({'status': True, 'message': None, 'username': content.get('username')})
+        except Exception:
+            return Response({'status': False, 'message': 'Illegal visit, please contact your administrator!'})

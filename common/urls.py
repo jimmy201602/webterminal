@@ -9,7 +9,7 @@ from common.views import (Commands,
                           PasswordResetDoneView, PasswordResetConfirmView,
                           SettingsView, SettingsOtpView
                           )
-from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet, CreateUserViewSet, LogViewSet, CommandsSequenceGroupsViewSet, ServerGroupWithServerInfoViewSet, TimeZoneList, SettingsList,Settings,ServerInforWithCredentialInfoViewSet,DefaultUserSettingsApi,DefaultUserSettingsViewSet,GetDynamicPasswordApi,GetCommandLogListApi,DynamicPasswordAuthApi,WriteGuacamoleLogApi,SshTerminalKillApi,CommandAutoCompeleteApi,MFAQrcodeAPi,BindMfaAPi,BlackToken
+from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet, CreateUserViewSet, LogViewSet, CommandsSequenceGroupsViewSet, ServerGroupWithServerInfoViewSet, TimeZoneList, SettingsList,Settings,ServerInforWithCredentialInfoViewSet,DefaultUserSettingsApi,DefaultUserSettingsViewSet,GetDynamicPasswordApi,GetCommandLogListApi,DynamicPasswordAuthApi,WriteGuacamoleLogApi,SshTerminalKillApi,CommandAutoCompeleteApi,MFAQrcodeAPi,BindMfaAPi,BlackToken,GetRememberUserName
 from rest_framework import routers
 from django.contrib import admin
 from django.views.decorators.csrf import csrf_exempt
@@ -60,6 +60,7 @@ urlpatterns = [
     url(r'^api/mfaqrcode/$', MFAQrcodeAPi.as_view(), name='mfaqrcode'),
     url(r'^api/bindmfa/$', BindMfaAPi.as_view(), name='bindmfa'),
     url(r'^api/blacktoken/$', BlackToken.as_view(), name='blacktoken'),
+    url(r'^api/getrememberusername/$', GetRememberUserName.as_view(), name='getrememberusername'),
     url(r'^api/', include(router.urls)),
     url(r'^webterminalhelperdetect/$', csrf_exempt(WebterminalHelperDetectApi.as_view()),
         name='webterminalhelperdetectapi'),

@@ -157,13 +157,14 @@
 </div>
 </template>
 <script>
+import { GetRememberMeToken, removeRememberMeToken, removeToken, SetRememberMeToken } from '../lib/auth'
+
 let resetpasswordaddress = ''
 if (process.env.NODE_ENV === 'production') {
   resetpasswordaddress = '/common/password-reset/'
 } else {
   resetpasswordaddress = 'http://127.0.0.1:8000/common/password-reset/'
 }
-import * as auth from '../lib/auth'
 export default {
   name: 'Login',
   watch: {
@@ -176,6 +177,11 @@ export default {
       if (val) {
         this.tips = false
       }
+    },
+    remember_password (val, valueold) {
+      if (valueold === true) {
+        removeRememberMeToken()
+      }
     }
   },
   data () {
@@ -185,7 +191,7 @@ export default {
       tips: false,
       username: null,
       password: null,
-      otp_token: '',
+      otp_token: null,
       showmodal: false,
       mfasetting: false,
       mfacode: null,
@@ -193,6 +199,11 @@ export default {
       message: null,
       showDownloadLink: false,
       resetpasswordaddress: resetpasswordaddress
+    }
+  },
+  computed: {
+    remember_me_token: function () {
+      return GetRememberMeToken()
     }
   },
   methods: {
@@ -210,7 +221,7 @@ export default {
       } else {
         this.$axios.post('/common/api/bindmfa/', { verify_code: this.mfacode }).then(response => {
           if (response.data.status) {
-            auth.removeToken()
+            removeToken()
             this.mfasetting = false
             this.$q.notify({
               type: 'negative',
@@ -257,7 +268,9 @@ export default {
         this.$axios.post('/api/token/', {
           username: that.username,
           password: that.password,
-          otp_token: that.otp_token
+          otp_token: that.otp_token,
+          remember_me: that.remember_password,
+          remember_me_token: that.remember_me_token
         }).then(res => {
           that.$store.commit('Login', res.data)
           // add rediret handle
@@ -266,6 +279,10 @@ export default {
             that.mfasetting = true
             that.getMfaCode()
             return
+          }
+          // set remember me token
+          if (res.data.remember_me_token) {
+            SetRememberMeToken(res.data.remember_me_token)
           }
           if (this.$route.query && this.$route.query.redirect !== 'login') {
             that.$store.commit('SetUserInfo', { username: res.data.username, avatar: 'https://cdn.quasar.dev/img/boy-avatar.png', role: 'Developer', redirect: this.$route.query.redirect })
@@ -276,16 +293,41 @@ export default {
           if (error.response.data.detail === that.$t('no otp token') || error.response.data.detail === that.$t('error otop token')) {
             that.prompt = true
             if (error.response.data.detail === that.$t('error otop token')) {
-              that.otp_token = ''
+              that.otp_token = null
             }
           } else {
             that.tips = true
-            auth.removeToken()
+            removeToken()
           }
         })
       } else {
         that.tips = true
       }
+    }
+  },
+  created () {
+    if (GetRememberMeToken()) {
+      this.remember_password = true
+      // from server get authenticate user and encrypted password
+      this.password = GetRememberMeToken()
+      this.$axios.post('/common/api/getrememberusername/', { remember_me_token: GetRememberMeToken() }).then((response) => {
+        if (response.data.status) {
+          this.username = response.data.username
+        } else {
+          this.$q.notify({
+            type: 'negative',
+            color: 'red-5',
+            textColor: 'white',
+            multiLine: true,
+            message: this.$t(response.data.message),
+            timeout: 5000,
+            position: 'top'
+          })
+          this.username = null
+          this.remember_password = false
+          this.password = null
+        }
+      })
     }
   }
 }

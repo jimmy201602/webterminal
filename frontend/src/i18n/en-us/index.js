@@ -74,8 +74,14 @@ export default {
   'Auth key password': 'Auth key password',
   'Two Factor MFA setting': 'Two Factor MFA setting',
   'Please input the mfa code!': 'Please input the mfa code!',
-  'Bind mfa success, please login the user again!': 'Bind mfa success, please login the user again!',
-  'Bind mfa failed, please input a validate verify code!': 'Bind mfa failed, please input a validate verify code!',
+  'Bind mfa success, please login the user again!':
+    'Bind mfa success, please login the user again!',
+  'Bind mfa failed, please input a validate verify code!':
+    'Bind mfa failed, please input a validate verify code!',
+  'User ip changed, Please use username and password to authenticate.':
+    'User ip changed, Please use username and password to authenticate.',
+  'Illegal visit, please contact your administrator!':
+    'Illegal visit, please contact your administrator!',
 
   // Credential page
   credential: {
