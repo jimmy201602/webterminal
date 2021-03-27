@@ -6,6 +6,7 @@ ADD . /opt/webterminal
 WORKDIR /opt/webterminal
 RUN apt-get update && apt-get install nginx -y
 RUN mkdir -p /opt/webterminal/media/admin/Download
+RUN mkdir -p /opt/webterminal/db
 RUN mkdir -p /var/log/web
 RUN mkdir -p /run/daphne
 RUN pip3 install --no-cache-dir -r requirements.txt
