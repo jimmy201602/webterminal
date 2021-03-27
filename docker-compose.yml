@@ -1,6 +1,7 @@
 version: "3"
 
 volumes:
+  db_data:
   recording_data:
       driver: local
 
@@ -18,6 +19,7 @@ services:
     network_mode: "host"
     volumes:
       - recording_data:/opt/webterminal/media/
+      - db_data:/opt/webterminal/db/db.sqlite3
     ports:
       - 80:80
       - 2100:2100
