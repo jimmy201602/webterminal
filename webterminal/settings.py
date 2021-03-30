@@ -155,7 +155,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",  # use redis backend
         "CONFIG": {
-            "hosts": [("localhost", 6379)],  # set redis address
+            "hosts": [(os.environ.get('REDISHOST','localhost'), 6379)],  # set redis address
             "channel_capacity": {
                 "http.request": 1000,
                 "websocket.send*": 10000,
@@ -328,7 +328,7 @@ LANGUAGES = [
 CHANNELS_WS_PROTOCOLS = ["guacamole"]
 
 # guacd daemon host address and port
-GUACD_HOST = '127.0.0.1'
+GUACD_HOST = os.environ.get('GUACDHOST','127.0.0.1')
 GUACD_PORT = '4822'
 
 # session will expire when user close browser
