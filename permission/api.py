@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from permission.serializers import PermissionSerializer, PermissionWithGroupInfoSerializer
 from permission.models import Permission
-from common.models import CommandsSequence
+from common.models import CommandsSequence, Credential
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from permission.commons import parse_permission_tree
@@ -87,8 +87,9 @@ class GetCommandListTreeApi(APIView):
         availabel_server_groups = set()
         for permission in obj:
             for credential in permission.credentials.all():
-                if credential.protocol in ['ssh-password', 'ssh-key', 'ssh-key-with-password']:
-                    can_login_usernames.add(credential.username)
+                for i in Credential.objects.filter(username=credential.username):
+                    if i.username == credential.username and  i.protocol in ['ssh-password', 'ssh-key', 'ssh-key-with-password']:
+                        can_login_usernames.add(credential.username)
             for group in permission.groups.all():
                 availabel_server_groups.add(group.name)
         for commandtask in CommandsSequence.objects.all():

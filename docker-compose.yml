@@ -4,7 +4,9 @@ volumes:
   db_data:
   recording_data:
       driver: local
-
+networks:
+  new:
+    driver: bridge
 services:
   guacd:
     image: guacamole/guacd:0.9.14
