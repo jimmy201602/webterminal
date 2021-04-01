@@ -171,19 +171,21 @@
               style="overflow:hidden;height:92vh;width:100%;text-align: center;"
             >
             </q-media-player>
-            <q-img
-              v-if="show_rdp_monitor"
-              :src="imageurl"
-              style="height: 768px; max-width: 1024px; display: block; margin-left: auto; margin-right: auto;"
-              :ratio="1"
-              basic
-            >
-              <template v-slot:error>
-                <div class="absolute-full flex flex-center bg-black text-white">
-                  {{$t('Session has been ended!')}}
-                </div>
-              </template>
-            </q-img>
+            <div v-show="show_rdp_monitor" style="background-color: black">
+              <q-img
+                v-if="show_rdp_monitor"
+                :src="imageurl"
+                style="height: 768px; max-width: 1024px; display: block; margin-left: auto; margin-right: auto;"
+                :ratio="1"
+                basic
+              >
+                <template v-slot:error>
+                  <div class="absolute-full flex flex-center bg-black text-white">
+                    {{$t('Session has been ended!')}}
+                  </div>
+                </template>
+              </q-img>
+            </div>
           </div>
         </q-card-section>
       </q-card>
@@ -360,7 +362,6 @@ export default {
     },
     monitorSession (props) {
       this.log_obj = props.row
-      console.log(props.row)
       if (props.row.tag === 'ssh') {
         this.logplayermodal = true
         this.show_ssh_commands = false
@@ -387,7 +388,6 @@ export default {
         while (that.logplayermodal) {
           await timer(50)
           that.$axios.get(`/common/api/getlastimage/${props.row.channel}/`).then(res => {
-            console.log(res.data.image)
             if (process.env.NODE_ENV === 'production') {
               that.imageurl = `/common/api/getimage/${res.data.image}/`
             } else {
