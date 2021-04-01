@@ -145,7 +145,7 @@
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
-        <q-card-section style="background-color: black">
+        <q-card-section>
           <div style="margin:0px;padding:0px;overflow:hidden;">
             <iframe
               v-if="show_ssh_player"
