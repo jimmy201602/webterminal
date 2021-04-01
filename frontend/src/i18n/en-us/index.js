@@ -85,6 +85,7 @@ export default {
   'For security concern, remember password function only last one day!':
     'For security concern, remember password function only last one day!',
   more: 'more',
+  'Session has been ended!': 'Session has been ended!',
 
   // Credential page
   credential: {

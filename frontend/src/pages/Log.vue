@@ -93,6 +93,16 @@
               round
               flat
               color="grey"
+              icon="fa fa-eye"
+              @click="monitorRdpSession(props)"
+              v-show="!props.row.is_finished && props.row.commercial_version"
+              :title="$t('log.monitor')"
+            ></q-btn>
+            <q-btn
+              dense
+              round
+              flat
+              color="grey"
               icon="fa fa-stop-circle"
               @click="sessionKill(props)"
               v-show="!props.row.is_finished && !props.row.commercial_version"
@@ -135,8 +145,8 @@
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
-        <q-card-section>
-          <div style="margin:0px;padding:0px;overflow:hidden">
+        <q-card-section style="background-color: black">
+          <div style="margin:0px;padding:0px;overflow:hidden;">
             <iframe
               v-if="show_ssh_player"
               :src="player_address"
@@ -161,6 +171,19 @@
               style="overflow:hidden;height:92vh;width:100%;text-align: center;"
             >
             </q-media-player>
+            <q-img
+              v-if="show_rdp_monitor"
+              :src="imageurl"
+              style="height: 768px; max-width: 1024px; display: block; margin-left: auto; margin-right: auto;"
+              :ratio="1"
+              basic
+            >
+              <template v-slot:error>
+                <div class="absolute-full flex flex-center bg-black text-white">
+                  {{$t('Session has been ended!')}}
+                </div>
+              </template>
+            </q-img>
           </div>
         </q-card-section>
       </q-card>
@@ -241,6 +264,7 @@ export default {
       player_address: null,
       show_ssh_player: false,
       show_rdp_player: false,
+      show_rdp_monitor: false,
       show_ssh_commands: false,
       show_guacamole_monitor_player: false,
       commands_list: [],
@@ -257,7 +281,8 @@ export default {
       serverid: null,
       loginuser: null,
       guacamole_channel: null,
-      sources: []
+      sources: [],
+      imageurl: null
     }
   },
   methods: {
@@ -299,6 +324,7 @@ export default {
       this.show_ssh_commands = false
       this.show_ssh_monitor_player = false
       this.show_rdp_player = false
+      this.show_rdp_monitor = false
       if (process.env.NODE_ENV === 'production') {
         this.player_address = `/sshlogplay/${props.row.id}/`
       } else {
@@ -314,6 +340,7 @@ export default {
       this.show_ssh_monitor_player = false
       this.show_ssh_player = false
       this.show_guacamole_monitor_player = false
+      this.show_rdp_monitor = false
       if (process.env.NODE_ENV === 'production') {
         this.sources = [
           {
@@ -342,13 +369,37 @@ export default {
         this.sshmonitorchannel = props.row.log
         this.show_guacamole_monitor_player = false
         this.show_rdp_player = false
+        this.show_rdp_monitor = false
       } else {
         this.serverid = props.row.server.id
         this.loginuser = props.row.loginuser
         this.guacamole_channel = props.row.gucamole_client_id
         this.show_rdp_player = false
+        this.show_rdp_monitor = false
         this.getDynamicUserPassword(props.row.server.id, props.row.loginuser)
       }
+    },
+    monitorRdpSession (props) {
+      this.logplayermodal = true
+      const that = this
+      const timer = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))
+      async function loop () {
+        while (that.logplayermodal) {
+          await timer(50)
+          that.$axios.get(`/common/api/getlastimage/${props.row.channel}/`).then(res => {
+            console.log(res.data.image)
+            if (process.env.NODE_ENV === 'production') {
+              that.imageurl = `/common/api/getimage/${res.data.image}/`
+            } else {
+              that.imageurl = `http://127.0.0.1:8000/common/api/getimage/${res.data.image}/`
+            }
+            that.show_ssh_player = false
+            that.show_rdp_player = false
+            that.show_rdp_monitor = true
+          })
+        }
+      }
+      loop()
     },
     showGuacamoleMonitor () {
       this.logplayermodal = true
@@ -357,6 +408,7 @@ export default {
       this.show_ssh_player = false
       this.show_guacamole_monitor_player = true
       this.show_rdp_player = false
+      this.show_rdp_monitor = false
     },
     getDynamicUserPassword (serverid, loginuser) {
       const that = this
@@ -386,6 +438,7 @@ export default {
       this.show_ssh_monitor_player = false
       this.show_guacamole_monitor_player = false
       this.show_rdp_player = false
+      this.show_rdp_monitor = false
       if (process.env.NODE_ENV === 'production') {
         this.player_address = `/sessionlogplay/?media=${date.getFullYear()}-${month}-${day}/${props.row.channel}`
       } else {
@@ -400,6 +453,7 @@ export default {
       this.show_ssh_monitor_player = false
       this.show_guacamole_monitor_player = false
       this.show_rdp_player = false
+      this.show_rdp_monitor = false
       this.fetchCommandsData({ id: props.row.id })
     },
     fetchData () {

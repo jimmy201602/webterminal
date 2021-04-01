@@ -9,7 +9,7 @@ from common.views import (Commands,
                           PasswordResetDoneView, PasswordResetConfirmView,
                           SettingsView, SettingsOtpView
                           )
-from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet, CreateUserViewSet, LogViewSet, CommandsSequenceGroupsViewSet, ServerGroupWithServerInfoViewSet, TimeZoneList, SettingsList,Settings,ServerInforWithCredentialInfoViewSet,DefaultUserSettingsApi,DefaultUserSettingsViewSet,GetDynamicPasswordApi,GetCommandLogListApi,DynamicPasswordAuthApi,WriteGuacamoleLogApi,SshTerminalKillApi,CommandAutoCompeleteApi,MFAQrcodeAPi,BindMfaAPi,BlackToken,GetRememberUserName
+from common.api import ServerGroupViewSet, ServerInforViewSet, CommandsSequenceViewSet, CredentialViewSet, CreateUserViewSet, LogViewSet, CommandsSequenceGroupsViewSet, ServerGroupWithServerInfoViewSet, TimeZoneList, SettingsList,Settings,ServerInforWithCredentialInfoViewSet,DefaultUserSettingsApi,DefaultUserSettingsViewSet,GetDynamicPasswordApi,GetCommandLogListApi,DynamicPasswordAuthApi,WriteGuacamoleLogApi,SshTerminalKillApi,CommandAutoCompeleteApi,MFAQrcodeAPi,BindMfaAPi,BlackToken,GetRememberUserName,GetCommercialRDPSessionLastImage,GetRDPSessionRealTimeImage
 from rest_framework import routers
 from django.contrib import admin
 from django.views.decorators.csrf import csrf_exempt
@@ -61,6 +61,8 @@ urlpatterns = [
     url(r'^api/bindmfa/$', BindMfaAPi.as_view(), name='bindmfa'),
     url(r'^api/blacktoken/$', BlackToken.as_view(), name='blacktoken'),
     url(r'^api/getrememberusername/$', GetRememberUserName.as_view(), name='getrememberusername'),
+    url(r'^api/getlastimage/(?P<sessionid>[0-9A-Za-z_\-]+)/$', GetCommercialRDPSessionLastImage.as_view(), name='getlastimage'),
+    url(r'^api/getimage/(?P<imageid>[0-9A-Za-z_\-]+)/$', GetRDPSessionRealTimeImage.as_view(), name='getimage'),
     url(r'^api/', include(router.urls)),
     url(r'^webterminalhelperdetect/$', csrf_exempt(WebterminalHelperDetectApi.as_view()),
         name='webterminalhelperdetectapi'),

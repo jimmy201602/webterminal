@@ -34,6 +34,10 @@ import qrcode
 import qrcode.image.svg
 import six
 from django_otp.plugins.otp_totp.models import TOTPDevice
+import os
+import glob
+from django.http import FileResponse
+from django.http import Http404
 
 
 class ServerGroupViewSet(viewsets.ModelViewSet):
@@ -526,3 +530,33 @@ class GetRememberUserName(APIView):
             return Response({'status': True, 'message': None, 'username': content.get('username')})
         except Exception:
             return Response({'status': False, 'message': 'Illegal visit, please contact your administrator!'})
+
+
+class GetCommercialRDPSessionLastImage(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        try:
+            sessionid = kwargs.get("sessionid", "")
+            image_list = sorted(glob.glob(os.path.join(
+                settings.BASE_DIR, 'tmp', '{0}-*.png'.format(sessionid))))
+            if len(image_list) >= 0:
+                return Response({'status': True, 'message': None, 'image': os.path.split(image_list[-1])[1].split('.png')[0]})
+            else:
+                return Response({'status': False, 'message': 'Session has been ended or not exist!', 'image': None})
+        except Exception:
+            return Response({'status': False, 'message': 'Session has been ended or not exist!'})
+
+
+class GetRDPSessionRealTimeImage(APIView):
+    permission_classes = []
+
+    def get(self, request, *args, **kwargs):
+        try:
+            imageid = kwargs.get("imageid", "")
+            img = open(os.path.join(settings.BASE_DIR, 'tmp',
+                                    '{0}.png'.format(imageid)), 'rb')
+            response = FileResponse(img)
+            return response
+        except Exception:
+            raise Http404("File not found!")
