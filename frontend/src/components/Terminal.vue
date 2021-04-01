@@ -179,7 +179,7 @@ export default {
     if (!this.showtoolbar) {
       terminalContainer.style.height = '180px'
     } else {
-      terminalContainer.style.height = window.innerHeight - 104 + 'px'
+      terminalContainer.style.height = window.innerHeight - 136 + 'px'
     }
     const fitAddon = new FitAddon()
     term.loadAddon(fitAddon)
