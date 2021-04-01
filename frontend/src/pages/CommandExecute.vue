@@ -8,8 +8,9 @@
       <template v-slot:before>
         <div class="q-pa-md" style="overflow:hidden;height:100vh;width:100%;;overflow-y: auto;">
           <div class="row no-wrap">
-            <q-input ref="filter" dense outlined square v-model="filter" :placeholder="searchPlaceholder" @focus="onSearchFocus"  @blur="onSearchBlur" class="bg-white col" />
-            <q-btn color="grey-3" text-color="grey-8" icon="search" unelevated @click="resetFilter" />
+            <q-input ref="filter" dense outlined square v-model="filter" :placeholder="searchPlaceholder"
+                     @focus="onSearchFocus" @blur="onSearchBlur" class="bg-white col"/>
+            <q-btn color="grey-3" text-color="grey-8" icon="search" unelevated @click="resetFilter"/>
           </div>
           <q-tree
             :nodes="tree"
@@ -28,33 +29,49 @@
       </template>
 
       <template v-slot:after>
-        <q-tabs
-          v-model="selected"
-          align="left"
-          @input="updatetab"
-          active-color="primary"
-          stretch
-          no-caps
-          dense
-        >
-          <q-tab v-for="tab in tabs" :key="tab.id" v-model="selected"
-                 :name="tab.name" @click="selected = tab.name"
-          >
-            <div>
-              {{tab.name}}
-              <q-btn
-                all-pointer-events
-                round
-                dense
-                class="z-max q-ml-sm"
-                size="xs"
-                color="negative"
-                icon="close"
-                @click.stop="removeTab(tab.name)"
-              />
-            </div>
-          </q-tab>
-        </q-tabs>
+        <div class="q-pa-md">
+          <q-toolbar class="shadow-2 rounded-borders">
+            <q-tabs
+              v-model="selected"
+              align="left"
+              @input="updatetab"
+              active-color="primary"
+              stretch
+              no-caps
+              shrink
+              dense
+            >
+              <q-tab v-for="tab in tabs" :key="tab.id" v-model="selected"
+                     :name="tab.name" @click="selected = tab.name"
+              >
+                <div>
+                  {{ tab.name }}
+                  <q-btn
+                    all-pointer-events
+                    round
+                    dense
+                    class="z-max q-ml-sm"
+                    size="xs"
+                    color="negative"
+                    icon="close"
+                    @click.stop="removeTab(tab.name)"
+                  />
+                </div>
+              </q-tab>
+            </q-tabs>
+            <q-space></q-space>
+            <q-btn-dropdown no-caps class="no-margin no-border-radius no-box-shadow no-outline"
+                            :label="$t('more') + '...'" auto-close stretch flat v-show="tabs.length >= 5">
+              <q-list>
+                <q-item clickable v-close-popup v-for="tab in tabs" :key="tab.id" @click="selected = tab.name">
+                  <q-item-section>
+                    <q-item-label>{{ tab.name }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </q-toolbar>
+        </div>
         <q-tab-panels v-model="selected" animated class="fit" keep-alive>
           <q-tab-panel name="help" key="help" keep-alive>
             <q-img
@@ -62,7 +79,9 @@
             />
           </q-tab-panel>
           <q-tab-panel v-for="tab in tabs" :name="tab.name" :key="tab.id" class="no-padding" keep-alive>
-            <terminal :ip="tab.ip" :commandid="tab.commandid" :id="tab.id" :loginuser="tab.loginuser" :username="tab.username" :serverid="tab.serverid" :password="tab.password" ref="terminal" v-if="tab.protocol === 'ssh'" style="overflow:hidden;height:100vh;width:100%;"></terminal>
+            <terminal :ip="tab.ip" :commandid="tab.commandid" :id="tab.id" :loginuser="tab.loginuser"
+                      :username="tab.username" :serverid="tab.serverid" :password="tab.password" ref="terminal"
+                      v-if="tab.protocol === 'ssh'" style="overflow:hidden;height:100vh;width:100%;"></terminal>
           </q-tab-panel>
         </q-tab-panels>
 
@@ -115,7 +134,9 @@ export default {
     tickedNode: function (target) {
       const that = this
       target.map(function (value) {
-        const tempTabs = that.tabs.filter(function (el, index) { return el.originalValue === value })
+        const tempTabs = that.tabs.filter(function (el, index) {
+          return el.originalValue === value
+        })
         if (tempTabs.length === 1) {
           console.log('exist')
         } else {
@@ -123,7 +144,9 @@ export default {
         }
       })
       this.tabs.map(function (value) {
-        const tempTabs = that.tabs.filter(function (el, index) { return !target.includes(el.originalValue) && el.id !== 'help' })
+        const tempTabs = that.tabs.filter(function (el, index) {
+          return !target.includes(el.originalValue) && el.id !== 'help'
+        })
         if (tempTabs.length === 1) {
           that.removeTab(tempTabs[0].name)
         }
@@ -144,7 +167,9 @@ export default {
       if (name !== 'help') {
         const Id = this.tabsdict[name]
         let index = -1
-        const tempTabs = this.tabs.filter(function (el, index) { return el.id === Id })
+        const tempTabs = this.tabs.filter(function (el, index) {
+          return el.id === Id
+        })
         if (tempTabs.length === 1) {
           index = this.selectednode.indexOf(tempTabs[0].originalValue)
         }
@@ -169,7 +194,9 @@ export default {
           })
         }
 
-        this.tabs = this.tabs.filter(function (el, index) { return el.name !== name })
+        this.tabs = this.tabs.filter(function (el, index) {
+          return el.name !== name
+        })
         this.selected = 'help'
         if (this.tabs[IndexId - 1]) {
           this.selected = this.tabs[IndexId - 1].name
@@ -235,7 +262,16 @@ export default {
       const RandomId = this.makeid(10)
       // this.tabs.push()
       // this.selected = target
-      this.loginToWebterminal(serverid, originalTarget, { name: target, id: RandomId, serverid: serverid, OriTarget: this.tree_map[serverid], CurrentIndex: 0, username: '', password: '', loginuser: '' })
+      this.loginToWebterminal(serverid, originalTarget, {
+        name: target,
+        id: RandomId,
+        serverid: serverid,
+        OriTarget: this.tree_map[serverid],
+        CurrentIndex: 0,
+        username: '',
+        password: '',
+        loginuser: ''
+      })
     },
     updatetab (value) {
       // console.log(value)
@@ -291,7 +327,7 @@ export default {
               that.getDynamicUserPassword(serverid, loginuser, target, tabobj)
             }
           }).onCancel(() => {
-          // if cancel action happend then deselect the node
+            // if cancel action happend then deselect the node
             let index = -1
             index = that.selectednode.indexOf(target)
             this.selectednode.splice(index, 1)
@@ -318,7 +354,9 @@ export default {
             CurrentIndexArray.push(item.CurrentIndex)
           }
         })
-        CurrentIndexArray = CurrentIndexArray.sort(function (a, b) { return a - b })
+        CurrentIndexArray = CurrentIndexArray.sort(function (a, b) {
+          return a - b
+        })
         if (CurrentIndexArray.length > 1) {
           CurrentIndex = CurrentIndexArray[CurrentIndexArray.length - 1] + 1
           if (CurrentIndex === 0) {

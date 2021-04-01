@@ -84,6 +84,7 @@ export default {
     'Illegal visit, please contact your administrator!',
   'For security concern, remember password function only last one day!':
     'For security concern, remember password function only last one day!',
+  more: 'more',
 
   // Credential page
   credential: {
