@@ -38,7 +38,7 @@
           <q-th v-for="col in props.cols" :key="col.name" :props="props">
             {{ col.label }}
           </q-th>
-          <q-th align="center">action</q-th>
+          <q-th align="center">{{$t('action')}}</q-th>
         </q-tr>
       </template>
 
