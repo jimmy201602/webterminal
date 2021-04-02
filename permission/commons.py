@@ -1,5 +1,4 @@
 from django.contrib.auth.models import Permission
-from django.utils.translation import ugettext_lazy as _
 
 
 def parse_permission_tree():
@@ -13,7 +12,7 @@ def parse_permission_tree():
             if 'text' in permission_tree.keys():
                 if p.content_type.model not in [i['model'] for i in permission_tree['children']]:
                     permission_tree['children'].append({
-                        "text": _(p.content_type.model),
+                        "text": p.content_type.model,
                         "label": p.content_type.model,
                         "icon": "fa fa-folder",
                         "state": {"selected": "!0"},
@@ -21,7 +20,7 @@ def parse_permission_tree():
                         "model": p.content_type.model,
                         'level': 'two',
                         'children': [{
-                            "text": _(p.name),
+                            "text": p.name,
                             "label": p.name,
                             "icon": "fa fa-folder",
                             "state": {"selected": "!0"},
@@ -35,7 +34,7 @@ def parse_permission_tree():
                     for i in permission_tree['children']:
                         if i['model'] == p.content_type.model:
                             permission_tree['children'][permission_tree['children'].index(i)]['children'].append({
-                                "text": _(p.name),
+                                "text": p.name,
                                 "label": p.name,
                                 "icon": "fa fa-folder",
                                 "state": {"selected": "!0"},
@@ -50,7 +49,7 @@ def parse_permission_tree():
                 permission_tree['label'] = i
                 permission_tree['children'] = []
                 permission_tree['children'].append({
-                    "text": _(p.content_type.model),
+                    "text": p.content_type.model,
                     "label": p.content_type.model,
                     "icon": "fa fa-folder",
                     "app_label": p.content_type.app_label,
@@ -58,7 +57,7 @@ def parse_permission_tree():
                     "state": {"selected": "!0"},
                     'level': 'two',
                     'children': [{
-                        "text": _(p.name),
+                        "text": p.name,
                         "label": p.name,
                         "icon": "fa fa-folder",
                         "state": {"selected": "!0"},
