@@ -167,14 +167,14 @@
                 </div>
 
                 <div>
-                  {{ $t("server.Credential") }}
+                  {{ $t("permission.Credential") }}
                   <div v-for="(line, index) in lines" :key="index" class="row">
                     <div class="col-lg-6">
                       <q-select
                         use-input
                         input-debounce="0"
                         v-model="line.credential"
-                        :label="$t('server.Credential')"
+                        :label="$t('permission.credential')"
                         :options="credentials_list"
                         @filter="filterCredential"
                       >

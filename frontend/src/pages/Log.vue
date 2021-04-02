@@ -289,7 +289,6 @@ export default {
   },
   methods: {
     sessionKill (props) {
-      console.log(props)
       const that = this
       const channel = props.row.channel
       if (props.row.tag === 'ssh') {
@@ -318,6 +317,15 @@ export default {
           .catch(err => {
             console.log(err)
           })
+      } else {
+        console.log(props)
+        this.$q.notify({
+          type: 'negative',
+          multiline: true,
+          message: 'No implement, please wait.',
+          timeout: 2000,
+          position: 'top'
+        })
       }
     },
     playLog (props) {

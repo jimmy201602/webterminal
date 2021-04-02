@@ -147,7 +147,7 @@ export default {
   'Please type a valid proxy port': 'Please type a valid proxy port',
   'Proxy password': 'Proxy password',
   'Please type your proxy password': 'Please type your proxy password',
-  'No user can login !': 'No user can login !',
+  'No user can login !': 'No user can login! Please make sure you have permission to connect this server. You can check the permission settings to make sure you have a valid user to login this server.',
   'Not supported system.': 'Not supported system.',
   "You haven't install webterminal helper,please download and install it.":
     "You haven't install webterminal helper,please download and install it.",
@@ -306,7 +306,7 @@ export default {
     },
     create_command: 'Create command',
     update_command: 'Update command',
-    delete_command: 'Are you command to delete command: {name}',
+    delete_command: 'Are you sure to delete command: {name}',
     delete_command_success: 'Command: {name} has been deleted',
     update_command_success: 'Command: {name} has been updated',
     create_command_success: 'Command: {name} has been created'
@@ -319,6 +319,8 @@ export default {
 
   // permission page
   permission: {
+    Credential: "User that can connect to the server's username of credential",
+    credential: 'The user name of credential',
     new: 'Add New Permission',
     Permission: 'Permission',
     Permissions: 'Permissions',
@@ -349,8 +351,8 @@ export default {
     delete_permission: "Are you want to reovke user {name}'s  permission",
     delete_permission_success:
       "Permission: user {name}'s  permission has been revoked",
-    update_permission_success: "Permission: user {name}'s has been updated",
-    create_permission_success: "Permission: user {name}'s has been created"
+    update_permission_success: "Permission: user {name}'s permission has been updated",
+    create_permission_success: "Permission: user {name}'s permission has been created"
   },
   // permission code
   'Can view command log info': 'Can view command log info',
