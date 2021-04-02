@@ -484,5 +484,7 @@ export default {
   'Remember me': 'Remember me',
   Login: 'Login',
   About: 'About',
-  'Contact us': 'Contact us'
+  'Contact us': 'Contact us',
+  Permissions: 'Permissions',
+  Groups: 'Groups'
 }

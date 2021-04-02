@@ -484,5 +484,7 @@ export default {
   'Remember me': '记住我',
   Login: '登录',
   About: '关于',
-  'Contact us': '联系我们'
+  'Contact us': '联系我们',
+  Permissions: '权限',
+  Groups: '服务器组'
 }

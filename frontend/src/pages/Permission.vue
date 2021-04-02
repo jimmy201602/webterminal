@@ -299,28 +299,28 @@ export default {
         {
           name: 'user',
           align: 'center',
-          label: 'username',
+          label: this.$t('username'),
           field: 'user',
           sortable: true
         },
         {
           name: 'permissions',
           align: 'center',
-          label: 'permissions',
+          label: this.$t('Permissions'),
           field: 'permissions',
           sortable: true
         },
         {
           name: 'groups',
           align: 'center',
-          label: 'groups',
+          label: this.$t('Groups'),
           field: 'groups',
           sortable: true
         },
         {
           name: 'action',
           align: 'center',
-          label: 'action',
+          label: this.$t('action'),
           field: '',
           sortable: true
         }
