@@ -8,8 +8,8 @@
   <div class="header">
     <div id="logo"><img src="../assets/logo.png" width="192" height="30"></div>
     <div class="lag_select">
-      <a href="#"><img src="../assets/ch.png" width="38" height="19">CH</a>
-      <a href="#"><img src="../assets/en.png" width="38" height="19">EN</a>
+      <a href="#" @click="lang = 'zh-hans'"><img src="../assets/ch.png" width="38" height="19" @click="lang = 'zh-hans'">CH</a>
+      <a href="#" @click="lang = 'en-us'"><img src="../assets/en.png" width="38" height="19" @click="lang = 'zh-hans'">EN</a>
     </div>
   </div>
   <!--
@@ -178,6 +178,9 @@ export default {
         this.tips = false
       }
     },
+    lang (lang) {
+      this.$i18n.locale = lang
+    },
     remember_password (val, valueold) {
       if (valueold === true) {
         removeRememberMeToken()
@@ -208,7 +211,8 @@ export default {
       qrcode: null,
       message: null,
       showDownloadLink: false,
-      resetpasswordaddress: resetpasswordaddress
+      resetpasswordaddress: resetpasswordaddress,
+      lang: this.$i18n.locale
     }
   },
   computed: {
