@@ -78,8 +78,8 @@
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="Cancel" v-close-popup />
-          <q-btn flat label="Submit" type="submit" />
+          <q-btn flat :label="$t('Cancel')" v-close-popup />
+          <q-btn flat :label="$t('Submit')" type="submit" />
         </q-card-actions>
       </q-form>
     </q-card>

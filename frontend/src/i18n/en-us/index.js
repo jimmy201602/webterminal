@@ -486,5 +486,6 @@ export default {
   About: 'About',
   'Contact us': 'Contact us',
   Permissions: 'Permissions',
-  Groups: 'Groups'
+  Groups: 'Groups',
+  Cancel: 'Cancel'
 }

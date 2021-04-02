@@ -486,5 +486,6 @@ export default {
   About: '关于',
   'Contact us': '联系我们',
   Permissions: '权限',
-  Groups: '服务器组'
+  Groups: '服务器组',
+  Cancel: '取消'
 }
