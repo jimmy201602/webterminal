@@ -240,7 +240,7 @@
                 >
                   <template v-slot:default-header="prop">
                     <div class="row items-center">
-                      <div class="text-default">{{ prop.node.text }}</div>
+                      <div class="text-default">{{ $t(`permissiontree.${prop.node.text}`) }}</div>
                     </div>
                   </template>
                 </q-tree>

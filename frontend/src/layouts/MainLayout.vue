@@ -134,7 +134,7 @@
                 class="YL__drawer-footer-link"
                 :href="'/#/'+button.name"
               >
-                {{ button.text }}
+                {{ $t(button.text) }}
               </a>
             </div>
           </div>
@@ -146,7 +146,7 @@
                 class="YL__drawer-footer-link"
                 :href="'/#/'+button.name"
               >
-                {{ button.text }}
+                {{ $t(button.text) }}
               </a>
             </div>
           </div>
