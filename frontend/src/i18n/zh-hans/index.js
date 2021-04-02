@@ -130,7 +130,7 @@ export default {
   Security: '安全',
   'Use ssh key': '使用SSH密匙',
   'Please type your password': '请输入密码',
-  'User Key': '用户,密匙',
+  'User Key': '用户密匙',
   'Please type your key': '请输入密匙',
   'Please type a valid width value': '请输入有效的宽度值',
   'Please type a valid port value': '请输入有效的端口值',
