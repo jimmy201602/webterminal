@@ -54,8 +54,8 @@ export default {
   'OUR VALUE': '我们的价值',
   'Try to provide a easy way to control and audit your action platform to manage all your asset.':
     '尝试提供一个简单易用的方式去控制和审计所有的用户行为管理IT资产的平台.',
-  'no otp token': '无多因子认证码',
-  'error otop token': '错误的多因子认证码',
+  'no otp token': 'no otp token',
+  'error otop token': 'error otop token',
   'Two Factor Token': '多因子认证码',
   'This field is required': '此字段属于必填项',
   Setting: '设置',
