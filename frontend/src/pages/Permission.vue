@@ -265,10 +265,6 @@
 </template>
 
 <script>
-let groupsList = []
-let usersList = []
-const credentialList = []
-let permissionTree = Object()
 export default {
   name: 'Permission',
   watch: {
@@ -332,7 +328,7 @@ export default {
       create_title: this.$t('permission.create_permission'),
       update_title: this.$t('permission.update_permission'),
       groups: [],
-      groups_list: groupsList,
+      groups_list: [],
       permissiontree: [],
       checkedProperties: [],
       skus: [],
@@ -345,7 +341,11 @@ export default {
       expanded: [],
       tickStrategy: 'leaf-filtered',
       users_list: [],
-      user: null
+      user: null,
+      permissionTree: Object(),
+      groupsList: [],
+      usersList: [],
+      credentialList: []
     }
   },
   methods: {
@@ -363,7 +363,7 @@ export default {
         })
       })
       props.row.credentials.map(credential => {
-        credentialList.map(value => {
+        this.credentialList.map(value => {
           if (value.value === credential) {
             that.lines.unshift({
               credential: {
@@ -408,7 +408,7 @@ export default {
       const permissionslist = []
       this.ticked.map(value => {
         if (typeof value === 'string' || value instanceof String) {
-          permissionslist.push(permissionTree[value])
+          permissionslist.push(this.permissionTree[value])
         }
       })
       const groupslist = []
@@ -422,7 +422,7 @@ export default {
       data.user = this.user
       data.groups = groupslist
       let username = ''
-      usersList.map(value => {
+      this.usersList.map(value => {
         if (value.value === this.user) {
           username = value.label
         }
@@ -476,7 +476,7 @@ export default {
         .get('/permission/api/permissiontree/')
         .then(res => {
           that.permissiontree = res.data.permissiontree
-          permissionTree = res.data.permissiontreemap
+          that.permissionTree = res.data.permissiontreemap
         })
         .catch(err => {
           console.log(err)
@@ -530,10 +530,10 @@ export default {
     filterFn (val, update) {
       update(() => {
         if (val === '') {
-          this.groups_list = groupsList
+          this.groups_list = this.groupsList
         } else {
           const needle = val.toLowerCase()
-          this.groups_list = groupsList.filter(
+          this.groups_list = this.groupsList.filter(
             v => v.label.toLowerCase().indexOf(needle) > -1
           )
         }
@@ -542,10 +542,10 @@ export default {
     filterUsers (val, update) {
       update(() => {
         if (val === '') {
-          this.users_list = usersList
+          this.users_list = this.usersList
         } else {
           const needle = val.toLowerCase()
-          this.users_list = usersList.filter(
+          this.users_list = this.usersList.filter(
             v => v.label.toLowerCase().indexOf(needle) > -1
           )
         }
@@ -571,13 +571,12 @@ export default {
         .get('/common/api/servergroup/')
         .then(res => {
           that.groups_list = []
-          groupsList = []
           res.data.map(val => {
             that.groups_list.push({
               label: `${val.name}`,
               value: val.id
             })
-            groupsList.push({
+            this.groupsList.push({
               label: `${val.name}`,
               value: val.id
             })
@@ -594,10 +593,9 @@ export default {
         .get('/common/api/users/')
         .then(res => {
           that.users_list = []
-          usersList = []
           res.data.map(value => {
             that.users_list.push({ label: value.username, value: value.id })
-            usersList.push({ label: value.username, value: value.id })
+            this.usersList.push({ label: value.username, value: value.id })
           })
           that.loading = false
         })
@@ -698,17 +696,22 @@ export default {
             credentialsListTmp.push(line.credential)
           }
         })
-        credentialList.map(value => {
-          if (
-            !credentialsListTmp.indexOf({
-              label: value.label,
-              value: value.value
-            })
-          ) {
+        const userNameSet = new Set(this.credentialList.map(item => item.label))
+        this.credentialList.map(value => {
+          if (credentialsListTmp.length === 0) {
             credentialsListTmp.push({
               label: value.label,
               value: value.value
             })
+          }
+          const credentialsListTmpSet = new Set(credentialsListTmp.map(item => item.label))
+          if (userNameSet.size !== credentialsListTmpSet.size) {
+            if (!credentialsListTmpSet.has(value.label)) {
+              credentialsListTmp.push({
+                label: value.label,
+                value: value.value
+              })
+            }
           }
         })
         if (val === '') {
@@ -732,7 +735,7 @@ export default {
               label: `${val.username}`,
               value: val.id
             })
-            credentialList.push({
+            this.credentialList.push({
               label: `${val.username}`,
               value: val.id
             })
