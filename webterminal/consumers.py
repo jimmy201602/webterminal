@@ -111,9 +111,14 @@ class Webterminal(AsyncWebsocketConsumer):
         """
         # Send a message down to the client
         try:
-            await self.send(
-                event["text"]
-            )
+            if event.get('text', None):
+                await self.send(
+                    text_data=event["text"]
+                )
+            if event.get('bytes', None):
+                await self.send(
+                    bytes_data=event["bytes"]
+                )
         except KeyError:
             pass
         except:
