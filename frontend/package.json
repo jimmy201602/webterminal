@@ -33,6 +33,7 @@
     "xterm": "^4.4.0",
     "xterm-addon-attach": "^0.5.0",
     "xterm-addon-fit": "^0.3.0",
+    "zmodem.js": "^0.1.10",
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
