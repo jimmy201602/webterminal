@@ -487,5 +487,7 @@ export default {
   'Contact us': '联系我们',
   Permissions: '权限',
   Groups: '服务器组',
-  Cancel: '取消'
+  Cancel: '取消',
+  'Due to the low performance, please use web sftp function instead!': '由于sz性能比较低效会导致一些不可预知的问题,请使用网页版的sftp功能代替!',
+  'SSH serssion has been aborted, Please recreate a new fressh session!': 'SSH 会话已经异常终止,请重新创建一个新的会话!'
 }

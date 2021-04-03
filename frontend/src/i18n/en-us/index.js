@@ -487,5 +487,7 @@ export default {
   'Contact us': 'Contact us',
   Permissions: 'Permissions',
   Groups: 'Groups',
-  Cancel: 'Cancel'
+  Cancel: 'Cancel',
+  'Due to the low performance, please use web sftp function instead!': 'Due to the low performance, please use web sftp function instead!',
+  'SSH serssion has been aborted, Please recreate a new fressh session!': 'SSH serssion has been aborted, Please recreate a new fressh session!'
 }

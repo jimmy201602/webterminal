@@ -65,6 +65,7 @@ import { AttachAddon } from 'xterm-addon-attach'
 // import * as fullscreen from 'xterm-addon-fullscreen'
 // import "xterm/lib/addons/fullscreen/fullscreen.css";
 /* And for typescript, see: https://webpack.js.org/guides/typescript/ */
+import { Zmodem, AddonZmodem } from '../lib/zmodem'
 
 export default {
   props: {
@@ -116,7 +117,9 @@ export default {
       selected: 'ssh',
       showtab: false,
       height: window.innerHeight,
-      sftpaddress: null
+      sftpaddress: null,
+      attachAddon: null,
+      zsession: null
     }
   },
   methods: {
@@ -139,6 +142,10 @@ export default {
         this.fabPos[1] - ev.delta.y
       ]
     },
+    saveToDisk (xfer, buffer) {
+      return Zmodem.Browser
+        .save_to_disk(buffer, xfer.get_details().name)
+    },
     onWindowResize () {
       console.log('resize')
       // bug need to be fixed
@@ -156,6 +163,82 @@ export default {
         }
       } catch (e) {
         // console.log(e)
+      }
+    },
+    onOfferReceive  (xfer) {
+      xfer.skip()
+      this.$q.notify({
+        type: 'negative',
+        textColor: 'grey-10',
+        multiLine: true,
+        message: this.$t('Due to the low performance, please use web sftp function instead!'),
+        timeout: 5000,
+        position: 'top'
+      })
+      this.$q.notify({
+        type: 'negative',
+        textColor: 'grey-10',
+        multiLine: true,
+        message: this.$t('SSH serssion has been aborted, Please recreate a new fressh session!'),
+        timeout: 5000,
+        position: 'top'
+      })
+    },
+    onZmodemEnd () {
+      this.attachAddon = new AttachAddon(this.ws)
+      this.term.loadAddon(this.attachAddon)
+      this.term.focus()
+      this.term.write('\r\n')
+    },
+    onZmodemEndSend () {
+      this.zsession && this.zsession.close && this.zsession.close()
+      this.onZmodemEnd()
+    },
+    onZmodemCatch (e) {
+      console.log(e)
+      this.onZmodemEnd()
+    },
+    onReceiveZmodemSession () {
+      //  * zmodem transfer
+      //  * then run rz to send from your browser or
+      //  * sz <file> to send from the remote peer.
+      this.zsession.on('offer', this.onOfferReceive)
+      this.zsession.start()
+      return new Promise((resolve) => {
+        this.zsession.on('session_end', resolve)
+      }).then(this.onZmodemEnd).catch(this.onZmodemCatch)
+    },
+    onzmodemRetract () {
+      console.log('zmodemRetract')
+    },
+    onZmodemDetect (detection) {
+      this.attachAddon.dispose()
+      this.term.blur()
+      const zsession = detection.confirm()
+      this.zsession = zsession
+      if (zsession.type === 'receive') {
+        this.onReceiveZmodemSession()
+      } else {
+        console.log('upload')
+        // this.onSendZmodemSession()
+        this.onZmodemEnd()
+        this.onZmodemEndSend()
+        this.$q.notify({
+          type: 'negative',
+          textColor: 'grey-10',
+          multiLine: true,
+          message: this.$t('Due to the low performance, please use web sftp function instead!'),
+          timeout: 5000,
+          position: 'top'
+        })
+        this.$q.notify({
+          type: 'negative',
+          textColor: 'grey-10',
+          multiLine: true,
+          message: this.$t('SSH serssion has been aborted, Please recreate a new fressh session!'),
+          timeout: 5000,
+          position: 'top'
+        })
       }
     }
   },
@@ -187,6 +270,9 @@ export default {
     this.fiton = fitAddon
     this.fiton.fit() // first resizing
     term.focus()
+    const zmodem = new AddonZmodem()
+    term.loadAddon(zmodem)
+    // console.log(zmodem)
     // term.on('resize', this.onWindowResize)
     window.addEventListener('resize', this.onWindowResize)
     const WsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws'
@@ -201,6 +287,10 @@ export default {
       WsPath = `${WsScheme}://${window.location.hostname}:8000/${websocketpath}?username=${this.username}&password=${this.password}&width=${term.cols}&height=${term.rows}&ip=${this.ip}&commandid=${this.commandid}`
     }
     const ws = new WebSocket(WsPath)
+    term.zmodemAttach(ws, {
+      noTerminalWriteOutsideSession: true
+    }, this)
+    this.attachAddon = new AttachAddon(ws, undefined, 'utf-8')
     const attachAddon = new AttachAddon(ws)
     const that = this
     ws.onopen = function (event) {

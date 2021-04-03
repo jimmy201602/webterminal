@@ -145,7 +145,10 @@ class Webterminal(AsyncWebsocketConsumer):
             return
         else:
             try:
-                async_to_sync(self.chan.send(str(text_data)))
+                if text_data:
+                    async_to_sync(self.chan.send(str(text_data)))
+                if bytes_data:
+                    async_to_sync(self.chan.send(bytes_data))
             except OSError:
                 self.closessh()
                 await self.close()
