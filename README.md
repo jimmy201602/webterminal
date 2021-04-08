@@ -23,11 +23,10 @@ Hope you enjoy it.
 [installiation guide](./doc/install_en.md)
 
 
-# Run with docker
+# Run with docker compose
 
 ```sh
-docker pull webterminal/webterminal
-docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
+sudou docker-compose up -d
 Login user & password
 username: admin
 password: password!23456
