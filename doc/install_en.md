@@ -4,7 +4,9 @@
 - Install docker and docker-compose
 
 - reference doc
+
 [docker installiation guide](https://docs.docker.com/engine/install/)
+
 [docker compose installiation guide](https://docs.docker.com/compose/install/)
 
 ## Starting the environment
