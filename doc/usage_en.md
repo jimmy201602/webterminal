@@ -19,8 +19,8 @@
 ![task](./img/runtask1.png  "task")
 ![task](./img/runtask2.png  "task")
 # Use ssh helper to assit you use putty to connect assigned server
-Install ssh helper file "webterminal ssh helper.exe" from directory named helper to your windows client.
-In the server list page when you click putty then it will connect to ther specified ssh server.
+Install "Webterminal helper" on your pc client.
+In the server list page when you click  then it will connect to ther specified server use your favourite tools.
 # How to update info
  	On the left panel you can click the credential list ... Then you can update your info when you click the edit button. If you update all your infomation then click submit button.
 ![update](./img/update.png  "update")  
