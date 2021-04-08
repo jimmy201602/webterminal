@@ -9,6 +9,21 @@ This project focus on DevOps and Continuous Delivery.
 For now it support almost 90% remote management protocol such as vnc, ssh,rdp,telnet,sftp... It support a possiblity to monitor and recorded user action when user use this project to manage their server!You can also replay the user action such as like a video.
 Hope you enjoy it.
 
+## Features
+
+- RDP remote desktop control
+- VNC remote desktop control
+- SSH SFTP protocol support
+- Telnet protocol support
+- VNC, RDP, SFTP Remote file browser (download, delete, update and upload files)
+- Remote command and script execution (shell)
+- Realtime user action audit
+- User session audit
+- Kick user off this project
+- SSH command audit
+- Permission control
+- Webterminal helper support (use your favourite tools to manage and connect server)
+
 ## useage manual
 [![Usage Video](https://i.ytimg.com/vi/-HwhB21v8L8/1.jpg?time=1527217648531)](https://www.youtube.com/watch?v=-HwhB21v8L8)
 
