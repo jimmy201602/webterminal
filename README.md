@@ -19,8 +19,8 @@ Hope you enjoy it.
 [How to use this project](./doc/usage_en.md)
 
 
-# Installiation guide
-[installiation guide](./doc/install_en.md)
+# Installation guide
+[installation guide](./doc/install_en.md)
 
 
 # Run with docker compose
