@@ -16,8 +16,8 @@
 ![Webterminal](./img/webterminal1.png  "Webterminal")
 ![Webterminal](./img/webterminal2.png  "Webterminal")
 # Task usage
-![task](./img/runtask1.png  "task")
-![task](./img/runtask2.png  "task")
+![task1](./img/runtask1.png  "task1")
+![task2](./img/runtask2.png  "task2")
 # Use ssh helper to assit you use putty to connect assigned server
 Install "Webterminal helper" on your pc client.
 In the server list page when you click  then it will connect to ther specified server use your favourite tools.
@@ -25,12 +25,14 @@ In the server list page when you click  then it will connect to ther specified s
  	On the left panel you can click the credential list ... Then you can update your info when you click the edit button. If you update all your infomation then click submit button.
 ![update](./img/update.png  "update")  
 # Add 2F Authentification to users 
-  go to /admin and choose TOTP or HTOTP 
-![choose_config](./img/OTP-TOPT.PNG "OTP_TOPT_HOTP")
+  Use adminitrator account to login to the system. Open the mfa function switch then logout the system and start the project again.
+![setup mfa switch](./img/OTP-TOPT.png "setup mfa switch")
 
-# Configure user to TOTP authentification 
-![configuration](./img/TOTPdevice.PNG "OTP_TOPT_HOTP") 
+# Configure user mfa authentification if you not configure, on your login page when you login will guideline you to setup.
+![login mfa setup](./img/login.png "login mfa setup") 
 
-# Get TOTP Token with Qrcode 
-![token qr_code](./img/scan-qr-code.PNG "qrcode") 
+# Follow the instruction to setup mfa authentiification 
+![setup the mfa](./img/scan-qr-code.png "setup the mfa") 
 
+# Login with mfa authentiification
+![login with mfa](./img/login_with_mfa.png "login with mfa") 
