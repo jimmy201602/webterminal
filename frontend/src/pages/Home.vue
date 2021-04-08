@@ -2,7 +2,7 @@
   <div>
     <q-splitter
       v-model="splitterModel"
-      :limits="[10, 25]"
+      :limits="[15, 25]"
       class="fit"
     >
       <template v-slot:before>
@@ -16,6 +16,7 @@
             :nodes="tree"
             node-key="raw"
             selected-color="primary"
+            no-nodes-label="No Servers"
             :selected.sync="selected"
             :filter="filter"
             :filter-method="filterServer"
@@ -23,7 +24,30 @@
             label-key="label"
             ref="servertree"
             default-expand-all
-          />
+          >
+<!--            <template v-slot:default-header="prop">-->
+<!--              <div class="row">-->
+<!--                <q-icon v-if="prop.node.icon" :name="prop.node.icon"/>-->
+<!--                <span>&nbsp;{{ prop.node.label }}</span>-->
+<!--                <q-menu touch-position context-menu>-->
+<!--                  <q-list v-if="!prop.node.children" dense style="min-width: 200px">-->
+<!--                    <q-item clickable v-close-popup>-->
+<!--                      <q-item-section side>-->
+<!--                        <q-icon name="edit" />-->
+<!--                      </q-item-section>-->
+<!--                      <q-item-section>Edit</q-item-section>-->
+<!--                    </q-item>-->
+<!--                    <q-item clickable v-close-popup>-->
+<!--                      <q-item-section side>-->
+<!--                        <q-icon name="delete" />-->
+<!--                      </q-item-section>-->
+<!--                      <q-item-section>Delete</q-item-section>-->
+<!--                    </q-item>-->
+<!--                  </q-list>-->
+<!--                </q-menu>-->
+<!--              </div>-->
+<!--            </template>-->
+          </q-tree>
         </div>
       </template>
 

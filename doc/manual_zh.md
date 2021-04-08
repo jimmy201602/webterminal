@@ -1,4 +1,4 @@
-# webterminal 0.1 操作手册
+# webterminal 操作手册
 
 # 创建资产
 
