@@ -6,21 +6,14 @@
 
 更多功能请自行发掘......
 
-## 下一版本: *待定,项目将迁移至django 3*
-
 # 使用文档
 
 [中文使用文档](./manual_zh.md)
 
-# 以docker方式运行本项目
-
-[Centos7 Docker安装部署 webterminal](./Centos7_docker_deploy_zh.md)
-
+# 以docker compose方式运行本项目
 
 ```sh
-docker pull webterminal/webterminal
-
-docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
+sudo docker-compose up -d
 
 登录账户与密码
 
