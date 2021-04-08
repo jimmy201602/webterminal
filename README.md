@@ -26,7 +26,7 @@ Hope you enjoy it.
 # Run with docker compose
 
 ```sh
-sudou docker-compose up -d
+sudo docker-compose up -d
 Login user & password
 username: admin
 password: password!23456
