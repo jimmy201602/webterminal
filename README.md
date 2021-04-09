@@ -27,11 +27,11 @@ Hope you enjoy it.
 ## useage manual
 [![Usage Video](https://i.ytimg.com/vi/-HwhB21v8L8/1.jpg?time=1527217648531)](https://www.youtube.com/watch?v=-HwhB21v8L8)
 
-[How to use this project](./doc/manual_en.md)
+[How to use this project](./docs/manual_en.md)
 
 
 ## Installation guide
-[installation guide](./doc/install_en.md)
+[installation guide](./docs/install_en.md)
 
 
 ## Run with docker compose
