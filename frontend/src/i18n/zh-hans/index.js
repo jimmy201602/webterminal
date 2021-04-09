@@ -61,7 +61,7 @@ export default {
   Setting: '设置',
   MFA: '多因子认证',
   'Verify code': '认证码',
-  'redirect otp settings page': '重定向至多因子认证设置页面',
+  'redirect otp settings page': 'redirect otp settings page',
   'If you set up 2 - Step Verification, you should install':
     '如果你需要设置多因子认证,你必须安装',
   'Google Authenticator': '谷歌身份验证器应用',
