@@ -25,6 +25,10 @@
 
 [中文使用文档](./manual_zh.md)
 
+# 安装文档
+
+[中文安装文档](./install_zh_cn.md)
+
 # 以docker compose方式运行本项目
 
 ```sh

@@ -25,6 +25,10 @@
 
 [中文使用文檔](./manual_zht.md)
 
+# 安裝文檔
+
+[中文安裝文檔](./install_zht.md)
+
 # 以docker compose方式運行本項目
 
 ```sh
