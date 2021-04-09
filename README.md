@@ -82,7 +82,7 @@ zhengge2012@gmail.com
 
 ## License
 
-[GPL V3 License](LICENSE)
+[LGPL-3.0 License](LICENSE)
 
 ## Reporting Issues
 If you're experiencing a problem, we encourage you to open [an issue](https://github.com/jimmy201602/webterminal/issues/new), and share your feedback.

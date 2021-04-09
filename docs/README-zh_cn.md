@@ -78,7 +78,7 @@ sudo docker-compose up -d
 
 # 开源协议
 
-[开源协议(GPL v3)](../LICENSE) 
+[开源协议(LGPL-3.0 License)](../LICENSE)
 
 
 # 欢迎提交bug
