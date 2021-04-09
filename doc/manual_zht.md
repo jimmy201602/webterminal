@@ -1,147 +1,48 @@
-# webterminal 0.1 操作手冊
-
-# 創建資產
+# Webterminal 操作手冊
 
 ## 添加憑證
-點擊憑證列表，新增；協議支持ssh-key、sh-password、RDP、telnet等；憑證列表主要用於管理遠程主機時的賬號、密碼，及使用的遠程協議。
-
-![00](./img/00.png  "00")
-
-這裡以sh-password為例。
-
-![01](./img/01.png  "01")
-
-這裡以rdp為例子。
-![01-1](./img/01-1.png  "01-1")
-
-這裡以telnet為例子。(註意端口號)
-![01-4](./img/01-4.png  "01-4")
-
-這裡以vnc為例子。 如您的vncserver沒有配置用戶名，那麼用戶名隨便寫。
-![01-2](./img/01-2.png  "01-2")
-
-如果你不知道你的vnc端口號是多少的話，可以這樣查看。
-![01-3](./img/01-3.png  "01-3")
-
+![Create credential 1](./img/zh_cn/createcrendential1.png  "Create credential 1")
+![Create credential 2](./img/zh_cn/createcrendential2.png  "Create credential 2")
 
 ## 添加服務器
-
-點擊服務器列表-新增服務器資產
-
-![02](./img/02.png  "02")
-
-這裡以添加linux 主機為例。憑證選擇剛剛添加的“test_ssh”
-
-![03](./img/03.png  "03")
-
-這裡以添加windows主機為例。憑證選擇剛剛添加的“test_windows”
-
-![03-1](./img/03-1.png  "03-1")
-
-這裡以添加linux——VNC主機為例。
-
-![03-2](./img/03-2.png  "03-2")
-
-這裡以添加交換機為例。
-
-![03-3](./img/03-3.png  "03-3")
-
+![Create server 1](./img/zh_cn/createserver1.png  "Create server 1")
+![Create server 2](./img/zh_cn/createserver2.png  "Create server 2")
 ## 添加服務器組
-將服務器添加進組中：點擊組列表。
-
-![04](./img/04.png  "04")
-
-以linux服務器組為例
-
-![05](./img/05.png  "05")
-
-以windows服務器組為例
-
-![05-1](./img/05-1.png  "05-1")
-
-以linux-vnc服務器組為例
-
-![05-2](./img/05-2.png  "05-2")
-
-以Switch服務器組為例
-
-![05-3](./img/05-3.png  "05-3")
-
-# 創建用戶與授權
-
-## 創建用戶
-用戶列表用於管理運維人員登陸賬號
-
-![06](./img/06.png  "06")
-
-創建用戶
-
-![07](./img/07.png  "07")
-
-
-## 用戶授權
-
-![08](./img/08.png  "08")
-
-點擊權限列表項，下拉可選擇用戶（用戶列表中的用戶）；默認擁有所有權限；權限選擇完。
-
-![09-1](./img/09-1.png  "09-1")
-
-在最下麵服務器組中作用的服務器組（在組列表中那些組)。
-
-![09-2](./img/09-2.png  "09-2")
-
-可選擇多服務器組
-![09-3](./img/09-3.png  "09-3")
-![09-4](./img/09-4.png  "09-4")
-![09-5](./img/09-5.png  "09-5")
-
-# 使用webterminal連接遠程主機
-
-使用新建立的用戶“webterminal” 登錄。右擊連接。
-
-![10](./img/10.png  "10")
-
-![10-1](./img/10-1.png  "10-1")
-
-![10-2](./img/10-2.png  "10-2")
-（目前rdp、vnc、telnet協議主機尚不支持文件管理功能）
-![10-3](./img/10-3.png  "10-3")
-![10-4](./img/10-4.png  "10-4")
-![10-5](./img/10-5.png  "10-5")
-請忽略字體。
-![10-6](./img/10-6.png  "10-6")
-
+![Create group 1](./img/zh_cn/creategroup1.png  "Create group 1")
+![Create group 2](./img/zh_cn/creategroup2.png  "Create group 2")
 # 添加命令用於批量操作
-
-![11](./img/11.png  "11")
-點擊命令列表，新增test命令，在命令執行下可看到多了一個test命令列表，點擊test的執行選項就會對服務器組下的所有主機執行”mkdir test”，
-![11-1](./img/11-1.png  "11-1")
-返回到命令執行，選擇主機右擊執行。
-![11-2](./img/11-2.png  "11-2")
-可選擇組進行批量執行。
-![11-3](./img/11-3.png  "11-3")
-
-連接主機，發現根目錄下多了一個test.txt文件夾
-![11-4](./img/11-4.png  "11-4")
-
+![Create task 1](./img/zh_cn/createtask1.png  "Create task 1")
+![Create task 2](./img/zh_cn/createtask2.png  "Create task 2")
+# 創建新的登錄用戶
+![Create new user 1](./img/zh_cn/createuser1.png  "Create new user 1")
+![Create new user 2](./img/zh_cn/createuser2.png  "Create new user 2")
+## 配置用戶授權、可登陸的服務器組和可登陸的用戶
+![Configure new user permission 1 ](./img/zh_cn/configureuserpermission1.png  "Configure new user permission 1")
+![Configure new user permission 2](./img/zh_cn/configureuserpermission2.png  "Configure new user permission 2")
+## webterminal使用
+![Webterminal](./img/zh_cn/webterminal1.png  "Webterminal")
+![Webterminal](./img/zh_cn/webterminal2.png  "Webterminal")
+## 批量命令使用
+![task1](./img/zh_cn/runtask1.png  "task1")
+![task2](./img/zh_cn/runtask2.png  "task2")
 # ssh調用助手使用
 註冊ssh調用助手以便於在用戶windows電腦上調用putty軟件連接至服務器,使用方法如下
 將軟件目錄helper下webterminal ssh helper.exe安裝包文件安裝至需要連接至服務器的客戶端上。
 在服務器列表頁面點擊putty按鈕即可連接至需要連接的服務器
 
-# 日誌列表為連接實時查看與錄像回放
+## 更新憑證信息
+ 	On the left panel you can click the credential list ... Then you can update your info when you click the edit button. If you update all your infomation then click submit button.
+![update 1](./img/zh_cn/update1.png  "update 1")
+![update 2](./img/zh_cn/update2.png  "update 2")
+## 開啟多因子認證登錄
+  以系統管理員賬戶登錄系統，打開多因子認證登錄開關退出登錄並重啟系統。
+![setup mfa switch](./img/zh_cn/setupmfa.png "setup mfa switch")
 
-當一個用戶打開一個服務器進行操作時，擁有權限用戶可點擊日誌列表進行監控查看實時動態！
-![12](./img/12.png  "12")
+## 如果用戶未配置多因子認證登錄，在首次登錄系統時將會引導用戶設置多因子登錄
+![login mfa setup](./img/zh_cn/login.png "login mfa setup") 
 
-![12-1](./img/12-1.png  "12-1")
+## 請根據引導說明設置多因子登錄
+![setup the mfa](./img/zh_cn/scan-qr-code.png "setup the mfa") 
 
-![12-3](./img/12-3.png  "12-3")
-![12-4](./img/12-4.png  "12-4")
-![12-6](./img/12-6.png  "12-6")
-
-當用戶斷開連接後，擁有權限用戶可查看連接操作歷史錄像回放！
-![12-2](./img/12-2.png  "12-2")
-![12-5](./img/12-5.png  "12-5")
-![12-7](./img/12-7.png  "12-7")
+## 用多因子登錄方式登錄系統
+![login with mfa](./img/zh_cn/login_with_mfa.png "login with mfa") 

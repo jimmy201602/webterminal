@@ -6,21 +6,29 @@
 
 更多功能請自行發掘......
 
-## 下壹版本: *待定,項目將遷移至django 3*
+## Features
+
+- RDP 遠程協議支持
+- VNC 遠程協議支持
+- SSH SFTP 協議支持
+- Telnet 協議支持
+- VNC, RDP, SFTP 遠程文件管理 (下載、刪除、更新和上傳文件)
+- 遠程命令控制和腳本執行 (shell)
+- 實時用戶行為審計
+- 用戶會話審計
+- 在線用戶強制下線
+- SSH命令審計
+- 權限控制
+- Webterminal助手支持 (使用熟悉的工具去連接和管理服務器)
 
 # 使用文檔
 
-[繁體使用文檔](./manual_zht.md)
+[中文使用文檔](./manual_zh.md)
 
-# 以docker方式運行本項目
-
-[Centos7 Docker安裝部署 webterminal](./Centos7_docker_deploy_zht.md)
-
+# 以docker compose方式運行本項目
 
 ```sh
-docker pull webterminal/webterminal(國內請使用阿裡雲鏡像 docker pull registry.cn-hangzhou.aliyuncs.com/webterminal/webterminal)
-
-docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
+sudo docker-compose up -d
 
 登錄賬戶與密碼
 
@@ -34,7 +42,6 @@ docker run -itd -p 80:80 -p 2100:2100 webterminal/webterminal
 [試用服務器](http://193.112.194.114:8000/)
 
 賬戶/密碼: demo/demo12345678
-
 
 # 預覽
 ![screenshots](../screenshots/screenshots1.png  "screenshots")
