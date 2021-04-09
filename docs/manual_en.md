@@ -24,6 +24,10 @@
 ## Task usage
 ![task1](./img/runtask1.png  "task1")
 ![task2](./img/runtask2.png  "task2")
+## Audit
+![screenshots 1](./img/screenshots6.gif  "screenshots 1")
+![screenshots 2](./img/screenshots7.gif  "screenshots 2")
+![screenshots 3](./img/screenshots8.gif  "screenshots 3")
 ## Use ssh helper to assit you use putty to connect assigned server
 Install "Webterminal helper" on your pc client.
 In the server list page when you click  then it will connect to ther specified server use your favourite tools.

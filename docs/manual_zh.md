@@ -25,6 +25,10 @@
 ## 批量命令使用
 ![task1](./img/zh_cn/runtask1.png  "task1")
 ![task2](./img/zh_cn/runtask2.png  "task2")
+## 审计
+![screenshots 1](./img/screenshots6.gif  "screenshots 1")
+![screenshots 2](./img/screenshots7.gif  "screenshots 2")
+![screenshots 3](./img/screenshots8.gif  "screenshots 3")
 # ssh调用助手使用
 注册ssh调用助手以便于在用户windows电脑上调用putty软件连接至服务器,使用方法如下
 将软件目录helper下webterminal ssh helper.exe安装包文件安装至需要连接至服务器的客户端上。
