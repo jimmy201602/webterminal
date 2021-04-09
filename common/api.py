@@ -190,11 +190,20 @@ class GetDynamicPasswordApi(APIView):
     queryset = None
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_request_ip(self,request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+
     def post(self, request, format=None):
         serverid = request.data.get('serverid', None)
         # need to connect server user name
         conn_username = request.data.get('username', None)
         protocol = 'ssh'
+        remote_client_ip_address = self.get_request_ip(request)
         try:
             data = ServerInfor.objects.get(id=serverid)
             usernames = []
