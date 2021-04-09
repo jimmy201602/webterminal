@@ -87,6 +87,7 @@ sudo docker-compose up -d
 
 [开源协议(LGPL-3.0 License)](../LICENSE)
 
+Copyright (c) 2021 Jimmy
 
 # 欢迎提交bug
 欢迎提交并反馈[bug](https://github.com/jimmy201602/webterminal/issues/new)

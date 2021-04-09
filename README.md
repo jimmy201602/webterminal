@@ -91,5 +91,7 @@ Once again, if you directly use this system in commercial products without conta
 
 [LGPL-3.0 License](LICENSE)
 
+Copyright (c) 2021 Jimmy
+
 ## Reporting Issues
 If you're experiencing a problem, we encourage you to open [an issue](https://github.com/jimmy201602/webterminal/issues/new), and share your feedback.
