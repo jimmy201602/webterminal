@@ -23,7 +23,7 @@
 
 # 使用文檔
 
-[中文使用文檔](./manual_zh.md)
+[中文使用文檔](./manual_zht.md)
 
 # 以docker compose方式運行本項目
 
