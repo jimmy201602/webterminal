@@ -1,4 +1,4 @@
-# How to use it
+# Webterminal manual
 
 ## Create credential
 ![Create credential 1](./img/createcrendential1.png  "Create credential 1")
@@ -15,7 +15,7 @@
 ## Creat new login user
 ![Create new user 1](./img/createuser1.png  "Create new user 1")
 ![Create new user 2](./img/createuser2.png  "Create new user 2")
-## Configure login user permission and server groups
+## Configure login user permission, server groups and can login user
 ![Configure new user permission 1 ](./img/configureuserpermission1.png  "Configure new user permission 1")
 ![Configure new user permission 2](./img/configureuserpermission2.png  "Configure new user permission 2")
 ## Webterminal usage

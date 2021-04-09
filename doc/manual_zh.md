@@ -1,147 +1,48 @@
-# webterminal 操作手册
-
-# 创建资产
+# Webterminal 操作手册
 
 ## 添加凭证
-点击凭证列表，新增；协议支持ssh-key、sh-password、RDP、telnet等；凭证列表主要用于管理远程主机时的账号、密码，及使用的远程协议。
-
-![00](./img/00.png  "00")
-
-这里以sh-password为例。
-
-![01](./img/01.png  "01")
-
-这里以rdp为例子。
-![01-1](./img/01-1.png  "01-1")
-
-这里以telnet为例子。(注意端口号)
-![01-4](./img/01-4.png  "01-4")
-
-这里以vnc为例子。 如您的vncserver没有配置用户名，那么用户名随便写。
-![01-2](./img/01-2.png  "01-2")
-
-如果你不知道你的vnc端口号是多少的话，可以这样查看。
-![01-3](./img/01-3.png  "01-3")
-
+![Create credential 1](./img/zh_cn/createcrendential1.png  "Create credential 1")
+![Create credential 2](./img/zh_cn/createcrendential2.png  "Create credential 2")
 
 ## 添加服务器
-
-点击服务器列表-新增服务器资产
-
-![02](./img/02.png  "02")
-
-这里以添加linux 主机为例。凭证选择刚刚添加的“test_ssh”
-
-![03](./img/03.png  "03")
-
-这里以添加windows主机为例。凭证选择刚刚添加的“test_windows”
-
-![03-1](./img/03-1.png  "03-1")
-
-这里以添加linux——VNC主机为例。
-
-![03-2](./img/03-2.png  "03-2")
-
-这里以添加交换机为例。
-
-![03-3](./img/03-3.png  "03-3")
-
+![Create server 1](./img/zh_cn/createserver1.png  "Create server 1")
+![Create server 2](./img/zh_cn/createserver2.png  "Create server 2")
 ## 添加服务器组
-将服务器添加进组中：点击组列表。
-
-![04](./img/04.png  "04")
-
-以linux服务器组为例
-
-![05](./img/05.png  "05")
-
-以windows服务器组为例
-
-![05-1](./img/05-1.png  "05-1")
-
-以linux-vnc服务器组为例
-
-![05-2](./img/05-2.png  "05-2")
-
-以Switch服务器组为例
-
-![05-3](./img/05-3.png  "05-3")
-
-# 创建用户与授权
-
-## 创建用户
-用户列表用于管理运维人员登陆账号
-
-![06](./img/06.png  "06")
-
-创建用户
-
-![07](./img/07.png  "07")
-
-
-## 用户授权
-
-![08](./img/08.png  "08")
-
-点击权限列表项，下拉可选择用户（用户列表中的用户）；默认拥有所有权限；权限选择完。
-
-![09-1](./img/09-1.png  "09-1")
-
-在最下面服务器组中作用的服务器组（在组列表中那些组)。
-
-![09-2](./img/09-2.png  "09-2")
-
-可选择多服务器组
-![09-3](./img/09-3.png  "09-3")
-![09-4](./img/09-4.png  "09-4")
-![09-5](./img/09-5.png  "09-5")
-
-# 使用webterminal连接远程主机
-
-使用新建立的用户“webterminal” 登录。右击连接。
-
-![10](./img/10.png  "10")
-
-![10-1](./img/10-1.png  "10-1")
-
-![10-2](./img/10-2.png  "10-2")
-（目前rdp、vnc、telnet协议主机尚不支持文件管理功能）
-![10-3](./img/10-3.png  "10-3")
-![10-4](./img/10-4.png  "10-4")
-![10-5](./img/10-5.png  "10-5")
-请忽略字体。
-![10-6](./img/10-6.png  "10-6")
-
+![Create group 1](./img/zh_cn/creategroup1.png  "Create group 1")
+![Create group 2](./img/zh_cn/creategroup2.png  "Create group 2")
 # 添加命令用于批量操作
-
-![11](./img/11.png  "11")
-点击命令列表，新增test命令，在命令执行下可看到多了一个test命令列表，点击test的执行选项就会对服务器组下的所有主机执行”mkdir test”，
-![11-1](./img/11-1.png  "11-1")
-返回到命令执行，选择主机右击执行。
-![11-2](./img/11-2.png  "11-2")
-可选择组进行批量执行。
-![11-3](./img/11-3.png  "11-3")
-
-连接主机，发现根目录下多了一个test.txt文件夹
-![11-4](./img/11-4.png  "11-4")
-
+![Create task 1](./img/zh_cn/createtask1.png  "Create task 1")
+![Create task 2](./img/zh_cn/createtask2.png  "Create task 2")
+# 创建新的登录用户
+![Create new user 1](./img/zh_cn/createuser1.png  "Create new user 1")
+![Create new user 2](./img/zh_cn/createuser2.png  "Create new user 2")
+## 配置用户授权、可登陆的服务器组和可登陆的用户
+![Configure new user permission 1 ](./img/zh_cn/configureuserpermission1.png  "Configure new user permission 1")
+![Configure new user permission 2](./img/zh_cn/configureuserpermission2.png  "Configure new user permission 2")
+## webterminal使用
+![Webterminal](./img/zh_cn/webterminal1.png  "Webterminal")
+![Webterminal](./img/zh_cn/webterminal2.png  "Webterminal")
+## 批量命令使用
+![task1](./img/zh_cn/runtask1.png  "task1")
+![task2](./img/zh_cn/runtask2.png  "task2")
 # ssh调用助手使用
 注册ssh调用助手以便于在用户windows电脑上调用putty软件连接至服务器,使用方法如下
 将软件目录helper下webterminal ssh helper.exe安装包文件安装至需要连接至服务器的客户端上。
 在服务器列表页面点击putty按钮即可连接至需要连接的服务器
 
-# 日志列表为连接实时查看与录像回放
+## 更新凭证信息
+ 	On the left panel you can click the credential list ... Then you can update your info when you click the edit button. If you update all your infomation then click submit button.
+![update 1](./img/zh_cn/update1.png  "update 1")
+![update 2](./img/zh_cn/update2.png  "update 2")
+## 开启多因子认证登录
+  以系统管理员账户登录系统，打开多因子认证登录开关退出登录并重启系统。
+![setup mfa switch](./img/zh_cn/setupmfa.png "setup mfa switch")
 
-当一个用户打开一个服务器进行操作时，拥有权限用户可点击日志列表进行监控查看实时动态！
-![12](./img/12.png  "12")
+## 如果用户未配置多因子认证登录，在首次登录系统时将会引导用户设置多因子登录
+![login mfa setup](./img/zh_cn/login.png "login mfa setup") 
 
-![12-1](./img/12-1.png  "12-1")
+## 请根据引导说明设置多因子登录
+![setup the mfa](./img/zh_cn/scan-qr-code.png "setup the mfa") 
 
-![12-3](./img/12-3.png  "12-3")
-![12-4](./img/12-4.png  "12-4")
-![12-6](./img/12-6.png  "12-6")
-
-当用户断开连接后，拥有权限用户可查看连接操作历史录像回放！
-![12-2](./img/12-2.png  "12-2")
-![12-5](./img/12-5.png  "12-5")
-![12-7](./img/12-7.png  "12-7")
+## 用多因子登录方式登录系统
+![login with mfa](./img/zh_cn/login_with_mfa.png "login with mfa") 
