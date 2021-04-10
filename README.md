@@ -27,11 +27,11 @@ Hope you enjoy it.
 ## useage manual
 [![Usage Video](https://i.ytimg.com/vi/-HwhB21v8L8/1.jpg?time=1527217648531)](https://www.youtube.com/watch?v=-HwhB21v8L8)
 
-[How to use this project](./docs/manual_en.md)
+[How to use this project](./docs/manual.md)
 
 
 ## Installation guide
-[installation guide](./docs/install_en.md)
+[installation guide](./docs/install.md)
 
 
 ## Run with docker compose
@@ -53,32 +53,32 @@ user/password: demo/demo12345678
 zhengge2012@gmail.com
 
 ## screenshots
-![screenshots](./screenshots/screenshots1.png  "screenshots")
-![screenshots](./screenshots/screenshots2.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots1.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots2.gif  "screenshots")
 ## Ubuntu webterminal helper support
-![screenshots](./screenshots/screenshotslinux1.gif  "screenshots")
-![screenshots](./screenshots/screenshotslinux2.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshotslinux1.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshotslinux2.gif  "screenshots")
 ## Mac webterminal helper support
-![screenshots](./screenshots/screenshotsmac.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshotsmac.gif  "screenshots")
 ## Windows webterminal helper support
-![screenshots](./screenshots/screenshots9.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots9.gif  "screenshots")
 ## commercial version provide mstsc helper（rdp clipboard support vs file upload download and vnc protocol connection support）
-![screenshots](./screenshots/screenshotmstsc.gif  "screenshots")
-![screenshots](./screenshots/screenshotvnc.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshotmstsc.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshotvnc.gif  "screenshots")
 
-![screenshots](./screenshots/screenshots3.gif  "screenshots")
-![screenshots](./screenshots/screenshots4.gif  "screenshots")
-![screenshots](./screenshots/screenshots2.png  "screenshots")
-![screenshots](./screenshots/screenshots5.gif  "screenshots")
-![screenshots](./screenshots/screenshots3.png  "screenshots")
-![screenshots](./screenshots/screenshots4.png  "screenshots")
-![screenshots](./screenshots/screenshots5.png  "screenshots")
-![screenshots](./screenshots/screenshots6.png  "screenshots")
-![screenshots](./screenshots/screenshots7.png  "screenshots")
-![screenshots](./screenshots/screenshots8.png  "screenshots")
-![screenshots](./screenshots/screenshots6.gif  "screenshots")
-![screenshots](./screenshots/screenshots7.gif  "screenshots")
-![screenshots](./screenshots/screenshots8.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots3.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots4.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots2.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots5.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots3.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots4.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots5.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots6.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots7.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots8.png  "screenshots")
+![screenshots](.docs/screenshots/screenshots6.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots7.gif  "screenshots")
+![screenshots](.docs/screenshots/screenshots8.gif  "screenshots")
 
 ## License
 Open source is not a easy staff, please respect the author's contribution, thank you.

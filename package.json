@@ -1,0 +1,17 @@
+{
+  "name": "docs",
+  "version": "1.0.0",
+  "description": "Webterminal documention",
+  "main": "index.js",
+  "repository": "https://github.com/jimmy201602/webterminal",
+  "author": "Jimmy",
+  "license": "LPGL-3.0 License",
+  "private": null,
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "devDependencies": {
+    "vuepress": "^1.8.2"
+  }
+}
