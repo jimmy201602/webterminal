@@ -53,32 +53,32 @@ user/password: demo/demo12345678
 zhengge2012@gmail.com
 
 ## screenshots
-![screenshots](.docs/screenshots/screenshots1.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots2.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots1.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots2.gif  "screenshots")
 ## Ubuntu webterminal helper support
-![screenshots](.docs/screenshots/screenshotslinux1.gif  "screenshots")
-![screenshots](.docs/screenshots/screenshotslinux2.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshotslinux1.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshotslinux2.gif  "screenshots")
 ## Mac webterminal helper support
-![screenshots](.docs/screenshots/screenshotsmac.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshotsmac.gif  "screenshots")
 ## Windows webterminal helper support
-![screenshots](.docs/screenshots/screenshots9.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots9.gif  "screenshots")
 ## commercial version provide mstsc helper（rdp clipboard support vs file upload download and vnc protocol connection support）
-![screenshots](.docs/screenshots/screenshotmstsc.gif  "screenshots")
-![screenshots](.docs/screenshots/screenshotvnc.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshotmstsc.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshotvnc.gif  "screenshots")
 
-![screenshots](.docs/screenshots/screenshots3.gif  "screenshots")
-![screenshots](.docs/screenshots/screenshots4.gif  "screenshots")
-![screenshots](.docs/screenshots/screenshots2.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots5.gif  "screenshots")
-![screenshots](.docs/screenshots/screenshots3.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots4.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots5.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots6.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots7.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots8.png  "screenshots")
-![screenshots](.docs/screenshots/screenshots6.gif  "screenshots")
-![screenshots](.docs/screenshots/screenshots7.gif  "screenshots")
-![screenshots](.docs/screenshots/screenshots8.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots3.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots4.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots2.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots5.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots3.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots4.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots5.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots6.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots7.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots8.png  "screenshots")
+![screenshots](./docs/screenshots/screenshots6.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots7.gif  "screenshots")
+![screenshots](./docs/screenshots/screenshots8.gif  "screenshots")
 
 ## License
 Open source is not a easy staff, please respect the author's contribution, thank you.
