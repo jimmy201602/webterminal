@@ -24,13 +24,19 @@ module.exports = {
                     { text: 'Home', link: '/', ariaLabel: 'Home' },
                     { text: 'Live Demo', link: 'http://193.112.194.114:8000/', target: '_blank' },
                     { text: 'Github', link: 'https://github.com/jimmy201602/webterminal', target: '_blank' },
+                    { text: 'Contact', link: '/contact/'},
                 ],
                 sidebar: {
                     '/': [
                         {
+                            title: 'Home',
+                            collapsable: false,
+                            children: ['README.md']
+                        },
+                        {
                             title: 'Webterminal Introduction',
                             collapsable: false,
-                            children: ['']
+                            children: ['introduction.md']
                         },
                         {
                             title: 'Live Demo',
@@ -102,13 +108,19 @@ module.exports = {
                     { text: 'Home', link: '/zh/', ariaLabel: 'Home'  },
                     { text: '在线试用', link: 'http://193.112.194.114:8000/', target: '_blank' },
                     { text: 'Github', link: 'https://github.com/jimmy201602/webterminal', target: '_blank' },
+                    { text: '联系我们', link: '/zh/contact/' },
                 ],
                 sidebar: {
                     '/zh/': [
                         {
+                            title: 'Home',
+                            collapsable: false,
+                            children: ['README.md']
+                        },
+                        {
                             title: 'Webterminal介绍',
                             collapsable: false,
-                            children: ['']
+                            children: ['introduction.md']
                         },
                         {
                             title: '在线试用',
