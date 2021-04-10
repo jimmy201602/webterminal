@@ -2,6 +2,7 @@ module.exports = {
     title: 'Webterminal Documents',
     description: 'Webterminal Documents',
     head: [ [ 'link', { rel: 'icon', href: '/favicon.ico' } ] ],
+    base: '/webterminal/',
     locales: {
         '/': {
             lang: 'en-US',
