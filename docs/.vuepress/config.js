@@ -5,12 +5,12 @@ module.exports = {
     locales: {
         '/': {
             lang: 'en-US',
-            title: 'Webterminal',
+            title: ' ',
             description: 'Webterminal Documents'
         },
         '/zh/': {
             lang: 'zh-CN',
-            title: 'Webterminal',
+            title: ' ',
             description: 'Webterminal文档'
         }
     },
