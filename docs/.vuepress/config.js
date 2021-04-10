@@ -29,11 +29,6 @@ module.exports = {
                 sidebar: {
                     '/': [
                         {
-                            title: 'Home',
-                            collapsable: false,
-                            children: ['README.md']
-                        },
-                        {
                             title: 'Webterminal Introduction',
                             collapsable: false,
                             children: ['introduction.md']
@@ -112,11 +107,6 @@ module.exports = {
                 ],
                 sidebar: {
                     '/zh/': [
-                        {
-                            title: 'Home',
-                            collapsable: false,
-                            children: ['README.md']
-                        },
                         {
                             title: 'Webterminal介绍',
                             collapsable: false,
