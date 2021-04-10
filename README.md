@@ -1,8 +1,6 @@
 # Webterminal bastion server (挖到宝堡垒机)
-[![EN doc](https://img.shields.io/badge/document-English-blue.svg)](README.md)
-[![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](./docs/README-zh_cn.md)
-[![CNT doc](https://img.shields.io/badge/文檔-繁體版-blue.svg)](./docs/README-zht.md)
-
+[![EN doc](https://img.shields.io/badge/document-English-blue.svg)](https://jimmy201602.github.io/webterminal/)
+[![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](https://jimmy201602.github.io/webterminal/zh/)
 
 Webterminal implemented by django.
 This project focus on DevOps and Continuous Delivery.
