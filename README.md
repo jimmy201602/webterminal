@@ -14,6 +14,7 @@ Hope you enjoy it.
 
 ## try to use the latest beta version
 [try beta version](https://jimmy201602.github.io/doc/)
+
 [try beta version (zh_cn)](https://jimmy201602.github.io/doc/zh/)
 
 # useage
