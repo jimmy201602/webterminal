@@ -12,7 +12,7 @@ Hope you enjoy it.
 ## Next Release: *To be defined, project will migrate to django 3*
 ## This project is still under the development.
 
-## try to use the latest beta version
+# Try to use the latest beta version
 [try beta version](https://jimmy201602.github.io/doc/)
 
 [try beta version (zh_cn)](https://jimmy201602.github.io/doc/zh/)
