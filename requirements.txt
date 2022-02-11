@@ -30,7 +30,7 @@ pytz==2017.3
 PyYAML==4.2b1
 redis==2.10.6
 six==1.11.0
-Twisted==17.5.0
+Twisted==22.1.0
 txaio==2.8.2
 zope.interface==4.4.2
 future==0.16.0
