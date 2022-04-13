@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.10.1",
-    "axios": "^0.18.1",
+    "axios": "^0.21.2",
     "custom-protocol-check": "^1.1.0",
     "guacamole-common-js": "^1.1.0-b",
     "iview": "^3.5.4",
