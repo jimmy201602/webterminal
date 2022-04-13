@@ -1,4 +1,4 @@
-django
+django==3.1.7
 channels
 redis
 channels-redis
