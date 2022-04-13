@@ -25,9 +25,9 @@ Hope you enjoy it.
 ## useage manual
 
 # Try to use the latest version
-[try latest version](https://jimmy201602.github.io/doc/)
+[latest version](https://jimmy201602.github.io/doc/)
 
-[try latest version (zh_cn)](https://jimmy201602.github.io/doc/zh/)
+[latest version (zh_cn)](https://jimmy201602.github.io/doc/zh/)
 
 # useage
 
