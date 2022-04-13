@@ -24,20 +24,14 @@ Hope you enjoy it.
 
 ## useage manual
 
-# Try to use the latest beta version
-[try beta version](https://jimmy201602.github.io/doc/)
+# Try to use the latest version
+[try latest version](https://jimmy201602.github.io/doc/)
 
-[try beta version (zh_cn)](https://jimmy201602.github.io/doc/zh/)
+[try latest version (zh_cn)](https://jimmy201602.github.io/doc/zh/)
 
 # useage
 
 [![Usage Video](https://i.ytimg.com/vi/-HwhB21v8L8/1.jpg?time=1527217648531)](https://www.youtube.com/watch?v=-HwhB21v8L8)
-
-[How to use this project](./docs/manual.md)
-
-
-## Installation guide
-[installation guide](./docs/install.md)
 
 
 ## Run with docker compose
@@ -48,12 +42,6 @@ Login user & password
 username: admin
 password: password!23456
 ```
-## Demo server 
-
-[demo server](http://193.112.194.114:8000/)
-
-user/password: demo/demo12345678
-
 
 ## Author Email
 zhengge2012@gmail.com
