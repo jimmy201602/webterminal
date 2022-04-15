@@ -1,0 +1,43 @@
+version: "3"
+
+volumes:
+  db_data:
+  recording_data:
+      driver: local
+networks:
+  new:
+    driver: bridge
+services:
+  guacd:
+    image: guacamole/guacd:0.9.14
+    networks:
+      - new
+    environment:
+      GUACDHOST: guacd
+      REDISHOST: redis
+      WEBTERMINALHOST: webterminal
+    volumes:
+      - recording_data:/opt/webterminal/media/
+    ports:
+      - "4822:4822"
+  redis:
+    image: redis:6.0-alpine
+    networks:
+      - new
+    ports:
+      - "6379:6379"
+  webterminal:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    networks:
+      - new
+    environment:
+      GUACDHOST: guacd
+      REDISHOST: redis
+    volumes:
+      - recording_data:/opt/webterminal/media/
+      - db_data:/opt/webterminal/db/
+    ports:
+      - "80:80"
+      - "2100:2100"
