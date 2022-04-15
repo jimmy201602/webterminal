@@ -1,6 +1,14 @@
 #Webterminal dockfile
-FROM python:3.9.2-buster
+FROM node:14 as builder
 LABEL maintainer zhengge2012@gmail.com
+WORKDIR /app
+RUN npm install -g @quasar/cli
+COPY frontend /app
+WORKDIR /app/frontend
+RUN yarn install
+RUN quasar build
+
+FROM python:3.9.2-buster
 WORKDIR /opt
 ADD . /opt/webterminal
 WORKDIR /opt/webterminal
@@ -18,6 +26,8 @@ ADD nginx.conf /etc/nginx/nginx.conf
 ADD supervisord.conf /etc/supervisor/supervisord.conf
 ADD docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
+
+COPY --from=builder /app/frontend/dist/spa  /opt/webterminal/frontend/dist/spa
 
 EXPOSE 80 2100
 CMD ["/docker-entrypoint.sh", "start"]
