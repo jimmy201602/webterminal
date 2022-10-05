@@ -1,4 +1,4 @@
-# Webterminal bastion server (挖到宝堡垒机)
+# Webterminal bastion server (webterminal堡垒机)
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](https://jimmy201602.github.io/doc/)
 [![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](https://jimmy201602.github.io/doc/zh/)
 
