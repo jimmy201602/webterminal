@@ -37,7 +37,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
-    "@quasar/app": "^1.9.6",
+    "@quasar/app": "^3.3.3",
     "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "@quasar/quasar-app-extension-qmediaplayer": "^1.2.1",
     "babel-eslint": "^10.0.1",
