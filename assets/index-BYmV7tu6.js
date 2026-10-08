@@ -393,7 +393,7 @@ Then open \`http://<host>:8080\` and follow the setup wizard:
 3. Set the password of the \`admin\` user and click **Initialize Now**;
 4. Sign in with it and add your first asset as described in the [Quick start](help:quickstart#step-asset).
 
-![Setup form](/help/images/init-form.png)
+![Setup form](/help/images/en/init-form.png)
 
 ## Ports {#ports}
 
@@ -466,7 +466,7 @@ When assets sit in a segment the bastion cannot reach, run a gateway there: it d
 
 When a gateway is offline, connections fail — there is **never a direct fallback**. Several agents can serve one gateway for redundancy. See [Administrator guide · Gateways](help:admin-guide#gateway).
 
-![Gateways](/help/images/gateway-list.png)
+![Gateways](/help/images/en/gateway-list.png)
 
 ## Editions and trial {#license}
 
@@ -581,9 +581,9 @@ Get to the first connection in ten minutes: an administrator adds an asset and g
 
 A fresh deployment opens the initialization wizard the first time the console loads: confirm the notice, set the administrator password and pick a database type (sqlite works for demos and small installs; MySQL or PostgreSQL for production), then click **Initialize** to create the schema and sign in with the account you just set.
 
-![Initialization notice](/help/images/init-welcome.png)
+![Initialization notice](/help/images/en/init-welcome.png)
 
-![Initialization form](/help/images/init-form.png)
+![Initialization form](/help/images/en/init-form.png)
 
 ## Key concepts {#overview}
 
@@ -603,7 +603,7 @@ A fresh deployment opens the initialization wizard the first time the console lo
 3. Click **Add asset**, fill in the name, address and port, and select the protocols.
 4. After saving, click **Accounts** on the asset row, add at least one managed account and click the lightning icon (**Test connection**) to verify it.
 
-![Asset accounts](/help/images/asset-account-drawer.png)
+![Asset accounts](/help/images/en/asset-account-drawer.png)
 
 ## Step 2: prepare users {#step-user}
 
@@ -619,7 +619,7 @@ A fresh deployment opens the initialization wizard the first time the console lo
 
 > Users without any authorization see an empty asset tree in Asset Connect and can submit an access request right there; approvers handle it under Tickets.
 
-![New authorization rule](/help/images/authorization-drawer.png)
+![New authorization rule](/help/images/en/authorization-drawer.png)
 
 ## Step 4: connect {#step-connect}
 
@@ -629,7 +629,7 @@ Sign in as the authorized user and open [Asset Connect](#/layout/bastion/bastion
 - **Double-click** an asset, or hover it and click the connect icon, to open a browser session (SSH terminal / remote desktop / database console).
 - When an asset has several accounts or protocols you choose one first.
 
-![Asset connect](/help/images/workspace-asset-tree.png)
+![Asset connect](/help/images/en/workspace-asset-tree.png)
 
 ## Step 5 (recommended): install the local client {#step-client}
 
@@ -641,7 +641,7 @@ To connect with mstsc, Xshell, Navicat, DBeaver and other local tools:
 
 See [User guide → Local clients](help:user-guide#native).
 
-![Native client window](/help/images/native-client-card.png)
+![Native client window](/help/images/en/native-client-card.png)
 
 ## Next steps {#next}
 
@@ -777,11 +777,11 @@ For operators, developers and DBAs using the bastion day to day. The assets and 
 - **Remote desktop (RDP / VNC)**: the floating toolbar on the right maps a local folder, mutes audio and disconnects; the clipboard syncs automatically when allowed.
 - **Databases**: a SQL console with metadata browsing, completion, explain plans, CSV export and SQL templates.
 
-![Asset tree with search](/help/images/workspace-asset-tree.png)
+![Asset tree with search](/help/images/en/workspace-asset-tree.png)
 
-![Asset context menu](/help/images/workspace-asset-menu.png)
+![Asset context menu](/help/images/en/workspace-asset-menu.png)
 
-![Choosing connection parameters](/help/images/connect-params.png)
+![Choosing connection parameters](/help/images/en/connect-params.png)
 
 > Every session is recorded and audited — a compliance requirement of the bastion.
 
@@ -804,7 +804,7 @@ Besides the browser you can connect through the bastion with local tools; they a
    - Databases: user name \`your-name/asset-id\`, password is your bastion password.
    - RDP: user name \`your-name@asset-ip\` (the asset ID works too), password is your bastion password. Clients rewrite it into the down-level \`domain\\user\` form (mstsc, Windows App, FreeRDP and mterminal all do); the bastion accepts both. Use the **asset ID** when several assets share one IP. If you are authorized for more than one account, an account picker appears first.
 
-![Local client connect dialog](/help/images/native-client-card.png)
+![Local client connect dialog](/help/images/en/native-client-card.png)
 
 **Command-line examples**:
 
@@ -838,7 +838,7 @@ Helper is a small local program that registers \`wterm://\` links: when you clic
 - You can also click **Download .rdp** and open it with your system client.
 - Missing an app? Click **Request app** on the same page.
 
-![My apps](/help/images/remoteapp-portal.png)
+![My apps](/help/images/en/remoteapp-portal.png)
 
 ## Requesting access {#request}
 
@@ -848,7 +848,7 @@ When an asset you need is missing:
 2. Choose assets, protocols, the accounts you need (all accounts or specific ones — the approver may narrow them), actions and duration, state the reason and submit.
 3. Once approved, access takes effect automatically and expires on time; track it under Tickets → My requests.
 
-![Asset authorization request](/help/images/access-request-drawer.png)
+![Asset authorization request](/help/images/en/access-request-drawer.png)
 
 ## Multi-factor authentication {#mfa}
 
@@ -858,7 +858,7 @@ Administrators may require a second factor to sign in or to connect to some asse
 - If a connection needs MFA and you have not enrolled yet, you are prompted with a link.
 - Some policies send a code by email, SMS, WeCom, DingTalk or Feishu — click "Send code".
 
-![Binding MFA](/help/images/mfa-setup.png)
+![Binding MFA](/help/images/en/mfa-setup.png)
 
 ## Tickets and messages {#tickets}
 
@@ -1606,9 +1606,9 @@ The two kinds behave differently in three places:
 - When users connect with a local client they always sign in as **their own bastion user** plus the asset (e.g. \`alice@10.0.0.5\`), never as the domain account above; the bastion fills in the target account per their authorization — see [User guide → Local clients](help:user-guide#native).
 
 
-![Asset list and node tree](/help/images/asset-center.png)
+![Asset list and node tree](/help/images/en/asset-center.png)
 
-![Managed accounts of an asset](/help/images/asset-account-drawer.png)
+![Managed accounts of an asset](/help/images/en/asset-account-drawer.png)
 
 ## Password rotation {#rotation}
 
@@ -1632,7 +1632,7 @@ Leave the method empty to pick one from the account's protocol, or set it explic
 | \`smb\` | Windows / Samba exposing only 445 | For Windows targets configure an **execution credential**: the self-service (SAMR) change is dropped by some Windows builds, and rotation then falls back to \`rpcclient chgpasswd2\` as the executor. Not available through a gateway (the external Samba tools cannot follow the route). Rotation ships its own minimal \`smb.conf\` so it does not depend on local Samba configuration; set \`BASTION_SMB_CONF\` to override |
 | \`rdp_shell\` | Windows local accounts on hosts with **only 3389 and no WinRM** | (1) The host must allow launching a RemoteApp program: \`HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\\TSAppAllowList\\fDisabledAllowList=1\`, or publish powershell.exe as a RemoteApp — a refusal fails the rotation with exactly that message. (2) The rotated account must be allowed to log on over RDP (e.g. in Remote Desktop Users), because verification authenticates as that account over NLA. (3) The new password is briefly visible in the target's process table, so prefer WinRM where it exists |
 
-![New change-secret policy](/help/images/rotation-policy-drawer.png)
+![New change-secret policy](/help/images/en/rotation-policy-drawer.png)
 
 **Example: enable the HTTPS listener (5986) for the \`winrm\` method**, in an elevated PowerShell on the target:
 
@@ -1654,7 +1654,7 @@ reg add "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Terminal Server\
 
 Steps: click **New**, enter a version, pick the database asset and write the apply and rollback SQL; after approval it can be run, and the rollback SQL undoes it if needed.
 
-![New schema migration](/help/images/migration-drawer.png)
+![New schema migration](/help/images/en/migration-drawer.png)
 
 ## Network gateways {#gateway}
 
@@ -1667,7 +1667,7 @@ When assets sit in a network the bastion cannot reach directly (another data cen
 3. **Bind assets**: pick a gateway on a node and the assets in it and its sub-nodes are reached through it; an asset's **Network route** can **inherit from node** (default), be **direct**, or use a **specific gateway**. The asset list's Network route column shows the effective route. Route changes are audited as \`asset-route-change\`.
 4. **Status**: the list shows how many agents are online; expand a row for each agent's host, source IP, version, allowed targets and active connections. Several agents may serve one gateway for redundancy; the bastion rotates between them.
 
-![Gateway list with an online agent](/help/images/gateway-list.png)
+![Gateway list with an online agent](/help/images/en/gateway-list.png)
 
 - **Fail closed**: when an asset's gateway is offline, disabled or misconfigured, the connection fails — it never falls back to a direct connection, even if the bastion could reach the address itself.
 - Every protocol (SSH, RDP/VNC, Telnet, FTP, the six databases, web terminals) plus password rotation and connection tests use the gateway. FTP active mode is converted to upstream passive automatically. **SMB rotation** shells out to Samba tools that cannot use a gateway; use the WinRM or RDP method for assets behind one.
@@ -1727,7 +1727,7 @@ This works like openrport's pairing: the bastion issues an **install code**, and
 - Approved self-service requests create temporary authorizations that expire automatically.
 
 
-![Creating an authorization rule](/help/images/authorization-drawer.png)
+![Creating an authorization rule](/help/images/en/authorization-drawer.png)
 
 ## App authorization {#app-authorization}
 
@@ -1742,7 +1742,7 @@ Remote-app authorization shares the same rule engine: one app rule = users / gro
 - Clipboard, upload and download actions still apply to app sessions.
 - An app rule limits the entry point, it is not desktop isolation: in alternate-shell mode a user may escape through the program's Open File dialog. Use RemoteApp mode plus AppLocker on sensitive servers.
 
-![New app authorization](/help/images/app-authorization-drawer.png)
+![New app authorization](/help/images/en/app-authorization-drawer.png)
 
 ## Account groups {#account-group}
 
@@ -1778,7 +1778,7 @@ They are usually combined — **user groups for people, account groups for accou
 - Rules reference the group by ID, so renaming it is safe; a group referenced by rules cannot be deleted — remove the references first.
 - For a rule that needs only one or two accounts, naming them directly in the rule is clearer than a group.
 
-![New account group](/help/images/account-group-drawer.png)
+![New account group](/help/images/en/account-group-drawer.png)
 
 ## Access policies {#policy}
 
@@ -1793,7 +1793,7 @@ They are usually combined — **user groups for people, account groups for accou
 Policies take effect through authorizations; for manual approval before connecting use the "session approval" ticket.
 
 
-![Creating an access policy](/help/images/policy-drawer.png)
+![Creating an access policy](/help/images/en/policy-drawer.png)
 
 ## Command filters {#command-filter}
 
@@ -1807,7 +1807,7 @@ Policies take effect through authorizations; for manual approval before connecti
 Matching looks at what the user typed as well as the terminal echo (which covers Tab completion and history); multi-line pastes are checked line by line. When editing keys (↑, Tab, Ctrl-R…) and Enter arrive before the terminal redraws the line, the command that would run is unknown, so it is refused with a request to type it again. Hits are logged under Command Log and counted in the Overview.
 
 
-![Command filter rules](/help/images/command-filter.png)
+![Command filter rules](/help/images/en/command-filter.png)
 
 ## Batch jobs {#job}
 
@@ -1826,7 +1826,7 @@ Matching looks at what the user typed as well as the terminal echo (which covers
 - **Results**: each target shows its status, exit code, output or error, and the job row totals done / failed / blocked. Open a job for per-target detail and session IDs.
 - **Audit**: each target is an independent \`job\`-type session with its own audit entries (blocked targets still get an \`ssh-exec\` blocked record), traceable under Session Audit.
 
-![Batch jobs](/help/images/job.png)
+![Batch jobs](/help/images/en/job.png)
 
 ### Scheduled jobs {#job-schedule}
 
@@ -1914,7 +1914,7 @@ kubectl create token bastion-exec -n default --duration=8760h
 - Executed changes can be reverted from SQL Rollback, which generates the inverse statements.
 
 
-![SQL filter rules](/help/images/sql-filter.png)
+![SQL filter rules](/help/images/en/sql-filter.png)
 
 ## Data masking {#masking}
 
@@ -1922,7 +1922,7 @@ kubectl create token bastion-exec -n default --duration=8760h
 
 **Example**: with columns \`phone|mobile\`, method \`partial\` and 3 characters kept, \`13812345678\` shows as \`138*****678\`; with \`hash\` it shows a hash prefix, the same value always giving the same result so it can still be compared.
 
-![New masking rule](/help/images/masking-rule-drawer.png)
+![New masking rule](/help/images/en/masking-rule-drawer.png)
 
 ## Publishing apps {#publish}
 
@@ -1933,7 +1933,7 @@ kubectl create token bastion-exec -n default --duration=8760h
 - **Alternate shell mode** needs no server configuration: the program replaces the desktop shell, which is more compatible.
 - Publishing and changes go through change-ticket approval. Afterwards use **Authorize** on the app row to create a rule in [App authorization](help:admin-guide#app-authorization) — only covered users see it under My Apps.
 
-![Publish an application](/help/images/publish-app-drawer.png)
+![Publish an application](/help/images/en/publish-app-drawer.png)
 
 ## Session audit {#audit}
 
@@ -1950,7 +1950,7 @@ kubectl create token bastion-exec -n default --duration=8760h
   - The audit key lives in \`.bastion_audit_key\` in the backend's working directory (or the \`BASTION_AUDIT_KEY\` environment variable). Back it up together with the credential key \`.bastion_key\`; without it past records cannot be verified.
 
 
-![Activity search](/help/images/audit-activity.png)
+![Activity search](/help/images/en/audit-activity.png)
 
 ## SSH port forwarding and network access {#port-forward}
 
@@ -2005,7 +2005,7 @@ ssh -p 2222 -N -D 1080 alice/root@web01@bastion.example.com
 ssh -p 2222 -N -R 9090:localhost:8080 alice/root@web01@bastion.example.com
 \`\`\`
 
-![Port forwarding in the native client settings](/help/images/native-access-settings.png)
+![Port forwarding in the native client settings](/help/images/en/native-access-settings.png)
 
 ## User sync {#user-sync}
 
@@ -2021,7 +2021,7 @@ ssh -p 2222 -N -R 9090:localhost:8080 alice/root@web01@bastion.example.com
 | User filter (skip disabled accounts) | \`(&(objectCategory=person)(objectClass=user)(!(userAccountControl:1.2.840.113556.1.4.803:=2)))\` |
 | Incremental cursor | \`USN (uSNChanged)\`; OpenLDAP or Synology: \`modifyTimestamp\` |
 
-![New directory source](/help/images/user-sync-drawer.png)
+![New directory source](/help/images/en/user-sync-drawer.png)
 
 ### Restoring users deleted in the console {#restore-directory-user}
 
@@ -2056,7 +2056,7 @@ Restoring creates a **new account** with the source's default role and the user'
 
 For SAML the callback (ACS) URL is \`https://bastion.example.com/api/bastion/sso/acs\`.
 
-![Sign-in & SSO settings](/help/images/login-auth-settings.png)
+![Sign-in & SSO settings](/help/images/en/login-auth-settings.png)
 
 ## Client access {#native}
 
@@ -2081,7 +2081,7 @@ psql "host=bastion.example.com port=15432 user=alice/13 dbname=postgres"
 
 RDP: in mstsc set Computer to \`bastion.example.com:3389\` and the user name to \`alice@win01\`; the password is your bastion password.
 
-![Native client access settings](/help/images/native-access-settings.png)
+![Native client access settings](/help/images/en/native-access-settings.png)
 
 ## Alert notifications {#alert}
 
@@ -2109,7 +2109,7 @@ Repeats of the same event by the same user on the same asset alert once per minu
 
 Approval results and alerts also appear under the bell icon in [Messages](#/layout/bastion/bastionNotification).
 
-![Message center](/help/images/notification.png)
+![Message center](/help/images/en/notification.png)
 
 ## Asset checks {#check}
 
@@ -2124,7 +2124,7 @@ Approval results and alerts also appear under the bell icon in [Messages](#/layo
 
 Interval, concurrency and threshold are configurable; **Run checks now** performs one sweep manually (ignores the enable switch and the intervals: every enabled asset and its accounts are checked, which means one real login per account — it asks for confirmation). Only one sweep runs at a time. Accounts of disabled assets are never logged into; every automated login check is audited (\`account-check\`). Account results show in the asset's account drawer.
 
-![Check policy](/help/images/check-policy.png)
+![Check policy](/help/images/en/check-policy.png)
 
 ## Configuration transfer {#config-transfer}
 
@@ -2135,7 +2135,7 @@ Interval, concurrency and threshold are configurable; **Run checks now** perform
 - Objects match by stable identities (names, node keys), never database IDs, so bundles move across instances; same-named objects are updated. Every reference — approval chains, asset/account/policy references inside authorization rules — is re-resolved by name at import; an entry that cannot be resolved is skipped and listed as a problem instead of producing a dangling reference.
 - Recommended order: create the users on the target first (or enable directory sync), then import the configuration, then have each asset administrator re-enter account credentials.
 
-![Config transfer](/help/images/config-transfer.png)
+![Config transfer](/help/images/en/config-transfer.png)
 
 ## Audit analysis {#analysis}
 
@@ -2147,13 +2147,13 @@ Interval, concurrency and threshold are configurable; **Run checks now** perform
 
 Without a license covering them the tab carries an "Enterprise" tag and the page says so.
 
-![Compliance report](/help/images/analysis-compliance.png)
+![Compliance report](/help/images/en/analysis-compliance.png)
 
 ## License {#license}
 
 [Settings → License](#/layout/admin/bastionSettings?tab=license) shows the current edition, usage against the limits and which Enterprise features are open, and installs an Enterprise license. Only system administrators see this tab.
 
-![License](/help/images/license-page.png)
+![License](/help/images/en/license-page.png)
 
 **Editions and trial**
 
