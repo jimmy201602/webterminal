@@ -5,6 +5,8 @@
 
 Webterminal is an all-in-one privileged access platform: unified asset onboarding, authorization control, session auditing and operation replay. Run SSH / RDP / VNC / database operations directly in the browser, or connect with native clients (ssh, mstsc, mysql, navicat…) through the built-in protocol proxies.
 
+Webterminal 是一体化特权访问管理平台：统一的资产接入、授权控制、会话审计与操作回放。浏览器里即可完成 SSH / RDP / VNC / 数据库运维，也可通过原生客户端（ssh、mstsc、mysql、navicat…）经内置协议代理直连。[中文文档 →](README_zh.md)
+
 > 📌 **Use the 1.0 Docker image** (this document). The Python/Django source in this repository is the legacy implementation — see [README_LEGACY.md](README_LEGACY.md).
 
 ## Release 1.0
