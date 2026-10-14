@@ -1,8 +1,8 @@
 # Webterminal bastion server (webterminal堡垒机) — 旧版 / Legacy
 
-> ⚠️ **这是早期 Django 实现（0.x）的文档，已停止维护。请使用 1.0 版本 → [README.md](README.md) / [English](README_EN.md)。**
+> ⚠️ **这是早期 Django 实现（0.x）的文档，已停止维护。请使用 1.0 版本 → [English](README.md) / [中文](README_zh.md)。**
 >
-> ⚠️ **This documents the legacy Django implementation (0.x), no longer maintained. Use version 1.0 → [README_EN.md](README_EN.md).**
+> ⚠️ **This documents the legacy Django implementation (0.x), no longer maintained. Use version 1.0 → [README.md](README.md) / [中文文档](README_zh.md).**
 >
 > 旧版完整文档：[docs/](docs/)（中文：[docs/zh/](docs/zh/)）｜ Legacy docs: [docs/](docs/)
 

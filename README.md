@@ -1,27 +1,27 @@
-# Webterminal — 开源堡垒机 / 运维审计平台
+# Webterminal — Open-Source Bastion Host & Access Audit Platform
 
-[![English](https://img.shields.io/badge/README-English-blue.svg)](README_EN.md)
+[![中文文档](https://img.shields.io/badge/文档-中文版-blue.svg)](README_zh.md)
 [![Docker Hub](https://img.shields.io/badge/docker-webterminal%2Fwebterminal-blue.svg)](https://hub.docker.com/r/webterminal/webterminal)
 
-Webterminal 是一体化特权访问管理平台：统一的资产接入、授权控制、会话审计与操作回放。浏览器里即可完成 SSH / RDP / VNC / 数据库运维，也可通过原生客户端（ssh、mstsc、mysql、navicat…）经内置协议代理直连。
+Webterminal is an all-in-one privileged access platform: unified asset onboarding, authorization control, session auditing and operation replay. Run SSH / RDP / VNC / database operations directly in the browser, or connect with native clients (ssh, mstsc, mysql, navicat…) through the built-in protocol proxies.
 
-> 📌 **推荐使用 1.0 Docker 镜像**（本文档）。仓库内的 Python/Django 源码为旧版实现，文档见 [README_LEGACY.md](README_LEGACY.md)。
+> 📌 **Use the 1.0 Docker image** (this document). The Python/Django source in this repository is the legacy implementation — see [README_LEGACY.md](README_LEGACY.md).
 
-## 1.0 版本
+## Release 1.0
 
-1.0 是全新重构版本：Go 后端 + React 前端，以**单容器 All-in-One 镜像**发布——一个容器内含 webterminal 服务 + nginx + SQLite，无外部依赖（不含 Redis，单机全部走内存兜底），amd64 与 arm64 同 tag 多架构分发。
+1.0 is a ground-up rewrite: Go backend + React frontend, shipped as a **single all-in-one container** — the webterminal server, nginx and SQLite in one image, no external dependencies (no Redis; single-node deployments fall back to in-memory state). One tag serves both amd64 and arm64.
 
-### 功能一览
+### Features
 
-- **协议接入**：SSH / SFTP / Telnet、RDP、VNC、WinRM、MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB、Kubernetes
-- **两种使用方式**：网页终端（xterm、网页 RDP/VNC 桌面、浏览器文件传输）+ 原生客户端代理（本地 ssh / mstsc / 数据库客户端 / helper 一键拉起）
-- **授权模型**：主体（用户/用户组/部门）→ 资产/节点 × 账号 × 协议 × 动作（连接、上传、下载、剪贴板、端口转发…），支持有效期、审批与策略
-- **审计**：全量会话记录、SSH/RDP/VNC 操作录像回放、命令过滤与阻断、数据库 SQL 过滤
-- **网络网关**：被隔离网段通过轻量 agent（`gw-*`）经加密隧道转发，资产路由按 资产 → 节点 → 直连 解析
-- **运维自动化**：改密/轮换、WinRM 脚本与作业中心、发布应用（RemoteApp）、命令复核
-- **安全设计**：凭据加密保管、一次性连接令牌、主机指纹绑定许可、非 root 容器运行
+- **Protocols**: SSH / SFTP / Telnet, RDP, VNC, WinRM, MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB, Kubernetes
+- **Two ways in**: web terminals (xterm, in-browser RDP/VNC desktops, browser file transfer) + native-client proxies (local ssh / mstsc / database clients / one-click helper launch)
+- **Authorization model**: principal (user / group / department) → asset/node × account × protocol × action (connect, upload, download, clipboard, port forwarding…), with validity windows, approvals and policies
+- **Audit**: full session history, SSH/RDP/VNC recording & replay, command filtering/blocking, database SQL filtering
+- **Network gateways**: isolated segments are reached through lightweight `gw-*` agents over encrypted tunnels; asset routing resolves asset → node → direct
+- **Operations**: password change/rotation, WinRM scripts & job center, published apps (RemoteApp), command review
+- **Security by design**: vaulted credentials, one-time connection tokens, host-fingerprint-bound licenses, non-root container
 
-## 快速开始
+## Quick Start
 
 ```bash
 docker run -d --name webterminal --restart unless-stopped \
@@ -33,62 +33,62 @@ docker run -d --name webterminal --restart unless-stopped \
   webterminal/webterminal:1.0
 ```
 
-打开 `https://<主机IP>`（80 自动跳转 443，自签名证书首次启动自动生成），进入初始化向导设置管理员密码即可使用。初始化完成后登录账号为 **`admin`**，密码即向导中设置的密码。443 承载网页端全部功能；2222/3389/数据库端口是原生客户端代理，按需保留。
+Open `https://<host-ip>` (port 80 redirects to 443; a self-signed certificate is generated on first start) and finish the init wizard to set the admin password. After initialization, sign in as **`admin`** with the password you set in the wizard. 443 carries all web-side functionality; 2222/3389 and the database ports are the native-client proxies — keep the ones you use.
 
-![初始化向导](docs/images/init-welcome.png)
+![Init wizard](docs/images/en/init-welcome.png)
 
-**Linux 主机建议增加主机指纹挂载**（用于在线登记试用/许可绑定）：
+**On Linux hosts, also mount the host identity files** (used for online trial registration / license binding):
 
 ```bash
   -v /etc/machine-id:/host/machine-id:ro \
   -v /sys/class/dmi/id/product_uuid:/host/product_uuid:ro
 ```
 
-### 端口说明
+### Ports
 
-| 端口 | 用途 | 必需 |
+| Port | Purpose | Required |
 |---|---|---|
-| 443 | 控制台 HTTPS（网页终端 / API / 文件传输） | 是 |
-| 80 | 仅 301 跳转 443 | 建议 |
-| 2222 | SSH / SFTP 原生代理 | 按需 |
-| 3389 | RDP 原生代理 | 按需 |
-| 13306 / 15432 / 11433 / 11521 | MySQL / PostgreSQL / SQL Server / Oracle 代理 | 按需 |
-| 16379 / 37017 | Redis / MongoDB 代理 | 按需 |
+| 443 | Console HTTPS (web terminals / API / file transfer) | yes |
+| 80 | 301 redirect to 443 only | recommended |
+| 2222 | Native SSH / SFTP proxy | optional |
+| 3389 | Native RDP proxy | optional |
+| 13306 / 15432 / 11433 / 11521 | MySQL / PostgreSQL / SQL Server / Oracle proxies | optional |
+| 16379 / 37017 | Redis / MongoDB proxies | optional |
 
-只映射用到的端口即可。宿主机映射端口与容器端口不一致时，用 `BASTION_PUBLIC_HOST` / `BASTION_SSH_PROXY_PORT` / `BASTION_RDP_PROXY_PORT` 声明对外地址（否则签发的 `wterm://` 连接串会指向错误端口），例如 `-p 12222:2222 -e BASTION_SSH_PROXY_PORT=12222`。
+Map only what you use. When host-published ports differ from the container ports, declare the public endpoint via `BASTION_PUBLIC_HOST` / `BASTION_SSH_PROXY_PORT` / `BASTION_RDP_PROXY_PORT` (otherwise issued `wterm://` URLs point at the wrong ports), e.g. `-p 12222:2222 -e BASTION_SSH_PROXY_PORT=12222`.
 
-## 界面预览
+## Screenshots
 
-| 资产中心 | 工作台 |
+| Asset center | Workspace |
 |---|---|
-| ![资产中心](docs/images/asset-center.png) | ![工作台](docs/images/workspace-asset-tree.png) |
+| ![Asset center](docs/images/en/asset-center.png) | ![Workspace](docs/images/en/workspace-asset-tree.png) |
 
-| 本地客户端连接 | 会话审计 |
+| Native client access | Session audit |
 |---|---|
-| ![本地客户端](docs/images/native-client-card.png) | ![会话审计](docs/images/audit-activity.png) |
+| ![Native client](docs/images/en/native-client-card.png) | ![Session audit](docs/images/en/audit-activity.png) |
 
-| 网关 | 授权许可 |
+| Gateways | Licensing |
 |---|---|
-| ![网关](docs/images/gateway-list.png) | ![授权许可](docs/images/license-page.png) |
+| ![Gateways](docs/images/en/gateway-list.png) | ![Licensing](docs/images/en/license-page.png) |
 
-## 试用与授权
+## Trial & Licensing
 
-默认安装为**社区版**：受限协议（RDP / VNC / 数据库类）50 资产、5 并发会话，单副本、1 网关，SSH 类资产不限。提供**15 天在线试用**解锁全部企业功能：
+A default install runs the **Community** edition: 50 restricted-protocol assets (RDP / VNC / databases), 5 concurrent restricted sessions, 1 replica, 1 gateway — SSH-type assets are not limited. A **15-day online trial** unlocks all Enterprise features:
 
-- **在线登记试用**（推荐）：Linux 主机挂载上述 `/host` 指纹文件后，控制台「系统设置 → 授权许可 → 在线登记试用」一键完成，15 天全功能。
-- **离线试用**：macOS / Windows Docker Desktop 或无稳定指纹的环境，「授权许可 → 生成申请码」得到 `WTR2.` 申请码，联系厂商换取 `WTS1.` 授权文件后在同页面上传。
-- **正式授权**：企业版签发序列号 + 授权文件，绑定安装实例（资产规模、会话并发、副本数、网关数按需约定）。
+- **Online trial** (recommended): on a Linux host with the `/host` identity mounts above, open *System Settings → License → Register trial online* — done in one click.
+- **Offline trial**: on Docker Desktop (macOS/Windows) or hosts without a stable fingerprint, use *License → Generate request code* to obtain a `WTR2.` code, send it to the vendor, and upload the returned `WTS1.` license file on the same page.
+- **Commercial license**: Enterprise licenses ship as a serial + license file bound to the installation (asset count, session concurrency, replicas, gateways per contract).
 
-授权页实时显示当前许可状态、到期时间与各功能可用性；到期或超限时安全策略类功能保持只读不失效，运维审计不中断。
+The license page shows current state, expiry and per-feature availability; on expiry or limit breach, security-policy features remain read-only and auditing keeps working.
 
-## 数据与升级
+## Data & Upgrades
 
-- 全部状态在 `/data` 卷：SQLite、配置、TLS 证书、SSH host key、会话录像、日志。备份即打包该卷。
-- 升级：`docker pull` 新 tag 后重建容器即可，数据自动沿用。
-- 替换正式 HTTPS 证书：覆盖 `/data/ssl/server.crt` / `server.key` 后重启。
+- All state lives in the `/data` volume: SQLite, configuration, TLS certificates, SSH host key, session recordings, logs. Backing up = archiving this volume.
+- Upgrade: `docker pull` the new tag and recreate the container; data carries over.
+- Replace the HTTPS certificate by overwriting `/data/ssl/server.crt` / `server.key` and restarting.
 
-## 说明
+## Notes
 
-- 容器内以非 root 用户运行；原生代理端口在初始化完成后才开始监听。
-- 网络网关 agent（Linux systemd / OpenRC、Windows 服务）在控制台「网关」页生成一行安装命令，自带 SHA-256 校验与主机密钥锁定。
-- **推荐使用 1.0**。本仓库源码为早期 Django 实现（0.x），已停止维护；旧版部署与使用文档见 [README_LEGACY.md](README_LEGACY.md) 和 [docs/](docs/)。
+- The container runs as a non-root user; native proxy ports start listening only after the init wizard completes.
+- Gateway agents (Linux systemd/OpenRC, Windows service) are installed with a one-line command generated on the *Gateways* page, with SHA-256 verification and host-key pinning.
+- **Version 1.0 is recommended.** The source in this repository is the earlier Django implementation (0.x) and is no longer maintained; its deployment/usage docs live in [README_LEGACY.md](README_LEGACY.md) and [docs/](docs/).
