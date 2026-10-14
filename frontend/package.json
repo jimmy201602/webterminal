@@ -20,7 +20,7 @@
     "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
     "jquery-ui-dist": "^1.12.1",
-    "quasar": "^1.15.9",
+    "quasar": "^2.32.2",
     "vue-formio": "^4.0.1",
     "vue-friendly-iframe": "^0.18.0",
     "vue-i18n": "^8.0.0",
