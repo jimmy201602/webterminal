@@ -16,12 +16,11 @@ Webterminal 是一体化特权访问管理平台：统一的资产接入、授�
 - **内置 OCR 识别服务**（PP-OCRv4，RapidOCR / ONNX Runtime）直接打在容器内，不需要再部署独立服务：
   - *录像文字检索*：RDP/VNC 录像关键帧后台 OCR 建索引，可按屏幕上出现过的文字搜索会话。
   - *RDP 窗口标题实时识别*：原生 RDP 代理会话从标题栏识别前台窗口标题写入会话时间线（覆盖 Win7 … Server 2025 / Win11 各代标题栏样式）。
-- **Web 资产**：通过隔离的远程浏览器会话访问。
 - 1.0 直接换 tag 重建容器即可升级，OCR 配置首次启动自动写入已有 `config.yaml`。
 
 ### 功能一览
 
-- **协议接入**：SSH / SFTP / Telnet、RDP、VNC、WinRM、MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB、Kubernetes、Web（远程浏览器）
+- **协议接入**：SSH / SFTP / Telnet、RDP、VNC、WinRM、MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB、Kubernetes
 - **两种使用方式**：网页终端（xterm、网页 RDP/VNC 桌面、浏览器文件传输）+ 原生客户端代理（本地 ssh / mstsc / 数据库客户端 / helper 一键拉起）
 - **授权模型**：主体（用户/用户组/部门）→ 资产/节点 × 账号 × 协议 × 动作（连接、上传、下载、剪贴板、端口转发…），支持有效期、审批与策略
 - **审计**：全量会话记录、SSH/RDP/VNC 操作录像回放、录像 OCR 文字检索、RDP 窗口标题实时时间线、命令过滤与阻断、数据库 SQL 过滤
@@ -99,5 +98,6 @@ docker run -d --name webterminal --restart unless-stopped \
 
 - 容器内以非 root 用户运行；原生代理端口在初始化完成后才开始监听。
 - OCR 引擎只监听容器内 `127.0.0.1:8866`，空闲约 100 MB、识别时峰值数百 MB，建议给容器 1 GB 以上内存；`OCR_WORKERS` / `OCR_THREADS`（默认 1 / 4）可调，`-e BASTION_EMBEDDED_OCR=0` 可完全关闭。
+- Web 资产（隔离远程浏览器会话）**不在**单容器镜像内：它按会话通过 Docker API 拉起 `weboat/chromium` 浏览器容器，需要宿主机 Docker 套接字（`BASTION_WEBOAT_DOCKER_HOST`）和该镜像，请使用 docker-compose 部署方式。
 - 网络网关 agent（Linux systemd / OpenRC、Windows 服务）在控制台「网关」页生成一行安装命令，自带 SHA-256 校验与主机密钥锁定。
 - **推荐使用 1.1**。本仓库源码为早期 Django 实现（0.x），已停止维护；旧版部署与使用文档见 [README_LEGACY.md](README_LEGACY.md) 和 [docs/](docs/)。

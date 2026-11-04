@@ -18,12 +18,11 @@ Webterminal 是一体化特权访问管理平台：统一的资产接入、授�
 - **Built-in OCR** (PP-OCRv4 via RapidOCR / ONNX Runtime) inside the container — no separate service to run:
   - *Recording text search*: RDP/VNC recording keyframes are indexed in the background so you can search what was on screen.
   - *Live RDP window titles*: native RDP proxy sessions recognise the foreground window title from the caption bar and write it to the session timeline (Win7 … Server 2025 / Win11 caption styles).
-- **Web assets** through isolated remote-browser sessions.
 - Upgrading from 1.0 is a container recreate; the OCR settings are filled into the existing `config.yaml` automatically on first start.
 
 ### Features
 
-- **Protocols**: SSH / SFTP / Telnet, RDP, VNC, WinRM, MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB, Kubernetes, Web (remote browser)
+- **Protocols**: SSH / SFTP / Telnet, RDP, VNC, WinRM, MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB, Kubernetes
 - **Two ways in**: web terminals (xterm, in-browser RDP/VNC desktops, browser file transfer) + native-client proxies (local ssh / mstsc / database clients / one-click helper launch)
 - **Authorization model**: principal (user / group / department) → asset/node × account × protocol × action (connect, upload, download, clipboard, port forwarding…), with validity windows, approvals and policies
 - **Audit**: full session history, SSH/RDP/VNC recording & replay, OCR text search over recordings, live RDP window-title timeline, command filtering/blocking, database SQL filtering
@@ -101,5 +100,6 @@ The license page shows current state, expiry and per-feature availability; on ex
 
 - The container runs as a non-root user; native proxy ports start listening only after the init wizard completes.
 - The OCR engine listens on `127.0.0.1:8866` inside the container only; it idles at ~100 MB and peaks at a few hundred MB during recognition — give the container at least 1 GB. Tune with `OCR_WORKERS` / `OCR_THREADS` (default 1 / 4); set `-e BASTION_EMBEDDED_OCR=0` to run without it.
+- Web assets (isolated remote-browser sessions) are **not** part of the all-in-one image: they launch a `weboat/chromium` browser container per session through the Docker API, which needs a Docker socket (`BASTION_WEBOAT_DOCKER_HOST`) and that image on the host — use the docker-compose deployment for them.
 - Gateway agents (Linux systemd/OpenRC, Windows service) are installed with a one-line command generated on the *Gateways* page, with SHA-256 verification and host-key pinning.
 - **Version 1.1 is recommended.** The source in this repository is the earlier Django implementation (0.x) and is no longer maintained; its deployment/usage docs live in [README_LEGACY.md](README_LEGACY.md) and [docs/](docs/).
