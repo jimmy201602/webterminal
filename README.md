@@ -7,18 +7,26 @@ Webterminal is an all-in-one privileged access platform: unified asset onboardin
 
 Webterminal 是一体化特权访问管理平台：统一的资产接入、授权控制、会话审计与操作回放。浏览器里即可完成 SSH / RDP / VNC / 数据库运维，也可通过原生客户端（ssh、mstsc、mysql、navicat…）经内置协议代理直连。[中文文档 →](README_zh.md)
 
-> 📌 **Use the 1.0 Docker image** (this document). The Python/Django source in this repository is the legacy implementation — see [README_LEGACY.md](README_LEGACY.md).
+> 📌 **Use the 1.1 Docker image** (this document). The Python/Django source in this repository is the legacy implementation — see [README_LEGACY.md](README_LEGACY.md).
 
-## Release 1.0
+## Release 1.1
 
-1.0 is a ground-up rewrite: Go backend + React frontend, shipped as a **single all-in-one container** — the webterminal server, nginx and SQLite in one image, no external dependencies (no Redis; single-node deployments fall back to in-memory state). One tag serves both amd64 and arm64.
+1.x is a ground-up rewrite: Go backend + React frontend, shipped as a **single all-in-one container** — the webterminal server, nginx, SQLite and (since 1.1) the OCR engine in one image, no external dependencies (no Redis; single-node deployments fall back to in-memory state). One tag serves both amd64 and arm64.
+
+**New in 1.1**
+
+- **Built-in OCR** (PP-OCRv4 via RapidOCR / ONNX Runtime) inside the container — no separate service to run:
+  - *Recording text search*: RDP/VNC recording keyframes are indexed in the background so you can search what was on screen.
+  - *Live RDP window titles*: native RDP proxy sessions recognise the foreground window title from the caption bar and write it to the session timeline (Win7 … Server 2025 / Win11 caption styles).
+- **Web assets** through isolated remote-browser sessions.
+- Upgrading from 1.0 is a container recreate; the OCR settings are filled into the existing `config.yaml` automatically on first start.
 
 ### Features
 
-- **Protocols**: SSH / SFTP / Telnet, RDP, VNC, WinRM, MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB, Kubernetes
+- **Protocols**: SSH / SFTP / Telnet, RDP, VNC, WinRM, MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB, Kubernetes, Web (remote browser)
 - **Two ways in**: web terminals (xterm, in-browser RDP/VNC desktops, browser file transfer) + native-client proxies (local ssh / mstsc / database clients / one-click helper launch)
 - **Authorization model**: principal (user / group / department) → asset/node × account × protocol × action (connect, upload, download, clipboard, port forwarding…), with validity windows, approvals and policies
-- **Audit**: full session history, SSH/RDP/VNC recording & replay, command filtering/blocking, database SQL filtering
+- **Audit**: full session history, SSH/RDP/VNC recording & replay, OCR text search over recordings, live RDP window-title timeline, command filtering/blocking, database SQL filtering
 - **Network gateways**: isolated segments are reached through lightweight `gw-*` agents over encrypted tunnels; asset routing resolves asset → node → direct
 - **Operations**: password change/rotation, WinRM scripts & job center, published apps (RemoteApp), command review
 - **Security by design**: vaulted credentials, one-time connection tokens, host-fingerprint-bound licenses, non-root container
@@ -32,7 +40,7 @@ docker run -d --name webterminal --restart unless-stopped \
   -p 13306:13306 -p 15432:15432 -p 11433:11433 -p 11521:11521 \
   -p 16379:16379 -p 37017:37017 \
   -v webterminal-data:/data \
-  webterminal/webterminal:1.0
+  webterminal/webterminal:1.1
 ```
 
 Open `https://<host-ip>` (port 80 redirects to 443; a self-signed certificate is generated on first start) and finish the init wizard to set the admin password. After initialization, sign in as **`admin`** with the password you set in the wizard. 443 carries all web-side functionality; 2222/3389 and the database ports are the native-client proxies — keep the ones you use.
@@ -86,11 +94,12 @@ The license page shows current state, expiry and per-feature availability; on ex
 ## Data & Upgrades
 
 - All state lives in the `/data` volume: SQLite, configuration, TLS certificates, SSH host key, session recordings, logs. Backing up = archiving this volume.
-- Upgrade: `docker pull` the new tag and recreate the container; data carries over.
+- Upgrade: `docker pull` the new tag and recreate the container; data carries over. 1.0 → 1.1 needs nothing else — the embedded OCR address and a random token are written into `/data/config.yaml` (`bastion.ocr`) on the first start.
 - Replace the HTTPS certificate by overwriting `/data/ssl/server.crt` / `server.key` and restarting.
 
 ## Notes
 
 - The container runs as a non-root user; native proxy ports start listening only after the init wizard completes.
+- The OCR engine listens on `127.0.0.1:8866` inside the container only; it idles at ~100 MB and peaks at a few hundred MB during recognition — give the container at least 1 GB. Tune with `OCR_WORKERS` / `OCR_THREADS` (default 1 / 4); set `-e BASTION_EMBEDDED_OCR=0` to run without it.
 - Gateway agents (Linux systemd/OpenRC, Windows service) are installed with a one-line command generated on the *Gateways* page, with SHA-256 verification and host-key pinning.
-- **Version 1.0 is recommended.** The source in this repository is the earlier Django implementation (0.x) and is no longer maintained; its deployment/usage docs live in [README_LEGACY.md](README_LEGACY.md) and [docs/](docs/).
+- **Version 1.1 is recommended.** The source in this repository is the earlier Django implementation (0.x) and is no longer maintained; its deployment/usage docs live in [README_LEGACY.md](README_LEGACY.md) and [docs/](docs/).

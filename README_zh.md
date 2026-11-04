@@ -5,18 +5,26 @@
 
 Webterminal 是一体化特权访问管理平台：统一的资产接入、授权控制、会话审计与操作回放。浏览器里即可完成 SSH / RDP / VNC / 数据库运维，也可通过原生客户端（ssh、mstsc、mysql、navicat…）经内置协议代理直连。
 
-> 📌 **推荐使用 1.0 Docker 镜像**（本文档）。仓库内的 Python/Django 源码为旧版实现，文档见 [README_LEGACY.md](README_LEGACY.md)。
+> 📌 **推荐使用 1.1 Docker 镜像**（本文档）。仓库内的 Python/Django 源码为旧版实现，文档见 [README_LEGACY.md](README_LEGACY.md)。
 
-## 1.0 版本
+## 1.1 版本
 
-1.0 是全新重构版本：Go 后端 + React 前端，以**单容器 All-in-One 镜像**发布——一个容器内含 webterminal 服务 + nginx + SQLite，无外部依赖（不含 Redis，单机全部走内存兜底），amd64 与 arm64 同 tag 多架构分发。
+1.x 是全新重构版本：Go 后端 + React 前端，以**单容器 All-in-One 镜像**发布——一个容器内含 webterminal 服务 + nginx + SQLite +（1.1 起）OCR 识别引擎，无外部依赖（不含 Redis，单机全部走内存兜底），amd64 与 arm64 同 tag 多架构分发。
+
+**1.1 新增**
+
+- **内置 OCR 识别服务**（PP-OCRv4，RapidOCR / ONNX Runtime）直接打在容器内，不需要再部署独立服务：
+  - *录像文字检索*：RDP/VNC 录像关键帧后台 OCR 建索引，可按屏幕上出现过的文字搜索会话。
+  - *RDP 窗口标题实时识别*：原生 RDP 代理会话从标题栏识别前台窗口标题写入会话时间线（覆盖 Win7 … Server 2025 / Win11 各代标题栏样式）。
+- **Web 资产**：通过隔离的远程浏览器会话访问。
+- 1.0 直接换 tag 重建容器即可升级，OCR 配置首次启动自动写入已有 `config.yaml`。
 
 ### 功能一览
 
-- **协议接入**：SSH / SFTP / Telnet、RDP、VNC、WinRM、MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB、Kubernetes
+- **协议接入**：SSH / SFTP / Telnet、RDP、VNC、WinRM、MySQL / PostgreSQL / SQL Server / Oracle / Redis / MongoDB、Kubernetes、Web（远程浏览器）
 - **两种使用方式**：网页终端（xterm、网页 RDP/VNC 桌面、浏览器文件传输）+ 原生客户端代理（本地 ssh / mstsc / 数据库客户端 / helper 一键拉起）
 - **授权模型**：主体（用户/用户组/部门）→ 资产/节点 × 账号 × 协议 × 动作（连接、上传、下载、剪贴板、端口转发…），支持有效期、审批与策略
-- **审计**：全量会话记录、SSH/RDP/VNC 操作录像回放、命令过滤与阻断、数据库 SQL 过滤
+- **审计**：全量会话记录、SSH/RDP/VNC 操作录像回放、录像 OCR 文字检索、RDP 窗口标题实时时间线、命令过滤与阻断、数据库 SQL 过滤
 - **网络网关**：被隔离网段通过轻量 agent（`gw-*`）经加密隧道转发，资产路由按 资产 → 节点 → 直连 解析
 - **运维自动化**：改密/轮换、WinRM 脚本与作业中心、发布应用（RemoteApp）、命令复核
 - **安全设计**：凭据加密保管、一次性连接令牌、主机指纹绑定许可、非 root 容器运行
@@ -30,7 +38,7 @@ docker run -d --name webterminal --restart unless-stopped \
   -p 13306:13306 -p 15432:15432 -p 11433:11433 -p 11521:11521 \
   -p 16379:16379 -p 37017:37017 \
   -v webterminal-data:/data \
-  webterminal/webterminal:1.0
+  webterminal/webterminal:1.1
 ```
 
 打开 `https://<主机IP>`（80 自动跳转 443，自签名证书首次启动自动生成），进入初始化向导设置管理员密码即可使用。初始化完成后登录账号为 **`admin`**，密码即向导中设置的密码。443 承载网页端全部功能；2222/3389/数据库端口是原生客户端代理，按需保留。
@@ -84,11 +92,12 @@ docker run -d --name webterminal --restart unless-stopped \
 ## 数据与升级
 
 - 全部状态在 `/data` 卷：SQLite、配置、TLS 证书、SSH host key、会话录像、日志。备份即打包该卷。
-- 升级：`docker pull` 新 tag 后重建容器即可，数据自动沿用。
+- 升级：`docker pull` 新 tag 后重建容器即可，数据自动沿用。1.0 → 1.1 无需额外操作：首次启动会把内置 OCR 地址和随机 token 写入 `/data/config.yaml` 的 `bastion.ocr`。
 - 替换正式 HTTPS 证书：覆盖 `/data/ssl/server.crt` / `server.key` 后重启。
 
 ## 说明
 
 - 容器内以非 root 用户运行；原生代理端口在初始化完成后才开始监听。
+- OCR 引擎只监听容器内 `127.0.0.1:8866`，空闲约 100 MB、识别时峰值数百 MB，建议给容器 1 GB 以上内存；`OCR_WORKERS` / `OCR_THREADS`（默认 1 / 4）可调，`-e BASTION_EMBEDDED_OCR=0` 可完全关闭。
 - 网络网关 agent（Linux systemd / OpenRC、Windows 服务）在控制台「网关」页生成一行安装命令，自带 SHA-256 校验与主机密钥锁定。
-- **推荐使用 1.0**。本仓库源码为早期 Django 实现（0.x），已停止维护；旧版部署与使用文档见 [README_LEGACY.md](README_LEGACY.md) 和 [docs/](docs/)。
+- **推荐使用 1.1**。本仓库源码为早期 Django 实现（0.x），已停止维护；旧版部署与使用文档见 [README_LEGACY.md](README_LEGACY.md) 和 [docs/](docs/)。
